@@ -79,7 +79,7 @@ jobs:
       - name: Check App Store Connect
         env:
           BUNDLE_ID: io.github.kamaltv1010-boop.AmirBrowser
-        run: python3 .github/scripts/asc_check.py
+        run: python3 .github/scripts/asc_check.py --testers
 
       - name: Archive (unsigned)
         run: |

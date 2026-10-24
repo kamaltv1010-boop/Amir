@@ -3,6 +3,11 @@
 if needed, and checks that the app exists, so a failed TestFlight upload
 says what is actually missing.
 
+With --testers it also makes sure TestFlight is ready to install from: it
+lists the latest builds, creates an internal tester group with access to all
+builds if there is none, and adds every App Store Connect user of the team
+to it as a tester.
+
 Reads ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH and BUNDLE_ID from the
 environment. Uses only the standard library and the openssl tool, and
 prints nothing secret.
@@ -83,7 +88,79 @@ def call(path, token, params=None, body=None):
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.status, json.load(response)
     except urllib.error.HTTPError as e:
-        return e.code, None
+        try:
+            return e.code, json.load(e)
+        except ValueError:
+            return e.code, None
+
+
+def describe(body):
+    """Apple's error code and title, without details that may hold emails."""
+    errors = (body or {}).get("errors") or [{}]
+    return f"{errors[0].get('code', '?')}: {errors[0].get('title', '')}"
+
+
+def mask(email):
+    name, _, domain = email.partition("@")
+    return f"{name[:2]}***@{domain}"
+
+
+def setup_testing(app_id, token):
+    status, body = call("builds", token, params={
+        "filter[app]": app_id, "sort": "-uploadedDate", "limit": 5,
+    })
+    if status != 200:
+        fail(f"Could not list builds ({status} {describe(body)}).")
+    if not body["data"]:
+        print("No builds uploaded yet.")
+    for build in body["data"]:
+        a = build["attributes"]
+        expired = " (expired)" if a.get("expired") else ""
+        print(f"Build {a['version']}: {a['processingState']}{expired}, uploaded {a['uploadedDate']}")
+
+    status, body = call(f"apps/{app_id}/betaGroups", token)
+    if status != 200:
+        fail(f"Could not list TestFlight groups ({status} {describe(body)}).")
+    group = next((g for g in body["data"] if g["attributes"].get("isInternalGroup")), None)
+    if group is None:
+        status, body = call("betaGroups", token, body={"data": {
+            "type": "betaGroups",
+            "attributes": {"name": "Me", "isInternalGroup": True, "hasAccessToAllBuilds": True},
+            "relationships": {"app": {"data": {"type": "apps", "id": app_id}}},
+        }})
+        if status != 201:
+            fail(f"Could not create an internal TestFlight group ({status} {describe(body)}).")
+        group = body["data"]
+        print("Created the internal TestFlight group \"Me\" with access to all builds.")
+    else:
+        all_builds = group["attributes"].get("hasAccessToAllBuilds")
+        print(f"Internal TestFlight group \"{group['attributes']['name']}\" exists"
+              f" (access to all builds: {'yes' if all_builds else 'no'}).")
+
+    status, body = call(f"betaGroups/{group['id']}/betaTesters", token, params={"limit": 200})
+    if status != 200:
+        fail(f"Could not list testers ({status} {describe(body)}).")
+    testers = {t["attributes"].get("email", "").lower() for t in body["data"]}
+
+    status, body = call("users", token, params={"limit": 50})
+    if status != 200:
+        fail(f"Could not list team users ({status} {describe(body)}).")
+    for user in body["data"]:
+        a = user["attributes"]
+        email = a["username"]
+        if email.lower() in testers:
+            print(f"{mask(email)} is already a tester.")
+            continue
+        status, body = call("betaTesters", token, body={"data": {
+            "type": "betaTesters",
+            "attributes": {"email": email, "firstName": a.get("firstName") or "",
+                           "lastName": a.get("lastName") or ""},
+            "relationships": {"betaGroups": {"data": [{"type": "betaGroups", "id": group["id"]}]}},
+        }})
+        if status == 201:
+            print(f"Added {mask(email)} as a tester.")
+        else:
+            print(f"::warning::Could not add {mask(email)} as a tester ({status} {describe(body)}).")
 
 
 def fail(message):
@@ -124,6 +201,9 @@ def main():
         fail(f"No app in App Store Connect uses {bundle_id}. Create it: App Store Connect > "
              "Apps > + > New App, and choose this bundle ID.")
     print(f"App found in App Store Connect: {apps[0]['attributes']['name']}")
+
+    if "--testers" in sys.argv:
+        setup_testing(apps[0]["id"], token)
 
 
 if __name__ == "__main__":
