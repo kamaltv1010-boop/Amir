@@ -74,6 +74,13 @@ jobs:
           # Every upload needs a higher build number; re-runs get a new one too.
           echo "BUILD_NUMBER=$(( GITHUB_RUN_NUMBER * 100 + GITHUB_RUN_ATTEMPT ))" >> "$GITHUB_ENV"
 
+      # Fails in seconds, with a plain message, if the key, the bundle ID or
+      # the App Store Connect app record is missing.
+      - name: Check App Store Connect
+        env:
+          BUNDLE_ID: io.github.kamaltv1010-boop.AmirBrowser
+        run: python3 .github/scripts/asc_check.py
+
       - name: Archive (unsigned)
         run: |
           set -o pipefail
