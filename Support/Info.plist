@@ -2,10 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ar</string>
+		<string>fr</string>
+	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Websites can ask to use the camera, for example to take a photo to upload.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Websites can ask to use the microphone, for example to record a video or a voice message.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Lets you save images from websites to your photo library.</string>
 </dict>
 </plist>

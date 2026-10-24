@@ -17,7 +17,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Show Xcode version
         run: xcodebuild -version
@@ -47,13 +47,30 @@ jobs:
             exit 1
           fi
 
+      # The build succeeds even when a language or a permission text is
+      # missing from the app, so check the bundle itself.
+      - name: Check app bundle
+        run: |
+          app=build/Build/Products/Release-iphoneos/AmirBrowser.app
+          plutil -p "$app/Info.plist"
+          for lang in en ar fr; do
+            for table in Localizable InfoPlist; do
+              file="$app/$lang.lproj/$table.strings"
+              if [ ! -f "$file" ]; then
+                echo "::error::Missing $lang.lproj/$table.strings"
+                exit 1
+              fi
+            done
+          done
+          plutil -p "$app/ar.lproj/InfoPlist.strings"
+
       - name: Package IPA
         run: |
           mkdir Payload
           cp -R build/Build/Products/Release-iphoneos/AmirBrowser.app Payload/
           zip -qry AmirBrowser.ipa Payload
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: AmirBrowser-ipa
           path: AmirBrowser.ipa

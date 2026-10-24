@@ -1,12 +1,40 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "A problem repeatedly occurred on this page." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حدثت مشكلة بشكل متكرر في هذه الصفحة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A problem repeatedly occurred on this page."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un problème est survenu à plusieurs reprises sur cette page."
+          }
+        }
+      }
+    },
     "About" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "حول"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
           }
         },
         "fr" : {
@@ -25,6 +53,12 @@
             "value" : "إضافة إلى المفضلة"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Bookmark"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39,6 +73,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "رجوع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
           }
         },
         "fr" : {
@@ -57,6 +97,12 @@
             "value" : "المفضلة"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookmarks"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71,6 +117,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "تم مسح بيانات التصفح"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Browsing data cleared"
           }
         },
         "fr" : {
@@ -89,6 +141,12 @@
             "value" : "تعذّر فتح هذه الصفحة"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can't open this page"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103,6 +161,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "إلغاء"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         },
         "fr" : {
@@ -121,6 +185,12 @@
             "value" : "مسح"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -135,6 +205,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "مسح بيانات التصفح"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Browsing Data"
           }
         },
         "fr" : {
@@ -153,6 +229,12 @@
             "value" : "مسح بيانات التصفح؟"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Browsing Data?"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167,6 +249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "تم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         },
         "fr" : {
@@ -185,6 +273,12 @@
             "value" : "التالي"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forward"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -201,10 +295,38 @@
             "value" : "الصفحة الرئيسية"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accueil"
+          }
+        }
+      }
+    },
+    "Leave Page" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مغادرة الصفحة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave Page"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitter la page"
           }
         }
       }
@@ -215,6 +337,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "المزيد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More"
           }
         },
         "fr" : {
@@ -233,6 +361,12 @@
             "value" : "لا توجد صفحات في المفضلة بعد"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No bookmarks yet"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -247,6 +381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "حسناً"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         },
         "fr" : {
@@ -265,6 +405,12 @@
             "value" : "فتح"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -279,6 +425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "فتح تطبيق آخر؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Another App?"
           }
         },
         "fr" : {
@@ -297,6 +449,12 @@
             "value" : "إعادة التحميل"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -311,6 +469,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "إزالة من المفضلة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Bookmark"
           }
         },
         "fr" : {
@@ -329,6 +493,12 @@
             "value" : "يحذف ملفات تعريف الارتباط والذاكرة المؤقتة وبيانات المواقع المحفوظة. تبقى المفضلة كما هي."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removes cookies, cache and saved website data. Bookmarks are kept."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -343,6 +513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "طلب موقع سطح المكتب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Request Desktop Website"
           }
         },
         "fr" : {
@@ -361,6 +537,12 @@
             "value" : "طلب موقع الجوال"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Request Mobile Website"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -375,6 +557,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "محرك البحث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search Engine"
           }
         },
         "fr" : {
@@ -393,6 +581,12 @@
             "value" : "ابحث أو أدخل عنواناً"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search or enter address"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -407,6 +601,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "الإعدادات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         },
         "fr" : {
@@ -425,6 +625,12 @@
             "value" : "مشاركة"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -439,6 +645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "إيقاف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
           }
         },
         "fr" : {
@@ -457,6 +669,12 @@
             "value" : "اضغط على ⋯ ثم «إضافة إلى المفضلة» لحفظ الصفحة الحالية."
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap ⋯ then “Add Bookmark” to save the current page."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -473,6 +691,12 @@
             "value" : "إعادة المحاولة"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -487,6 +711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "الإصدار"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
           }
         },
         "fr" : {

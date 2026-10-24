@@ -3,7 +3,7 @@ import SwiftUI
 struct BrowserView: View {
     @StateObject private var browser = BrowserModel()
     @StateObject private var bookmarks = BookmarkStore()
-    @AppStorage("searchEngine") private var searchEngine = SearchEngine.google
+    @AppStorage(SearchEngine.storageKey) private var searchEngine = SearchEngine.google
 
     @State private var addressText = ""
     @FocusState private var isEditingAddress: Bool
@@ -33,7 +33,7 @@ struct BrowserView: View {
         .onAppear {
             browser.loadInitialPage(home: searchEngine.homeURL)
         }
-        .onReceive(browser.$currentURL) { url in
+        .onReceive(browser.$displayedURL) { url in
             if !isEditingAddress {
                 addressText = displayText(for: url)
             }
@@ -41,8 +41,8 @@ struct BrowserView: View {
         .onChange(of: isEditingAddress) { editing in
             // Show the full address while editing, just the site name otherwise.
             addressText = editing
-                ? browser.currentURL?.absoluteString ?? ""
-                : displayText(for: browser.currentURL)
+                ? browser.displayedURL?.absoluteString ?? ""
+                : displayText(for: browser.displayedURL)
         }
         .sheet(item: $sheet) { sheet in
             switch sheet {
@@ -118,7 +118,7 @@ struct BrowserView: View {
 
     private var addressIcon: String {
         if isEditingAddress { return "magnifyingglass" }
-        switch browser.currentURL?.scheme {
+        switch browser.displayedURL?.scheme {
         case "https": return "lock.fill"
         case "http": return "lock.open"
         default: return "globe"
@@ -145,7 +145,7 @@ struct BrowserView: View {
             } label: {
                 toolbarIcon("chevron.backward")
             }
-            .disabled(!browser.canGoBack)
+            .disabled(!browser.canGoBack && browser.loadError == nil)
             .accessibilityLabel(Text("Back"))
 
             Spacer()

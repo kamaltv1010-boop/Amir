@@ -17,11 +17,23 @@ final class BrowserModel: NSObject, ObservableObject {
     @Published private(set) var isDesktopMode = false
     /// Set when a page fails to load; the view shows it over the web content.
     @Published private(set) var loadError: String?
-
     /// The address that failed, so "Try Again" retries it rather than the
     /// previous page.
-    private var failedURL: URL?
+    @Published private(set) var failedURL: URL?
+    /// What the address bar shows: the failed address while the error is up,
+    /// the current page otherwise.
+    @Published private(set) var displayedURL: URL?
+
     private let refreshControl = UIRefreshControl()
+    private var lastContentProcessCrash: Date?
+    /// JavaScript dialogs the current page has shown. After a few, dialogs get
+    /// a "Leave Page" button so a page looping alert() can't lock the app.
+    private var dialogCount = 0
+    /// Set by "Leave Page" so the old page can't show more dialogs while the
+    /// home page loads.
+    private var isSuppressingDialogs = false
+    /// A window a page opened with window.open(), shown in a sheet.
+    private var popup: (webView: WKWebView, controller: UIViewController)?
 
     private static let lastURLKey = "lastURL"
     /// Schemes WebKit loads itself; anything else (tel:, mailto:, App Store
@@ -47,6 +59,10 @@ final class BrowserModel: NSObject, ObservableObject {
         webView.publisher(for: \.canGoForward).assign(to: &$canGoForward)
         webView.publisher(for: \.isLoading).assign(to: &$isLoading)
         webView.publisher(for: \.estimatedProgress).assign(to: &$progress)
+        $currentURL.combineLatest($failedURL, $loadError)
+            .map { url, failedURL, error in error == nil ? url : failedURL ?? url }
+            .removeDuplicates()
+            .assign(to: &$displayedURL)
     }
 
     // MARK: - Actions
@@ -64,13 +80,17 @@ final class BrowserModel: NSObject, ObservableObject {
     }
 
     func load(_ url: URL) {
-        loadError = nil
-        failedURL = nil
+        clearError()
         webView.load(URLRequest(url: url))
     }
 
     func goBack() {
-        webView.goBack()
+        // With the error up, Back just reveals the page underneath it.
+        if loadError != nil {
+            clearError()
+        } else {
+            webView.goBack()
+        }
     }
 
     func goForward() {
@@ -110,6 +130,11 @@ final class BrowserModel: NSObject, ObservableObject {
 
     // MARK: - Helpers
 
+    private func clearError() {
+        loadError = nil
+        failedURL = nil
+    }
+
     private func showError(_ error: Error) {
         refreshControl.endRefreshing()
         let nsError = error as NSError
@@ -122,21 +147,29 @@ final class BrowserModel: NSObject, ObservableObject {
         loadError = nsError.localizedDescription
     }
 
-    /// Presents `controller` above whatever is on screen. If nothing can present
-    /// it, `fallback` runs instead, so WebKit completion handlers are always called.
-    private func present(_ controller: UIViewController, otherwise fallback: () -> Void = {}) {
+    /// Presents `controller` above whatever is on screen and returns true. If
+    /// that isn't possible right now (for example a sheet is mid-animation,
+    /// when UIKit would silently drop the presentation), runs `fallback`
+    /// instead, so WebKit completion handlers are always called.
+    @discardableResult
+    private func present(_ controller: UIViewController, otherwise fallback: () -> Void = {}) -> Bool {
         guard var top = webView.window?.rootViewController else {
             fallback()
-            return
+            return false
         }
-        while let presented = top.presentedViewController, !presented.isBeingDismissed {
+        while let presented = top.presentedViewController {
+            if presented.isBeingDismissed {
+                fallback()
+                return false
+            }
             top = presented
         }
-        guard !top.isBeingDismissed else {
+        guard !top.isBeingPresented, !top.isBeingDismissed else {
             fallback()
-            return
+            return false
         }
         top.present(controller, animated: true)
+        return true
     }
 
     private func confirmOpeningExternally(_ url: URL) {
@@ -150,6 +183,28 @@ final class BrowserModel: NSObject, ObservableObject {
             UIApplication.shared.open(url)
         })
         present(alert)
+    }
+
+    /// Counts a JavaScript dialog and, from the third one on a page, adds a
+    /// "Leave Page" button that answers it with `dismiss` and goes home.
+    private func addLeavePageAction(to alert: UIAlertController, dismiss: @escaping @MainActor () -> Void) {
+        dialogCount += 1
+        guard dialogCount >= 3 else { return }
+        alert.addAction(UIAlertAction(title: String(localized: "Leave Page"), style: .destructive) { [weak self] _ in
+            dismiss()
+            self?.leavePage()
+        })
+    }
+
+    private func leavePage() {
+        isSuppressingDialogs = true
+        closePopup()
+        load(SearchEngine.current.homeURL)
+    }
+
+    private func closePopup() {
+        popup?.controller.dismiss(animated: true)
+        popup = nil
     }
 }
 
@@ -172,19 +227,22 @@ extension BrowserModel: WKNavigationDelegate {
             return
         }
 
-        // A tapped tel:/mailto:/App Store link opens directly. Anything a page
-        // triggers on its own needs the user's OK; iframes never get to.
-        if navigationAction.navigationType == .linkActivated {
-            UIApplication.shared.open(url)
-        } else if navigationAction.targetFrame?.isMainFrame ?? true {
+        // Opening tel:, mailto:, App Store or other apps always asks first,
+        // because scripts can fake link taps. Iframes only get to ask on a click.
+        if navigationAction.navigationType == .linkActivated || (navigationAction.targetFrame?.isMainFrame ?? true) {
             confirmOpeningExternally(url)
         }
         decisionHandler(.cancel, preferences)
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        loadError = nil
-        failedURL = nil
+        clearError()
+    }
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        clearError()
+        dialogCount = 0
+        isSuppressingDialogs = false
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -203,6 +261,16 @@ extension BrowserModel: WKNavigationDelegate {
     }
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        let now = Date()
+        defer { lastContentProcessCrash = now }
+        // Reload once. If the page crashes again right away, stop instead of
+        // reloading forever, and let the user decide.
+        if let last = lastContentProcessCrash, now.timeIntervalSince(last) < 10 {
+            refreshControl.endRefreshing()
+            failedURL = webView.url
+            loadError = String(localized: "A problem repeatedly occurred on this page.")
+            return
+        }
         webView.reload()
     }
 }
@@ -210,17 +278,53 @@ extension BrowserModel: WKNavigationDelegate {
 // MARK: - WKUIDelegate
 
 extension BrowserModel: WKUIDelegate {
-    /// Links with target="_blank" and window.open() load in the same view.
     func webView(
         _ webView: WKWebView,
         createWebViewWith configuration: WKWebViewConfiguration,
         for navigationAction: WKNavigationAction,
         windowFeatures: WKWindowFeatures
     ) -> WKWebView? {
-        if navigationAction.targetFrame == nil {
+        // A tapped target="_blank" link just opens in the same view.
+        if navigationAction.navigationType == .linkActivated,
+           let url = navigationAction.request.url,
+           url.absoluteString != "about:blank" {
             webView.load(navigationAction.request)
+            return nil
         }
-        return nil
+
+        // A script's window.open() (sign-in and payment popups) gets a real
+        // window, so the page can talk to it and close it again.
+        if let popup {
+            popup.webView.load(navigationAction.request)
+            return nil
+        }
+        let popupView = WKWebView(frame: .zero, configuration: configuration)
+        popupView.uiDelegate = self
+        popupView.allowsBackForwardNavigationGestures = true
+
+        let content = UIViewController()
+        content.view = popupView
+        content.navigationItem.title = navigationAction.request.url?.host
+        content.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            systemItem: .done,
+            primaryAction: UIAction { [weak self] _ in self?.closePopup() }
+        )
+        let controller = UINavigationController(rootViewController: content)
+        // Only Done or the page's window.close() dismiss it, so `popup` stays accurate.
+        controller.isModalInPresentation = true
+
+        guard present(controller) else {
+            webView.load(navigationAction.request)
+            return nil
+        }
+        popup = (popupView, controller)
+        return popupView
+    }
+
+    func webViewDidClose(_ webView: WKWebView) {
+        if webView === popup?.webView {
+            closePopup()
+        }
     }
 
     func webView(
@@ -229,10 +333,12 @@ extension BrowserModel: WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor @Sendable () -> Void
     ) {
+        guard !isSuppressingDialogs else { return completionHandler() }
         let alert = UIAlertController(title: frame.securityOrigin.host, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default) { _ in
             completionHandler()
         })
+        addLeavePageAction(to: alert) { completionHandler() }
         present(alert) { completionHandler() }
     }
 
@@ -242,6 +348,7 @@ extension BrowserModel: WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor @Sendable (Bool) -> Void
     ) {
+        guard !isSuppressingDialogs else { return completionHandler(false) }
         let alert = UIAlertController(title: frame.securityOrigin.host, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel) { _ in
             completionHandler(false)
@@ -249,6 +356,7 @@ extension BrowserModel: WKUIDelegate {
         alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default) { _ in
             completionHandler(true)
         })
+        addLeavePageAction(to: alert) { completionHandler(false) }
         present(alert) { completionHandler(false) }
     }
 
@@ -259,6 +367,7 @@ extension BrowserModel: WKUIDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping @MainActor @Sendable (String?) -> Void
     ) {
+        guard !isSuppressingDialogs else { return completionHandler(nil) }
         let alert = UIAlertController(title: frame.securityOrigin.host, message: prompt, preferredStyle: .alert)
         alert.addTextField { $0.text = defaultText }
         alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel) { _ in
@@ -267,6 +376,7 @@ extension BrowserModel: WKUIDelegate {
         alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default) { [weak alert] _ in
             completionHandler(alert?.textFields?.first?.text)
         })
+        addLeavePageAction(to: alert) { completionHandler(nil) }
         present(alert) { completionHandler(nil) }
     }
 }

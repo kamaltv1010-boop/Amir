@@ -8,6 +8,14 @@ enum SearchEngine: String, CaseIterable, Identifiable {
 
     var id: Self { self }
 
+    /// The UserDefaults key the chosen engine is stored under (via @AppStorage).
+    static let storageKey = "searchEngine"
+
+    /// The engine chosen in Settings.
+    static var current: SearchEngine {
+        UserDefaults.standard.string(forKey: storageKey).flatMap(SearchEngine.init(rawValue:)) ?? .google
+    }
+
     var name: String {
         switch self {
         case .google: return "Google"

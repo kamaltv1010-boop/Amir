@@ -21,28 +21,32 @@
 
 ## كيفاش تحطو فـ iPhone ديالك
 
-Apple ما كتخليش تزيد تطبيق فـ iPhone إلا من App Store، ولا إلا وقّعتيه (sign) بـ Apple ID ديالك. عندك جوج طرق:
+Apple ما كتخليش تزيد تطبيق فـ iPhone إلا من App Store، ولا إلا وقّعتيه (sign) بـ Apple ID ديالك. عندك جوج طرق.
+
+> 💡 المسارات ديال القوائم مكتوبين بالإنجليزية من اليسار لليمين، بحال `Settings > General > About`: كليكي على الأولى، من بعد الثانية، وهكذا.
 
 ### الطريقة 1: عندك Mac
 
-1. نزّل **Xcode** من App Store (فابور، خاص Xcode 16 ولا كثر).
+1. نزّل **Xcode** من App Store (فابور).
+   > ⚠️ Xcode 27 لي فـ App Store خاصو macOS Tahoe 26.6 ولا كثر، وكيركّب غير على iPhone فيه **iOS 17 ولا كثر**. إلا كان الـ iPhone ديالك فـ iOS 15 ولا 16، ولا الـ Mac قديم، نزّل Xcode 26 ولا 16 من [developer.apple.com/download/all](https://developer.apple.com/download/all)، ولا استعمل الطريقة 2.
 2. حل الملف `AmirBrowser.xcodeproj`.
-3. كليكي على المشروع ← target **AmirBrowser** ← **Signing & Capabilities** ← فـ **Team** ختار Apple ID ديالك (ولا **Add an Account**).
+3. فـ Xcode حل `AmirBrowser > Signing & Capabilities`، وفـ **Team** ختار Apple ID ديالك (ولا **Add an Account**).
 4. إلا قالك الـ **Bundle Identifier** ماشي متوفر، بدّلو لشي حاجة خاصة بيك (مثلا `com.smitek.browser`).
-5. ركّب الـ iPhone بالكابل، ختارو من الفوق، وكليكي على ▶️ (**Run**).
-6. فالـ iPhone:
-   - **Settings ← Privacy & Security ← Developer Mode**: شعلو، والتلفون غادي يعاود يشعل (iOS 16 ولا كثر).
-   - **Settings ← General ← VPN & Device Management** ← ختار الحساب ديالك ← **Trust**.
+5. ركّب الـ iPhone بالكابل، وفالتلفون ضغط **Trust This Computer**. ختار الـ iPhone من الفوق فـ Xcode وكليكي على ▶️ (**Run**).
+   فـ iOS 16 ولا كثر، هاد المرة الأولى غادي تفشل وتقول ليك Developer Mode طافي. هادشي عادي، وهو لي كيبيّن الخيار فالتلفون.
+6. فالـ iPhone حل `Settings > Privacy & Security > Developer Mode` وشعلو. التلفون غادي يعاود يشعل، ومن بعد ضغط **Enable** ودخّل الكود ديال التلفون.
+7. رجع لـ Xcode وكليكي ▶️ (**Run**) مرة أخرى.
+8. فالـ iPhone حل `Settings > General > VPN & Device Management`، ختار الحساب ديالك، وضغط **Trust**. دابا تقدر تحل التطبيق.
 
 ### الطريقة 2: ما عندكش Mac (عندك Windows)
 
 GitHub كيبني ليك التطبيق بوحدو (ملف `.ipa`) على Mac ديالو، فكل مرة كتبدّل الكود.
 
-1. فالـ repo سير لـ **Actions** ← **Build IPA** ← ختار آخر run فيه ✅.
+1. فالـ repo حل `Actions > Build IPA` وختار آخر run فيه ✅.
 2. لتحت، فـ **Artifacts**، نزّل **AmirBrowser-ipa** وفكّ الـ zip: غادي تلقى `AmirBrowser.ipa`.
-3. نزّل **Sideloadly** من [sideloadly.io](https://sideloadly.io). فـ Windows خاصك تا **iTunes** و **iCloud** ديال الموقع ديال Apple (ماشي ديال Microsoft Store).
+3. نزّل **Sideloadly** من [sideloadly.io](https://sideloadly.io). فـ Windows خاصك تا **iTunes** و **iCloud**: نزّلهم من الروابط لي فالصفحة ديال Sideloadly (النسخ ديال الويب). إلا كانو عندك من Microsoft Store، حيدهم قبل وعاود شعّل الحاسوب.
 4. ركّب الـ iPhone بالكابل، جرّ `AmirBrowser.ipa` لـ Sideloadly، دخّل Apple ID ديالك، وكليكي **Start**.
-5. فالـ iPhone دير نفس الخطوة 6 ديال الطريقة 1 (Developer Mode + Trust).
+5. فالـ iPhone شعّل `Settings > Privacy & Security > Developer Mode` (التلفون غادي يعاود يشعل، ضغط **Enable**). من بعد حل `Settings > General > VPN & Device Management`، ختار الحساب ديالك، وضغط **Trust**.
 
 > ⚠️ **مهم:** بـ Apple ID فابور، التطبيق كيخدم **7 أيام** ومن بعد خاصك تعاود تركّبو (Sideloadly كيقدر يجدّدو ليك). وما تقدرش تركّب أكثر من 3 تطبيقات بهاد الطريقة فنفس الوقت. إلا بغيتيه يبقى عام كامل، خاصك **Apple Developer Program** (99$ فالعام).
 >
@@ -50,7 +54,7 @@ GitHub كيبني ليك التطبيق بوحدو (ملف `.ipa`) على Mac د
 
 ## بدّل السمية ولا الـ Bundle ID
 
-فـ Xcode ← target **AmirBrowser** ← **Build Settings**:
+فـ Xcode حل `AmirBrowser > Build Settings`:
 
 - `INFOPLIST_KEY_CFBundleDisplayName`: السمية لي كتبان تحت الأيقونة (دابا `Amir`).
 - `PRODUCT_BUNDLE_IDENTIFIER`: الـ Bundle ID.
@@ -66,6 +70,7 @@ GitHub كيبني ليك التطبيق بوحدو (ملف `.ipa`) على Mac د
 | `AmirBrowser/BookmarkStore.swift` و `BookmarksView.swift` | المفضلة |
 | `AmirBrowser/SettingsView.swift` | الإعدادات |
 | `AmirBrowser/Localizable.xcstrings` | الترجمة (عربية، فرنسية، إنجليزية) |
+| `AmirBrowser/InfoPlist.xcstrings` | الرسائل لي كيطلب بيهم التطبيق الإذن (الكاميرا، الميكرو، الصور) |
 | `.github/workflows/build-ipa.yml` | البناء الأوتوماتيكي ديال `.ipa` |
 
 </div>
