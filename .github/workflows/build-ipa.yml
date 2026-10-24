@@ -1,0 +1,60 @@
+# Builds an unsigned AmirBrowser.ipa on a macOS runner. Download it from the
+# run's "Artifacts" section and install it with Sideloadly or AltStore, which
+# sign it with your own Apple ID (see README.md).
+name: Build IPA
+
+on:
+  push:
+    paths:
+      - "AmirBrowser/**"
+      - "AmirBrowser.xcodeproj/**"
+      - "Support/**"
+      - ".github/workflows/build-ipa.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project AmirBrowser.xcodeproj \
+            -scheme AmirBrowser \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            -quiet \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee build.log
+
+      # A delegate method whose signature doesn't exactly match the SDK compiles
+      # with only a "nearly matches" warning, but WebKit never calls it.
+      - name: Check delegate signatures
+        run: |
+          if grep -n "nearly matches" build.log; then
+            echo "::error::A WebKit delegate method does not match the SDK signature"
+            exit 1
+          fi
+
+      - name: Package IPA
+        run: |
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/AmirBrowser.app Payload/
+          zip -qry AmirBrowser.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AmirBrowser-ipa
+          path: AmirBrowser.ipa
+          if-no-files-found: error
