@@ -21,9 +21,35 @@
 
 ## كيفاش تحطو فـ iPhone ديالك
 
-Apple ما كتخليش تزيد تطبيق فـ iPhone إلا من App Store، ولا إلا وقّعتيه (sign) بـ Apple ID ديالك. عندك جوج طرق.
+Apple ما كتخليش تزيد تطبيق فـ iPhone إلا من App Store ولا TestFlight، ولا إلا وقّعتيه (sign) بـ Apple ID ديالك. عندك 3 طرق.
 
 > 💡 المسارات ديال القوائم مكتوبين بالإنجليزية من اليسار لليمين، بحال `Settings > General > About`: كليكي على الأولى، من بعد الثانية، وهكذا.
+
+### الطريقة 0: بلا حاسوب نهائيا (TestFlight)
+
+خاصك حساب **Apple Developer Program** (99$ فالعام). كلشي كيتدار من الـ iPhone، والبناء والتوقيع كيديرهم GitHub على Mac ديالو.
+
+**مرة وحدة فالبداية:**
+1. سجّل الـ Bundle ID: [developer.apple.com/account/resources/identifiers/add/bundleId](https://developer.apple.com/account/resources/identifiers/add/bundleId). ختار **App IDs** ثم **App** ثم **Explicit**، وكتب `io.github.kamaltv1010-boop.AmirBrowser`.
+2. وجّد التطبيق فـ [App Store Connect](https://appstoreconnect.apple.com/apps): `Apps > + > New App`. ختار iOS، سمية ما مستعملاش فـ App Store، والـ Bundle ID لي سجلتي، و SKU `amirbrowser`.
+3. صاوب API key: [appstoreconnect.apple.com/access/integrations/api](https://appstoreconnect.apple.com/access/integrations/api). أول مرة ضغط **Request Access**. من بعد `Team Keys > Generate API Key`، و **Access** خاصو يكون **Admin**. نزّل الملف `.p8` (كيتنزّل مرة وحدة برك)، ونقل الـ **Key ID** والـ **Issuer ID**.
+4. جيب الـ **Team ID** من [developer.apple.com/account](https://developer.apple.com/account#MembershipDetailsCard) فـ **Membership details**.
+5. فـ GitHub حل `Settings > Secrets and variables > Actions > New repository secret`، وزيد 4 ديال الـ secrets:
+
+| Name | Secret |
+|---|---|
+| `ASC_KEY_P8` | المحتوى كامل ديال الملف `.p8` |
+| `ASC_KEY_ID` | الـ Key ID |
+| `ASC_ISSUER_ID` | الـ Issuer ID |
+| `APPLE_TEAM_ID` | الـ Team ID |
+
+> 🔒 هاد الـ repo **public**. حط المفاتيح غير فـ Secrets، وعمّرك ما تكتبهم فشي ملف ولا فشي رسالة.
+
+**كل مرة بغيتي نسخة جديدة:**
+1. فـ GitHub حل `Actions > TestFlight > Run workflow`. كياخد بين 5 و10 دقايق.
+2. Apple كتعالج النسخة بين 10 و30 دقيقة.
+3. فـ App Store Connect حل `TestFlight > Internal Testing`، وجّد مجموعة وزيد فيها راسك (مرة وحدة برك).
+4. نزّل **TestFlight** من App Store، وركّب منو التطبيق. كل نسخة كتخدم 90 يوم.
 
 ### الطريقة 1: عندك Mac
 
@@ -71,6 +97,7 @@ GitHub كيبني ليك التطبيق بوحدو (ملف `.ipa`) على Mac د
 | `AmirBrowser/SettingsView.swift` | الإعدادات |
 | `AmirBrowser/Localizable.xcstrings` | الترجمة (عربية، فرنسية، إنجليزية) |
 | `AmirBrowser/InfoPlist.xcstrings` | الرسائل لي كيطلب بيهم التطبيق الإذن (الكاميرا، الميكرو، الصور) |
-| `.github/workflows/build-ipa.yml` | البناء الأوتوماتيكي ديال `.ipa` |
+| `.github/workflows/build-ipa.yml` | البناء الأوتوماتيكي ديال `.ipa` بلا توقيع |
+| `.github/workflows/testflight.yml` | التوقيع والرفع لـ TestFlight |
 
 </div>

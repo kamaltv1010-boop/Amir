@@ -1,0 +1,148 @@
+# Signs AmirBrowser with your Apple Developer account and uploads it to
+# TestFlight. Start it from the Actions tab: TestFlight > Run workflow.
+#
+# Needs four repository secrets (Settings > Secrets and variables > Actions):
+#   ASC_KEY_P8     full text of the App Store Connect API key file (.p8);
+#                  the key must be a Team key with Access = Admin
+#   ASC_KEY_ID     the key's Key ID
+#   ASC_ISSUER_ID  the Issuer ID shown above the list of keys
+#   APPLE_TEAM_ID  the Team ID from developer.apple.com > Membership details
+#
+# The team has no registered devices, so a development profile can't be made
+# and a signed archive would fail. The archive is built unsigned instead, and
+# the export step signs it with Apple's cloud-managed distribution certificate.
+# No certificate or private signing key ever exists on the runner.
+name: TestFlight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Check secrets
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          missing=0
+          for name in ASC_KEY_P8 ASC_KEY_ID ASC_ISSUER_ID APPLE_TEAM_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing repository secret $name"
+              missing=1
+            fi
+          done
+          exit $missing
+
+      # Text copied on a phone often loses its line breaks, so rebuild the PEM
+      # from its base64 body. Never print the key.
+      - name: Write API key
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          set -euo pipefail
+          umask 077
+          key="$RUNNER_TEMP/AuthKey_${ASC_KEY_ID}.p8"
+          body=$(printf '%s' "$ASC_KEY_P8" | sed -E 's/(BEGIN|END) PRIVATE KEY//g' | tr -cd 'A-Za-z0-9+/=')
+          {
+            echo '-----BEGIN PRIVATE KEY-----'
+            printf '%s\n' "$body" | fold -w 64
+            echo '-----END PRIVATE KEY-----'
+          } > "$key"
+          if ! openssl pkey -in "$key" -noout 2>/dev/null; then
+            echo "::error::ASC_KEY_P8 is not the full text of the .p8 file. Paste everything from BEGIN PRIVATE KEY to END PRIVATE KEY."
+            exit 1
+          fi
+          echo "ASC_KEY_PATH=$key" >> "$GITHUB_ENV"
+          # Every upload needs a higher build number; re-runs get a new one too.
+          echo "BUILD_NUMBER=$(( GITHUB_RUN_NUMBER * 100 + GITHUB_RUN_ATTEMPT ))" >> "$GITHUB_ENV"
+
+      - name: Archive (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project AmirBrowser.xcodeproj \
+            -scheme AmirBrowser \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/AmirBrowser.xcarchive" \
+            -quiet \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Sign and upload to TestFlight
+        run: |
+          set -o pipefail
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>destination</key>
+            <string>upload</string>
+            <key>teamID</key>
+            <string>$APPLE_TEAM_ID</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/AmirBrowser.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            2>&1 | tee "$RUNNER_TEMP/export.log"
+          echo "::notice::Uploaded build $BUILD_NUMBER. Apple processes it for 10-30 minutes, then it shows up in TestFlight."
+
+      # Turn the usual Apple errors into plain explanations.
+      - name: Explain failure
+        if: failure()
+        run: |
+          log="$RUNNER_TEMP/export.log"
+          [ -f "$log" ] || exit 0
+          if grep -qi "cloud signing permission" "$log"; then
+            echo "::error::The API key must have Access = Admin. Generate a new Team key with Admin access and update ASC_KEY_ID and ASC_KEY_P8."
+          fi
+          if grep -qiE "NOT_AUTHORIZED|authentication credentials" "$log"; then
+            echo "::error::Apple rejected the API key. Check that ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8 all belong to the same key, and that API access was approved."
+          fi
+          if grep -qiE "no suitable application records|Cannot determine the Apple ID|app record" "$log"; then
+            echo "::error::Create the app in App Store Connect first (Apps > + > New App) with bundle ID io.github.kamaltv1010-boop.AmirBrowser."
+          fi
+          if grep -qiE "bundle version must be higher|CFBundleVersion.*(already|previous)" "$log"; then
+            echo "::error::This build number was already uploaded. Run the workflow again."
+          fi
+
+      - name: Remove API key
+        if: always()
+        run: rm -f "$RUNNER_TEMP"/AuthKey_*.p8
