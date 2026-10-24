@@ -4,10 +4,12 @@ struct BrowserView: View {
     @StateObject private var browser = BrowserModel()
     @StateObject private var bookmarks = BookmarkStore()
     @AppStorage(SearchEngine.storageKey) private var searchEngine = SearchEngine.google
+    @AppStorage(CanvasProtection.enabledKey) private var canvasProtection = true
 
     @State private var addressText = ""
     @FocusState private var isEditingAddress: Bool
     @State private var sheet: Sheet?
+    @State private var toast: LocalizedStringKey?
 
     private enum Sheet: String, Identifiable {
         case bookmarks
@@ -23,6 +25,16 @@ struct BrowserView: View {
                 WebView(webView: browser.webView)
                 if let message = browser.loadError {
                     ErrorView(message: message) { browser.reload() }
+                }
+                if let toast {
+                    Text(toast)
+                        .font(.subheadline.weight(.semibold))
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(.regularMaterial, in: Capsule())
+                        .frame(maxHeight: .infinity, alignment: .bottom)
+                        .padding(.bottom, 16)
+                        .transition(.opacity)
                 }
             }
             toolbar
@@ -43,6 +55,10 @@ struct BrowserView: View {
             addressText = editing
                 ? browser.displayedURL?.absoluteString ?? ""
                 : displayText(for: browser.displayedURL)
+        }
+        .onChange(of: canvasProtection) { _ in
+            browser.applyPrivacySettings()
+            browser.reload()
         }
         .sheet(item: $sheet) { sheet in
             switch sheet {
@@ -217,6 +233,14 @@ struct BrowserView: View {
                 }
             }
 
+            Button {
+                browser.newCanvasFingerprint()
+                showToast("Canvas fingerprint changed")
+            } label: {
+                Label("New Canvas Fingerprint", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .disabled(!canvasProtection)
+
             Divider()
 
             Button {
@@ -228,6 +252,14 @@ struct BrowserView: View {
             toolbarIcon("ellipsis.circle")
         }
         .accessibilityLabel(Text("More"))
+    }
+
+    private func showToast(_ message: LocalizedStringKey) {
+        withAnimation { toast = message }
+        Task {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            withAnimation { toast = nil }
+        }
     }
 
     private func toolbarIcon(_ systemName: String) -> some View {

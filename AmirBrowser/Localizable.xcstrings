@@ -67,6 +67,28 @@
         }
       }
     },
+    "Adds invisible noise to what websites read from canvases, so they can't use it to recognize your device. “New Canvas Fingerprint” in the ⋯ menu changes it." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يضيف تشويشاً غير مرئي إلى ما تقرؤه المواقع من عناصر Canvas، حتى لا تستعملها للتعرّف على جهازك. يمكنك تغييره من «بصمة Canvas جديدة» في قائمة ⋯."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds invisible noise to what websites read from canvases, so they can't use it to recognize your device. “New Canvas Fingerprint” in the ⋯ menu changes it."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoute un bruit invisible à ce que les sites lisent des canvas, pour qu’ils ne puissent pas s’en servir pour reconnaître votre appareil. « Nouvelle empreinte Canvas » dans le menu ⋯ la change."
+          }
+        }
+      }
+    },
     "Back" : {
       "localizations" : {
         "ar" : {
@@ -173,6 +195,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler"
+          }
+        }
+      }
+    },
+    "Canvas Protection" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حماية Canvas"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canvas Protection"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection Canvas"
+          }
+        }
+      }
+    },
+    "Canvas fingerprint changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تغيير بصمة Canvas"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Canvas fingerprint changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empreinte Canvas modifiée"
           }
         }
       }
@@ -353,6 +419,28 @@
         }
       }
     },
+    "New Canvas Fingerprint" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بصمة Canvas جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Canvas Fingerprint"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle empreinte Canvas"
+          }
+        }
+      }
+    },
     "No bookmarks yet" : {
       "localizations" : {
         "ar" : {
@@ -437,6 +525,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir une autre app ?"
+          }
+        }
+      }
+    },
+    "Privacy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الخصوصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confidentialité"
           }
         }
       }

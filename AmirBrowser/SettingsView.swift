@@ -3,6 +3,7 @@ import WebKit
 
 struct SettingsView: View {
     @Binding var searchEngine: SearchEngine
+    @AppStorage(CanvasProtection.enabledKey) private var canvasProtection = true
 
     @Environment(\.dismiss) private var dismiss
     @State private var isConfirmingClear = false
@@ -19,6 +20,14 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.inline)
                     .labelsHidden()
+                }
+
+                Section {
+                    Toggle("Canvas Protection", isOn: $canvasProtection)
+                } header: {
+                    Text("Privacy")
+                } footer: {
+                    Text("Adds invisible noise to what websites read from canvases, so they can't use it to recognize your device. “New Canvas Fingerprint” in the ⋯ menu changes it.")
                 }
 
                 Section {

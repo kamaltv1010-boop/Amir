@@ -49,6 +49,7 @@ final class BrowserModel: NSObject, ObservableObject {
         webView.navigationDelegate = self
         webView.uiDelegate = self
         webView.allowsBackForwardNavigationGestures = true
+        applyPrivacySettings()
 
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         webView.scrollView.refreshControl = refreshControl
@@ -114,6 +115,23 @@ final class BrowserModel: NSObject, ObservableObject {
     func toggleDesktopMode() {
         isDesktopMode.toggle()
         // The new content mode is applied in decidePolicyFor on the reload.
+        reload()
+    }
+
+    /// Installs the canvas protection script if it is switched on. Pages pick
+    /// up the change when they next load.
+    func applyPrivacySettings() {
+        let controller = webView.configuration.userContentController
+        controller.removeAllUserScripts()
+        if CanvasProtection.isEnabled {
+            controller.addUserScript(CanvasProtection.userScript(seed: CanvasProtection.seed))
+        }
+    }
+
+    /// Gives every site a new canvas fingerprint and reloads the page with it.
+    func newCanvasFingerprint() {
+        CanvasProtection.newSeed()
+        applyPrivacySettings()
         reload()
     }
 

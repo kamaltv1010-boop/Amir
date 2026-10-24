@@ -16,6 +16,7 @@
 - **محرك البحث**: Google، DuckDuckGo ولا Bing.
 - **مسح بيانات التصفح** (cookies و cache).
 - كيتفكّر **آخر صفحة** كنتي فيها.
+- **حماية Canvas** (الخصوصية): المواقع لي كتقرا الـ canvas باش تعرف التلفون ديالك (fingerprint) كتاخد تشويش ما كيبانش، ومختلف فكل موقع. البوطونة **بصمة Canvas جديدة** فالقائمة ⋯ كتبدّلها. تقدر تطفيها من الإعدادات.
 - الروابط بحال `tel:` و `mailto:` كتحل فالتطبيق المناسب.
 - الواجهة بالعربية، الفرنسية والإنجليزية، على حساب لغة التلفون.
 
@@ -95,6 +96,7 @@ GitHub كيبني ليك التطبيق بوحدو (ملف `.ipa`) على Mac د
 | `AmirBrowser/SearchEngine.swift` | Google / DuckDuckGo / Bing |
 | `AmirBrowser/BookmarkStore.swift` و `BookmarksView.swift` | المفضلة |
 | `AmirBrowser/SettingsView.swift` | الإعدادات |
+| `AmirBrowser/CanvasProtection.swift` | حماية Canvas (السكريبت لي كيزيد التشويش) |
 | `AmirBrowser/Localizable.xcstrings` | الترجمة (عربية، فرنسية، إنجليزية) |
 | `AmirBrowser/InfoPlist.xcstrings` | الرسائل لي كيطلب بيهم التطبيق الإذن (الكاميرا، الميكرو، الصور) |
 | `.github/workflows/build-ipa.yml` | البناء الأوتوماتيكي ديال `.ipa` بلا توقيع |
