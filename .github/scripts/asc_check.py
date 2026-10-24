@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Checks that the App Store Connect API key works and that the app exists,
-so a failed TestFlight upload says what is actually missing.
+"""Checks that the App Store Connect API key works, registers the bundle ID
+if needed, and checks that the app exists, so a failed TestFlight upload
+says what is actually missing.
 
 Reads ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH and BUNDLE_ID from the
 environment. Uses only the standard library and the openssl tool, and
@@ -68,9 +69,16 @@ def make_token():
     return signing_input + "." + b64url(der_to_raw(der))
 
 
-def get(path, params, token):
-    url = f"{API}/{path}?{urllib.parse.urlencode(params)}"
-    request = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+def call(path, token, params=None, body=None):
+    url = f"{API}/{path}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    headers = {"Authorization": f"Bearer {token}"}
+    data = None
+    if body is not None:
+        headers["Content-Type"] = "application/json"
+        data = json.dumps(body).encode()
+    request = urllib.request.Request(url, data=data, headers=headers)
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.status, json.load(response)
@@ -87,7 +95,7 @@ def main():
     bundle_id = os.environ["BUNDLE_ID"]
     token = make_token()
 
-    status, body = get("bundleIds", {"filter[identifier]": bundle_id}, token)
+    status, body = call("bundleIds", token, params={"filter[identifier]": bundle_id})
     if status == 401:
         fail("Apple rejected the API key (401). Check that ASC_KEY_ID, ASC_ISSUER_ID and "
              "ASC_KEY_P8 all come from the same key, and that API access was approved.")
@@ -95,12 +103,20 @@ def main():
         fail("The API key may not do this (403). It must be a Team key with Access = Admin.")
     if status != 200:
         fail(f"App Store Connect answered {status} when listing bundle IDs.")
-    if not any(b["attributes"]["identifier"] == bundle_id for b in body["data"]):
-        fail(f"The bundle ID {bundle_id} is not registered. Register it at developer.apple.com: "
-             "Certificates, IDs & Profiles > Identifiers > + > App IDs > App > Explicit.")
-    print(f"Bundle ID {bundle_id} is registered.")
+    if any(b["attributes"]["identifier"] == bundle_id for b in body["data"]):
+        print(f"Bundle ID {bundle_id} is registered.")
+    else:
+        status, _ = call("bundleIds", token, body={"data": {
+            "type": "bundleIds",
+            "attributes": {"identifier": bundle_id, "name": "Amir Browser", "platform": "IOS"},
+        }})
+        if status != 201:
+            fail(f"Could not register the bundle ID {bundle_id} (App Store Connect answered "
+                 f"{status}). Register it at developer.apple.com: Certificates, IDs & Profiles > "
+                 "Identifiers > + > App IDs > App > Explicit.")
+        print(f"Registered the bundle ID {bundle_id}.")
 
-    status, body = get("apps", {"filter[bundleId]": bundle_id}, token)
+    status, body = call("apps", token, params={"filter[bundleId]": bundle_id})
     if status != 200:
         fail(f"App Store Connect answered {status} when listing apps.")
     apps = [a for a in body["data"] if a["attributes"]["bundleId"] == bundle_id]
