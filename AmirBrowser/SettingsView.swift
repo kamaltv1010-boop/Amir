@@ -71,7 +71,7 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    NavigationLink(destination: ExtensionsView()) {
+                    NavigationLink(destination: ExtensionsView(onOpenPage: { dismiss() })) {
                         HStack {
                             SettingsLabel("Extensions", systemName: "puzzlepiece.extension.fill", color: .purple)
                             Spacer()

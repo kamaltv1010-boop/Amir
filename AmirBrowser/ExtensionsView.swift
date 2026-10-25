@@ -3,6 +3,10 @@ import UniformTypeIdentifiers
 
 /// Installing, switching on and off, and removing web extensions.
 struct ExtensionsView: View {
+    /// Called after opening a page in a tab (the store, an options page), so
+    /// the screen showing this list can close.
+    var onOpenPage: () -> Void = {}
+
     @ObservedObject private var manager = ExtensionManager.shared
     @State private var isImporting = false
 
@@ -11,18 +15,47 @@ struct ExtensionsView: View {
             if ExtensionManager.isSupported {
                 Section {
                     Button {
+                        manager.openStore()
+                        onOpenPage()
+                    } label: {
+                        HStack(spacing: 12) {
+                            SettingsIcon(systemName: "bag.fill", color: .blue)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Chrome Web Store")
+                                    .foregroundColor(.primary)
+                                Text("Open an extension's page, then tap “Add to Noor”.")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    Button {
                         isImporting = true
                     } label: {
-                        Label("Add Extension…", systemImage: "plus.circle.fill")
+                        HStack(spacing: 12) {
+                            SettingsIcon(systemName: "folder.fill", color: .orange)
+                            Text("Add From Files…")
+                                .foregroundColor(.primary)
+                        }
+                    }
+                } header: {
+                    Text("Add Extensions")
+                } footer: {
+                    Text("Install Chrome or Safari web extensions from the Chrome Web Store, or from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't.")
+                }
+
+                Section {
+                    Toggle(isOn: $manager.allowsPrivateTabs) {
+                        SettingsLabel("Allow in Private Tabs", systemName: "eyeglasses", color: Theme.privateTint)
                     }
                 } footer: {
-                    Text("Install Chrome or Safari web extensions from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't. Extensions run in normal tabs, not in private ones.")
+                    Text("Extensions can also see and change the pages you open in private tabs.")
                 }
 
                 if !manager.extensions.isEmpty {
                     Section("Installed") {
                         ForEach(manager.extensions) { info in
-                            ExtensionRow(info: info, manager: manager)
+                            ExtensionRow(info: info, manager: manager, onOpenPage: onOpenPage)
                         }
                         .onDelete { offsets in
                             for id in offsets.map({ manager.extensions[$0].id }) {
@@ -52,47 +85,15 @@ struct ExtensionsView: View {
                 manager.install(from: url)
             }
         }
-        .alert(
-            Text(verbatim: manager.pendingInstall.map { String(localized: "Add “\($0.name)”?") } ?? ""),
-            isPresented: Binding(get: { manager.pendingInstall != nil }, set: { _ in }),
-            presenting: manager.pendingInstall
-        ) { _ in
-            Button("Add Extension") { manager.confirmInstall() }
-            Button("Cancel", role: .cancel) { manager.cancelInstall() }
-        } message: { pending in
-            Text(verbatim: description(of: pending))
-        }
-        .alert(
-            "Can't add this extension",
-            isPresented: Binding(get: { manager.errorMessage != nil }, set: { if !$0 { manager.errorMessage = nil } })
-        ) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(verbatim: manager.errorMessage ?? "")
-        }
     }
 
     private static let fileTypes: [UTType] = [.zip, .folder] + [UTType(filenameExtension: "crx")].compactMap { $0 }
-
-    private func description(of pending: ExtensionManager.PendingInstall) -> String {
-        var lines: [String] = []
-        if let sites = pending.sites {
-            if !sites.isEmpty {
-                lines.append(String(localized: "It can read and change these sites:") + "\n" + sites.joined(separator: ", "))
-            }
-        } else {
-            lines.append(String(localized: "It can read and change every website you visit."))
-        }
-        if !pending.permissions.isEmpty {
-            lines.append(String(localized: "It can also:") + "\n" + pending.permissions.map { "• " + $0 }.joined(separator: "\n"))
-        }
-        return lines.joined(separator: "\n\n")
-    }
 }
 
 private struct ExtensionRow: View {
     let info: ExtensionInfo
     @ObservedObject var manager: ExtensionManager
+    let onOpenPage: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -148,6 +149,7 @@ private struct ExtensionRow: View {
             if info.hasOptionsPage {
                 Button {
                     manager.openOptions(info.id)
+                    onOpenPage()
                 } label: {
                     Label("Options", systemImage: "gearshape")
                         .font(.subheadline)

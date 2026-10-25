@@ -94,7 +94,7 @@ struct BrowserView: View {
                 ShieldsPanel(browser: browser, tab: browser.selectedTab)
             case .extensions:
                 NavigationView {
-                    ExtensionsView()
+                    ExtensionsView { self.sheet = nil }
                         .toolbar {
                             ToolbarItem(placement: .confirmationAction) {
                                 Button("Done") { self.sheet = nil }
@@ -159,6 +159,9 @@ private struct BrowserScreen: View {
                         onSearch: { isEditingAddress = true },
                         onOpen: { tab.load($0) }
                     )
+                }
+                if let storeID = ChromeWebStore.extensionID(in: tab.currentURL) {
+                    StoreBanner(storeID: storeID, extensions: extensions)
                 }
                 if let message = tab.loadError {
                     ErrorView(message: message) { tab.reload() }
@@ -496,7 +499,7 @@ private struct BrowserScreen: View {
     private var extensionsMenu: some View {
         let _ = extensions.actionsRevision
         let actions = extensions.actions(for: tab)
-        if !extensions.extensions.isEmpty || !actions.isEmpty {
+        if ExtensionManager.isSupported {
             Menu {
                 ForEach(actions) { action in
                     Button {
@@ -514,6 +517,11 @@ private struct BrowserScreen: View {
                     }
                 }
                 Divider()
+                Button {
+                    browser.newTab(isPrivate: tab.isPrivate, url: ChromeWebStore.homeURL)
+                } label: {
+                    Label("Chrome Web Store", systemImage: "bag")
+                }
                 Button {
                     sheet = .extensions
                 } label: {
@@ -593,6 +601,51 @@ private struct BrowserScreen: View {
         Image(systemName: systemName)
             .font(.system(size: 20))
             .frame(width: 44, height: 44)
+    }
+}
+
+/// On a Chrome Web Store extension page: adds the extension to the app.
+private struct StoreBanner: View {
+    let storeID: String
+    @ObservedObject var extensions: ExtensionManager
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image("Logo")
+                .resizable()
+                .frame(width: 38, height: 38)
+                .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Chrome Web Store")
+                    .font(.subheadline.weight(.semibold))
+                Text(ExtensionManager.isSupported ? "Add this extension to Noor." : "Extensions need iOS 18.4 or later")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+            if extensions.downloadingStoreID == storeID {
+                ProgressView()
+                    .padding(.horizontal, 12)
+            } else if extensions.isInstalled(storeID: storeID) {
+                Label("Added", systemImage: "checkmark.circle.fill")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(.green)
+            } else {
+                Button("Add to Noor") {
+                    extensions.install(storeID: storeID)
+                }
+                .font(.subheadline.weight(.semibold))
+                .buttonStyle(.borderedProminent)
+                .disabled(!ExtensionManager.isSupported || extensions.downloadingStoreID != nil)
+            }
+        }
+        .padding(12)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .shadow(color: .black.opacity(0.18), radius: 10, y: 4)
+        .padding(.horizontal, 12)
+        .padding(.bottom, 12)
+        .frame(maxHeight: .infinity, alignment: .bottom)
     }
 }
 

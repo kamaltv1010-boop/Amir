@@ -3,9 +3,12 @@ import SwiftUI
 /// Colors and small pieces of UI the screens share.
 enum Theme {
     static let shields = Color.orange
-    static let privateTint = Color(red: 0.45, green: 0.3, blue: 0.95)
+    static let privateTint = Color(red: 0.48, green: 0.17, blue: 0.95)
+    /// The indigo of the app icon.
+    static let brandColor = Color(red: 0.16, green: 0.12, blue: 0.72)
+    /// The app icon's background, from night blue to violet.
     static let brand = LinearGradient(
-        colors: [Color(red: 0.0, green: 0.48, blue: 0.85), Color(red: 0.45, green: 0.3, blue: 0.95)],
+        colors: [Color(red: 0.04, green: 0.04, blue: 0.18), Color(red: 0.16, green: 0.12, blue: 0.72), Color(red: 0.48, green: 0.17, blue: 0.95)],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )

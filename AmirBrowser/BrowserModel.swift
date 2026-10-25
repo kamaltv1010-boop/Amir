@@ -9,6 +9,10 @@ final class BrowserModel: NSObject, ObservableObject {
     @Published private(set) var tabs: [BrowserTab] = []
     @Published private(set) var privateTabs: [BrowserTab] = []
     @Published private var selectedID = UUID()
+    /// The tab last shown of the other kind, normal or private, which
+    /// extensions see as that window's active tab.
+    private var lastNormalTabID: UUID?
+    private var lastPrivateTabID: UUID?
     /// The fingerprint protections in effect: the ones switched on, plus the
     /// user agent in iPad mode.
     @Published private(set) var enabledProtections: Set<FingerprintProtection.Kind> = []
@@ -78,6 +82,17 @@ final class BrowserModel: NSObject, ObservableObject {
         tabs + privateTabs
     }
 
+    /// The tab shown in the normal or the private tabs: the selected tab, or
+    /// the one last shown of that kind.
+    func activeTab(isPrivate: Bool) -> BrowserTab? {
+        if selectedTab.isPrivate == isPrivate {
+            return selectedTab
+        }
+        let list = isPrivate ? privateTabs : tabs
+        let id = isPrivate ? lastPrivateTabID : lastNormalTabID
+        return list.first { $0.id == id } ?? list.last
+    }
+
     /// Opens a new tab, empty (the start page) or loading `url`.
     @discardableResult
     func newTab(isPrivate: Bool = false, url: URL? = nil) -> BrowserTab {
@@ -112,8 +127,8 @@ final class BrowserModel: NSObject, ObservableObject {
         } else {
             let index = tabs.firstIndex { $0 === neighbor }.map { $0 + 1 } ?? tabs.count
             tabs.insert(tab, at: index)
-            ExtensionManager.shared.tabOpened(tab)
         }
+        ExtensionManager.shared.tabOpened(tab)
         saveTabs()
     }
 
@@ -124,6 +139,11 @@ final class BrowserModel: NSObject, ObservableObject {
             return
         }
         previous.takeSnapshot()
+        if previous.isPrivate {
+            lastPrivateTabID = previous.id
+        } else {
+            lastNormalTabID = previous.id
+        }
         selectedID = tab.id
         tab.loadIfNeeded()
         ExtensionManager.shared.tabActivated(tab, previous: previous)
@@ -142,6 +162,7 @@ final class BrowserModel: NSObject, ObservableObject {
                 // Nothing of the private session is kept.
                 privateDataStore = nil
             }
+            ExtensionManager.shared.tabClosed(tab)
         } else {
             guard let index = tabs.firstIndex(where: { $0 === tab }) else { return }
             tabs.remove(at: index)
@@ -221,8 +242,8 @@ final class BrowserModel: NSObject, ObservableObject {
             configuration.websiteDataStore = store
         } else {
             configuration.websiteDataStore = dataStore
-            ExtensionManager.shared.configure(configuration)
         }
+        ExtensionManager.shared.configure(configuration)
         return configuration
     }
 
@@ -245,14 +266,15 @@ final class BrowserModel: NSObject, ObservableObject {
     /// every tab, gives every site new fingerprints and opens an empty tab.
     /// Bookmarks and pinned links are kept.
     func startNewSession() {
-        for tab in allTabs {
-            if !tab.isPrivate {
-                ExtensionManager.shared.tabClosed(tab)
-            }
+        // Nothing loads until the old data is gone.
+        isClearingData = true
+        for tab in privateTabs {
+            close(tab)
+        }
+        for tab in tabs {
+            ExtensionManager.shared.tabClosed(tab)
             tab.close()
         }
-        privateTabs = []
-        privateDataStore = nil
         httpOnlyHosts = []
         history.clear()
         if UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
@@ -270,7 +292,6 @@ final class BrowserModel: NSObject, ObservableObject {
         saveTabs()
 
         // Load only once the old data is gone, so no cookie can carry over.
-        isClearingData = true
         WKWebsiteDataStore.default().removeData(
             ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
             modifiedSince: .distantPast
@@ -369,10 +390,22 @@ final class BrowserModel: NSObject, ObservableObject {
     // MARK: - Presenting
 
     /// Presents `controller` above whatever is on screen and returns true, or
-    /// returns false if that isn't possible right now (for example a sheet is
-    /// mid-animation, when UIKit would silently drop the presentation).
+    /// returns false if that isn't possible right now.
     @discardableResult
     func present(_ controller: UIViewController) -> Bool {
+        Presenter.present(controller)
+    }
+}
+
+/// Shows UIKit screens (alerts, share sheets, pop-ups) above whatever is on
+/// screen, including SwiftUI sheets.
+@MainActor
+enum Presenter {
+    /// Presents `controller` and returns true, or returns false if that isn't
+    /// possible right now (for example a sheet is mid-animation, when UIKit
+    /// would silently drop the presentation).
+    @discardableResult
+    static func present(_ controller: UIViewController) -> Bool {
         let window = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows)
@@ -389,5 +422,19 @@ final class BrowserModel: NSObject, ObservableObject {
         }
         top.present(controller, animated: true)
         return true
+    }
+
+    /// Presents `controller` as soon as the screen allows, trying for a few
+    /// seconds (a file picker may still be closing), or calls `failed`.
+    static func presentSoon(_ controller: UIViewController, failed: @escaping @MainActor () -> Void = {}) {
+        Task { @MainActor in
+            for _ in 0..<12 {
+                if present(controller) {
+                    return
+                }
+                try? await Task.sleep(nanoseconds: 250_000_000)
+            }
+            failed()
+        }
     }
 }

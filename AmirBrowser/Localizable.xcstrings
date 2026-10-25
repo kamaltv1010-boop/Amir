@@ -111,24 +111,46 @@
         }
       }
     },
-    "Add Extension…" : {
+    "Add Extensions" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "إضافة امتداد…"
+            "value" : "إضافة امتدادات"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add Extension…"
+            "value" : "Add Extensions"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajouter une extension…"
+            "value" : "Ajouter des extensions"
+          }
+        }
+      }
+    },
+    "Add From Files…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة من الملفات…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add From Files…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter depuis Fichiers…"
           }
         }
       }
@@ -155,6 +177,50 @@
         }
       }
     },
+    "Add this extension to Noor." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أضف هذا الامتداد إلى نور."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add this extension to Noor."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez cette extension à Noor."
+          }
+        }
+      }
+    },
+    "Add to Noor" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة إلى نور"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to Noor"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter à Noor"
+          }
+        }
+      }
+    },
     "Add “%@”?" : {
       "localizations" : {
         "ar" : {
@@ -173,6 +239,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter « %@ » ?"
+          }
+        }
+      }
+    },
+    "Added" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تمت الإضافة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutée"
           }
         }
       }
@@ -243,6 +331,28 @@
         }
       }
     },
+    "Allow in Private Tabs" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "السماح في علامات التبويب الخاصة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow in Private Tabs"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser dans les onglets privés"
+          }
+        }
+      }
+    },
     "Allow “%@” more access?" : {
       "localizations" : {
         "ar" : {
@@ -261,28 +371,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Donner plus d’accès à « %@ » ?"
-          }
-        }
-      }
-    },
-    "Amir" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Amir"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Amir"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Amir"
           }
         }
       }
@@ -661,6 +749,28 @@
         }
       }
     },
+    "Chrome Web Store" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سوق Chrome الإلكتروني"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome Web Store"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome Web Store"
+          }
+        }
+      }
+    },
     "Chrome and Safari web extensions, such as ad blockers and Dark Reader." : {
       "localizations" : {
         "ar" : {
@@ -1035,6 +1145,28 @@
         }
       }
     },
+    "Couldn't download this extension from the Chrome Web Store. Check your connection and try again." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تنزيل هذا الامتداد من سوق Chrome الإلكتروني. تحقّق من الاتصال وحاول مجدداً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't download this extension from the Chrome Web Store. Check your connection and try again."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de télécharger cette extension depuis le Chrome Web Store. Vérifiez votre connexion et réessayez."
+          }
+        }
+      }
+    },
     "Current Values" : {
       "localizations" : {
         "ar" : {
@@ -1185,6 +1317,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extensions"
+          }
+        }
+      }
+    },
+    "Extensions can also see and change the pages you open in private tabs." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمكن للامتدادات أيضاً رؤية وتعديل الصفحات التي تفتحها في علامات التبويب الخاصة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensions can also see and change the pages you open in private tabs."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les extensions peuvent aussi voir et modifier les pages ouvertes dans les onglets privés."
           }
         }
       }
@@ -1409,24 +1563,24 @@
         }
       }
     },
-    "Install Chrome or Safari web extensions from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't. Extensions run in normal tabs, not in private ones." : {
+    "Install Chrome or Safari web extensions from the Chrome Web Store, or from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ثبّت امتدادات الويب لـ Chrome أو Safari من ملف ‎.zip أو ‎.crx، أو من مجلد فيه ملف manifest.json، محفوظ في تطبيق الملفات. تعمل عادةً الامتدادات التي تحجب الإعلانات أو تغيّر شكل الصفحات، وبعض ميزات Chrome وحده لا تعمل. تعمل الامتدادات في علامات التبويب العادية، لا في الخاصة."
+            "value" : "ثبّت امتدادات الويب لـ Chrome أو Safari من سوق Chrome الإلكتروني، أو من ملف ‎.zip أو ‎.crx، أو من مجلد فيه ملف manifest.json، محفوظ في تطبيق الملفات. تعمل عادةً الامتدادات التي تحجب الإعلانات أو تغيّر شكل الصفحات، وبعض ميزات Chrome وحده لا تعمل."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Install Chrome or Safari web extensions from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't. Extensions run in normal tabs, not in private ones."
+            "value" : "Install Chrome or Safari web extensions from the Chrome Web Store, or from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Installez des extensions web de Chrome ou Safari depuis un fichier .zip ou .crx, ou un dossier contenant un fichier manifest.json, enregistré dans Fichiers. Les extensions qui bloquent les pubs ou changent l’apparence des pages fonctionnent en général ; certaines fonctions propres à Chrome non. Les extensions fonctionnent dans les onglets normaux, pas dans les privés."
+            "value" : "Installez des extensions web de Chrome ou Safari depuis le Chrome Web Store, ou depuis un fichier .zip ou .crx, ou un dossier contenant un fichier manifest.json, enregistré dans Fichiers. Les extensions qui bloquent les pubs ou changent l’apparence des pages fonctionnent en général ; certaines fonctions propres à Chrome non."
           }
         }
       }
@@ -1915,6 +2069,28 @@
         }
       }
     },
+    "Noor" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نور"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noor"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noor"
+          }
+        }
+      }
+    },
     "Not encrypted" : {
       "localizations" : {
         "ar" : {
@@ -2003,6 +2179,28 @@
         }
       }
     },
+    "Open an extension's page, then tap “Add to Noor”." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افتح صفحة امتداد، ثم اضغط «إضافة إلى نور»."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open an extension's page, then tap “Add to Noor”."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrez la page d’une extension, puis touchez « Ajouter à Noor »."
+          }
+        }
+      }
+    },
     "Open in New Tab" : {
       "localizations" : {
         "ar" : {
@@ -2069,24 +2267,24 @@
         }
       }
     },
-    "Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab. Extensions don't run here." : {
+    "Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "لا تُحفظ الصفحات التي تفتحها في علامات التبويب الخاصة في سجلك، وتُحذف ملفات تعريف الارتباط وبيانات المواقع عند إغلاق آخر علامة تبويب خاصة. ولا تعمل الامتدادات هنا."
+            "value" : "لا تُحفظ الصفحات التي تفتحها في علامات التبويب الخاصة في سجلك، وتُحذف ملفات تعريف الارتباط وبيانات المواقع عند إغلاق آخر علامة تبويب خاصة."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab. Extensions don't run here."
+            "value" : "Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les pages ouvertes dans des onglets privés ne sont pas enregistrées dans l’historique, et leurs cookies et données de sites sont supprimés quand vous fermez le dernier onglet privé. Les extensions ne fonctionnent pas ici."
+            "value" : "Les pages ouvertes dans des onglets privés ne sont pas enregistrées dans l’historique, et leurs cookies et données de sites sont supprimés quand vous fermez le dernier onglet privé."
           }
         }
       }

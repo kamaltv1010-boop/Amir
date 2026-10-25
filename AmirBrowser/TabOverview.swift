@@ -108,7 +108,7 @@ struct TabOverview: View {
                 .foregroundColor(Theme.privateTint)
             Text("Private Browsing")
                 .font(.title3.weight(.bold))
-            Text("Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab. Extensions don't run here.")
+            Text("Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

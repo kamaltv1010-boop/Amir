@@ -21,10 +21,34 @@ struct ExtensionAction: Identifiable {
     let badge: String
 }
 
+/// The Chrome Web Store: its extension pages, and where Chrome downloads
+/// extensions from.
+enum ChromeWebStore {
+    static let homeURL = URL(string: "https://chromewebstore.google.com/")!
+
+    /// The extension ID of a store page, such as
+    /// chromewebstore.google.com/detail/name/abcdefghijklmnopabcdefghijklmnop.
+    static func extensionID(in url: URL?) -> String? {
+        guard let url, let host = url.host?.lowercased() else { return nil }
+        let isStore = host == "chromewebstore.google.com"
+            || (host == "chrome.google.com" && url.path.hasPrefix("/webstore"))
+        guard isStore, url.pathComponents.contains("detail") else { return nil }
+        return url.pathComponents.last { component in
+            component.count == 32 && component.allSatisfy { ("a"..."p").contains($0) }
+        }
+    }
+
+    /// The extension's .crx file, from the address Chrome downloads it from.
+    static func downloadURL(for id: String) -> URL? {
+        URL(string: "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=140.0.0.0"
+            + "&acceptformat=crx2,crx3&x=id%3D\(id)%26installsource%3Dondemand%26uc")
+    }
+}
+
 /// Chrome and Safari web extensions (the WebExtensions format), run by
-/// WebKit itself on iOS 18.4 and later. They are installed from a .zip, a
-/// .crx or a folder, kept in Application Support/Extensions, and run in
-/// normal tabs, not private ones.
+/// WebKit itself on iOS 18.4 and later. They are installed from the Chrome
+/// Web Store, a .zip, a .crx or a folder, kept in Application
+/// Support/Extensions, and run in normal tabs and, if allowed, private ones.
 @MainActor
 final class ExtensionManager: ObservableObject {
     static let shared = ExtensionManager()
@@ -33,17 +57,17 @@ final class ExtensionManager: ObservableObject {
     /// Changes when an extension's button changes (title, badge…), so menus
     /// showing it update.
     @Published private(set) var actionsRevision = 0
-    /// An extension waiting for the user to allow what it asks for.
-    @Published private(set) var pendingInstall: PendingInstall?
-    @Published var errorMessage: String?
-
-    struct PendingInstall: Identifiable {
-        let id: String
-        let name: String
-        /// What it may do, in words.
-        let permissions: [String]
-        /// The sites it may read and change, or nil for all of them.
-        let sites: [String]?
+    /// The Chrome Web Store extension being downloaded.
+    @Published private(set) var downloadingStoreID: String?
+    /// Whether extensions also run in private tabs.
+    @Published var allowsPrivateTabs: Bool {
+        didSet {
+            UserDefaults.standard.set(allowsPrivateTabs, forKey: Self.privateTabsKey)
+            if #available(iOS 18.4, *) {
+                host?.setPrivateAccess(allowsPrivateTabs)
+            }
+            actionsDidChange()
+        }
     }
 
     static var isSupported: Bool {
@@ -57,11 +81,38 @@ final class ExtensionManager: ObservableObject {
         var id: String
         var fileName: String
         var isEnabled: Bool
+        /// The extension's ID in the Chrome Web Store, if it came from there.
+        var storeID: String?
+    }
+
+    /// An extension waiting for the user to allow what it asks for.
+    private struct PendingInstall {
+        let name: String
+        /// What it may do, in words.
+        let permissions: [String]
+        /// The sites it may read and change, or nil for all of them.
+        let sites: [String]?
+
+        var details: String {
+            var lines: [String] = []
+            if let sites {
+                if !sites.isEmpty {
+                    lines.append(String(localized: "It can read and change these sites:") + "\n" + sites.joined(separator: ", "))
+                }
+            } else {
+                lines.append(String(localized: "It can read and change every website you visit."))
+            }
+            if !permissions.isEmpty {
+                lines.append(String(localized: "It can also:") + "\n" + permissions.map { "• " + $0 }.joined(separator: "\n"))
+            }
+            return lines.joined(separator: "\n\n")
+        }
     }
 
     private var records: [Record] = []
     private var pendingRecord: Record?
     private static let recordsKey = "webExtensions"
+    private static let privateTabsKey = "extensionsInPrivateTabs"
     private let folder: URL
     /// The WebKit side (a `WebExtensionHost`), which only exists on iOS 18.4
     /// and later.
@@ -70,6 +121,7 @@ final class ExtensionManager: ObservableObject {
     private init() {
         let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         folder = support.appendingPathComponent("Extensions", isDirectory: true)
+        _allowsPrivateTabs = Published(initialValue: UserDefaults.standard.object(forKey: Self.privateTabsKey) as? Bool ?? true)
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         if let data = UserDefaults.standard.data(forKey: Self.recordsKey),
            let saved = try? JSONDecoder().decode([Record].self, from: data) {
@@ -103,38 +155,40 @@ final class ExtensionManager: ObservableObject {
     }
 
     func tabOpened(_ tab: BrowserTab) {
-        guard !tab.isPrivate else { return }
         if #available(iOS 18.4, *) {
-            host?.controller.didOpenTab(tab)
+            host?.tabOpened(tab)
         }
     }
 
     func tabClosed(_ tab: BrowserTab) {
-        guard !tab.isPrivate else { return }
         if #available(iOS 18.4, *) {
-            host?.controller.didCloseTab(tab, windowIsClosing: false)
+            host?.tabClosed(tab)
         }
     }
 
     func tabActivated(_ tab: BrowserTab, previous: BrowserTab) {
-        guard !tab.isPrivate else { return }
         if #available(iOS 18.4, *) {
-            host?.controller.didActivateTab(tab, previousActiveTab: previous.isPrivate ? nil : previous)
+            host?.tabActivated(tab, previous: previous)
         }
     }
 
     func tabChanged(_ tab: BrowserTab) {
-        guard !tab.isPrivate else { return }
         if #available(iOS 18.4, *) {
             host?.controller.didChangeTabProperties([.URL, .title, .loading], for: tab)
         }
+    }
+
+    /// The window extensions see `tab` in: the normal or the private one.
+    @available(iOS 18.4, *)
+    func extensionWindow(for tab: BrowserTab) -> (any WKWebExtensionWindow)? {
+        host?.extensionWindow(for: tab)
     }
 
     // MARK: - Actions
 
     /// The buttons of the enabled extensions, for `tab`.
     func actions(for tab: BrowserTab) -> [ExtensionAction] {
-        guard !tab.isPrivate else { return [] }
+        guard !tab.isPrivate || allowsPrivateTabs else { return [] }
         if #available(iOS 18.4, *), let host {
             return records.filter(\.isEnabled).compactMap { record in
                 guard let context = host.contexts[record.id], context.isLoaded,
@@ -165,6 +219,13 @@ final class ExtensionManager: ObservableObject {
         }
     }
 
+    /// Opens the Chrome Web Store in a new tab.
+    func openStore() {
+        if #available(iOS 18.4, *) {
+            host?.window?.newTab(url: ChromeWebStore.homeURL)
+        }
+    }
+
     /// Menus show images at their own size, so icons are drawn at 24 points.
     private static func menuIcon(_ image: UIImage) -> UIImage {
         let size = CGSize(width: 24, height: 24)
@@ -180,6 +241,34 @@ final class ExtensionManager: ObservableObject {
 
     // MARK: - Installing
 
+    func isInstalled(storeID: String) -> Bool {
+        records.contains { $0.storeID == storeID }
+    }
+
+    /// Downloads an extension from the Chrome Web Store, the way Chrome
+    /// does, and asks the user to allow what it asks for.
+    func install(storeID: String) {
+        guard downloadingStoreID == nil, !isInstalled(storeID: storeID),
+              let url = ChromeWebStore.downloadURL(for: storeID)
+        else { return }
+        downloadingStoreID = storeID
+        Task {
+            defer { downloadingStoreID = nil }
+            do {
+                let (data, response) = try await URLSession.shared.data(from: url)
+                guard (response as? HTTPURLResponse)?.statusCode == 200, let zip = Self.zipData(from: data) else {
+                    throw URLError(.cannotDecodeContentData)
+                }
+                let id = UUID().uuidString.lowercased()
+                let fileName = id + ".zip"
+                try zip.write(to: folder.appendingPathComponent(fileName), options: .atomic)
+                await prepare(Record(id: id, fileName: fileName, isEnabled: true, storeID: storeID))
+            } catch {
+                report(String(localized: "Couldn't download this extension from the Chrome Web Store. Check your connection and try again."))
+            }
+        }
+    }
+
     /// Copies the extension at `url` (a .zip, a .crx or a folder) into the
     /// app and asks the user to allow what it asks for.
     func install(from url: URL) {
@@ -194,33 +283,62 @@ final class ExtensionManager: ObservableObject {
         do {
             fileName = try copyIn(url, id: id)
         } catch {
-            errorMessage = String(localized: "This file isn't a web extension. Choose a .zip or .crx file, or a folder with a manifest.json file.")
+            report(String(localized: "This file isn't a web extension. Choose a .zip or .crx file, or a folder with a manifest.json file."))
             return
         }
-        let record = Record(id: id, fileName: fileName, isEnabled: true)
-        if #available(iOS 18.4, *), let host {
-            Task {
-                do {
-                    let webExtension = try await host.open(record, in: folder)
-                    pendingRecord = record
-                    pendingInstall = PendingInstall(
-                        id: id,
-                        name: webExtension.displayName ?? fileName,
-                        permissions: describe(webExtension.requestedPermissions),
-                        sites: describe(webExtension.requestedPermissionMatchPatterns.union(webExtension.allRequestedMatchPatterns))
-                    )
-                } catch {
-                    removeFile(of: record)
-                    errorMessage = error.localizedDescription
-                }
-            }
+        Task {
+            await prepare(Record(id: id, fileName: fileName, isEnabled: true))
         }
     }
 
-    func confirmInstall() {
+    /// Reads a copied extension and shows what it asks for.
+    private func prepare(_ record: Record) async {
+        guard #available(iOS 18.4, *), let host else {
+            removeFile(of: record)
+            return
+        }
+        do {
+            let webExtension = try await host.open(record, in: folder)
+            pendingRecord = record
+            askToInstall(PendingInstall(
+                name: webExtension.displayName ?? record.fileName,
+                permissions: describe(webExtension.requestedPermissions),
+                sites: describe(webExtension.requestedPermissionMatchPatterns.union(webExtension.allRequestedMatchPatterns))
+            ))
+        } catch {
+            removeFile(of: record)
+            report(error.localizedDescription)
+        }
+    }
+
+    private func askToInstall(_ pending: PendingInstall) {
+        let alert = UIAlertController(
+            title: String(localized: "Add “\(pending.name)”?"),
+            message: pending.details,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel) { [weak self] _ in
+            self?.cancelInstall()
+        })
+        let add = UIAlertAction(title: String(localized: "Add Extension"), style: .default) { [weak self] _ in
+            self?.confirmInstall()
+        }
+        alert.addAction(add)
+        alert.preferredAction = add
+        Presenter.presentSoon(alert) { [weak self] in
+            self?.cancelInstall()
+        }
+    }
+
+    private func report(_ message: String) {
+        let alert = UIAlertController(title: String(localized: "Can't add this extension"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .cancel))
+        Presenter.presentSoon(alert)
+    }
+
+    private func confirmInstall() {
         guard let record = pendingRecord else { return }
         pendingRecord = nil
-        pendingInstall = nil
         records.append(record)
         save()
         if #available(iOS 18.4, *) {
@@ -229,10 +347,9 @@ final class ExtensionManager: ObservableObject {
         refresh()
     }
 
-    func cancelInstall() {
+    private func cancelInstall() {
         guard let record = pendingRecord else { return }
         pendingRecord = nil
-        pendingInstall = nil
         if #available(iOS 18.4, *) {
             host?.forget(record.id)
         }
@@ -395,10 +512,10 @@ final class ExtensionManager: ObservableObject {
     }
 }
 
-/// The WebKit side of the extensions: the controller every normal tab uses,
-/// the parsed extensions and their running contexts. It also answers the
-/// controller's questions about windows and tabs, and shows pop-ups and
-/// permission requests.
+/// The WebKit side of the extensions: the controller every tab uses, the
+/// parsed extensions and their running contexts. It also answers the
+/// controller's questions about windows and tabs (normal tabs are one
+/// window, private tabs another), and shows pop-ups and permission requests.
 @available(iOS 18.4, *)
 @MainActor
 final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
@@ -407,6 +524,8 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
     private(set) var contexts: [String: WKWebExtensionContext] = [:]
     weak var window: BrowserModel?
     private weak var manager: ExtensionManager?
+    private lazy var privateWindow = PrivateExtensionWindow(host: self)
+    private var isPrivateWindowOpen = false
 
     init(manager: ExtensionManager) {
         self.manager = manager
@@ -441,6 +560,7 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
             for pattern in webExtension.requestedPermissionMatchPatterns.union(webExtension.allRequestedMatchPatterns) {
                 context.setPermissionStatus(.grantedExplicitly, for: pattern)
             }
+            context.hasAccessToPrivateData = manager?.allowsPrivateTabs ?? true
             try? controller.load(context)
         }
         contexts[id] = context
@@ -470,20 +590,68 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
         extensions[id] = nil
     }
 
+    func setPrivateAccess(_ isAllowed: Bool) {
+        for context in contexts.values {
+            context.hasAccessToPrivateData = isAllowed
+        }
+    }
+
+    // MARK: - Windows and tabs
+
+    func extensionWindow(for tab: BrowserTab) -> (any WKWebExtensionWindow)? {
+        tab.isPrivate ? privateWindow : window
+    }
+
+    /// The open windows, the one in front first.
+    private var openWindows: [any WKWebExtensionWindow] {
+        guard let window else { return [] }
+        var windows: [any WKWebExtensionWindow] = [window]
+        if !window.privateTabs.isEmpty {
+            windows.append(privateWindow)
+        }
+        return window.selectedTab.isPrivate ? Array(windows.reversed()) : windows
+    }
+
+    func tabOpened(_ tab: BrowserTab) {
+        if tab.isPrivate && !isPrivateWindowOpen {
+            isPrivateWindowOpen = true
+            controller.didOpenWindow(privateWindow)
+        }
+        controller.didOpenTab(tab)
+    }
+
+    /// Call after the tab left its list, so closing the last private tab
+    /// also closes the private window.
+    func tabClosed(_ tab: BrowserTab) {
+        let windowIsClosing = tab.isPrivate && (window?.privateTabs.isEmpty ?? true)
+        controller.didCloseTab(tab, windowIsClosing: windowIsClosing)
+        if windowIsClosing && isPrivateWindowOpen {
+            isPrivateWindowOpen = false
+            controller.didCloseWindow(privateWindow)
+        }
+    }
+
+    func tabActivated(_ tab: BrowserTab, previous: BrowserTab) {
+        if tab.isPrivate != previous.isPrivate {
+            controller.didFocusWindow(extensionWindow(for: tab))
+        }
+        controller.didActivateTab(tab, previousActiveTab: previous)
+    }
+
     // MARK: - WKWebExtensionControllerDelegate
 
     func webExtensionController(
         _ controller: WKWebExtensionController,
         openWindowsFor extensionContext: WKWebExtensionContext
     ) -> [any WKWebExtensionWindow] {
-        window.map { [$0] } ?? []
+        openWindows
     }
 
     func webExtensionController(
         _ controller: WKWebExtensionController,
         focusedWindowFor extensionContext: WKWebExtensionContext
     ) -> (any WKWebExtensionWindow)? {
-        window
+        openWindows.first
     }
 
     func webExtensionController(
@@ -494,7 +662,8 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
     ) {
         guard let window else { return completionHandler(nil, nil) }
         let previous = window.selectedTab
-        let tab = window.newTab(url: configuration.url)
+        let isPrivate = configuration.window.map { $0 is PrivateExtensionWindow } ?? previous.isPrivate
+        let tab = window.newTab(isPrivate: isPrivate, url: configuration.url)
         if !configuration.shouldBeActive {
             window.select(previous)
         }
@@ -507,12 +676,15 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
         for extensionContext: WKWebExtensionContext,
         completionHandler: @escaping ((any WKWebExtensionWindow)?, (any Error)?) -> Void
     ) {
-        // There is one window, so its tabs open there.
+        // Normal tabs are one window and private tabs another, so the new
+        // window's tabs open there.
         guard let window else { return completionHandler(nil, nil) }
-        for url in configuration.tabURLs {
-            window.newTab(isPrivate: configuration.shouldBePrivate, url: url)
+        let isPrivate = configuration.shouldBePrivate
+        let urls = configuration.tabURLs.isEmpty ? [nil] : configuration.tabURLs.map { Optional($0) }
+        for url in urls {
+            window.newTab(isPrivate: isPrivate, url: url)
         }
-        completionHandler(window, nil)
+        completionHandler(isPrivate ? privateWindow : window, nil)
     }
 
     func webExtensionController(
@@ -532,7 +704,7 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
         for context: WKWebExtensionContext,
         completionHandler: @escaping ((any Error)?) -> Void
     ) {
-        guard let popup = action.popupViewController, window?.present(popup) == true else {
+        guard let popup = action.popupViewController, Presenter.present(popup) else {
             return completionHandler(CocoaError(.featureUnsupported))
         }
         completionHandler(nil)
@@ -593,7 +765,7 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
         )
         alert.addAction(UIAlertAction(title: String(localized: "Don’t Allow"), style: .cancel) { _ in answer(false) })
         alert.addAction(UIAlertAction(title: String(localized: "Allow"), style: .default) { _ in answer(true) })
-        if window?.present(alert) != true {
+        if !Presenter.present(alert) {
             answer(false)
         }
     }
@@ -601,6 +773,7 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
 
 // MARK: - Windows and tabs for extensions
 
+/// The normal tabs, as a window.
 @available(iOS 18.4, *)
 extension BrowserModel: WKWebExtensionWindow {
     func tabs(for context: WKWebExtensionContext) -> [any WKWebExtensionTab] {
@@ -608,7 +781,7 @@ extension BrowserModel: WKWebExtensionWindow {
     }
 
     func activeTab(for context: WKWebExtensionContext) -> (any WKWebExtensionTab)? {
-        selectedTab.isPrivate ? nil : selectedTab
+        activeTab(isPrivate: false)
     }
 
     func windowType(for context: WKWebExtensionContext) -> WKWebExtension.WindowType {
@@ -632,6 +805,59 @@ extension BrowserModel: WKWebExtensionWindow {
     }
 
     func focus(for context: WKWebExtensionContext, completionHandler: @escaping ((any Error)?) -> Void) {
+        if let tab = activeTab(isPrivate: false) {
+            select(tab)
+        }
+        completionHandler(nil)
+    }
+}
+
+/// The private tabs, as a window of their own.
+@available(iOS 18.4, *)
+@MainActor
+final class PrivateExtensionWindow: NSObject, WKWebExtensionWindow {
+    private weak var host: WebExtensionHost?
+
+    init(host: WebExtensionHost) {
+        self.host = host
+    }
+
+    private var model: BrowserModel? {
+        host?.window
+    }
+
+    func tabs(for context: WKWebExtensionContext) -> [any WKWebExtensionTab] {
+        model?.privateTabs ?? []
+    }
+
+    func activeTab(for context: WKWebExtensionContext) -> (any WKWebExtensionTab)? {
+        model?.activeTab(isPrivate: true)
+    }
+
+    func windowType(for context: WKWebExtensionContext) -> WKWebExtension.WindowType {
+        .normal
+    }
+
+    func windowState(for context: WKWebExtensionContext) -> WKWebExtension.WindowState {
+        .normal
+    }
+
+    func isPrivate(for context: WKWebExtensionContext) -> Bool {
+        true
+    }
+
+    func frame(for context: WKWebExtensionContext) -> CGRect {
+        UIScreen.main.bounds
+    }
+
+    func screenFrame(for context: WKWebExtensionContext) -> CGRect {
+        UIScreen.main.bounds
+    }
+
+    func focus(for context: WKWebExtensionContext, completionHandler: @escaping ((any Error)?) -> Void) {
+        if let tab = model?.activeTab(isPrivate: true) {
+            model?.select(tab)
+        }
         completionHandler(nil)
     }
 }
@@ -639,11 +865,12 @@ extension BrowserModel: WKWebExtensionWindow {
 @available(iOS 18.4, *)
 extension BrowserTab: WKWebExtensionTab {
     func window(for context: WKWebExtensionContext) -> (any WKWebExtensionWindow)? {
-        isPrivate ? nil : model
+        ExtensionManager.shared.extensionWindow(for: self)
     }
 
     func indexInWindow(for context: WKWebExtensionContext) -> Int {
-        model?.tabs.firstIndex { $0 === self } ?? NSNotFound
+        let list = isPrivate ? model?.privateTabs : model?.tabs
+        return list?.firstIndex { $0 === self } ?? NSNotFound
     }
 
     func title(for context: WKWebExtensionContext) -> String? {

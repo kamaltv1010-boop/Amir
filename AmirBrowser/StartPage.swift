@@ -44,13 +44,12 @@ struct StartPage: View {
 
     private var header: some View {
         VStack(spacing: 10) {
-            Image(systemName: isPrivate ? "eyeglasses" : "globe")
-                .font(.system(size: 30, weight: .semibold))
-                .foregroundColor(.white)
-                .frame(width: 64, height: 64)
-                .background(Theme.brand, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
-            Text(isPrivate ? "Private Browsing" : "Amir")
+            Image("Logo")
+                .resizable()
+                .frame(width: 72, height: 72)
+                .clipShape(RoundedRectangle(cornerRadius: 17, style: .continuous))
+                .shadow(color: Theme.brandColor.opacity(0.35), radius: 12, y: 6)
+            Text(isPrivate ? "Private Browsing" : "Noor")
                 .font(.system(.largeTitle, design: .rounded).weight(.bold))
         }
     }
@@ -106,7 +105,7 @@ struct StartPage: View {
             Label("Private tabs", systemImage: "eyeglasses")
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Theme.privateTint)
-            Text("Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab. Extensions don't run here.")
+            Text("Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab.")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
