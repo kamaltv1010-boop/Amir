@@ -2135,6 +2135,28 @@
         }
       }
     },
+    "Off for sign-in" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "متوقفة لتسجيل الدخول"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off for sign-in"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivée pour la connexion"
+          }
+        }
+      }
+    },
     "Open" : {
       "localizations" : {
         "ar" : {
@@ -2465,24 +2487,24 @@
         }
       }
     },
-    "Protections are off for this site. Turn shields back on if the site works without them." : {
+    "Protections are off for this site, and it sees this iPhone as it is. Turn shields back on if the site works without them." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الحماية متوقفة في هذا الموقع. أعد تشغيل الدروع إذا كان الموقع يعمل بدونها."
+            "value" : "الحماية متوقفة في هذا الموقع، ويرى هذا الـ iPhone كما هو. أعد تشغيل الدروع إذا كان الموقع يعمل بدونها."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protections are off for this site. Turn shields back on if the site works without them."
+            "value" : "Protections are off for this site, and it sees this iPhone as it is. Turn shields back on if the site works without them."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les protections sont désactivées pour ce site. Relevez les boucliers si le site fonctionne sans."
+            "value" : "Les protections sont désactivées pour ce site, qui voit cet iPhone tel qu’il est. Relevez les boucliers si le site fonctionne sans."
           }
         }
       }
@@ -3297,6 +3319,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce fichier n’est pas une extension web. Choisissez un fichier .zip ou .crx, ou un dossier contenant un fichier manifest.json."
+          }
+        }
+      }
+    },
+    "This site checks the browser closely when you sign in or create an account, so it sees this iPhone as it is: no fingerprint noise and no other phone's user agent. Trackers are still blocked." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يفحص هذا الموقع المتصفح بدقة عند تسجيل الدخول أو إنشاء حساب، لذلك يرى هذا الـ iPhone كما هو: بدون تشويش البصمة وبدون User Agent هاتف آخر. وتبقى أدوات التتبع محظورة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This site checks the browser closely when you sign in or create an account, so it sees this iPhone as it is: no fingerprint noise and no other phone's user agent. Trackers are still blocked."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce site vérifie de près le navigateur quand vous vous connectez ou créez un compte, il voit donc cet iPhone tel qu’il est : sans bruit d’empreinte ni User-Agent d’un autre téléphone. Les traqueurs restent bloqués."
           }
         }
       }

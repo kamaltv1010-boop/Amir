@@ -23,6 +23,22 @@ enum Shields {
         return !downSites.contains(site)
     }
 
+    /// Sites that check the browser closely when you sign in or create an
+    /// account, and block or keep asking for codes when it looks unusual:
+    /// Meta's, and Google, Apple and Microsoft accounts. They see this
+    /// iPhone as it is, with no fingerprint noise and no other device's user
+    /// agent; trackers are still blocked.
+    static let signInSites = [
+        "instagram.com", "facebook.com", "messenger.com", "threads.net", "threads.com", "whatsapp.com",
+        "meta.com", "fb.com", "accounts.google.com", "appleid.apple.com", "idmsa.apple.com",
+        "login.live.com", "login.microsoftonline.com",
+    ]
+
+    static func isSignInSite(_ url: URL?) -> Bool {
+        guard let host = url?.host?.lowercased() else { return false }
+        return signInSites.contains { host == $0 || host.hasSuffix("." + $0) }
+    }
+
     static func setUp(_ isUp: Bool, for site: String) {
         var sites = downSites.filter { $0 != site }
         if !isUp {

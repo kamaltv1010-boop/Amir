@@ -90,11 +90,13 @@ enum FingerprintProtection {
     @discardableResult
     static func newSeed(_ kind: Kind) -> UInt32 {
         let old = UserDefaults.standard.object(forKey: kind.seedKey) as? Int
+        // A new screen size or user agent must actually differ, when there
+        // is another one to pick.
+        let canChange = choiceCount(for: kind) > 1
         var seed: UInt32
         repeat {
             seed = .random(in: .min ... .max)
-            // A new screen size or user agent must actually differ.
-        } while old.map { visibleValue(UInt32(truncatingIfNeeded: $0), for: kind) == visibleValue(seed, for: kind) } ?? false
+        } while canChange && old.map { visibleValue(UInt32(truncatingIfNeeded: $0), for: kind) == visibleValue(seed, for: kind) } ?? false
         UserDefaults.standard.set(Int(seed), forKey: kind.seedKey)
         return seed
     }
@@ -213,14 +215,29 @@ enum FingerprintProtection {
         isIPadMode ? iPads : iPhones
     }
 
+    /// This phone's screen in points, portrait, set at launch.
+    static var realScreen = (width: 0, height: 0)
+
+    /// The devices whose screen size pages may see: those at least as big as
+    /// this phone's. A page wider than its screen happens on no real phone,
+    /// and sites that check the browser closely notice it.
+    static var screenDevices: [Device] {
+        let all = devices
+        let fitting = all.filter { $0.width >= realScreen.width && $0.height >= realScreen.height }
+        if !fitting.isEmpty {
+            return fitting
+        }
+        return all.max { $0.width * $0.height < $1.width * $1.height }.map { [$0] } ?? all
+    }
+
     /// The device whose screen size pages see.
     static var screenDevice: Device {
-        device(for: seed(.screen))
+        device(for: seed(.screen), in: screenDevices)
     }
 
     /// The device whose user agent pages see.
     static var userAgentDevice: Device {
-        device(for: seed(.userAgent))
+        device(for: seed(.userAgent), in: devices)
     }
 
     static var screenSize: (width: Int, height: Int) {
@@ -231,18 +248,60 @@ enum FingerprintProtection {
         userAgentDevice.userAgent
     }
 
-    private static func device(for seed: UInt32) -> Device {
-        let all = devices
-        return all[Int(seed % UInt32(all.count))]
+    /// The user agent for a page: another device's with the user agent
+    /// protection on (unless `protections` is off for the site) and in iPad
+    /// mode, or the one Safari itself sends here. Desktop mode keeps
+    /// WebKit's own.
+    static func userAgent(protections: Bool, desktopMode: Bool) -> String? {
+        if desktopMode {
+            return nil
+        }
+        if isIPadMode || (protections && isEnabled(.userAgent)) {
+            return userAgent
+        }
+        return safariUserAgent
+    }
+
+    /// What Safari sends on this iPhone. WebKit's own user agent leaves out
+    /// Safari's "Version/" and "Safari/" parts, which some sign-in pages
+    /// refuse as an app's built-in browser.
+    static let safariUserAgent: String = {
+        let version = ProcessInfo.processInfo.operatingSystemVersion
+        let system: String
+        if version.majorVersion >= 26 {
+            // Safari freezes the system version at 18.6, and 18.7 from 26.2.
+            system = version.majorVersion == 26 && version.minorVersion < 2 ? "18_6" : "18_7"
+        } else {
+            let parts = [version.majorVersion, version.minorVersion] + (version.patchVersion > 0 ? [version.patchVersion] : [])
+            system = parts.map(String.init).joined(separator: "_")
+        }
+        return "Mozilla/5.0 (iPhone; CPU iPhone OS \(system) like Mac OS X) AppleWebKit/605.1.15 "
+            + "(KHTML, like Gecko) Version/\(version.majorVersion).\(version.minorVersion) Mobile/15E148 Safari/604.1"
+    }()
+
+    private static func device(for seed: UInt32, in list: [Device]) -> Device {
+        list[Int(seed % UInt32(list.count))]
     }
 
     /// What a seed shows the user for a kind; a new seed must change it.
     private static func visibleValue(_ seed: UInt32, for kind: Kind) -> String {
-        let device = device(for: seed)
         switch kind {
-        case .screen: return "\(device.width)x\(device.height)"
-        case .userAgent: return device.userAgent
-        default: return String(seed)
+        case .screen:
+            let device = device(for: seed, in: screenDevices)
+            return "\(device.width)x\(device.height)"
+        case .userAgent:
+            return device(for: seed, in: devices).userAgent
+        default:
+            return String(seed)
+        }
+    }
+
+    /// How many different values a new seed can pick from for a kind.
+    private static func choiceCount(for kind: Kind) -> Int {
+        switch kind {
+        case .screen: return Set(screenDevices.map { "\($0.width)x\($0.height)" }).count
+        case .userAgent: return Set(devices.map(\.userAgent)).count
+        default: return Int.max
         }
     }
 

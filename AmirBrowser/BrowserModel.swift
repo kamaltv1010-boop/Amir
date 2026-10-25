@@ -50,6 +50,8 @@ final class BrowserModel: NSObject, ObservableObject {
         let clearOnQuit = UserDefaults.standard.bool(forKey: Self.clearOnQuitKey)
         dataStore = clearOnQuit ? .nonPersistent() : .default()
         super.init()
+        let screen = UIScreen.main.bounds.size
+        FingerprintProtection.realScreen = (Int(min(screen.width, screen.height)), Int(max(screen.width, screen.height)))
 
         if clearOnQuit {
             // Every launch is a new session: no old pages, new fingerprints.
@@ -115,6 +117,7 @@ final class BrowserModel: NSObject, ObservableObject {
     /// so the page can talk to it. It is private if its opener is.
     func openTab(configuration: WKWebViewConfiguration, from opener: BrowserTab) -> BrowserTab? {
         let tab = BrowserTab(model: self, isPrivate: opener.isPrivate, configuration: configuration)
+        tab.opener = opener
         insert(tab, after: opener)
         select(tab)
         return tab
@@ -156,7 +159,11 @@ final class BrowserModel: NSObject, ObservableObject {
             guard let index = privateTabs.firstIndex(where: { $0 === tab }) else { return }
             privateTabs.remove(at: index)
             if wasSelected {
-                selectedID = privateTabs.isEmpty ? tabs[tabs.count - 1].id : privateTabs[min(index, privateTabs.count - 1)].id
+                if let opener = tab.opener, privateTabs.contains(where: { $0 === opener }) {
+                    selectedID = opener.id
+                } else {
+                    selectedID = privateTabs.isEmpty ? tabs[tabs.count - 1].id : privateTabs[min(index, privateTabs.count - 1)].id
+                }
             }
             if privateTabs.isEmpty {
                 // Nothing of the private session is kept.
@@ -175,7 +182,12 @@ final class BrowserModel: NSObject, ObservableObject {
                     selectedID = blank.id
                 }
             } else if wasSelected {
-                selectedID = tabs[min(index, tabs.count - 1)].id
+                // A pop-up that closes goes back to the page that opened it.
+                if let opener = tab.opener, tabs.contains(where: { $0 === opener }) {
+                    selectedID = opener.id
+                } else {
+                    selectedID = tabs[min(index, tabs.count - 1)].id
+                }
             }
             ExtensionManager.shared.tabClosed(tab)
         }

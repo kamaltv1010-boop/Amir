@@ -19,7 +19,7 @@ struct ShieldsPanel: View {
                 }
 
                 if tab.shieldsUp {
-                    Section("This Page") {
+                    Section {
                         HStack {
                             SettingsLabel("Trackers blocked", systemName: "hand.raised.slash.fill", color: Theme.shields)
                             Spacer()
@@ -36,9 +36,20 @@ struct ShieldsPanel: View {
                         HStack {
                             SettingsLabel("Fingerprint protection", systemName: "hand.raised.fill", color: .blue)
                             Spacer()
-                            Text(verbatim: "\(browser.enabledProtections.count)/\(FingerprintProtection.Kind.allCases.count)")
-                                .font(.body.monospacedDigit())
-                                .foregroundColor(.secondary)
+                            if isSignInSite {
+                                Text("Off for sign-in")
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Text(verbatim: "\(browser.enabledProtections.count)/\(FingerprintProtection.Kind.allCases.count)")
+                                    .font(.body.monospacedDigit())
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    } header: {
+                        Text("This Page")
+                    } footer: {
+                        if isSignInSite {
+                            Text("This site checks the browser closely when you sign in or create an account, so it sees this iPhone as it is: no fingerprint noise and no other phone's user agent. Trackers are still blocked.")
                         }
                     }
                 }
@@ -71,6 +82,10 @@ struct ShieldsPanel: View {
         .navigationViewStyle(.stack)
     }
 
+    private var isSignInSite: Bool {
+        Shields.isSignInSite(tab.webView.url)
+    }
+
     private var isSecure: Bool {
         tab.webView.url?.scheme == "https"
     }
@@ -94,7 +109,7 @@ struct ShieldsPanel: View {
             .disabled(Shields.site(of: tab.webView.url) == nil)
             Text(tab.shieldsUp
                 ? "Trackers, fingerprinting and insecure connections are blocked on this site."
-                : "Protections are off for this site. Turn shields back on if the site works without them.")
+                : "Protections are off for this site, and it sees this iPhone as it is. Turn shields back on if the site works without them.")
                 .font(.footnote)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

@@ -45,8 +45,12 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
     /// A picture of the page for the tab overview.
     @Published private(set) var snapshot: UIImage?
 
+    /// The tab whose page opened this one with window.open() or a link, so
+    /// closing it goes back there.
+    weak var opener: BrowserTab?
     private var pendingTitle = ""
     private var appliedSettings = ""
+    private var appliedUserAgent = ""
     /// An https:// load upgraded from http://, and the http:// address, so it
     /// can go back to http:// if the site doesn't support https.
     private var upgrade: (navigation: WKNavigation?, original: URL)?
@@ -239,21 +243,25 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
 
     /// Installs what this tab's pages get: fingerprint protection and tracker
     /// blocking (unless shields are down for the site), night mode and the
-    /// user agent. Pages pick up a change when they next load.
-    func applySettings(for url: URL?, force: Bool = false) {
-        guard let model else { return }
+    /// user agent. Sites with shields down, and sign-in sites, see this
+    /// iPhone as it is. Pages pick up a change when they next load. Returns
+    /// whether the user agent changed.
+    @discardableResult
+    func applySettings(for url: URL?, force: Bool = false) -> Bool {
+        guard let model else { return false }
         let shieldsUp = Shields.areUp(for: url)
         if self.shieldsUp != shieldsUp {
             self.shieldsUp = shieldsUp
         }
-        let settings = "\(shieldsUp)|\(isDesktopMode)|\(model.settingsSignature)"
-        guard force || settings != appliedSettings else { return }
+        let protections = shieldsUp && !Shields.isSignInSite(url)
+        let settings = "\(shieldsUp)|\(protections)|\(isDesktopMode)|\(model.settingsSignature)"
+        guard force || settings != appliedSettings else { return false }
         appliedSettings = settings
 
         let controller = webView.configuration.userContentController
         controller.removeAllUserScripts()
         controller.removeAllContentRuleLists()
-        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode, protections: shieldsUp) {
+        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode, protections: protections) {
             controller.addUserScript(script)
         }
         if NightMode.isEnabled {
@@ -265,9 +273,10 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
                 controller.addUserScript(counter)
             }
         }
-        // Desktop mode needs WebKit's own desktop user agent.
-        let spoofAgent = FingerprintProtection.isActive(.userAgent) && !isDesktopMode
-        webView.customUserAgent = spoofAgent ? FingerprintProtection.userAgent : nil
+        let agent = FingerprintProtection.userAgent(protections: protections, desktopMode: isDesktopMode)
+        webView.customUserAgent = agent
+        defer { appliedUserAgent = agent ?? "" }
+        return (agent ?? "") != appliedUserAgent
     }
 
     @objc private func pullToRefresh() {
@@ -359,6 +368,7 @@ extension BrowserTab: WKNavigationDelegate {
         // Open pages without tracking codes such as fbclid or utm_source.
         if LinkCleaner.isEnabled,
            isMainFrame,
+           Shields.areUp(for: url),
            navigationAction.navigationType != .backForward,
            navigationAction.request.httpMethod == "GET",
            let url,
@@ -396,9 +406,17 @@ extension BrowserTab: WKNavigationDelegate {
               let scheme = url.scheme?.lowercased(),
               !Self.webSchemes.contains(scheme)
         else {
-            // Shields are per site: set them up before the new page loads.
-            if isMainFrame {
-                applySettings(for: url)
+            // Shields are per site: set them up before the new page loads. The
+            // request already carries the old user agent, so a page that gets
+            // a different one is asked for again.
+            if isMainFrame,
+               applySettings(for: url),
+               ["http", "https"].contains(url?.scheme?.lowercased() ?? ""),
+               navigationAction.request.httpMethod == "GET",
+               navigationAction.navigationType != .backForward {
+                decisionHandler(.cancel, preferences)
+                webView.load(navigationAction.request)
+                return
             }
             decisionHandler(.allow, preferences)
             return
