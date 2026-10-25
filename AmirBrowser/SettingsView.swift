@@ -41,15 +41,27 @@ struct SettingsView: View {
                 }
 
                 Section("Current Values") {
-                    HStack {
-                        Text("Screen Size")
-                        Spacer()
-                        Text(verbatim: "\(FingerprintProtection.screenSize.width) × \(FingerprintProtection.screenSize.height)")
+                    let screen = FingerprintProtection.screenDevice
+                    let agent = FingerprintProtection.userAgentDevice
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text("Screen Size")
+                            Spacer()
+                            Text(verbatim: "\(screen.width) × \(screen.height)")
+                                .foregroundColor(.secondary)
+                        }
+                        Text(verbatim: screen.name)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                     }
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("User Agent")
-                        Text(verbatim: FingerprintProtection.userAgent)
+                        HStack {
+                            Text("User Agent")
+                            Spacer()
+                            Text(verbatim: "\(agent.name) · iOS \(agent.iOS)")
+                                .foregroundColor(.secondary)
+                        }
+                        Text(verbatim: agent.userAgent)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }

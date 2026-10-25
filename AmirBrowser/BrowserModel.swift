@@ -117,7 +117,7 @@ final class BrowserModel: NSObject, ObservableObject {
         webView = Self.makeWebView()
         attach(webView)
         isUpdatingPrivacy = true
-        FingerprintProtection.Kind.allCases.forEach { FingerprintProtection.newSeed($0) }
+        FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
         isUpdatingPrivacy = false
         applyPrivacySettings()
 
@@ -202,7 +202,7 @@ final class BrowserModel: NSObject, ObservableObject {
     /// Gives every site new values for `kinds` and reloads the page with them.
     func newFingerprint(_ kinds: [FingerprintProtection.Kind]) {
         isUpdatingPrivacy = true
-        kinds.forEach { FingerprintProtection.newSeed($0) }
+        FingerprintProtection.newSeeds(kinds)
         isUpdatingPrivacy = false
         applyPrivacySettings()
         reload()

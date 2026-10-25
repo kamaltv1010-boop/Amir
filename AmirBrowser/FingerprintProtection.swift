@@ -83,9 +83,18 @@ enum FingerprintProtection {
         repeat {
             seed = .random(in: .min ... .max)
             // A new screen size or user agent must actually differ.
-        } while old.map { pick(UInt32(truncatingIfNeeded: $0), for: kind) == pick(seed, for: kind) } ?? false
+        } while old.map { visibleValue(UInt32(truncatingIfNeeded: $0), for: kind) == visibleValue(seed, for: kind) } ?? false
         UserDefaults.standard.set(Int(seed), forKey: kind.seedKey)
         return seed
+    }
+
+    /// New seeds for `kinds`. Changing the screen size and the user agent
+    /// together picks one real iPhone for both, so they match.
+    static func newSeeds(_ kinds: [Kind]) {
+        kinds.forEach { newSeed($0) }
+        if kinds.contains(.screen) && kinds.contains(.userAgent) {
+            UserDefaults.standard.set(Int(seed(.userAgent)), forKey: Kind.screen.seedKey)
+        }
     }
 
     /// Changes whenever a switch or a seed changes.
@@ -95,36 +104,80 @@ enum FingerprintProtection {
 
     // MARK: - Screen size and user agent
 
-    /// Screen sizes of common iPhones, in points.
-    static let screenSizes: [(width: Int, height: Int)] = [
-        (375, 667), (375, 812), (390, 844), (393, 852), (402, 874),
-        (414, 896), (428, 926), (430, 932), (440, 956),
+    /// A real iPhone: its screen size in points, an iOS version it can run,
+    /// and the user agent Safari sends there.
+    struct Device {
+        let name: String
+        let width: Int
+        let height: Int
+        let iOS: String
+        let userAgent: String
+
+        init(_ name: String, _ width: Int, _ height: Int, iOS: String, uaOS: String, safari: String) {
+            self.name = name
+            self.width = width
+            self.height = height
+            self.iOS = iOS
+            userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
+                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
+        }
+    }
+
+    /// Real iPhones with an iOS version each one supports. Safari on iOS 26
+    /// reports a frozen "iPhone OS 18_6" (18_7 from 26.2) and the real
+    /// version only in "Version/".
+    static let devices: [Device] = [
+        Device("iPhone SE (2nd generation)", 375, 667, iOS: "16.6.1", uaOS: "16_6_1", safari: "16.6"),
+        Device("iPhone 11 Pro", 375, 812, iOS: "16.7.10", uaOS: "16_7_10", safari: "16.6"),
+        Device("iPhone XS", 375, 812, iOS: "17.0.3", uaOS: "17_0_3", safari: "17.0"),
+        Device("iPhone XR", 414, 896, iOS: "17.1.2", uaOS: "17_1_2", safari: "17.1"),
+        Device("iPhone 11 Pro Max", 414, 896, iOS: "17.2.1", uaOS: "17_2_1", safari: "17.2"),
+        Device("iPhone 12 mini", 375, 812, iOS: "17.3.1", uaOS: "17_3_1", safari: "17.3"),
+        Device("iPhone 12", 390, 844, iOS: "17.4.1", uaOS: "17_4_1", safari: "17.4"),
+        Device("iPhone SE (3rd generation)", 375, 667, iOS: "17.5.1", uaOS: "17_5_1", safari: "17.5"),
+        Device("iPhone 15", 393, 852, iOS: "17.6.1", uaOS: "17_6_1", safari: "17.6"),
+        Device("iPhone 11", 414, 896, iOS: "18.0.1", uaOS: "18_0_1", safari: "18.0"),
+        Device("iPhone 12 Pro Max", 428, 926, iOS: "18.1.1", uaOS: "18_1_1", safari: "18.1"),
+        Device("iPhone 13", 390, 844, iOS: "18.2.1", uaOS: "18_2_1", safari: "18.2"),
+        Device("iPhone 13 Pro Max", 428, 926, iOS: "18.3.2", uaOS: "18_3_2", safari: "18.3"),
+        Device("iPhone 14 Plus", 428, 926, iOS: "18.4.1", uaOS: "18_4_1", safari: "18.4"),
+        Device("iPhone 14 Pro", 393, 852, iOS: "18.5", uaOS: "18_5", safari: "18.5"),
+        Device("iPhone 16", 393, 852, iOS: "18.6", uaOS: "18_6", safari: "18.6"),
+        Device("iPhone 15 Pro Max", 430, 932, iOS: "18.6.2", uaOS: "18_6_2", safari: "18.6"),
+        Device("iPhone 14", 390, 844, iOS: "26.0", uaOS: "18_6", safari: "26.0"),
+        Device("iPhone 14 Pro Max", 430, 932, iOS: "26.1", uaOS: "18_6", safari: "26.1"),
+        Device("iPhone 16 Pro Max", 440, 956, iOS: "26.2", uaOS: "18_7", safari: "26.2"),
     ]
 
-    /// User agents of common iPhone browsers.
-    static let userAgents = [
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.7 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/140.0.7339.122 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/143.0 Mobile/15E148 Safari/605.1.15",
-    ]
+    /// The iPhone whose screen size pages see.
+    static var screenDevice: Device {
+        devices[deviceIndex(seed(.screen))]
+    }
+
+    /// The iPhone whose user agent pages see.
+    static var userAgentDevice: Device {
+        devices[deviceIndex(seed(.userAgent))]
+    }
 
     static var screenSize: (width: Int, height: Int) {
-        screenSizes[pick(seed(.screen), for: .screen)]
+        (screenDevice.width, screenDevice.height)
     }
 
     static var userAgent: String {
-        userAgents[pick(seed(.userAgent), for: .userAgent)]
+        userAgentDevice.userAgent
     }
 
-    private static func pick(_ seed: UInt32, for kind: Kind) -> Int {
+    private static func deviceIndex(_ seed: UInt32) -> Int {
+        Int(seed % UInt32(devices.count))
+    }
+
+    /// What a seed shows the user for a kind; a new seed must change it.
+    private static func visibleValue(_ seed: UInt32, for kind: Kind) -> String {
+        let device = devices[deviceIndex(seed)]
         switch kind {
-        case .screen: return Int(seed % UInt32(screenSizes.count))
-        case .userAgent: return Int(seed % UInt32(userAgents.count))
-        default: return Int(seed)
+        case .screen: return "\(device.width)x\(device.height)"
+        case .userAgent: return device.userAgent
+        default: return String(seed)
         }
     }
 
