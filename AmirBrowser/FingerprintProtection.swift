@@ -312,147 +312,282 @@ enum FingerprintProtection {
     /// `protections` (shields down for the site) only iPad mode is left. In
     /// desktop mode WebKit reports a Mac on its own, so iPad mode leaves it
     /// alone there.
+    ///
+    /// The script protects the page's window, and from there the empty
+    /// frames (about:blank) the page makes, where WebKit runs no user
+    /// scripts (see `framesScript`), so `protect` takes the window to work on.
     @MainActor
     static func userScript(desktopMode: Bool, protections: Bool = true) -> WKUserScript? {
         var parts: [String] = []
         if protections {
-            if isEnabled(.canvas) { parts.append(canvasScript(seed: seed(.canvas))) }
-            if isEnabled(.webGL) { parts.append(webGLScript(seed: seed(.webGL))) }
+            let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
+            let webGLSeed = isEnabled(.webGL) ? seed(.webGL) : nil
+            if let canvasSeed = canvasSeed { parts.append(canvasScript(seed: canvasSeed)) }
+            if let webGLSeed = webGLSeed { parts.append(webGLScript(seed: webGLSeed)) }
+            if canvasSeed != nil || webGLSeed != nil {
+                parts.append(canvasExportScript(canvasSeed: canvasSeed, webGLSeed: webGLSeed))
+            }
             if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
             if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
             if isEnabled(.screen) { parts.append(screenScript(screenSize)) }
         }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
         guard !parts.isEmpty else { return nil }
-        let source = "(() => {\n" + helpers + parts.joined(separator: "\n") + "})();"
+        let source = "(() => {\n" + shared
+            + "const protect = (window) => {\n" + helpers + parts.joined(separator: "\n") + framesScript + "};\n"
+            + "protect(window);\n})();"
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }
 
-    private static let helpers = #"""
-    // Keeps every built-in we replace indistinguishable from the original, so
-    // a site that checks for a tampered browser sees nothing changed and works
-    // as it would in Safari. Each replacement keeps the native name and length,
-    // and reports the same "[native code]" from toString(): a site reads
-    // toString() to tell a patched function from a real one, so without this
-    // the protections themselves give the browser away. A WeakMap sends each
-    // replacement's (and the patched toString's own) toString() to the real
-    // function it stands for.
-    const nativeToString = Function.prototype.toString;
+    /// What the protection of every window this script reaches shares.
+    private static let shared = #"""
+    // The page runs after this script and could change Object and Math, so
+    // what is needed later (for the frames the page makes) is kept from here.
+    const { defineProperty, getOwnPropertyDescriptor, getOwnPropertyNames, setPrototypeOf } = Object;
+    const { imul, floor, min, max } = Math;
+    const { isFinite } = Number;
+    // The kind of an object, like "[object Uint8Array]", from any window.
+    const tagOf = Function.prototype.call.bind(Object.prototype.toString);
+
+    // Each replacement's real built-in, for its toString() and for calling it.
     const originals = new WeakMap();
-    const patchedToString = function toString() {
-      return nativeToString.apply(originals.get(this) || this, arguments);
-    };
-    originals.set(patchedToString, nativeToString);
-    Function.prototype.toString = patchedToString;
-
-    // Replaces object[name] (a method) with make(original), keeping the native
-    // name, length and "[native code]".
-    const define = (object, name, make) => {
-      const original = object && object[name];
-      if (typeof original !== "function") return;
-      const replacement = make(original);
-      for (const key of ["name", "length"]) {
-        const descriptor = Object.getOwnPropertyDescriptor(original, key);
-        if (descriptor) {
-          try { Object.defineProperty(replacement, key, descriptor); } catch (e) {}
-        }
-      }
-      originals.set(replacement, original);
-      object[name] = replacement;
-    };
-
-    // Replaces a property's getter, keeping the native enumerability and the
-    // native "[native code]" on the getter.
-    const defineGetter = (object, name, get) => {
-      const descriptor = Object.getOwnPropertyDescriptor(object, name);
-      if (descriptor && descriptor.get) originals.set(get, descriptor.get);
-      Object.defineProperty(object, name, {
-        get,
-        configurable: true,
-        enumerable: descriptor ? descriptor.enumerable : true,
-      });
-    };
-
-    // Mixes a seed with the site's host, so each site sees different, stable
-    // values (FNV-1a).
-    const forSite = (seed) => {
-      let value = (seed ^ 0x811c9dc5) >>> 0;
-      for (const ch of location.hostname) {
-        value = Math.imul(value ^ ch.charCodeAt(0), 0x01000193) >>> 0;
-      }
-      return value;
-    };
+    const native = (fn) => originals.get(fn) || fn;
+    // The windows protected from this script, each once.
+    const protectedWindows = new WeakSet();
+    // The audio buffers already changed, by channel, from any window.
+    const nudged = new WeakMap();
 
     // Integer hash, so a given pixel or sample always gets the same tweak.
     const mix = (n) => {
-      n = Math.imul(n ^ (n >>> 16), 0x7feb352d);
-      n = Math.imul(n ^ (n >>> 15), 0x846ca68b);
+      n = imul(n ^ (n >>> 16), 0x7feb352d);
+      n = imul(n ^ (n >>> 15), 0x846ca68b);
       return (n ^ (n >>> 16)) >>> 0;
     };
 
-    // Flips the lowest bit of one color channel in about 1 of 32 visible
-    // pixels: invisible, but it changes every hash a fingerprinter takes.
-    // Pixels are keyed by their position, so reading part of an image gives
-    // the same noise as reading all of it.
-    const addPixelNoise = (seed, data, width, left, top, fullWidth) => {
-      for (let i = 0; i < data.length; i += 4) {
+    // Sets the lowest bit of one channel in about 1 of 16 visible pixels,
+    // which changes about 1 in 32: invisible, but it changes every hash a
+    // fingerprinter takes. Setting the bit rather than flipping it means a
+    // second pass changes nothing, so a frame the protection reaches twice
+    // (from its page and from WebKit) stays protected. An opaque pixel gets
+    // a color bit; a translucent one gets its alpha bit, since the canvas
+    // stores colors multiplied by alpha and would swallow a color bit there.
+    // Pixels are keyed by their position in the whole canvas, counted from
+    // the top, so reading part of an image, or exporting it, gives the same
+    // noise as reading all of it. WebGL's readPixels hands rows bottom-up;
+    // `flipped` turns them into rows from the top, so pixels read that way
+    // match the same pixels in an exported image. Only the `width` by
+    // `height` pixels read are touched; 16-bit float pixels are scaled by
+    // 1/1024 instead.
+    const addPixelNoise = (seed, data, width, height, left, top, fullWidth, fullHeight, flipped) => {
+      const tag = tagOf(data);
+      const bytes = tag === "[object Uint8ClampedArray]" || tag === "[object Uint8Array]";
+      if (!bytes && tag !== "[object Float16Array]") return;
+      if (!(width > 0 && height > 0)) return;
+      const end = min(data.length, width * height * 4);
+      for (let i = 0; i + 3 < end; i += 4) {
         if (data[i + 3] === 0) continue;
         const p = i >> 2;
         const x = left + (p % width);
-        const y = top + Math.floor(p / width);
-        const h = mix(seed ^ Math.imul(y * fullWidth + x + 1, 0x9e3779b1));
-        if ((h & 31) === 0) data[i + ((h >>> 5) % 3)] ^= 1;
+        const row = top + floor(p / width);
+        const y = flipped ? fullHeight - 1 - row : row;
+        const h = mix(seed ^ imul(y * fullWidth + x + 1, 0x9e3779b1));
+        if ((h & 15) !== 0) continue;
+        if (!bytes) {
+          data[i + ((h >>> 4) % 3)] *= 1 + (h & 64 ? 1 : -1) / 1024;
+        } else {
+          const j = data[i + 3] === 255 ? i + ((h >>> 4) % 3) : i + 3;
+          data[j] = (data[j] & ~1) | ((h >>> 6) & 1);
+        }
       }
     };
 
     """#
 
+    /// The start of `protect(window)`: how built-ins are replaced, and the
+    /// site key.
+    private static let helpers = #"""
+    // Protects `window`: the page's own, or an empty frame it made.
+    protectedWindows.add(window);
+    const document = window.document;
+
+    // Keeps every built-in we replace indistinguishable from the original, so
+    // a site that checks for a tampered browser sees nothing changed and works
+    // as it would in Safari. A site reads a function's toString() to tell a
+    // patched function from a real one, checks that it has no "prototype"
+    // and can't be constructed, and compares its own properties with a
+    // built-in's; without this the protections themselves give the browser
+    // away. `originals` sends each replacement's (and the patched toString's
+    // own) toString() to the real function it stands for.
+    const nativeToString = window.Function.prototype.toString;
+
+    // A function that stands in for `original` and runs `impl` with the same
+    // this and arguments. A method of an object literal has no "prototype"
+    // and throws "not a constructor" like a built-in, and being strict it
+    // has no "arguments" or "caller" of its own; it belongs to this window
+    // like the built-in, and gets the built-in's own properties (name and
+    // length), in the same order, and its toString().
+    const lookalike = (original, impl) => {
+      const replacement = {
+        [original.name]() {
+          "use strict";
+          return impl.apply(this, arguments);
+        },
+      }[original.name];
+      setPrototypeOf(replacement, window.Function.prototype);
+      for (const key of ["name", "length"]) {
+        try { delete replacement[key]; } catch (e) {}
+      }
+      for (const key of getOwnPropertyNames(original)) {
+        try { defineProperty(replacement, key, getOwnPropertyDescriptor(original, key)); } catch (e) {}
+      }
+      originals.set(replacement, original);
+      return replacement;
+    };
+
+    window.Function.prototype.toString = lookalike(nativeToString, function () {
+      return nativeToString.apply(native(this), arguments);
+    });
+
+    // Replaces object[name] (a method) with make(original).
+    const define = (object, name, make) => {
+      const original = object && object[name];
+      if (typeof original !== "function") return;
+      object[name] = lookalike(original, make(original));
+    };
+
+    // Replaces a property's getter, keeping the native enumerability and
+    // making the getter look like the native one.
+    const defineGetter = (object, name, get) => {
+      const descriptor = getOwnPropertyDescriptor(object, name);
+      defineProperty(object, name, {
+        get: descriptor && descriptor.get ? lookalike(descriptor.get, get) : get,
+        configurable: true,
+        enumerable: descriptor ? descriptor.enumerable : true,
+      });
+    };
+
+    // The host the noise is keyed by: the top page's, as in Brave, so a
+    // frame sees the same values as the page it is in (a site compares the
+    // two to catch noise), and a third party's frame sees different values
+    // on every site, so it can't follow a visitor from one to the next. A
+    // cross-origin frame reads the top page's origin from ancestorOrigins,
+    // or failing that its host from the referrer; last comes its own host.
+    const host = (() => {
+      try { if (window.top.location.hostname) return window.top.location.hostname; } catch (e) {}
+      try {
+        const origins = window.location.ancestorOrigins;
+        if (origins && origins.length) return new URL(origins[origins.length - 1]).hostname;
+      } catch (e) {}
+      try { const h = new URL(document.referrer).hostname; if (h) return h; } catch (e) {}
+      try { return window.location.hostname; } catch (e) { return ""; }
+    })();
+
+    // Mixes a seed with the site's host, so each site sees different, stable
+    // values (FNV-1a).
+    const forSite = (seed) => {
+      let value = (seed ^ 0x811c9dc5) >>> 0;
+      for (const ch of host) {
+        value = imul(value ^ ch.charCodeAt(0), 0x01000193) >>> 0;
+      }
+      return value;
+    };
+
+    """#
+
+    /// The end of `protect(window)`: the frames the page makes.
+    private static let framesScript = #"""
+    // WebKit runs this script in every frame that loads a page, but not in
+    // the empty document a frame, or a window the page opens, starts with
+    // (about:blank) and keeps when it has no address. There a page finds
+    // untouched built-ins, and could read the real fingerprint through them,
+    // or compare them with its own and notice the protection. Such windows
+    // are protected from here: when the page reaches a frame's through
+    // contentWindow or contentDocument, soon after a frame is added to the
+    // document, and when window.open returns one. Windows that load a page
+    // get the script from WebKit, and one protected before is left as it is.
+    {
+      const protectWindow = (other) => {
+        try {
+          if (!other || protectedWindows.has(other) || other.location.href !== "about:blank") return;
+        } catch (e) {
+          return;
+        }
+        try { protect(other); } catch (e) {}
+      };
+      define(window, "open", (open) => function () {
+        const other = open.apply(this, arguments);
+        protectWindow(other);
+        return other;
+      });
+      const frameProto = window.HTMLIFrameElement && window.HTMLIFrameElement.prototype;
+      const contentWindow = frameProto && getOwnPropertyDescriptor(frameProto, "contentWindow");
+      const contentDocument = frameProto && getOwnPropertyDescriptor(frameProto, "contentDocument");
+      if (contentWindow && contentWindow.get) {
+        const protectFrame = (frame) => {
+          try { protectWindow(contentWindow.get.call(frame)); } catch (e) {}
+        };
+        defineGetter(frameProto, "contentWindow", function () {
+          protectFrame(this);
+          return contentWindow.get.call(this);
+        });
+        if (contentDocument && contentDocument.get) {
+          defineGetter(frameProto, "contentDocument", function () {
+            protectFrame(this);
+            return contentDocument.get.call(this);
+          });
+        }
+        try {
+          new window.MutationObserver((records) => {
+            for (const record of records) {
+              for (const node of record.addedNodes) {
+                if (node.nodeType !== 1) continue;
+                if (node.localName === "iframe") {
+                  protectFrame(node);
+                } else if (node.getElementsByTagName) {
+                  for (const frame of node.getElementsByTagName("iframe")) protectFrame(frame);
+                }
+              }
+            }
+          }).observe(document, { childList: true, subtree: true });
+        } catch (e) {}
+      }
+    }
+
+    """#
+
     private static func canvasScript(seed: UInt32) -> String {
         #"""
-        // Canvas: reads get pixel noise. Exports read a noisy copy, so the
-        // canvas on screen is never changed. A canvas tainted by another
-        // site's image can't be copied; the call then fails as it normally would.
+        // Canvas: pixels read with getImageData get pixel noise. The image's
+        // and the canvas's properties are read with the built-ins as they are
+        // now, so a page can't redirect the noise by changing them later.
         {
           const canvasSeed = forSite(\#(seed));
+          const getter = (proto, name) => {
+            const descriptor = proto && getOwnPropertyDescriptor(proto, name);
+            return descriptor && descriptor.get ? (object) => descriptor.get.call(object) : (object) => object[name];
+          };
+          const imageProto = window.ImageData && window.ImageData.prototype;
+          const imageData = getter(imageProto, "data");
+          const imageWidth = getter(imageProto, "width");
+          const imageHeight = getter(imageProto, "height");
           const patchGetImageData = (proto) => {
-            define(proto, "getImageData", (getImageData) => function (sx, sy) {
+            const contextCanvas = getter(proto, "canvas");
+            define(proto, "getImageData", (getImageData) => function (sx, sy, sw, sh) {
               const image = getImageData.apply(this, arguments);
-              addPixelNoise(canvasSeed, image.data, image.width, sx | 0, sy | 0, this.canvas.width);
+              // A negative width or height reads to the left of, or above, (sx, sy).
+              const left = (sx | 0) + (sw < 0 ? (sw | 0) : 0);
+              const top = (sy | 0) + (sh < 0 ? (sh | 0) : 0);
+              const width = imageWidth(image);
+              const height = imageHeight(image);
+              const canvas = contextCanvas(this);
+              addPixelNoise(canvasSeed, imageData(image), width, height, left, top,
+                canvas ? canvas.width : width, canvas ? canvas.height : height, false);
               return image;
             });
           };
-          patchGetImageData(CanvasRenderingContext2D.prototype);
-          if (typeof OffscreenCanvasRenderingContext2D !== "undefined") {
-            patchGetImageData(OffscreenCanvasRenderingContext2D.prototype);
-          }
-
-          const noisyCopy = (canvas, makeCanvas) => {
-            const { width, height } = canvas;
-            if (!width || !height) return null;
-            try {
-              const copy = makeCanvas(width, height);
-              const context = copy.getContext("2d");
-              context.drawImage(canvas, 0, 0);
-              context.putImageData(context.getImageData(0, 0, width, height), 0, 0);
-              return copy;
-            } catch (e) {
-              return null;
-            }
-          };
-          const makeCanvas = (width, height) =>
-            Object.assign(document.createElement("canvas"), { width, height });
-
-          const canvasProto = HTMLCanvasElement.prototype;
-          for (const name of ["toDataURL", "toBlob"]) {
-            define(canvasProto, name, (original) => function () {
-              return original.apply(noisyCopy(this, makeCanvas) || this, arguments);
-            });
-          }
-          if (typeof OffscreenCanvas !== "undefined" && OffscreenCanvas.prototype.convertToBlob) {
-            define(OffscreenCanvas.prototype, "convertToBlob", (convertToBlob) => function () {
-              const copy = noisyCopy(this, (width, height) => new OffscreenCanvas(width, height));
-              return convertToBlob.apply(copy || this, arguments);
-            });
+          patchGetImageData(window.CanvasRenderingContext2D.prototype);
+          if (window.OffscreenCanvasRenderingContext2D) {
+            patchGetImageData(window.OffscreenCanvasRenderingContext2D.prototype);
           }
         }
 
@@ -467,11 +602,101 @@ enum FingerprintProtection {
           for (const name of ["WebGLRenderingContext", "WebGL2RenderingContext"]) {
             const proto = window[name] && window[name].prototype;
             if (!proto) continue;
-            define(proto, "readPixels", (readPixels) => function (x, y, width, height, format, type, pixels) {
+            define(proto, "readPixels", (readPixels) => function (x, y, width, height, format, type, pixels, offset) {
               readPixels.apply(this, arguments);
-              if (pixels instanceof Uint8Array && format === this.RGBA) {
-                addPixelNoise(webGLSeed, pixels, width, x | 0, y | 0, this.drawingBufferWidth);
-              }
+              const tag = tagOf(pixels);
+              if ((tag !== "[object Uint8Array]" && tag !== "[object Uint8ClampedArray]") || format !== this.RGBA) return;
+              // WebGL2 can read into the array from `offset` on.
+              const data = offset > 0 ? pixels.subarray(offset) : pixels;
+              addPixelNoise(webGLSeed, data, width | 0, height | 0, x | 0, y | 0,
+                this.drawingBufferWidth, this.drawingBufferHeight, true);
+            });
+          }
+        }
+
+        """#
+    }
+
+    /// The exports of canvases (toDataURL, toBlob, convertToBlob), for the
+    /// canvas and WebGL protections. A canvas drawn with WebGL gets the WebGL
+    /// noise (or the canvas noise, with only that protection on), so a new
+    /// WebGL fingerprint changes the WebGL images sites read, and any other
+    /// canvas gets the canvas noise. A nil seed is a protection that is off.
+    private static func canvasExportScript(canvasSeed: UInt32?, webGLSeed: UInt32?) -> String {
+        let canvas = canvasSeed.map { "forSite(\($0))" } ?? "null"
+        let webgl = webGLSeed.map { "forSite(\($0))" } ?? "null"
+        return #"""
+        // Canvas exports: toDataURL, toBlob and convertToBlob read a noisy
+        // copy, so the canvas on screen is never changed. The copy gets the
+        // WebGL noise for a canvas drawn with WebGL, which getContext
+        // remembers, and the canvas noise otherwise. The copy is made with
+        // the built-ins as they are now, so a page can't change them later
+        // to get the real pixels. A canvas tainted by another site's image
+        // can't be copied; the call then fails as it normally would.
+        {
+          const seeds = { canvas: \#(canvas), webgl: \#(webgl) };
+          const kinds = new WeakMap();
+          // The built-ins a copy is made with: [getContext, drawImage, getImageData, putImageData].
+          const tools = (canvasProto, contextProto) => contextProto && [
+            native(canvasProto.getContext), native(contextProto.drawImage),
+            native(contextProto.getImageData), native(contextProto.putImageData),
+          ];
+          const rememberContext = (proto) => {
+            define(proto, "getContext", (getContext) => function (type) {
+              const context = getContext.apply(this, arguments);
+              if (context) kinds.set(this, /^(experimental-)?webgl/i.test("" + type) ? "webgl" : "canvas");
+              return context;
+            });
+          };
+          const canvasProto = window.HTMLCanvasElement.prototype;
+          const canvasTools = tools(canvasProto, window.CanvasRenderingContext2D.prototype);
+          const offscreenTools = window.OffscreenCanvas
+            && tools(window.OffscreenCanvas.prototype, window.OffscreenCanvasRenderingContext2D
+              && window.OffscreenCanvasRenderingContext2D.prototype);
+          rememberContext(canvasProto);
+          if (window.OffscreenCanvas) rememberContext(window.OffscreenCanvas.prototype);
+
+          const seedFor = (canvas) => {
+            if (kinds.get(canvas) === "webgl") {
+              return seeds.webgl === null ? seeds.canvas : seeds.webgl;
+            }
+            return seeds.canvas;
+          };
+          const noisyCopy = (canvas, makeCanvas, tools) => {
+            const seed = seedFor(canvas);
+            const { width, height } = canvas;
+            if (seed === null || !width || !height || !tools) return null;
+            try {
+              const [getContext, drawImage, getImageData, putImageData] = tools;
+              const copy = makeCanvas(width, height);
+              const context = getContext.call(copy, "2d");
+              drawImage.call(context, canvas, 0, 0);
+              const image = getImageData.call(context, 0, 0, width, height);
+              addPixelNoise(seed, image.data, width, height, 0, 0, width, height, false);
+              putImageData.call(context, image, 0, 0);
+              return copy;
+            } catch (e) {
+              return null;
+            }
+          };
+
+          const createElement = document.createElement;
+          const makeCanvas = (width, height) => {
+            const canvas = createElement.call(document, "canvas");
+            canvas.width = width;
+            canvas.height = height;
+            return canvas;
+          };
+          for (const name of ["toDataURL", "toBlob"]) {
+            define(canvasProto, name, (original) => function () {
+              const copy = noisyCopy(this, makeCanvas, canvasTools);
+              return original.apply(copy || this, arguments);
+            });
+          }
+          if (window.OffscreenCanvas && window.OffscreenCanvas.prototype.convertToBlob) {
+            define(window.OffscreenCanvas.prototype, "convertToBlob", (convertToBlob) => function () {
+              const copy = noisyCopy(this, (width, height) => new window.OffscreenCanvas(width, height), offscreenTools);
+              return convertToBlob.apply(copy || this, arguments);
             });
           }
         }
@@ -481,20 +706,24 @@ enum FingerprintProtection {
 
     private static func audioScript(seed: UInt32) -> String {
         #"""
-        // Audio: about 1 in 16 rendered samples moves by about 0.00000005 at
-        // most, far below hearing, but it changes the sums audio fingerprinting
-        // scripts compute. Each buffer channel is changed once, not on every read.
+        // Audio: every rendered sample is scaled by its own factor between
+        // 1 - 0.000001 and 1 + 0.000001: about -120 dB, far below hearing,
+        // and silence stays silence, but it changes the sums audio
+        // fingerprinting scripts compute. Scaling survives the rounding of
+        // 32-bit floats, which adding a fixed 0.0000001 does not for loud
+        // samples or for decibel values. Each buffer channel is changed once,
+        // not on every read.
         {
           const audioSeed = forSite(\#(seed));
           const nudge = (data, salt) => {
+            if (tagOf(data) !== "[object Float32Array]") return;
             for (let i = 0; i < data.length; i++) {
-              const h = mix(audioSeed ^ salt ^ Math.imul(i + 1, 0x9e3779b1));
-              if ((h & 15) === 0) data[i] += ((h >>> 4) / 268435456 - 0.5) * 1e-7;
+              const h = mix(audioSeed ^ salt ^ imul(i + 1, 0x9e3779b1));
+              data[i] *= 1 + (h / 4294967296 - 0.5) * 2e-6;
             }
           };
-          if (typeof AudioBuffer !== "undefined") {
-            const nudged = new WeakMap();
-            define(AudioBuffer.prototype, "getChannelData", (getChannelData) => function (channel) {
+          if (window.AudioBuffer) {
+            define(window.AudioBuffer.prototype, "getChannelData", (getChannelData) => function (channel) {
               const data = getChannelData.apply(this, arguments);
               let channels = nudged.get(this);
               if (!channels) nudged.set(this, (channels = new Set()));
@@ -504,17 +733,17 @@ enum FingerprintProtection {
               }
               return data;
             });
-            if (AudioBuffer.prototype.copyFromChannel) {
-              define(AudioBuffer.prototype, "copyFromChannel", (copyFromChannel) => function (destination, channel) {
+            if (window.AudioBuffer.prototype.copyFromChannel) {
+              define(window.AudioBuffer.prototype, "copyFromChannel", (copyFromChannel) => function (destination, channel) {
                 this.getChannelData(channel);
                 return copyFromChannel.apply(this, arguments);
               });
             }
           }
-          if (typeof AnalyserNode !== "undefined") {
+          if (window.AnalyserNode) {
             for (const name of ["getFloatFrequencyData", "getFloatTimeDomainData"]) {
-              if (!AnalyserNode.prototype[name]) continue;
-              define(AnalyserNode.prototype, name, (original) => function (array) {
+              if (!window.AnalyserNode.prototype[name]) continue;
+              define(window.AnalyserNode.prototype, name, (original) => function (array) {
                 original.apply(this, arguments);
                 nudge(array, 0x51ed270b);
               });
@@ -539,7 +768,7 @@ enum FingerprintProtection {
           const bits = new Float64Array(1);
           const words = new Uint32Array(bits.buffer);
           const shift = (value) => {
-            if (value === 0 || !Number.isFinite(value)) return value;
+            if (value === 0 || !isFinite(value)) return value;
             bits[0] = value;
             const h = mix(mix(rectsSeed ^ words[1]) ^ words[0]);
             return value + (h & 1 ? 1e-5 : -1e-5) * (1 + (h >>> 1) / 2147483648);
@@ -547,15 +776,15 @@ enum FingerprintProtection {
           const shiftRect = (rect) => {
             const left = shift(rect.left);
             const top = shift(rect.top);
-            const right = Math.max(shift(rect.right), left);
-            const bottom = Math.max(shift(rect.bottom), top);
+            const right = max(shift(rect.right), left);
+            const bottom = max(shift(rect.bottom), top);
             rect.x = left;
             rect.y = top;
             rect.width = right - left;
             rect.height = bottom - top;
             return rect;
           };
-          for (const proto of [Element.prototype, Range.prototype]) {
+          for (const proto of [window.Element.prototype, window.Range.prototype]) {
             define(proto, "getBoundingClientRect", (original) => function () {
               return shiftRect(original.apply(this, arguments));
             });
@@ -574,10 +803,10 @@ enum FingerprintProtection {
         #"""
         // Screen: pages see a real iPhone's or, in iPad mode, iPad's screen size.
         {
-          const size = { width: \#(size.width), height: \#(size.height), availWidth: \#(size.width), availHeight: \#(size.height) };
-          for (const [name, value] of Object.entries(size)) {
-            defineGetter(Screen.prototype, name, () => value);
-          }
+          const width = \#(size.width);
+          const height = \#(size.height);
+          for (const name of ["width", "availWidth"]) defineGetter(window.Screen.prototype, name, () => width);
+          for (const name of ["height", "availHeight"]) defineGetter(window.Screen.prototype, name, () => height);
         }
 
         """#
@@ -588,7 +817,7 @@ enum FingerprintProtection {
     /// user agent.
     private static let iPadScript = #"""
     // iPad mode: pages see the platform Safari reports on an iPad.
-    defineGetter(Navigator.prototype, "platform", () => "iPad");
+    defineGetter(window.Navigator.prototype, "platform", () => "iPad");
 
     """#
 }
