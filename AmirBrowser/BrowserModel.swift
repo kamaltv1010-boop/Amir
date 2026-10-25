@@ -29,8 +29,9 @@ final class BrowserModel: NSObject, ObservableObject {
     /// Set while a new session deletes the old website data.
     private var isClearingData = false
     /// Normal tabs share their cookies and website data; private tabs share
-    /// theirs, in memory, until the last private tab closes.
-    private var dataStore: WKWebsiteDataStore
+    /// theirs, in memory, until the last private tab closes. Extensions use
+    /// the normal tabs' store, so it is never replaced, only emptied.
+    private let dataStore: WKWebsiteDataStore
     private var privateDataStore: WKWebsiteDataStore?
     private var appliedPrivacySignature = ""
     /// Set while the model itself writes privacy settings, so the resulting
@@ -52,6 +53,7 @@ final class BrowserModel: NSObject, ObservableObject {
         super.init()
         let screen = UIScreen.main.bounds.size
         FingerprintProtection.realScreen = (Int(min(screen.width, screen.height)), Int(max(screen.width, screen.height)))
+        ExtensionManager.shared.start(dataStore: dataStore)
 
         if clearOnQuit {
             // Every launch is a new session: no old pages, new fingerprints.
@@ -289,9 +291,6 @@ final class BrowserModel: NSObject, ObservableObject {
         }
         httpOnlyHosts = []
         history.clear()
-        if UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
-            dataStore = .nonPersistent()
-        }
         isUpdatingPrivacy = true
         FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
         isUpdatingPrivacy = false
@@ -304,12 +303,16 @@ final class BrowserModel: NSObject, ObservableObject {
         saveTabs()
 
         // Load only once the old data is gone, so no cookie can carry over.
-        WKWebsiteDataStore.default().removeData(
-            ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
-            modifiedSince: .distantPast
-        ) { [weak self] in
+        clearBrowsingData { [weak self] in
             self?.isClearingData = false
             self?.selectedTab.loadIfNeeded()
+        }
+    }
+
+    /// Deletes the normal tabs' cookies, cache and other website data.
+    func clearBrowsingData(completion: @escaping @MainActor () -> Void) {
+        dataStore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast) {
+            completion()
         }
     }
 

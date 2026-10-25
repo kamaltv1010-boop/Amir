@@ -127,8 +127,15 @@ final class ExtensionManager: ObservableObject {
            let saved = try? JSONDecoder().decode([Record].self, from: data) {
             records = saved
         }
-        if #available(iOS 18.4, *) {
-            let host = WebExtensionHost(manager: self)
+    }
+
+    /// Starts the extensions with the normal tabs' website data, so their
+    /// cookie and storage APIs see the same cookies as the tabs, also when
+    /// that data stays in memory ("Clear Everything on Quit"). Call once,
+    /// before the first tab.
+    func start(dataStore: WKWebsiteDataStore) {
+        if #available(iOS 18.4, *), hostObject == nil {
+            let host = WebExtensionHost(manager: self, dataStore: dataStore)
             hostObject = host
             Task { await self.loadInstalled(in: host) }
         }
@@ -527,9 +534,11 @@ final class WebExtensionHost: NSObject, WKWebExtensionControllerDelegate {
     private lazy var privateWindow = PrivateExtensionWindow(host: self)
     private var isPrivateWindowOpen = false
 
-    init(manager: ExtensionManager) {
+    init(manager: ExtensionManager, dataStore: WKWebsiteDataStore) {
         self.manager = manager
-        controller = WKWebExtensionController(configuration: .default())
+        let configuration = WKWebExtensionController.Configuration.default()
+        configuration.defaultWebsiteDataStore = dataStore
+        controller = WKWebExtensionController(configuration: configuration)
         super.init()
         controller.delegate = self
     }

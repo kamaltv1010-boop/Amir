@@ -157,10 +157,7 @@ struct SettingsView: View {
             browser.stats.reset()
             didClear = true
         case .browsingData:
-            WKWebsiteDataStore.default().removeData(
-                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
-                modifiedSince: .distantPast
-            ) {
+            browser.clearBrowsingData {
                 didClear = true
             }
         case nil:
