@@ -17,6 +17,8 @@ final class BrowserModel: NSObject, ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var progress = 0.0
     @Published private(set) var isDesktopMode = false
+    /// Whether pages see a real iPad instead of an iPhone.
+    @Published private(set) var isIPadMode = false
     /// Set when a page fails to load; the view shows it over the web content.
     @Published private(set) var loadError: String?
     /// The address that failed, so "Try Again" retries it rather than the
@@ -25,7 +27,8 @@ final class BrowserModel: NSObject, ObservableObject {
     /// What the address bar shows: the failed address while the error is up,
     /// the current page otherwise.
     @Published private(set) var displayedURL: URL?
-    /// The fingerprint protections that are switched on.
+    /// The fingerprint protections in effect: the ones switched on, plus the
+    /// user agent in iPad mode.
     @Published private(set) var enabledProtections: Set<FingerprintProtection.Kind> = []
     private var appliedPrivacySignature = ""
     /// Set while the model itself writes privacy settings, so the resulting
@@ -205,6 +208,19 @@ final class BrowserModel: NSObject, ObservableObject {
         reload()
     }
 
+    /// Turns iPad mode on or off and reloads the page. Turning it on leaves
+    /// desktop mode, which would replace the iPad's user agent with a Mac's.
+    func setIPadMode(_ isOn: Bool) {
+        isUpdatingPrivacy = true
+        FingerprintProtection.setIPadMode(isOn)
+        isUpdatingPrivacy = false
+        if isOn {
+            isDesktopMode = false
+        }
+        applyPrivacySettings()
+        reload()
+    }
+
     /// Installs the fingerprint protections that are on. Pages pick up the
     /// change when they next load.
     func applyPrivacySettings() {
@@ -212,7 +228,7 @@ final class BrowserModel: NSObject, ObservableObject {
         defer { isUpdatingPrivacy = false }
         let controller = webView.configuration.userContentController
         controller.removeAllUserScripts()
-        if let script = FingerprintProtection.userScript() {
+        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode) {
             controller.addUserScript(script)
         }
         controller.removeAllContentRuleLists()
@@ -220,9 +236,10 @@ final class BrowserModel: NSObject, ObservableObject {
             controller.add(trackerRules)
         }
         // Desktop mode needs WebKit's own desktop user agent.
-        let spoofAgent = FingerprintProtection.isEnabled(.userAgent) && !isDesktopMode
+        let spoofAgent = FingerprintProtection.isActive(.userAgent) && !isDesktopMode
         webView.customUserAgent = spoofAgent ? FingerprintProtection.userAgent : nil
-        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isEnabled))
+        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isActive))
+        isIPadMode = FingerprintProtection.isIPadMode
         appliedPrivacySignature = privacySignature
     }
 
@@ -446,6 +463,8 @@ extension BrowserModel: WKUIDelegate {
             return nil
         }
         let popupView = WKWebView(frame: .zero, configuration: configuration)
+        // The user agent belongs to the web view, not its configuration.
+        popupView.customUserAgent = webView.customUserAgent
         popupView.uiDelegate = self
         popupView.allowsBackForwardNavigationGestures = true
 

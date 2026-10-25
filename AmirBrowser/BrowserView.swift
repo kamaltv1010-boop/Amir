@@ -308,6 +308,13 @@ struct BrowserView: View {
                 }
             }
 
+            Toggle(isOn: Binding(get: { browser.isIPadMode }, set: { isOn in
+                browser.setIPadMode(isOn)
+                showToast(isOn ? "iPad mode on" : "iPad mode off")
+            })) {
+                Label("iPad Mode", systemImage: "ipad")
+            }
+
             fingerprintMenu
 
             Button(role: .destructive) {

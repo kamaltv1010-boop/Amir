@@ -77,7 +77,7 @@ struct SettingsView: View {
                         HStack {
                             Text("User Agent")
                             Spacer()
-                            Text(verbatim: "\(agent.name) · iOS \(agent.iOS)")
+                            Text(verbatim: "\(agent.name) · \(agent.system)")
                                 .foregroundColor(.secondary)
                         }
                         Text(verbatim: agent.userAgent)
