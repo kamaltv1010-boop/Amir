@@ -47,6 +47,9 @@ jobs:
             exit 1
           fi
 
+      - name: Check tracker rules
+        run: swift .github/scripts/check_tracker_rules.swift AmirBrowser/TrackerRules.json
+
       # The build succeeds even when a language or a permission text is
       # missing from the app, so check the bundle itself.
       - name: Check app bundle
@@ -63,6 +66,10 @@ jobs:
             done
           done
           plutil -p "$app/ar.lproj/InfoPlist.strings"
+          if [ ! -f "$app/TrackerRules.json" ]; then
+            echo "::error::TrackerRules.json is missing from the app"
+            exit 1
+          fi
 
       - name: Package IPA
         run: |

@@ -155,6 +155,50 @@
         }
       }
     },
+    "Block Trackers" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حظر أدوات التتبع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block Trackers"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquer les traqueurs"
+          }
+        }
+      }
+    },
+    "Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحظر Meta Pixel وفيسبوك وإنستغرام في المواقع الأخرى، وGoogle Analytics وTikTok وأدوات تتبع أخرى، حتى لا تتبعك من موقع إلى آخر. تُحذف من الروابط رموز التتبع مثل fbclid وigshid وutm_. ويُظهر مبدّل التطبيقات شاشة فارغة بدل الصفحة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloque Meta Pixel, Facebook et Instagram sur les autres sites, Google Analytics, TikTok et d’autres traqueurs, pour qu’ils ne vous suivent pas de site en site. Les liens perdent les codes de pistage comme fbclid, igshid et utm_. Le sélecteur d’apps affiche un écran vide au lieu de la page."
+          }
+        }
+      }
+    },
     "Bookmarks" : {
       "localizations" : {
         "ar" : {
@@ -397,6 +441,28 @@
         }
       }
     },
+    "Cookies and website data stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تبقى ملفات تعريف الارتباط وبيانات المواقع في الذاكرة فقط، ولا تُحفظ أبداً على الهاتف، وتختفي عند إغلاق التطبيق (بسحبه للأعلى). يبدأ كل تشغيل من جديد: تُغلق الصفحات المفتوحة وتتغير كل البصمات. تبقى المفضلة والروابط المثبتة. يعمل ذلك ابتداءً من التشغيل التالي، و«جلسة جديدة» في قائمة ⋯ تبدأ من جديد فوراً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cookies and website data stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les cookies et les données des sites restent uniquement en mémoire, jamais sur le téléphone, et disparaissent quand vous fermez l’app (en la balayant vers le haut). Chaque lancement repart de zéro : les pages ouvertes sont fermées et toutes les empreintes changent. Les signets et les liens épinglés sont conservés. Prend effet au prochain lancement ; « Nouvelle session » dans le menu ⋯ repart de zéro tout de suite."
+          }
+        }
+      }
+    },
     "Current Values" : {
       "localizations" : {
         "ar" : {
@@ -503,6 +569,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suivant"
+          }
+        }
+      }
+    },
+    "Hide in App Switcher" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إخفاء المحتوى في مبدّل التطبيقات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide in App Switcher"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masquer dans le sélecteur d’apps"
           }
         }
       }
@@ -925,6 +1013,28 @@
         }
       }
     },
+    "Remove Tracking From Links" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إزالة التتبع من الروابط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Tracking From Links"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer le pistage des liens"
+          }
+        }
+      }
+    },
     "Removes cookies, cache and saved website data. Bookmarks are kept." : {
       "localizations" : {
         "ar" : {
@@ -1211,6 +1321,28 @@
         }
       }
     },
+    "Tracking Protection" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الحماية من التتبع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracking Protection"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection contre le pistage"
+          }
+        }
+      }
+    },
     "Try Again" : {
       "localizations" : {
         "ar" : {
@@ -1427,28 +1559,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "À la fermeture de l’app"
-          }
-        }
-      }
-    },
-    "When you close the app (swipe it away), the next launch starts fresh: cookies, cache and website data are deleted, open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. “New Session” in the ⋯ menu does the same right away." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "عند إغلاق التطبيق (بسحبه للأعلى)، يبدأ التشغيل التالي من جديد: تُحذف ملفات تعريف الارتباط والذاكرة المؤقتة وبيانات المواقع، وتُغلق الصفحات المفتوحة، وتتغير كل البصمات. تبقى المفضلة والروابط المثبتة. «جلسة جديدة» في قائمة ⋯ تفعل ذلك فوراً."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "When you close the app (swipe it away), the next launch starts fresh: cookies, cache and website data are deleted, open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. “New Session” in the ⋯ menu does the same right away."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quand vous fermez l’app (en la balayant vers le haut), le lancement suivant repart de zéro : cookies, cache et données des sites sont supprimés, les pages ouvertes sont fermées et toutes les empreintes changent. Les signets et les liens épinglés sont conservés. « Nouvelle session » dans le menu ⋯ fait la même chose tout de suite."
           }
         }
       }

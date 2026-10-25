@@ -5,6 +5,9 @@ struct SettingsView: View {
     @Binding var searchEngine: SearchEngine
 
     @AppStorage(BrowserModel.clearOnQuitKey) private var clearOnQuit = false
+    @AppStorage(TrackerBlocker.enabledKey) private var blockTrackers = true
+    @AppStorage(LinkCleaner.enabledKey) private var cleanLinks = true
+    @AppStorage(PrivacyScreen.enabledKey) private var hideInSwitcher = true
     @Environment(\.dismiss) private var dismiss
     @State private var isConfirmingClear = false
     @State private var didClear = false
@@ -23,6 +26,22 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Toggle(isOn: $blockTrackers) {
+                        Label("Block Trackers", systemImage: "hand.raised.slash")
+                    }
+                    Toggle(isOn: $cleanLinks) {
+                        Label("Remove Tracking From Links", systemImage: "link")
+                    }
+                    Toggle(isOn: $hideInSwitcher) {
+                        Label("Hide in App Switcher", systemImage: "eye.slash")
+                    }
+                } header: {
+                    Text("Tracking Protection")
+                } footer: {
+                    Text("Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page.")
+                }
+
+                Section {
                     ForEach(FingerprintProtection.Kind.allCases) { kind in
                         ProtectionToggle(kind: kind)
                     }
@@ -37,7 +56,7 @@ struct SettingsView: View {
                 } header: {
                     Text("When Closing the App")
                 } footer: {
-                    Text("When you close the app (swipe it away), the next launch starts fresh: cookies, cache and website data are deleted, open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. “New Session” in the ⋯ menu does the same right away.")
+                    Text("Cookies and website data stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away.")
                 }
 
                 Section("Current Values") {

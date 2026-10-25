@@ -5,6 +5,8 @@ struct BrowserView: View {
     @StateObject private var bookmarks = BookmarkStore()
     @StateObject private var pins = BookmarkStore(key: "pinnedLinks")
     @AppStorage(SearchEngine.storageKey) private var searchEngine = SearchEngine.google
+    @AppStorage(PrivacyScreen.enabledKey) private var hideInSwitcher = true
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var addressText = ""
     @FocusState private var isEditingAddress: Bool
@@ -46,6 +48,18 @@ struct BrowserView: View {
         // The keyboard covers the toolbar instead of pushing the page up;
         // WKWebView scrolls its own focused fields into view.
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        // iOS takes the app switcher's screenshot as the app goes inactive.
+        .overlay {
+            if hideInSwitcher && scenePhase != .active {
+                ZStack {
+                    Color(.systemBackground)
+                    Image(systemName: "lock.shield")
+                        .font(.system(size: 56))
+                        .foregroundColor(.secondary)
+                }
+                .ignoresSafeArea()
+            }
+        }
         .onAppear {
             browser.onPinLink = { url in
                 pins.add(title: url.host ?? url.absoluteString, url: url)

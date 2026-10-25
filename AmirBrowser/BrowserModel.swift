@@ -31,6 +31,15 @@ final class BrowserModel: NSObject, ObservableObject {
     /// Set while the model itself writes privacy settings, so the resulting
     /// UserDefaults notifications don't trigger a second reload.
     private var isUpdatingPrivacy = false
+    /// The compiled tracker blocking rules, once ready.
+    private var trackerRules: WKContentRuleList?
+    private var trackerRulesLoaded = false
+    /// The home page to open once the tracker rules are ready, so the first
+    /// page never loads unprotected.
+    private var pendingInitialHome: URL?
+    /// The last address cleaned of tracking codes, so a site that redirects
+    /// back to the tracking address can't cause an endless loop.
+    private var lastCleanedURL: URL?
 
     private let refreshControl = UIRefreshControl()
     private var lastContentProcessCrash: Date?
@@ -60,6 +69,10 @@ final class BrowserModel: NSObject, ObservableObject {
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         attach(webView)
         applyPrivacySettings()
+        Task { [weak self] in
+            let rules = await TrackerBlocker.compile()
+            self?.trackerRulesDidLoad(rules)
+        }
 
         $currentURL.combineLatest($failedURL, $loadError)
             .map { url, failedURL, error in error == nil ? url : failedURL ?? url }
@@ -69,10 +82,23 @@ final class BrowserModel: NSObject, ObservableObject {
 
     // MARK: - Actions
 
+    /// With "Clear Everything on Quit" on, website data lives only in memory
+    /// and is never written to the phone.
     private static func makeWebView() -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.allowsInlineMediaPlayback = true
+        configuration.websiteDataStore = UserDefaults.standard.bool(forKey: clearOnQuitKey) ? .nonPersistent() : .default()
         return WKWebView(frame: .zero, configuration: configuration)
+    }
+
+    private func trackerRulesDidLoad(_ rules: WKContentRuleList?) {
+        trackerRules = rules
+        trackerRulesLoaded = true
+        applyPrivacySettings()
+        if let home = pendingInitialHome {
+            pendingInitialHome = nil
+            loadInitialPage(home: home)
+        }
     }
 
     /// Makes the model the web view's delegate and mirrors its state.
@@ -95,6 +121,10 @@ final class BrowserModel: NSObject, ObservableObject {
     /// Everything on Quit" on, every launch starts a new session instead.
     func loadInitialPage(home: URL) {
         guard webView.url == nil, !webView.isLoading else { return }
+        guard trackerRulesLoaded || !TrackerBlocker.isEnabled else {
+            pendingInitialHome = home
+            return
+        }
         if UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
             startNewSession(home: home)
         } else {
@@ -185,16 +215,25 @@ final class BrowserModel: NSObject, ObservableObject {
         if let script = FingerprintProtection.userScript() {
             controller.addUserScript(script)
         }
+        controller.removeAllContentRuleLists()
+        if TrackerBlocker.isEnabled, let trackerRules {
+            controller.add(trackerRules)
+        }
         // Desktop mode needs WebKit's own desktop user agent.
         let spoofAgent = FingerprintProtection.isEnabled(.userAgent) && !isDesktopMode
         webView.customUserAgent = spoofAgent ? FingerprintProtection.userAgent : nil
         enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isEnabled))
-        appliedPrivacySignature = FingerprintProtection.signature
+        appliedPrivacySignature = privacySignature
+    }
+
+    /// Changes whenever a setting that needs a reload changes.
+    private var privacySignature: String {
+        FingerprintProtection.signature + "|\(TrackerBlocker.isEnabled)"
     }
 
     /// Re-applies the protections and reloads if a switch changed in Settings.
     func privacySettingsMayHaveChanged() {
-        guard !isUpdatingPrivacy, FingerprintProtection.signature != appliedPrivacySignature else { return }
+        guard !isUpdatingPrivacy, privacySignature != appliedPrivacySignature else { return }
         applyPrivacySettings()
         reload()
     }
@@ -209,7 +248,8 @@ final class BrowserModel: NSObject, ObservableObject {
     }
 
     func share() {
-        guard let url = webView.url else { return }
+        guard let pageURL = webView.url else { return }
+        let url = LinkCleaner.isEnabled ? LinkCleaner.clean(pageURL) ?? pageURL : pageURL
         let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activity.popoverPresentationController?.sourceView = webView
         present(activity)
@@ -310,6 +350,20 @@ extension BrowserModel: WKNavigationDelegate {
     ) {
         preferences.preferredContentMode = isDesktopMode ? .desktop : .mobile
 
+        // Open pages without tracking codes such as fbclid or utm_source.
+        if LinkCleaner.isEnabled,
+           navigationAction.targetFrame?.isMainFrame == true,
+           navigationAction.navigationType != .backForward,
+           navigationAction.request.httpMethod == "GET",
+           let url = navigationAction.request.url,
+           let cleaned = LinkCleaner.clean(url),
+           cleaned != lastCleanedURL {
+            lastCleanedURL = cleaned
+            decisionHandler(.cancel, preferences)
+            webView.load(URLRequest(url: cleaned))
+            return
+        }
+
         guard let url = navigationAction.request.url,
               let scheme = url.scheme?.lowercased(),
               !Self.webSchemes.contains(scheme)
@@ -338,7 +392,9 @@ extension BrowserModel: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         refreshControl.endRefreshing()
-        if let url = webView.url {
+        lastCleanedURL = nil
+        // With "Clear Everything on Quit" on, nothing about the visit is kept.
+        if let url = webView.url, !UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
             UserDefaults.standard.set(url, forKey: Self.lastURLKey)
         }
     }
