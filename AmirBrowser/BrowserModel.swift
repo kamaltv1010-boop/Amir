@@ -6,7 +6,9 @@ import WebKit
 /// into published properties the SwiftUI views observe.
 @MainActor
 final class BrowserModel: NSObject, ObservableObject {
-    let webView: WKWebView
+    /// Replaced by a fresh one for a new session, which also drops the old
+    /// back/forward history.
+    @Published private(set) var webView: WKWebView
 
     @Published private(set) var currentURL: URL?
     @Published private(set) var pageTitle = ""
@@ -40,32 +42,25 @@ final class BrowserModel: NSObject, ObservableObject {
     private var isSuppressingDialogs = false
     /// A window a page opened with window.open(), shown in a sheet.
     private var popup: (webView: WKWebView, controller: UIViewController)?
+    private var webViewObservers: Set<AnyCancellable> = []
+    /// Called with a link the user pinned from the long-press menu.
+    var onPinLink: ((URL) -> Void)?
 
     private static let lastURLKey = "lastURL"
+    /// The UserDefaults key of the "Clear Everything on Quit" switch.
+    nonisolated static let clearOnQuitKey = "clearOnQuit"
     /// Schemes WebKit loads itself; anything else (tel:, mailto:, App Store
     /// links…) is handed to iOS.
     private static let webSchemes: Set<String> = ["http", "https", "about", "data", "blob", "file", "javascript"]
 
     override init() {
-        let configuration = WKWebViewConfiguration()
-        configuration.allowsInlineMediaPlayback = true
-        webView = WKWebView(frame: .zero, configuration: configuration)
+        webView = Self.makeWebView()
         super.init()
 
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.allowsBackForwardNavigationGestures = true
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        attach(webView)
         applyPrivacySettings()
 
-        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
-        webView.scrollView.refreshControl = refreshControl
-
-        webView.publisher(for: \.url).assign(to: &$currentURL)
-        webView.publisher(for: \.title).map { $0 ?? "" }.assign(to: &$pageTitle)
-        webView.publisher(for: \.canGoBack).assign(to: &$canGoBack)
-        webView.publisher(for: \.canGoForward).assign(to: &$canGoForward)
-        webView.publisher(for: \.isLoading).assign(to: &$isLoading)
-        webView.publisher(for: \.estimatedProgress).assign(to: &$progress)
         $currentURL.combineLatest($failedURL, $loadError)
             .map { url, failedURL, error in error == nil ? url : failedURL ?? url }
             .removeDuplicates()
@@ -74,10 +69,65 @@ final class BrowserModel: NSObject, ObservableObject {
 
     // MARK: - Actions
 
-    /// Opens the last visited page, or `home` on first launch.
+    private static func makeWebView() -> WKWebView {
+        let configuration = WKWebViewConfiguration()
+        configuration.allowsInlineMediaPlayback = true
+        return WKWebView(frame: .zero, configuration: configuration)
+    }
+
+    /// Makes the model the web view's delegate and mirrors its state.
+    private func attach(_ webView: WKWebView) {
+        webView.navigationDelegate = self
+        webView.uiDelegate = self
+        webView.allowsBackForwardNavigationGestures = true
+        webView.scrollView.refreshControl = refreshControl
+        webViewObservers = [
+            webView.publisher(for: \.url).sink { [weak self] in self?.currentURL = $0 },
+            webView.publisher(for: \.title).sink { [weak self] in self?.pageTitle = $0 ?? "" },
+            webView.publisher(for: \.canGoBack).sink { [weak self] in self?.canGoBack = $0 },
+            webView.publisher(for: \.canGoForward).sink { [weak self] in self?.canGoForward = $0 },
+            webView.publisher(for: \.isLoading).sink { [weak self] in self?.isLoading = $0 },
+            webView.publisher(for: \.estimatedProgress).sink { [weak self] in self?.progress = $0 },
+        ]
+    }
+
+    /// Opens the last visited page, or `home` on first launch. With "Clear
+    /// Everything on Quit" on, every launch starts a new session instead.
     func loadInitialPage(home: URL) {
         guard webView.url == nil, !webView.isLoading else { return }
-        load(UserDefaults.standard.url(forKey: Self.lastURLKey) ?? home)
+        if UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
+            startNewSession(home: home)
+        } else {
+            load(UserDefaults.standard.url(forKey: Self.lastURLKey) ?? home)
+        }
+    }
+
+    /// Deletes cookies, cache and all other website data, closes every open
+    /// page (the back/forward history goes with the old web view), gives
+    /// every site new fingerprints and opens `home`. Bookmarks and pinned
+    /// links are kept.
+    func startNewSession(home: URL) {
+        closePopup()
+        webView.stopLoading()
+        webView.navigationDelegate = nil
+        webView.uiDelegate = nil
+        UserDefaults.standard.removeObject(forKey: Self.lastURLKey)
+        clearError()
+
+        webView = Self.makeWebView()
+        attach(webView)
+        isUpdatingPrivacy = true
+        FingerprintProtection.Kind.allCases.forEach { FingerprintProtection.newSeed($0) }
+        isUpdatingPrivacy = false
+        applyPrivacySettings()
+
+        // Load only once the old data is gone, so no cookie can carry over.
+        WKWebsiteDataStore.default().removeData(
+            ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+            modifiedSince: .distantPast
+        ) { [weak self] in
+            self?.load(home)
+        }
     }
 
     /// Loads whatever the user typed: an address or a search.
@@ -360,6 +410,22 @@ extension BrowserModel: WKUIDelegate {
         }
         popup = (popupView, controller)
         return popupView
+    }
+
+    /// Adds "Pin Link" to WebKit's own long-press menu for links.
+    func webView(
+        _ webView: WKWebView,
+        contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+        completionHandler: @escaping @MainActor @Sendable (UIContextMenuConfiguration?) -> Void
+    ) {
+        let link = elementInfo.linkURL
+        completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] suggested in
+            guard let link else { return UIMenu(children: suggested) }
+            let pin = UIAction(title: String(localized: "Pin Link"), image: UIImage(systemName: "pin")) { _ in
+                self?.onPinLink?(link)
+            }
+            return UIMenu(children: suggested + [pin])
+        })
     }
 
     func webViewDidClose(_ webView: WKWebView) {

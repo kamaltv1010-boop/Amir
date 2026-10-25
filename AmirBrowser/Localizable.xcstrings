@@ -375,6 +375,28 @@
         }
       }
     },
+    "Clear Everything on Quit" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح كل شيء عند الخروج"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Everything on Quit"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout effacer en quittant"
+          }
+        }
+      }
+    },
     "Current Values" : {
       "localizations" : {
         "ar" : {
@@ -529,6 +551,28 @@
         }
       }
     },
+    "Link pinned" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تثبيت الرابط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link pinned"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lien épinglé"
+          }
+        }
+      }
+    },
     "More" : {
       "localizations" : {
         "ar" : {
@@ -617,6 +661,28 @@
         }
       }
     },
+    "New Session" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جلسة جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Session"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle session"
+          }
+        }
+      }
+    },
     "New User Agent" : {
       "localizations" : {
         "ar" : {
@@ -657,6 +723,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle empreinte WebGL"
+          }
+        }
+      }
+    },
+    "New session started" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بدأت جلسة جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New session started"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle session démarrée"
           }
         }
       }
@@ -745,6 +833,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir une autre app ?"
+          }
+        }
+      }
+    },
+    "Pin Link" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تثبيت الرابط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin Link"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épingler le lien"
+          }
+        }
+      }
+    },
+    "Pin This Page" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تثبيت هذه الصفحة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin This Page"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épingler cette page"
           }
         }
       }
@@ -991,6 +1123,28 @@
         }
       }
     },
+    "Start a New Session?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بدء جلسة جديدة؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start a New Session?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrer une nouvelle session ?"
+          }
+        }
+      }
+    },
     "Stop" : {
       "localizations" : {
         "ar" : {
@@ -1035,6 +1189,28 @@
         }
       }
     },
+    "This deletes cookies and website data, closes open pages and changes every fingerprint. Bookmarks and pinned links are kept." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيؤدي هذا إلى حذف ملفات تعريف الارتباط وبيانات المواقع، وإغلاق الصفحات المفتوحة، وتغيير كل البصمات. تبقى المفضلة والروابط المثبتة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This deletes cookies and website data, closes open pages and changes every fingerprint. Bookmarks and pinned links are kept."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela supprime les cookies et les données des sites, ferme les pages ouvertes et change toutes les empreintes. Les signets et les liens épinglés sont conservés."
+          }
+        }
+      }
+    },
     "Try Again" : {
       "localizations" : {
         "ar" : {
@@ -1053,6 +1229,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réessayer"
+          }
+        }
+      }
+    },
+    "Unpin" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إلغاء التثبيت"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désépingler"
+          }
+        }
+      }
+    },
+    "Unpin This Page" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إلغاء تثبيت هذه الصفحة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin This Page"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désépingler cette page"
           }
         }
       }
@@ -1185,6 +1405,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les sites peuvent reconnaître votre appareil grâce à ces détails. Quand une protection est activée, ils reçoivent des valeurs modifiées ou courantes. Changez-les quand vous voulez depuis le menu ⋯, dans Empreinte."
+          }
+        }
+      }
+    },
+    "When Closing the App" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عند إغلاق التطبيق"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When Closing the App"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À la fermeture de l’app"
+          }
+        }
+      }
+    },
+    "When you close the app (swipe it away), the next launch starts fresh: cookies, cache and website data are deleted, open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. “New Session” in the ⋯ menu does the same right away." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عند إغلاق التطبيق (بسحبه للأعلى)، يبدأ التشغيل التالي من جديد: تُحذف ملفات تعريف الارتباط والذاكرة المؤقتة وبيانات المواقع، وتُغلق الصفحات المفتوحة، وتتغير كل البصمات. تبقى المفضلة والروابط المثبتة. «جلسة جديدة» في قائمة ⋯ تفعل ذلك فوراً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you close the app (swipe it away), the next launch starts fresh: cookies, cache and website data are deleted, open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. “New Session” in the ⋯ menu does the same right away."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quand vous fermez l’app (en la balayant vers le haut), le lancement suivant repart de zéro : cookies, cache et données des sites sont supprimés, les pages ouvertes sont fermées et toutes les empreintes changent. Les signets et les liens épinglés sont conservés. « Nouvelle session » dans le menu ⋯ fait la même chose tout de suite."
           }
         }
       }

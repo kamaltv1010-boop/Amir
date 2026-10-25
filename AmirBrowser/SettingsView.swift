@@ -4,6 +4,7 @@ import WebKit
 struct SettingsView: View {
     @Binding var searchEngine: SearchEngine
 
+    @AppStorage(BrowserModel.clearOnQuitKey) private var clearOnQuit = false
     @Environment(\.dismiss) private var dismiss
     @State private var isConfirmingClear = false
     @State private var didClear = false
@@ -29,6 +30,14 @@ struct SettingsView: View {
                     Text("Fingerprint Protection")
                 } footer: {
                     Text("Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint.")
+                }
+
+                Section {
+                    Toggle("Clear Everything on Quit", isOn: $clearOnQuit)
+                } header: {
+                    Text("When Closing the App")
+                } footer: {
+                    Text("When you close the app (swipe it away), the next launch starts fresh: cookies, cache and website data are deleted, open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. “New Session” in the ⋯ menu does the same right away.")
                 }
 
                 Section("Current Values") {

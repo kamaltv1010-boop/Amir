@@ -3,12 +3,14 @@ import SwiftUI
 struct BrowserView: View {
     @StateObject private var browser = BrowserModel()
     @StateObject private var bookmarks = BookmarkStore()
+    @StateObject private var pins = BookmarkStore(key: "pinnedLinks")
     @AppStorage(SearchEngine.storageKey) private var searchEngine = SearchEngine.google
 
     @State private var addressText = ""
     @FocusState private var isEditingAddress: Bool
     @State private var sheet: Sheet?
     @State private var toast: LocalizedStringKey?
+    @State private var isConfirmingNewSession = false
 
     private enum Sheet: String, Identifiable {
         case bookmarks
@@ -20,6 +22,9 @@ struct BrowserView: View {
     var body: some View {
         VStack(spacing: 0) {
             addressBar
+            if !pins.bookmarks.isEmpty && !isEditingAddress {
+                pinnedLinks
+            }
             ZStack {
                 WebView(webView: browser.webView)
                 if let message = browser.loadError {
@@ -42,6 +47,10 @@ struct BrowserView: View {
         // WKWebView scrolls its own focused fields into view.
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onAppear {
+            browser.onPinLink = { url in
+                pins.add(title: url.host ?? url.absoluteString, url: url)
+                showToast("Link pinned")
+            }
             browser.loadInitialPage(home: searchEngine.homeURL)
         }
         .onReceive(browser.$displayedURL) { url in
@@ -57,6 +66,14 @@ struct BrowserView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             browser.privacySettingsMayHaveChanged()
+        }
+        .confirmationDialog("Start a New Session?", isPresented: $isConfirmingNewSession, titleVisibility: .visible) {
+            Button("New Session", role: .destructive) {
+                browser.startNewSession(home: searchEngine.homeURL)
+                showToast("New session started")
+            }
+        } message: {
+            Text("This deletes cookies and website data, closes open pages and changes every fingerprint. Bookmarks and pinned links are kept.")
         }
         .sheet(item: $sheet) { sheet in
             switch sheet {
@@ -150,6 +167,39 @@ struct BrowserView: View {
         isEditingAddress = false
     }
 
+    // MARK: - Pinned links
+
+    private var pinnedLinks: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(pins.bookmarks) { pin in
+                    Button {
+                        browser.load(pin.url)
+                    } label: {
+                        Label(pin.title, systemImage: "pin.fill")
+                            .font(.footnote)
+                            .lineLimit(1)
+                            .frame(maxWidth: 160)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(Color(.secondarySystemBackground), in: Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            pins.remove(pin.url)
+                        } label: {
+                            Label("Unpin", systemImage: "pin.slash")
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 6)
+        }
+        .background(.bar)
+    }
+
     // MARK: - Toolbar
 
     private var toolbar: some View {
@@ -216,6 +266,19 @@ struct BrowserView: View {
             .disabled(browser.currentURL == nil)
 
             Button {
+                if let url = browser.currentURL {
+                    pins.toggle(title: browser.pageTitle, url: url)
+                }
+            } label: {
+                if let url = browser.currentURL, pins.contains(url) {
+                    Label("Unpin This Page", systemImage: "pin.slash")
+                } else {
+                    Label("Pin This Page", systemImage: "pin")
+                }
+            }
+            .disabled(browser.currentURL == nil)
+
+            Button {
                 browser.load(searchEngine.homeURL)
             } label: {
                 Label("Home", systemImage: "house")
@@ -232,6 +295,12 @@ struct BrowserView: View {
             }
 
             fingerprintMenu
+
+            Button(role: .destructive) {
+                isConfirmingNewSession = true
+            } label: {
+                Label("New Session", systemImage: "flame")
+            }
 
             Divider()
 
