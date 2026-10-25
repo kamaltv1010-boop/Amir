@@ -329,6 +329,50 @@ enum FingerprintProtection {
     }
 
     private static let helpers = #"""
+    // Keeps every built-in we replace indistinguishable from the original, so
+    // a site that checks for a tampered browser sees nothing changed and works
+    // as it would in Safari. Each replacement keeps the native name and length,
+    // and reports the same "[native code]" from toString(): a site reads
+    // toString() to tell a patched function from a real one, so without this
+    // the protections themselves give the browser away. A WeakMap sends each
+    // replacement's (and the patched toString's own) toString() to the real
+    // function it stands for.
+    const nativeToString = Function.prototype.toString;
+    const originals = new WeakMap();
+    const patchedToString = function toString() {
+      return nativeToString.apply(originals.get(this) || this, arguments);
+    };
+    originals.set(patchedToString, nativeToString);
+    Function.prototype.toString = patchedToString;
+
+    // Replaces object[name] (a method) with make(original), keeping the native
+    // name, length and "[native code]".
+    const define = (object, name, make) => {
+      const original = object && object[name];
+      if (typeof original !== "function") return;
+      const replacement = make(original);
+      for (const key of ["name", "length"]) {
+        const descriptor = Object.getOwnPropertyDescriptor(original, key);
+        if (descriptor) {
+          try { Object.defineProperty(replacement, key, descriptor); } catch (e) {}
+        }
+      }
+      originals.set(replacement, original);
+      object[name] = replacement;
+    };
+
+    // Replaces a property's getter, keeping the native enumerability and the
+    // native "[native code]" on the getter.
+    const defineGetter = (object, name, get) => {
+      const descriptor = Object.getOwnPropertyDescriptor(object, name);
+      if (descriptor && descriptor.get) originals.set(get, descriptor.get);
+      Object.defineProperty(object, name, {
+        get,
+        configurable: true,
+        enumerable: descriptor ? descriptor.enumerable : true,
+      });
+    };
+
     // Mixes a seed with the site's host, so each site sees different, stable
     // values (FNV-1a).
     const forSite = (seed) => {
@@ -371,12 +415,11 @@ enum FingerprintProtection {
         {
           const canvasSeed = forSite(\#(seed));
           const patchGetImageData = (proto) => {
-            const getImageData = proto.getImageData;
-            proto.getImageData = function (sx, sy) {
+            define(proto, "getImageData", (getImageData) => function (sx, sy) {
               const image = getImageData.apply(this, arguments);
               addPixelNoise(canvasSeed, image.data, image.width, sx | 0, sy | 0, this.canvas.width);
               return image;
-            };
+            });
           };
           patchGetImageData(CanvasRenderingContext2D.prototype);
           if (typeof OffscreenCanvasRenderingContext2D !== "undefined") {
@@ -401,17 +444,15 @@ enum FingerprintProtection {
 
           const canvasProto = HTMLCanvasElement.prototype;
           for (const name of ["toDataURL", "toBlob"]) {
-            const original = canvasProto[name];
-            canvasProto[name] = function () {
+            define(canvasProto, name, (original) => function () {
               return original.apply(noisyCopy(this, makeCanvas) || this, arguments);
-            };
+            });
           }
           if (typeof OffscreenCanvas !== "undefined" && OffscreenCanvas.prototype.convertToBlob) {
-            const convertToBlob = OffscreenCanvas.prototype.convertToBlob;
-            OffscreenCanvas.prototype.convertToBlob = function () {
+            define(OffscreenCanvas.prototype, "convertToBlob", (convertToBlob) => function () {
               const copy = noisyCopy(this, (width, height) => new OffscreenCanvas(width, height));
               return convertToBlob.apply(copy || this, arguments);
-            };
+            });
           }
         }
 
@@ -426,13 +467,12 @@ enum FingerprintProtection {
           for (const name of ["WebGLRenderingContext", "WebGL2RenderingContext"]) {
             const proto = window[name] && window[name].prototype;
             if (!proto) continue;
-            const readPixels = proto.readPixels;
-            proto.readPixels = function (x, y, width, height, format, type, pixels) {
+            define(proto, "readPixels", (readPixels) => function (x, y, width, height, format, type, pixels) {
               readPixels.apply(this, arguments);
               if (pixels instanceof Uint8Array && format === this.RGBA) {
                 addPixelNoise(webGLSeed, pixels, width, x | 0, y | 0, this.drawingBufferWidth);
               }
-            };
+            });
           }
         }
 
@@ -454,8 +494,7 @@ enum FingerprintProtection {
           };
           if (typeof AudioBuffer !== "undefined") {
             const nudged = new WeakMap();
-            const getChannelData = AudioBuffer.prototype.getChannelData;
-            AudioBuffer.prototype.getChannelData = function (channel) {
+            define(AudioBuffer.prototype, "getChannelData", (getChannelData) => function (channel) {
               const data = getChannelData.apply(this, arguments);
               let channels = nudged.get(this);
               if (!channels) nudged.set(this, (channels = new Set()));
@@ -464,23 +503,21 @@ enum FingerprintProtection {
                 nudge(data, channel);
               }
               return data;
-            };
-            const copyFromChannel = AudioBuffer.prototype.copyFromChannel;
-            if (copyFromChannel) {
-              AudioBuffer.prototype.copyFromChannel = function (destination, channel) {
+            });
+            if (AudioBuffer.prototype.copyFromChannel) {
+              define(AudioBuffer.prototype, "copyFromChannel", (copyFromChannel) => function (destination, channel) {
                 this.getChannelData(channel);
                 return copyFromChannel.apply(this, arguments);
-              };
+              });
             }
           }
           if (typeof AnalyserNode !== "undefined") {
             for (const name of ["getFloatFrequencyData", "getFloatTimeDomainData"]) {
-              const original = AnalyserNode.prototype[name];
-              if (!original) continue;
-              AnalyserNode.prototype[name] = function (array) {
+              if (!AnalyserNode.prototype[name]) continue;
+              define(AnalyserNode.prototype, name, (original) => function (array) {
                 original.apply(this, arguments);
                 nudge(array, 0x51ed270b);
-              };
+              });
             }
           }
         }
@@ -519,16 +556,14 @@ enum FingerprintProtection {
             return rect;
           };
           for (const proto of [Element.prototype, Range.prototype]) {
-            const getBoundingClientRect = proto.getBoundingClientRect;
-            proto.getBoundingClientRect = function () {
-              return shiftRect(getBoundingClientRect.apply(this, arguments));
-            };
-            const getClientRects = proto.getClientRects;
-            proto.getClientRects = function () {
-              const rects = getClientRects.apply(this, arguments);
+            define(proto, "getBoundingClientRect", (original) => function () {
+              return shiftRect(original.apply(this, arguments));
+            });
+            define(proto, "getClientRects", (original) => function () {
+              const rects = original.apply(this, arguments);
               for (let i = 0; i < rects.length; i++) shiftRect(rects[i]);
               return rects;
-            };
+            });
           }
         }
 
@@ -541,7 +576,7 @@ enum FingerprintProtection {
         {
           const size = { width: \#(size.width), height: \#(size.height), availWidth: \#(size.width), availHeight: \#(size.height) };
           for (const [name, value] of Object.entries(size)) {
-            Object.defineProperty(Screen.prototype, name, { get: () => value, configurable: true, enumerable: true });
+            defineGetter(Screen.prototype, name, () => value);
           }
         }
 
@@ -553,7 +588,7 @@ enum FingerprintProtection {
     /// user agent.
     private static let iPadScript = #"""
     // iPad mode: pages see the platform Safari reports on an iPad.
-    Object.defineProperty(Navigator.prototype, "platform", { get: () => "iPad", configurable: true, enumerable: true });
+    defineGetter(Navigator.prototype, "platform", () => "iPad");
 
     """#
 }
