@@ -45,6 +45,28 @@
         }
       }
     },
+    "Act on the page when you use it" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التصرّف في الصفحة عندما تستخدمه"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Act on the page when you use it"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agir sur la page quand vous l’utilisez"
+          }
+        }
+      }
+    },
     "Add Bookmark" : {
       "localizations" : {
         "ar" : {
@@ -67,6 +89,116 @@
         }
       }
     },
+    "Add Extension" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة الامتداد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Extension"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter l’extension"
+          }
+        }
+      }
+    },
+    "Add Extension…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة امتداد…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Extension…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une extension…"
+          }
+        }
+      }
+    },
+    "Add menu items" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة عناصر إلى القوائم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add menu items"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter des éléments aux menus"
+          }
+        }
+      }
+    },
+    "Add “%@”?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة «%@»؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add “%@”?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter « %@ » ?"
+          }
+        }
+      }
+    },
+    "All Sites" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كل المواقع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Sites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les sites"
+          }
+        }
+      }
+    },
     "All fingerprints changed" : {
       "localizations" : {
         "ar" : {
@@ -85,6 +217,94 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toutes les empreintes ont été modifiées"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "السماح"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autoriser"
+          }
+        }
+      }
+    },
+    "Allow “%@” more access?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "السماح لـ«%@» بصلاحيات إضافية؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow “%@” more access?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donner plus d’accès à « %@ » ?"
+          }
+        }
+      }
+    },
+    "Amir" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amir"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Amir"
+          }
+        }
+      }
+    },
+    "Appearance" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المظهر"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apparence"
           }
         }
       }
@@ -177,24 +397,46 @@
         }
       }
     },
-    "Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page." : {
+    "Block content on pages" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يحظر Meta Pixel وفيسبوك وإنستغرام في المواقع الأخرى، وGoogle Analytics وTikTok وأدوات تتبع أخرى، حتى لا تتبعك من موقع إلى آخر. تُحذف من الروابط رموز التتبع مثل fbclid وigshid وutm_. ويُظهر مبدّل التطبيقات شاشة فارغة بدل الصفحة."
+            "value" : "حظر محتوى في الصفحات"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page."
+            "value" : "Block content on pages"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bloque Meta Pixel, Facebook et Instagram sur les autres sites, Google Analytics, TikTok et d’autres traqueurs, pour qu’ils ne vous suivent pas de site en site. Les liens perdent les codes de pistage comme fbclid, igshid et utm_. Le sélecteur d’apps affiche un écran vide au lieu de la page."
+            "value" : "Bloquer du contenu sur les pages"
+          }
+        }
+      }
+    },
+    "Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Pages open over HTTPS when the site supports it. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحظر Meta Pixel وفيسبوك وإنستغرام في المواقع الأخرى، وGoogle Analytics وTikTok وأدوات تتبع أخرى، حتى لا تتبعك من موقع إلى آخر. تُفتح الصفحات عبر HTTPS عندما يدعمه الموقع. تُحذف من الروابط رموز التتبع مثل fbclid وigshid وutm_. ويُظهر مبدّل التطبيقات شاشة فارغة بدل الصفحة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocks Meta Pixel, Facebook and Instagram on other sites, Google Analytics, TikTok and other trackers, so they can't follow you from site to site. Pages open over HTTPS when the site supports it. Links lose tracking codes such as fbclid, igshid and utm_. The app switcher shows a blank screen instead of the page."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloque Meta Pixel, Facebook et Instagram sur les autres sites, Google Analytics, TikTok et d’autres traqueurs, pour qu’ils ne vous suivent pas de site en site. Les pages s’ouvrent en HTTPS quand le site le permet. Les liens perdent les codes de pistage comme fbclid, igshid et utm_. Le sélecteur d’apps affiche un écran vide au lieu de la page."
           }
         }
       }
@@ -221,24 +463,46 @@
         }
       }
     },
-    "Browsing data cleared" : {
+    "Bookmarks & History" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تم مسح بيانات التصفح"
+            "value" : "المفضلة والسجل"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Browsing data cleared"
+            "value" : "Bookmarks & History"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Données de navigation effacées"
+            "value" : "Signets et historique"
+          }
+        }
+      }
+    },
+    "Can't add this extension" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّرت إضافة هذا الامتداد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can't add this extension"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible d’ajouter cette extension"
           }
         }
       }
@@ -353,6 +617,72 @@
         }
       }
     },
+    "Change fingerprint protection and see the sites with shields down in Settings." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "غيّر الحماية من البصمة واطّلع على المواقع التي أُوقفت فيها الدروع من الإعدادات."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change fingerprint protection and see the sites with shields down in Settings."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifiez la protection contre l’empreinte et voyez les sites aux boucliers baissés dans Réglages."
+          }
+        }
+      }
+    },
+    "Change pages" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعديل الصفحات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change pages"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier les pages"
+          }
+        }
+      }
+    },
+    "Chrome and Safari web extensions, such as ad blockers and Dark Reader." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "امتدادات الويب لـ Chrome وSafari، مثل حاجبات الإعلانات وDark Reader."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome and Safari web extensions, such as ad blockers and Dark Reader."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les extensions web de Chrome et Safari, comme les bloqueurs de pubs et Dark Reader."
+          }
+        }
+      }
+    },
     "Clear" : {
       "localizations" : {
         "ar" : {
@@ -441,6 +771,50 @@
         }
       }
     },
+    "Clear History" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح السجل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear History"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer l’historique"
+          }
+        }
+      }
+    },
+    "Clear History?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح السجل؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear History?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer l’historique ?"
+          }
+        }
+      }
+    },
     "ClientRects" : {
       "localizations" : {
         "ar" : {
@@ -485,24 +859,178 @@
         }
       }
     },
-    "Cookies and website data stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away." : {
+    "Close All" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تبقى ملفات تعريف الارتباط وبيانات المواقع في الذاكرة فقط، ولا تُحفظ أبداً على الهاتف، وتختفي عند إغلاق التطبيق (بسحبه للأعلى). يبدأ كل تشغيل من جديد: تُغلق الصفحات المفتوحة وتتغير كل البصمات. تبقى المفضلة والروابط المثبتة. يعمل ذلك ابتداءً من التشغيل التالي، و«جلسة جديدة» في قائمة ⋯ تبدأ من جديد فوراً."
+            "value" : "إغلاق الكل"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cookies and website data stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away."
+            "value" : "Close All"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les cookies et les données des sites restent uniquement en mémoire, jamais sur le téléphone, et disparaissent quand vous fermez l’app (en la balayant vers le haut). Chaque lancement repart de zéro : les pages ouvertes sont fermées et toutes les empreintes changent. Les signets et les liens épinglés sont conservés. Prend effet au prochain lancement ; « Nouvelle session » dans le menu ⋯ repart de zéro tout de suite."
+            "value" : "Tout fermer"
+          }
+        }
+      }
+    },
+    "Close All Private Tabs?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إغلاق كل علامات التبويب الخاصة؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close All Private Tabs?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer tous les onglets privés ?"
+          }
+        }
+      }
+    },
+    "Close All Tabs?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إغلاق كل علامات التبويب؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close All Tabs?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer tous les onglets ?"
+          }
+        }
+      }
+    },
+    "Close Tab" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إغلاق علامة التبويب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close Tab"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer l’onglet"
+          }
+        }
+      }
+    },
+    "Close This Tab" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إغلاق علامة التبويب هذه"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close This Tab"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer cet onglet"
+          }
+        }
+      }
+    },
+    "Connection" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الاتصال"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connexion"
+          }
+        }
+      }
+    },
+    "Copy Link" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخ الرابط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Link"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier le lien"
+          }
+        }
+      }
+    },
+    "Copy to the clipboard" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "النسخ إلى الحافظة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy to the clipboard"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier dans le presse-papiers"
           }
         }
       }
@@ -529,6 +1057,50 @@
         }
       }
     },
+    "Data" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البيانات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer"
+          }
+        }
+      }
+    },
     "Done" : {
       "localizations" : {
         "ar" : {
@@ -547,6 +1119,138 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "Don’t Allow" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عدم السماح"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don’t Allow"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refuser"
+          }
+        }
+      }
+    },
+    "Encrypted (HTTPS)" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مشفّر (HTTPS)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encrypted (HTTPS)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiffrée (HTTPS)"
+          }
+        }
+      }
+    },
+    "Extensions" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الامتدادات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensions"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensions"
+          }
+        }
+      }
+    },
+    "Extensions need iOS 18.4 or later" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تتطلب الامتدادات iOS 18.4 أو أحدث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensions need iOS 18.4 or later"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les extensions nécessitent iOS 18.4 ou ultérieur"
+          }
+        }
+      }
+    },
+    "Favorites" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المواقع المفضلة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoris"
+          }
+        }
+      }
+    },
+    "Find on Page" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البحث في الصفحة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find on Page"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher dans la page"
           }
         }
       }
@@ -595,6 +1299,28 @@
         }
       }
     },
+    "Fingerprint protection" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الحماية من البصمة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fingerprint protection"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection contre l’empreinte"
+          }
+        }
+      }
+    },
     "Forward" : {
       "localizations" : {
         "ar" : {
@@ -613,6 +1339,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suivant"
+          }
+        }
+      }
+    },
+    "HTTPS upgrades" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترقيات HTTPS"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTTPS upgrades"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passages en HTTPS"
           }
         }
       }
@@ -639,24 +1387,134 @@
         }
       }
     },
-    "Home" : {
+    "History" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الصفحة الرئيسية"
+            "value" : "السجل"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Home"
+            "value" : "History"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Accueil"
+            "value" : "Historique"
+          }
+        }
+      }
+    },
+    "Install Chrome or Safari web extensions from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't. Extensions run in normal tabs, not in private ones." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ثبّت امتدادات الويب لـ Chrome أو Safari من ملف ‎.zip أو ‎.crx، أو من مجلد فيه ملف manifest.json، محفوظ في تطبيق الملفات. تعمل عادةً الامتدادات التي تحجب الإعلانات أو تغيّر شكل الصفحات، وبعض ميزات Chrome وحده لا تعمل. تعمل الامتدادات في علامات التبويب العادية، لا في الخاصة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install Chrome or Safari web extensions from a .zip or .crx file, or a folder with a manifest.json file, saved in Files. Extensions that block ads or change how pages look usually work; some Chrome-only features don't. Extensions run in normal tabs, not in private ones."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installez des extensions web de Chrome ou Safari depuis un fichier .zip ou .crx, ou un dossier contenant un fichier manifest.json, enregistré dans Fichiers. Les extensions qui bloquent les pubs ou changent l’apparence des pages fonctionnent en général ; certaines fonctions propres à Chrome non. Les extensions fonctionnent dans les onglets normaux, pas dans les privés."
+          }
+        }
+      }
+    },
+    "Installed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المثبّتة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installées"
+          }
+        }
+      }
+    },
+    "It can also:" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ويمكنه أيضاً:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It can also:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle peut aussi :"
+          }
+        }
+      }
+    },
+    "It can read and change every website you visit." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمكنه قراءة وتعديل كل موقع تزوره."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It can read and change every website you visit."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle peut lire et modifier tous les sites que vous visitez."
+          }
+        }
+      }
+    },
+    "It can read and change these sites:" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمكنه قراءة وتعديل هذه المواقع:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It can read and change these sites:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elle peut lire et modifier ces sites :"
           }
         }
       }
@@ -683,6 +1541,28 @@
         }
       }
     },
+    "Library" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المكتبة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bibliothèque"
+          }
+        }
+      }
+    },
     "Link pinned" : {
       "localizations" : {
         "ar" : {
@@ -701,6 +1581,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lien épinglé"
+          }
+        }
+      }
+    },
+    "Manage Extensions" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إدارة الامتدادات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage Extensions"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gérer les extensions"
           }
         }
       }
@@ -793,6 +1695,28 @@
         }
       }
     },
+    "New Private Tab" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "علامة تبويب خاصة جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Private Tab"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvel onglet privé"
+          }
+        }
+      }
+    },
     "New Screen Size" : {
       "localizations" : {
         "ar" : {
@@ -833,6 +1757,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle session"
+          }
+        }
+      }
+    },
+    "New Tab" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "علامة تبويب جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Tab"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvel onglet"
           }
         }
       }
@@ -903,6 +1849,28 @@
         }
       }
     },
+    "Night Mode" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الوضع الليلي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Night Mode"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode nuit"
+          }
+        }
+      }
+    },
     "No bookmarks yet" : {
       "localizations" : {
         "ar" : {
@@ -921,6 +1889,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun signet pour l’instant"
+          }
+        }
+      }
+    },
+    "No history yet" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد سجل بعد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No history yet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun historique"
+          }
+        }
+      }
+    },
+    "Not encrypted" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "غير مشفّر"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not encrypted"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non chiffrée"
           }
         }
       }
@@ -991,6 +2003,138 @@
         }
       }
     },
+    "Open in New Tab" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فتح في علامة تبويب جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in New Tab"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir dans un nouvel onglet"
+          }
+        }
+      }
+    },
+    "Open in Private Tab" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فتح في علامة تبويب خاصة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Private Tab"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir dans un onglet privé"
+          }
+        }
+      }
+    },
+    "Options" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الخيارات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Options"
+          }
+        }
+      }
+    },
+    "Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab. Extensions don't run here." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا تُحفظ الصفحات التي تفتحها في علامات التبويب الخاصة في سجلك، وتُحذف ملفات تعريف الارتباط وبيانات المواقع عند إغلاق آخر علامة تبويب خاصة. ولا تعمل الامتدادات هنا."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pages you open in private tabs aren't saved in your history, and their cookies and website data are deleted when you close the last private tab. Extensions don't run here."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pages ouvertes dans des onglets privés ne sont pas enregistrées dans l’historique, et leurs cookies et données de sites sont supprimés quand vous fermez le dernier onglet privé. Les extensions ne fonctionnent pas ici."
+          }
+        }
+      }
+    },
+    "Pages you visit in normal tabs appear here." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تظهر هنا الصفحات التي تزورها في علامات التبويب العادية."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pages you visit in normal tabs appear here."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pages visitées dans les onglets normaux apparaissent ici."
+          }
+        }
+      }
+    },
+    "Paste and Go" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لصق وانتقال"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste and Go"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coller et aller"
+          }
+        }
+      }
+    },
     "Pin Link" : {
       "localizations" : {
         "ar" : {
@@ -1031,6 +2175,138 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Épingler cette page"
+          }
+        }
+      }
+    },
+    "Privacy Stats" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إحصائيات الخصوصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Stats"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistiques de confidentialité"
+          }
+        }
+      }
+    },
+    "Private" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خاص"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privé"
+          }
+        }
+      }
+    },
+    "Private Browsing" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التصفح الخاص"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private Browsing"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navigation privée"
+          }
+        }
+      }
+    },
+    "Private tabs" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "علامات التبويب الخاصة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private tabs"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onglets privés"
+          }
+        }
+      }
+    },
+    "Protections are off for this site. Turn shields back on if the site works without them." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الحماية متوقفة في هذا الموقع. أعد تشغيل الدروع إذا كان الموقع يعمل بدونها."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protections are off for this site. Turn shields back on if the site works without them."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les protections sont désactivées pour ce site. Relevez les boucliers si le site fonctionne sans."
+          }
+        }
+      }
+    },
+    "Read and change cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قراءة وتعديل ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read and change cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lire et modifier les cookies"
           }
         }
       }
@@ -1101,28 +2377,6 @@
         }
       }
     },
-    "Removes cookies, cache and saved website data. Bookmarks are kept." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "يحذف ملفات تعريف الارتباط والذاكرة المؤقتة وبيانات المواقع المحفوظة. تبقى المفضلة كما هي."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Removes cookies, cache and saved website data. Bookmarks are kept."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprime les cookies, le cache et les données des sites. Les signets sont conservés."
-          }
-        }
-      }
-    },
     "Request Desktop Website" : {
       "localizations" : {
         "ar" : {
@@ -1163,6 +2417,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Demander le site mobile"
+          }
+        }
+      }
+    },
+    "Reset Privacy Stats" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة تعيين إحصائيات الخصوصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Privacy Stats"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser les statistiques"
+          }
+        }
+      }
+    },
+    "Reset Privacy Stats?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة تعيين إحصائيات الخصوصية؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Privacy Stats?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser les statistiques ?"
+          }
+        }
+      }
+    },
+    "Run on a schedule" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "العمل في أوقات محددة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run on a schedule"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S’exécuter à heures fixes"
           }
         }
       }
@@ -1233,6 +2553,28 @@
         }
       }
     },
+    "Search History" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البحث في السجل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search History"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher dans l’historique"
+          }
+        }
+      }
+    },
     "Search or enter address" : {
       "localizations" : {
         "ar" : {
@@ -1251,6 +2593,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher ou saisir une adresse"
+          }
+        }
+      }
+    },
+    "See the pages you visit" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رؤية الصفحات التي تزورها"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the pages you visit"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir les pages que vous visitez"
+          }
+        }
+      }
+    },
+    "See your tabs" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رؤية علامات التبويب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See your tabs"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir vos onglets"
           }
         }
       }
@@ -1299,6 +2685,182 @@
         }
       }
     },
+    "Shields" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدروع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shields"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boucliers"
+          }
+        }
+      }
+    },
+    "Shields & Privacy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدروع والخصوصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shields & Privacy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boucliers et confidentialité"
+          }
+        }
+      }
+    },
+    "Shields are DOWN" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدروع متوقفة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shields are DOWN"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boucliers BAISSÉS"
+          }
+        }
+      }
+    },
+    "Shields are UP" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدروع مفعّلة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shields are UP"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boucliers LEVÉS"
+          }
+        }
+      }
+    },
+    "Shields are up on every site." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدروع مفعّلة في كل المواقع."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shields are up on every site."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les boucliers sont levés sur tous les sites."
+          }
+        }
+      }
+    },
+    "Shows websites with dark colors. Pictures and videos keep their colors." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يعرض المواقع بألوان داكنة، وتحتفظ الصور والفيديوهات بألوانها."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows websites with dark colors. Pictures and videos keep their colors."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche les sites en couleurs sombres. Les images et vidéos gardent leurs couleurs."
+          }
+        }
+      }
+    },
+    "Sites With Shields Down" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مواقع بدروع متوقفة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites With Shields Down"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites aux boucliers baissés"
+          }
+        }
+      }
+    },
+    "Start Page" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صفحة البداية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Page"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page d’accueil"
+          }
+        }
+      }
+    },
     "Start a New Session?" : {
       "localizations" : {
         "ar" : {
@@ -1343,6 +2905,94 @@
         }
       }
     },
+    "Store data" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تخزين البيانات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Store data"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stocker des données"
+          }
+        }
+      }
+    },
+    "Swipe a site to turn shields back on there." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اسحب موقعاً لإعادة تشغيل الدروع فيه."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe a site to turn shields back on there."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Balayez un site pour y relever les boucliers."
+          }
+        }
+      }
+    },
+    "Tabs" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "علامات التبويب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tabs"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onglets"
+          }
+        }
+      }
+    },
+    "Talk to apps" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التواصل مع التطبيقات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk to apps"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communiquer avec des apps"
+          }
+        }
+      }
+    },
     "Tap ⋯ then “Add Bookmark” to save the current page." : {
       "localizations" : {
         "ar" : {
@@ -1365,46 +3015,156 @@
         }
       }
     },
-    "This deletes cookies and website data, closes open pages and changes every fingerprint. Bookmarks and pinned links are kept." : {
+    "This Page" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سيؤدي هذا إلى حذف ملفات تعريف الارتباط وبيانات المواقع، وإغلاق الصفحات المفتوحة، وتغيير كل البصمات. تبقى المفضلة والروابط المثبتة."
+            "value" : "هذه الصفحة"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This deletes cookies and website data, closes open pages and changes every fingerprint. Bookmarks and pinned links are kept."
+            "value" : "This Page"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cela supprime les cookies et les données des sites, ferme les pages ouvertes et change toutes les empreintes. Les signets et les liens épinglés sont conservés."
+            "value" : "Cette page"
           }
         }
       }
     },
-    "Tracking Protection" : {
+    "This deletes cookies, website data and history, closes all tabs and changes every fingerprint. Bookmarks and pinned links are kept." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الحماية من التتبع"
+            "value" : "سيؤدي هذا إلى حذف ملفات تعريف الارتباط وبيانات المواقع والسجل، وإغلاق كل علامات التبويب، وتغيير كل البصمات. تبقى المفضلة والروابط المثبتة."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tracking Protection"
+            "value" : "This deletes cookies, website data and history, closes all tabs and changes every fingerprint. Bookmarks and pinned links are kept."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protection contre le pistage"
+            "value" : "Cela supprime les cookies, les données des sites et l’historique, ferme tous les onglets et change toutes les empreintes. Les signets et les liens épinglés sont conservés."
+          }
+        }
+      }
+    },
+    "This extension couldn't be loaded." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر تحميل هذا الامتداد."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This extension couldn't be loaded."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de charger cette extension."
+          }
+        }
+      }
+    },
+    "This file isn't a web extension. Choose a .zip or .crx file, or a folder with a manifest.json file." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هذا الملف ليس امتداد ويب. اختر ملف ‎.zip أو ‎.crx، أو مجلداً فيه ملف manifest.json."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file isn't a web extension. Choose a .zip or .crx file, or a folder with a manifest.json file."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce fichier n’est pas une extension web. Choisissez un fichier .zip ou .crx, ou un dossier contenant un fichier manifest.json."
+          }
+        }
+      }
+    },
+    "Time saved" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الوقت الموفَّر"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time saved"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temps gagné"
+          }
+        }
+      }
+    },
+    "Trackers blocked" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أدوات تتبع محظورة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trackers blocked"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traqueurs bloqués"
+          }
+        }
+      }
+    },
+    "Trackers, fingerprinting and insecure connections are blocked on this site." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أدوات التتبع والبصمة والاتصالات غير الآمنة محظورة في هذا الموقع."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trackers, fingerprinting and insecure connections are blocked on this site."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les traqueurs, l’empreinte et les connexions non sécurisées sont bloqués sur ce site."
           }
         }
       }
@@ -1471,6 +3231,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Désépingler cette page"
+          }
+        }
+      }
+    },
+    "Update your iPhone in Settings > General > Software Update to use Chrome and Safari web extensions." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حدّث iPhone من الإعدادات > عام > تحديث البرنامج لاستخدام امتدادات الويب لـ Chrome وSafari."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update your iPhone in Settings > General > Software Update to use Chrome and Safari web extensions."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mettez à jour votre iPhone dans Réglages > Général > Mise à jour logicielle pour utiliser les extensions web de Chrome et Safari."
+          }
+        }
+      }
+    },
+    "Upgrade Connections to HTTPS" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترقية الاتصالات إلى HTTPS"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade Connections to HTTPS"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passer les connexions en HTTPS"
           }
         }
       }
@@ -1607,24 +3411,90 @@
         }
       }
     },
-    "When Closing the App" : {
+    "Websites see one of 10 real iPads instead of an iPhone." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "عند إغلاق التطبيق"
+            "value" : "ترى المواقع واحداً من 10 أجهزة iPad حقيقية بدل iPhone."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When Closing the App"
+            "value" : "Websites see one of 10 real iPads instead of an iPhone."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "À la fermeture de l’app"
+            "value" : "Les sites voient l’un de 10 vrais iPad au lieu d’un iPhone."
+          }
+        }
+      }
+    },
+    "With Clear Everything on Quit on, cookies, website data and history stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: tabs are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عند تشغيل «مسح كل شيء عند الخروج»، تبقى ملفات تعريف الارتباط وبيانات المواقع والسجل في الذاكرة فقط، ولا تُحفظ أبداً على الهاتف، وتختفي عند إغلاق التطبيق (بسحبه للأعلى). يبدأ كل تشغيل من جديد: تُغلق علامات التبويب وتتغير كل البصمات. تبقى المفضلة والروابط المثبتة. يعمل ذلك ابتداءً من التشغيل التالي، و«جلسة جديدة» في قائمة ⋯ تبدأ من جديد فوراً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With Clear Everything on Quit on, cookies, website data and history stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: tabs are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avec « Tout effacer en quittant », les cookies, les données des sites et l’historique restent uniquement en mémoire, jamais sur le téléphone, et disparaissent quand vous fermez l’app (en la balayant vers le haut). Chaque lancement repart de zéro : les onglets sont fermés et toutes les empreintes changent. Les signets et les liens épinglés sont conservés. Prend effet au prochain lancement ; « Nouvelle session » dans le menu ⋯ repart de zéro tout de suite."
+          }
+        }
+      }
+    },
+    "Your bookmarks appear here. Add one from the ⋯ menu." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تظهر مفضلتك هنا. أضف صفحة من قائمة ⋯."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your bookmarks appear here. Add one from the ⋯ menu."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos signets apparaissent ici. Ajoutez-en un depuis le menu ⋯."
+          }
+        }
+      }
+    },
+    "Zoom" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التكبير"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom"
           }
         }
       }

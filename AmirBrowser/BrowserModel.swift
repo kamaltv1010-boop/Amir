@@ -136,11 +136,7 @@ final class BrowserModel: NSObject, ObservableObject {
             guard let index = privateTabs.firstIndex(where: { $0 === tab }) else { return }
             privateTabs.remove(at: index)
             if wasSelected {
-                if privateTabs.isEmpty {
-                    selectedID = tabs.last?.id ?? UUID()
-                } else {
-                    selectedID = privateTabs[min(index, privateTabs.count - 1)].id
-                }
+                selectedID = privateTabs.isEmpty ? tabs[tabs.count - 1].id : privateTabs[min(index, privateTabs.count - 1)].id
             }
             if privateTabs.isEmpty {
                 // Nothing of the private session is kept.
@@ -149,17 +145,18 @@ final class BrowserModel: NSObject, ObservableObject {
         } else {
             guard let index = tabs.firstIndex(where: { $0 === tab }) else { return }
             tabs.remove(at: index)
-            ExtensionManager.shared.tabClosed(tab)
+            // There is always a normal tab, before extensions hear of the change.
             if tabs.isEmpty {
                 let blank = BrowserTab(model: self, isPrivate: false)
                 tabs = [blank]
                 ExtensionManager.shared.tabOpened(blank)
-                if wasSelected || selectedTab === blank {
+                if wasSelected {
                     selectedID = blank.id
                 }
             } else if wasSelected {
                 selectedID = tabs[min(index, tabs.count - 1)].id
             }
+            ExtensionManager.shared.tabClosed(tab)
         }
         tab.close()
         selectedTab.loadIfNeeded()
