@@ -249,16 +249,20 @@ enum FingerprintProtection {
     // MARK: - Page script
 
     /// The script for the protections that are on (the user agent is set on
-    /// the web view instead), or nil if none of them is. In desktop mode
-    /// WebKit reports a Mac on its own, so iPad mode leaves it alone there.
+    /// the web view instead), or nil if none of them is. Without
+    /// `protections` (shields down for the site) only iPad mode is left. In
+    /// desktop mode WebKit reports a Mac on its own, so iPad mode leaves it
+    /// alone there.
     @MainActor
-    static func userScript(desktopMode: Bool) -> WKUserScript? {
+    static func userScript(desktopMode: Bool, protections: Bool = true) -> WKUserScript? {
         var parts: [String] = []
-        if isEnabled(.canvas) { parts.append(canvasScript(seed: seed(.canvas))) }
-        if isEnabled(.webGL) { parts.append(webGLScript(seed: seed(.webGL))) }
-        if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
-        if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
-        if isEnabled(.screen) { parts.append(screenScript(screenSize)) }
+        if protections {
+            if isEnabled(.canvas) { parts.append(canvasScript(seed: seed(.canvas))) }
+            if isEnabled(.webGL) { parts.append(webGLScript(seed: seed(.webGL))) }
+            if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
+            if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
+            if isEnabled(.screen) { parts.append(screenScript(screenSize)) }
+        }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
         guard !parts.isEmpty else { return nil }
         let source = "(() => {\n" + helpers + parts.joined(separator: "\n") + "})();"

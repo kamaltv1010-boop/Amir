@@ -2,210 +2,327 @@ import Combine
 import UIKit
 import WebKit
 
-/// Owns the single WKWebView and mirrors its state (address, title, progress…)
-/// into published properties the SwiftUI views observe.
+/// The browser window: its tabs, normal and private, which one is shown, and
+/// what the tabs share: website data, tracker rules, settings and stats.
 @MainActor
 final class BrowserModel: NSObject, ObservableObject {
-    /// Replaced by a fresh one for a new session, which also drops the old
-    /// back/forward history.
-    @Published private(set) var webView: WKWebView
-
-    @Published private(set) var currentURL: URL?
-    @Published private(set) var pageTitle = ""
-    @Published private(set) var canGoBack = false
-    @Published private(set) var canGoForward = false
-    @Published private(set) var isLoading = false
-    @Published private(set) var progress = 0.0
-    @Published private(set) var isDesktopMode = false
-    /// Whether pages see a real iPad instead of an iPhone.
-    @Published private(set) var isIPadMode = false
-    /// Set when a page fails to load; the view shows it over the web content.
-    @Published private(set) var loadError: String?
-    /// The address that failed, so "Try Again" retries it rather than the
-    /// previous page.
-    @Published private(set) var failedURL: URL?
-    /// What the address bar shows: the failed address while the error is up,
-    /// the current page otherwise.
-    @Published private(set) var displayedURL: URL?
+    @Published private(set) var tabs: [BrowserTab] = []
+    @Published private(set) var privateTabs: [BrowserTab] = []
+    @Published private var selectedID = UUID()
     /// The fingerprint protections in effect: the ones switched on, plus the
     /// user agent in iPad mode.
     @Published private(set) var enabledProtections: Set<FingerprintProtection.Kind> = []
+    /// Whether pages see a real iPad instead of an iPhone.
+    @Published private(set) var isIPadMode = false
+
+    let stats = PrivacyStats()
+    let history = HistoryStore()
+    /// Sites that don't support https://, so they aren't upgraded again.
+    var httpOnlyHosts: Set<String> = []
+    /// The compiled tracker blocking rules, once ready.
+    private(set) var trackerRules: WKContentRuleList?
+    private var trackerRulesLoaded = false
+    /// Set while a new session deletes the old website data.
+    private var isClearingData = false
+    /// Normal tabs share their cookies and website data; private tabs share
+    /// theirs, in memory, until the last private tab closes.
+    private var dataStore: WKWebsiteDataStore
+    private var privateDataStore: WKWebsiteDataStore?
     private var appliedPrivacySignature = ""
     /// Set while the model itself writes privacy settings, so the resulting
     /// UserDefaults notifications don't trigger a second reload.
     private var isUpdatingPrivacy = false
-    /// The compiled tracker blocking rules, once ready.
-    private var trackerRules: WKContentRuleList?
-    private var trackerRulesLoaded = false
-    /// The home page to open once the tracker rules are ready, so the first
-    /// page never loads unprotected.
-    private var pendingInitialHome: URL?
-    /// The last address cleaned of tracking codes, so a site that redirects
-    /// back to the tracking address can't cause an endless loop.
-    private var lastCleanedURL: URL?
-
-    private let refreshControl = UIRefreshControl()
-    private var lastContentProcessCrash: Date?
-    /// JavaScript dialogs the current page has shown. After a few, dialogs get
-    /// a "Leave Page" button so a page looping alert() can't lock the app.
-    private var dialogCount = 0
-    /// Set by "Leave Page" so the old page can't show more dialogs while the
-    /// home page loads.
-    private var isSuppressingDialogs = false
-    /// A window a page opened with window.open(), shown in a sheet.
-    private var popup: (webView: WKWebView, controller: UIViewController)?
-    private var webViewObservers: Set<AnyCancellable> = []
     /// Called with a link the user pinned from the long-press menu.
     var onPinLink: ((URL) -> Void)?
 
-    private static let lastURLKey = "lastURL"
     /// The UserDefaults key of the "Clear Everything on Quit" switch.
     nonisolated static let clearOnQuitKey = "clearOnQuit"
-    /// Schemes WebKit loads itself; anything else (tel:, mailto:, App Store
-    /// links…) is handed to iOS.
-    private static let webSchemes: Set<String> = ["http", "https", "about", "data", "blob", "file", "javascript"]
+    private static let savedTabsKey = "openTabs"
+    private static let selectedTabKey = "selectedTab"
+    /// Where the first version kept the one page it remembered.
+    private static let lastURLKey = "lastURL"
 
     override init() {
-        webView = Self.makeWebView()
+        let clearOnQuit = UserDefaults.standard.bool(forKey: Self.clearOnQuitKey)
+        dataStore = clearOnQuit ? .nonPersistent() : .default()
         super.init()
 
-        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
-        attach(webView)
+        if clearOnQuit {
+            // Every launch is a new session: no old pages, new fingerprints.
+            UserDefaults.standard.removeObject(forKey: Self.savedTabsKey)
+            FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
+            WKWebsiteDataStore.default().removeData(
+                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+                modifiedSince: .distantPast
+            ) {}
+        }
+        restoreTabs()
         applyPrivacySettings()
+        ExtensionManager.shared.attach(to: self)
+        tabs.forEach { ExtensionManager.shared.tabOpened($0) }
+
         Task { [weak self] in
             let rules = await TrackerBlocker.compile()
             self?.trackerRulesDidLoad(rules)
         }
-
-        $currentURL.combineLatest($failedURL, $loadError)
-            .map { url, failedURL, error in error == nil ? url : failedURL ?? url }
-            .removeDuplicates()
-            .assign(to: &$displayedURL)
     }
 
-    // MARK: - Actions
+    // MARK: - Tabs
 
-    /// With "Clear Everything on Quit" on, website data lives only in memory
-    /// and is never written to the phone.
-    private static func makeWebView() -> WKWebView {
+    /// The tab on screen. There is always at least one normal tab.
+    var selectedTab: BrowserTab {
+        tabs.first { $0.id == selectedID } ?? privateTabs.first { $0.id == selectedID } ?? tabs[tabs.count - 1]
+    }
+
+    var allTabs: [BrowserTab] {
+        tabs + privateTabs
+    }
+
+    /// Opens a new tab, empty (the start page) or loading `url`.
+    @discardableResult
+    func newTab(isPrivate: Bool = false, url: URL? = nil) -> BrowserTab {
+        let tab = BrowserTab(model: self, isPrivate: isPrivate)
+        insert(tab, after: selectedTab)
+        select(tab)
+        if let url {
+            tab.load(url)
+        }
+        return tab
+    }
+
+    /// Opens `url` in a new tab from a link's menu.
+    @discardableResult
+    func openTab(url: URL, isPrivate: Bool) -> BrowserTab {
+        newTab(isPrivate: isPrivate, url: url)
+    }
+
+    /// The tab for a window a page opens, created with WebKit's configuration
+    /// so the page can talk to it. It is private if its opener is.
+    func openTab(configuration: WKWebViewConfiguration, from opener: BrowserTab) -> BrowserTab? {
+        let tab = BrowserTab(model: self, isPrivate: opener.isPrivate, configuration: configuration)
+        insert(tab, after: opener)
+        select(tab)
+        return tab
+    }
+
+    private func insert(_ tab: BrowserTab, after neighbor: BrowserTab) {
+        if tab.isPrivate {
+            let index = privateTabs.firstIndex { $0 === neighbor }.map { $0 + 1 } ?? privateTabs.count
+            privateTabs.insert(tab, at: index)
+        } else {
+            let index = tabs.firstIndex { $0 === neighbor }.map { $0 + 1 } ?? tabs.count
+            tabs.insert(tab, at: index)
+            ExtensionManager.shared.tabOpened(tab)
+        }
+        saveTabs()
+    }
+
+    func select(_ tab: BrowserTab) {
+        let previous = selectedTab
+        guard previous !== tab else {
+            tab.loadIfNeeded()
+            return
+        }
+        previous.takeSnapshot()
+        selectedID = tab.id
+        tab.loadIfNeeded()
+        ExtensionManager.shared.tabActivated(tab, previous: previous)
+        saveTabs()
+    }
+
+    func close(_ tab: BrowserTab) {
+        let wasSelected = selectedTab === tab
+        if tab.isPrivate {
+            guard let index = privateTabs.firstIndex(where: { $0 === tab }) else { return }
+            privateTabs.remove(at: index)
+            if wasSelected {
+                if privateTabs.isEmpty {
+                    selectedID = tabs.last?.id ?? UUID()
+                } else {
+                    selectedID = privateTabs[min(index, privateTabs.count - 1)].id
+                }
+            }
+            if privateTabs.isEmpty {
+                // Nothing of the private session is kept.
+                privateDataStore = nil
+            }
+        } else {
+            guard let index = tabs.firstIndex(where: { $0 === tab }) else { return }
+            tabs.remove(at: index)
+            ExtensionManager.shared.tabClosed(tab)
+            if tabs.isEmpty {
+                let blank = BrowserTab(model: self, isPrivate: false)
+                tabs = [blank]
+                ExtensionManager.shared.tabOpened(blank)
+                if wasSelected || selectedTab === blank {
+                    selectedID = blank.id
+                }
+            } else if wasSelected {
+                selectedID = tabs[min(index, tabs.count - 1)].id
+            }
+        }
+        tab.close()
+        selectedTab.loadIfNeeded()
+        saveTabs()
+    }
+
+    /// Closes all normal or all private tabs.
+    func closeAll(isPrivate: Bool) {
+        for tab in isPrivate ? privateTabs : tabs {
+            close(tab)
+        }
+    }
+
+    /// Remembers the open normal tabs for the next launch, unless "Clear
+    /// Everything on Quit" is on.
+    func saveTabs() {
+        guard !UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) else {
+            UserDefaults.standard.removeObject(forKey: Self.savedTabsKey)
+            return
+        }
+        let saved = tabs.compactMap(\.saved)
+        if let data = try? JSONEncoder().encode(saved) {
+            UserDefaults.standard.set(data, forKey: Self.savedTabsKey)
+        }
+        let selected = tabs.filter { $0.saved != nil }.firstIndex { $0.id == selectedID }
+        UserDefaults.standard.set(selected ?? saved.count - 1, forKey: Self.selectedTabKey)
+    }
+
+    private func restoreTabs() {
+        var saved: [SavedTab] = []
+        if let data = UserDefaults.standard.data(forKey: Self.savedTabsKey),
+           let tabs = try? JSONDecoder().decode([SavedTab].self, from: data) {
+            saved = tabs
+        } else if let url = UserDefaults.standard.url(forKey: Self.lastURLKey) {
+            saved = [SavedTab(url: url, title: "")]
+        }
+        UserDefaults.standard.removeObject(forKey: Self.lastURLKey)
+        if UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
+            saved = []
+        }
+
+        tabs = saved.map { BrowserTab(model: self, isPrivate: false, restoring: $0) }
+        if tabs.isEmpty {
+            tabs = [BrowserTab(model: self, isPrivate: false)]
+        }
+        let index = UserDefaults.standard.object(forKey: Self.selectedTabKey) as? Int ?? tabs.count - 1
+        selectedID = tabs[max(0, min(index, tabs.count - 1))].id
+    }
+
+    // MARK: - Configuration
+
+    /// A configuration for a new tab's web view.
+    func makeConfiguration(isPrivate: Bool) -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
         configuration.allowsInlineMediaPlayback = true
-        configuration.websiteDataStore = UserDefaults.standard.bool(forKey: clearOnQuitKey) ? .nonPersistent() : .default()
-        return WKWebView(frame: .zero, configuration: configuration)
+        if #available(iOS 14.5, *) {
+            configuration.upgradeKnownHostsToHTTPS = true
+        }
+        if isPrivate {
+            let store = privateDataStore ?? .nonPersistent()
+            privateDataStore = store
+            configuration.websiteDataStore = store
+        } else {
+            configuration.websiteDataStore = dataStore
+            ExtensionManager.shared.configure(configuration)
+        }
+        return configuration
+    }
+
+    /// Pages wait for the tracker rules, so they never load unprotected, and
+    /// for a new session to finish deleting the old data.
+    var isReadyToLoad: Bool {
+        (trackerRulesLoaded || !TrackerBlocker.isEnabled) && !isClearingData
     }
 
     private func trackerRulesDidLoad(_ rules: WKContentRuleList?) {
         trackerRules = rules
         trackerRulesLoaded = true
         applyPrivacySettings()
-        if let home = pendingInitialHome {
-            pendingInitialHome = nil
-            loadInitialPage(home: home)
-        }
+        selectedTab.loadIfNeeded()
     }
 
-    /// Makes the model the web view's delegate and mirrors its state.
-    private func attach(_ webView: WKWebView) {
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.allowsBackForwardNavigationGestures = true
-        webView.scrollView.refreshControl = refreshControl
-        webViewObservers = [
-            webView.publisher(for: \.url).sink { [weak self] in self?.currentURL = $0 },
-            webView.publisher(for: \.title).sink { [weak self] in self?.pageTitle = $0 ?? "" },
-            webView.publisher(for: \.canGoBack).sink { [weak self] in self?.canGoBack = $0 },
-            webView.publisher(for: \.canGoForward).sink { [weak self] in self?.canGoForward = $0 },
-            webView.publisher(for: \.isLoading).sink { [weak self] in self?.isLoading = $0 },
-            webView.publisher(for: \.estimatedProgress).sink { [weak self] in self?.progress = $0 },
-        ]
-    }
+    // MARK: - New session
 
-    /// Opens the last visited page, or `home` on first launch. With "Clear
-    /// Everything on Quit" on, every launch starts a new session instead.
-    func loadInitialPage(home: URL) {
-        guard webView.url == nil, !webView.isLoading else { return }
-        guard trackerRulesLoaded || !TrackerBlocker.isEnabled else {
-            pendingInitialHome = home
-            return
+    /// Deletes cookies, cache, all other website data and history, closes
+    /// every tab, gives every site new fingerprints and opens an empty tab.
+    /// Bookmarks and pinned links are kept.
+    func startNewSession() {
+        for tab in allTabs {
+            if !tab.isPrivate {
+                ExtensionManager.shared.tabClosed(tab)
+            }
+            tab.close()
         }
+        privateTabs = []
+        privateDataStore = nil
+        httpOnlyHosts = []
+        history.clear()
         if UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
-            startNewSession(home: home)
-        } else {
-            load(UserDefaults.standard.url(forKey: Self.lastURLKey) ?? home)
+            dataStore = .nonPersistent()
         }
-    }
-
-    /// Deletes cookies, cache and all other website data, closes every open
-    /// page (the back/forward history goes with the old web view), gives
-    /// every site new fingerprints and opens `home`. Bookmarks and pinned
-    /// links are kept.
-    func startNewSession(home: URL) {
-        closePopup()
-        webView.stopLoading()
-        webView.navigationDelegate = nil
-        webView.uiDelegate = nil
-        UserDefaults.standard.removeObject(forKey: Self.lastURLKey)
-        clearError()
-
-        webView = Self.makeWebView()
-        attach(webView)
         isUpdatingPrivacy = true
         FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
         isUpdatingPrivacy = false
+
+        let blank = BrowserTab(model: self, isPrivate: false)
+        tabs = [blank]
+        selectedID = blank.id
+        ExtensionManager.shared.tabOpened(blank)
         applyPrivacySettings()
+        saveTabs()
 
         // Load only once the old data is gone, so no cookie can carry over.
+        isClearingData = true
         WKWebsiteDataStore.default().removeData(
             ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
             modifiedSince: .distantPast
         ) { [weak self] in
-            self?.load(home)
+            self?.isClearingData = false
+            self?.selectedTab.loadIfNeeded()
         }
     }
 
-    /// Loads whatever the user typed: an address or a search.
-    func open(_ input: String, searchEngine: SearchEngine) {
-        guard let url = AddressResolver.url(for: input, searchEngine: searchEngine) else { return }
-        load(url)
+    // MARK: - Privacy settings
+
+    /// Changes whenever a setting a tab's pages depend on changes.
+    var settingsSignature: String {
+        FingerprintProtection.signature + "|\(TrackerBlocker.isEnabled)|\(trackerRules != nil)|\(NightMode.isEnabled)"
     }
 
-    func load(_ url: URL) {
-        clearError()
-        webView.load(URLRequest(url: url))
+    /// Also changes with settings that only matter for the next navigation.
+    private var privacySignature: String {
+        settingsSignature + "|\(HTTPSUpgrade.isEnabled)|" + Shields.downSites.joined(separator: ",")
     }
 
-    func goBack() {
-        // With the error up, Back just reveals the page underneath it.
-        if loadError != nil {
-            clearError()
-        } else {
-            webView.goBack()
+    /// Installs the current settings in every tab. Pages pick up the change
+    /// when they next load.
+    func applyPrivacySettings() {
+        isUpdatingPrivacy = true
+        defer { isUpdatingPrivacy = false }
+        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isActive))
+        isIPadMode = FingerprintProtection.isIPadMode
+        for tab in allTabs {
+            tab.applySettings(for: tab.webView.url ?? tab.pendingURL)
         }
+        appliedPrivacySignature = privacySignature
     }
 
-    func goForward() {
-        webView.goForward()
-    }
-
-    func reload() {
-        if loadError != nil, let failedURL {
-            load(failedURL)
-        } else if webView.url != nil {
-            webView.reload()
-        } else {
-            refreshControl.endRefreshing()
-        }
-    }
-
-    func stopLoading() {
-        webView.stopLoading()
-    }
-
-    func toggleDesktopMode() {
-        isDesktopMode.toggle()
+    /// Re-applies the settings and reloads the page if a switch changed in
+    /// Settings or the shields panel.
+    func privacySettingsMayHaveChanged() {
+        guard !isUpdatingPrivacy, privacySignature != appliedPrivacySignature else { return }
         applyPrivacySettings()
-        // The new content mode is applied in decidePolicyFor on the reload.
-        reload()
+        selectedTab.reload()
+    }
+
+    /// Gives every site new values for `kinds` and reloads the page with them.
+    func newFingerprint(_ kinds: [FingerprintProtection.Kind]) {
+        isUpdatingPrivacy = true
+        FingerprintProtection.newSeeds(kinds)
+        isUpdatingPrivacy = false
+        applyPrivacySettings()
+        selectedTab.reload()
     }
 
     /// Turns iPad mode on or off and reloads the page. Turning it on leaves
@@ -215,350 +332,65 @@ final class BrowserModel: NSObject, ObservableObject {
         FingerprintProtection.setIPadMode(isOn)
         isUpdatingPrivacy = false
         if isOn {
-            isDesktopMode = false
+            selectedTab.setDesktopMode(false, reload: false)
         }
         applyPrivacySettings()
-        reload()
+        selectedTab.reload()
     }
 
-    /// Installs the fingerprint protections that are on. Pages pick up the
-    /// change when they next load.
-    func applyPrivacySettings() {
+    /// Turns shields up or down for the selected tab's site and reloads it.
+    func setShieldsUp(_ isUp: Bool) {
+        guard let site = Shields.site(of: selectedTab.webView.url) else { return }
         isUpdatingPrivacy = true
-        defer { isUpdatingPrivacy = false }
-        let controller = webView.configuration.userContentController
-        controller.removeAllUserScripts()
-        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode) {
-            controller.addUserScript(script)
-        }
-        controller.removeAllContentRuleLists()
-        if TrackerBlocker.isEnabled, let trackerRules {
-            controller.add(trackerRules)
-        }
-        // Desktop mode needs WebKit's own desktop user agent.
-        let spoofAgent = FingerprintProtection.isActive(.userAgent) && !isDesktopMode
-        webView.customUserAgent = spoofAgent ? FingerprintProtection.userAgent : nil
-        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isActive))
-        isIPadMode = FingerprintProtection.isIPadMode
-        appliedPrivacySignature = privacySignature
-    }
-
-    /// Changes whenever a setting that needs a reload changes.
-    private var privacySignature: String {
-        FingerprintProtection.signature + "|\(TrackerBlocker.isEnabled)"
-    }
-
-    /// Re-applies the protections and reloads if a switch changed in Settings.
-    func privacySettingsMayHaveChanged() {
-        guard !isUpdatingPrivacy, privacySignature != appliedPrivacySignature else { return }
-        applyPrivacySettings()
-        reload()
-    }
-
-    /// Gives every site new values for `kinds` and reloads the page with them.
-    func newFingerprint(_ kinds: [FingerprintProtection.Kind]) {
-        isUpdatingPrivacy = true
-        FingerprintProtection.newSeeds(kinds)
+        Shields.setUp(isUp, for: site)
         isUpdatingPrivacy = false
         applyPrivacySettings()
-        reload()
+        selectedTab.reload()
     }
 
-    func share() {
-        guard let pageURL = webView.url else { return }
-        let url = LinkCleaner.isEnabled ? LinkCleaner.clean(pageURL) ?? pageURL : pageURL
-        let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        activity.popoverPresentationController?.sourceView = webView
-        present(activity)
+    // MARK: - Tab events
+
+    func tabDidChange(_ tab: BrowserTab) {
+        ExtensionManager.shared.tabChanged(tab)
     }
 
-    @objc private func pullToRefresh() {
-        reload()
-    }
-
-    // MARK: - Helpers
-
-    private func clearError() {
-        loadError = nil
-        failedURL = nil
-    }
-
-    private func showError(_ error: Error) {
-        refreshControl.endRefreshing()
-        let nsError = error as NSError
-        // Cancelled loads (stop button, a new page replacing the old one) and
-        // loads WebKit hands off elsewhere (downloads, plug-ins) are not failures.
-        if nsError.domain == NSURLErrorDomain, nsError.code == NSURLErrorCancelled { return }
-        if nsError.domain == "WebKitErrorDomain", [102, 204].contains(nsError.code) { return }
-
-        failedURL = nsError.userInfo[NSURLErrorFailingURLErrorKey] as? URL ?? webView.url
-        loadError = nsError.localizedDescription
-    }
-
-    /// Presents `controller` above whatever is on screen and returns true. If
-    /// that isn't possible right now (for example a sheet is mid-animation,
-    /// when UIKit would silently drop the presentation), runs `fallback`
-    /// instead, so WebKit completion handlers are always called.
-    @discardableResult
-    private func present(_ controller: UIViewController, otherwise fallback: () -> Void = {}) -> Bool {
-        guard var top = webView.window?.rootViewController else {
-            fallback()
-            return false
+    func tabDidFinishLoading(_ tab: BrowserTab) {
+        if !tab.isPrivate, let url = tab.webView.url {
+            history.record(url: url, title: tab.title)
+            saveTabs()
         }
+        ExtensionManager.shared.tabChanged(tab)
+    }
+
+    func tabDidUpdateTitle(_ tab: BrowserTab, url: URL) {
+        if !tab.isPrivate {
+            history.updateTitle(tab.title, for: url)
+        }
+        ExtensionManager.shared.tabChanged(tab)
+    }
+
+    // MARK: - Presenting
+
+    /// Presents `controller` above whatever is on screen and returns true, or
+    /// returns false if that isn't possible right now (for example a sheet is
+    /// mid-animation, when UIKit would silently drop the presentation).
+    @discardableResult
+    func present(_ controller: UIViewController) -> Bool {
+        let window = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first(where: \.isKeyWindow)
+        guard var top = window?.rootViewController else { return false }
         while let presented = top.presentedViewController {
-            if presented.isBeingDismissed {
-                fallback()
-                return false
-            }
+            if presented.isBeingDismissed { return false }
             top = presented
         }
-        guard !top.isBeingPresented, !top.isBeingDismissed else {
-            fallback()
-            return false
+        guard !top.isBeingPresented, !top.isBeingDismissed else { return false }
+        if let popover = controller.popoverPresentationController, popover.sourceView == nil {
+            popover.sourceView = top.view
+            popover.sourceRect = CGRect(x: top.view.bounds.midX, y: top.view.bounds.maxY - 60, width: 1, height: 1)
         }
         top.present(controller, animated: true)
         return true
-    }
-
-    private func confirmOpeningExternally(_ url: URL) {
-        let alert = UIAlertController(
-            title: String(localized: "Open Another App?"),
-            message: url.absoluteString,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
-        alert.addAction(UIAlertAction(title: String(localized: "Open"), style: .default) { _ in
-            UIApplication.shared.open(url)
-        })
-        present(alert)
-    }
-
-    /// Counts a JavaScript dialog and, from the third one on a page, adds a
-    /// "Leave Page" button that answers it with `dismiss` and goes home.
-    private func addLeavePageAction(to alert: UIAlertController, dismiss: @escaping @MainActor () -> Void) {
-        dialogCount += 1
-        guard dialogCount >= 3 else { return }
-        alert.addAction(UIAlertAction(title: String(localized: "Leave Page"), style: .destructive) { [weak self] _ in
-            dismiss()
-            self?.leavePage()
-        })
-    }
-
-    private func leavePage() {
-        isSuppressingDialogs = true
-        closePopup()
-        load(SearchEngine.current.homeURL)
-    }
-
-    private func closePopup() {
-        popup?.controller.dismiss(animated: true)
-        popup = nil
-    }
-}
-
-// MARK: - WKNavigationDelegate
-
-extension BrowserModel: WKNavigationDelegate {
-    func webView(
-        _ webView: WKWebView,
-        decidePolicyFor navigationAction: WKNavigationAction,
-        preferences: WKWebpagePreferences,
-        decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
-    ) {
-        preferences.preferredContentMode = isDesktopMode ? .desktop : .mobile
-
-        // Open pages without tracking codes such as fbclid or utm_source.
-        if LinkCleaner.isEnabled,
-           navigationAction.targetFrame?.isMainFrame == true,
-           navigationAction.navigationType != .backForward,
-           navigationAction.request.httpMethod == "GET",
-           let url = navigationAction.request.url,
-           let cleaned = LinkCleaner.clean(url),
-           cleaned != lastCleanedURL {
-            lastCleanedURL = cleaned
-            decisionHandler(.cancel, preferences)
-            webView.load(URLRequest(url: cleaned))
-            return
-        }
-
-        guard let url = navigationAction.request.url,
-              let scheme = url.scheme?.lowercased(),
-              !Self.webSchemes.contains(scheme)
-        else {
-            decisionHandler(.allow, preferences)
-            return
-        }
-
-        // Opening tel:, mailto:, App Store or other apps always asks first,
-        // because scripts can fake link taps. Iframes only get to ask on a click.
-        if navigationAction.navigationType == .linkActivated || (navigationAction.targetFrame?.isMainFrame ?? true) {
-            confirmOpeningExternally(url)
-        }
-        decisionHandler(.cancel, preferences)
-    }
-
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        clearError()
-    }
-
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        clearError()
-        dialogCount = 0
-        isSuppressingDialogs = false
-    }
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        refreshControl.endRefreshing()
-        lastCleanedURL = nil
-        // With "Clear Everything on Quit" on, nothing about the visit is kept.
-        if let url = webView.url, !UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) {
-            UserDefaults.standard.set(url, forKey: Self.lastURLKey)
-        }
-    }
-
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        showError(error)
-    }
-
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        showError(error)
-    }
-
-    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        let now = Date()
-        defer { lastContentProcessCrash = now }
-        // Reload once. If the page crashes again right away, stop instead of
-        // reloading forever, and let the user decide.
-        if let last = lastContentProcessCrash, now.timeIntervalSince(last) < 10 {
-            refreshControl.endRefreshing()
-            failedURL = webView.url
-            loadError = String(localized: "A problem repeatedly occurred on this page.")
-            return
-        }
-        webView.reload()
-    }
-}
-
-// MARK: - WKUIDelegate
-
-extension BrowserModel: WKUIDelegate {
-    func webView(
-        _ webView: WKWebView,
-        createWebViewWith configuration: WKWebViewConfiguration,
-        for navigationAction: WKNavigationAction,
-        windowFeatures: WKWindowFeatures
-    ) -> WKWebView? {
-        // A tapped target="_blank" link just opens in the same view.
-        if navigationAction.navigationType == .linkActivated,
-           let url = navigationAction.request.url,
-           url.absoluteString != "about:blank" {
-            webView.load(navigationAction.request)
-            return nil
-        }
-
-        // A script's window.open() (sign-in and payment popups) gets a real
-        // window, so the page can talk to it and close it again.
-        if let popup {
-            popup.webView.load(navigationAction.request)
-            return nil
-        }
-        let popupView = WKWebView(frame: .zero, configuration: configuration)
-        // The user agent belongs to the web view, not its configuration.
-        popupView.customUserAgent = webView.customUserAgent
-        popupView.uiDelegate = self
-        popupView.allowsBackForwardNavigationGestures = true
-
-        let content = UIViewController()
-        content.view = popupView
-        content.navigationItem.title = navigationAction.request.url?.host
-        content.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            systemItem: .done,
-            primaryAction: UIAction { [weak self] _ in self?.closePopup() }
-        )
-        let controller = UINavigationController(rootViewController: content)
-        // Only Done or the page's window.close() dismiss it, so `popup` stays accurate.
-        controller.isModalInPresentation = true
-
-        guard present(controller) else {
-            webView.load(navigationAction.request)
-            return nil
-        }
-        popup = (popupView, controller)
-        return popupView
-    }
-
-    /// Adds "Pin Link" to WebKit's own long-press menu for links.
-    func webView(
-        _ webView: WKWebView,
-        contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
-        completionHandler: @escaping @MainActor @Sendable (UIContextMenuConfiguration?) -> Void
-    ) {
-        let link = elementInfo.linkURL
-        completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] suggested in
-            guard let link else { return UIMenu(children: suggested) }
-            let pin = UIAction(title: String(localized: "Pin Link"), image: UIImage(systemName: "pin")) { _ in
-                self?.onPinLink?(link)
-            }
-            return UIMenu(children: suggested + [pin])
-        })
-    }
-
-    func webViewDidClose(_ webView: WKWebView) {
-        if webView === popup?.webView {
-            closePopup()
-        }
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        runJavaScriptAlertPanelWithMessage message: String,
-        initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable () -> Void
-    ) {
-        guard !isSuppressingDialogs else { return completionHandler() }
-        let alert = UIAlertController(title: frame.securityOrigin.host, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default) { _ in
-            completionHandler()
-        })
-        addLeavePageAction(to: alert) { completionHandler() }
-        present(alert) { completionHandler() }
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        runJavaScriptConfirmPanelWithMessage message: String,
-        initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable (Bool) -> Void
-    ) {
-        guard !isSuppressingDialogs else { return completionHandler(false) }
-        let alert = UIAlertController(title: frame.securityOrigin.host, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel) { _ in
-            completionHandler(false)
-        })
-        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default) { _ in
-            completionHandler(true)
-        })
-        addLeavePageAction(to: alert) { completionHandler(false) }
-        present(alert) { completionHandler(false) }
-    }
-
-    func webView(
-        _ webView: WKWebView,
-        runJavaScriptTextInputPanelWithPrompt prompt: String,
-        defaultText: String?,
-        initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable (String?) -> Void
-    ) {
-        guard !isSuppressingDialogs else { return completionHandler(nil) }
-        let alert = UIAlertController(title: frame.securityOrigin.host, message: prompt, preferredStyle: .alert)
-        alert.addTextField { $0.text = defaultText }
-        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel) { _ in
-            completionHandler(nil)
-        })
-        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default) { [weak alert] _ in
-            completionHandler(alert?.textFields?.first?.text)
-        })
-        addLeavePageAction(to: alert) { completionHandler(nil) }
-        present(alert) { completionHandler(nil) }
     }
 }
