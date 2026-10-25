@@ -405,51 +405,18 @@ private struct BrowserScreen: View {
             }
 
             Section {
-                extensionsMenu
-                fingerprintMenu
-                Toggle(isOn: $nightMode) {
-                    Label("Night Mode", systemImage: "moon")
-                }
-                Toggle(isOn: Binding(get: { browser.isIPadMode }, set: { isOn in
-                    browser.setIPadMode(isOn)
-                    showToast(isOn ? "iPad mode on" : "iPad mode off")
-                })) {
-                    Label("iPad Mode", systemImage: "ipad")
-                }
                 Button {
-                    tab.setDesktopMode(!tab.isDesktopMode)
+                    tab.share()
                 } label: {
-                    if tab.isDesktopMode {
-                        Label("Request Mobile Website", systemImage: "iphone")
-                    } else {
-                        Label("Request Desktop Website", systemImage: "desktopcomputer")
-                    }
-                }
-                .disabled(tab.isBlank)
-            }
-
-            Section {
-                zoomMenu
-                if #available(iOS 16.0, *) {
-                    Button {
-                        tab.findInPage()
-                    } label: {
-                        Label("Find on Page", systemImage: "doc.text.magnifyingglass")
-                    }
-                    .disabled(tab.isBlank)
-                }
-                Button {
-                    if let url = tab.webView.url {
-                        pins.toggle(title: tab.title, url: url)
-                    }
-                } label: {
-                    if let url = tab.webView.url, pins.contains(url) {
-                        Label("Unpin This Page", systemImage: "pin.slash")
-                    } else {
-                        Label("Pin This Page", systemImage: "pin")
-                    }
+                    Label("Share", systemImage: "square.and.arrow.up")
                 }
                 .disabled(tab.webView.url == nil)
+                Button {
+                    sheet = .cookies
+                } label: {
+                    Label("Cookies", systemImage: "birthday.cake")
+                }
+                .disabled(tab.webView.url?.host == nil)
                 Button {
                     if let url = tab.webView.url {
                         bookmarks.toggle(title: tab.title, url: url)
@@ -463,22 +430,67 @@ private struct BrowserScreen: View {
                 }
                 .disabled(tab.webView.url == nil)
                 Button {
-                    sheet = .cookies
+                    if let url = tab.webView.url {
+                        pins.toggle(title: tab.title, url: url)
+                    }
                 } label: {
-                    Label("Cookies", systemImage: "birthday.cake")
-                }
-                .disabled(tab.webView.url?.host == nil)
-                Button {
-                    tab.share()
-                } label: {
-                    Label("Share", systemImage: "square.and.arrow.up")
+                    if let url = tab.webView.url, pins.contains(url) {
+                        Label("Unpin This Page", systemImage: "pin.slash")
+                    } else {
+                        Label("Pin This Page", systemImage: "pin")
+                    }
                 }
                 .disabled(tab.webView.url == nil)
+                if #available(iOS 16.0, *) {
+                    Button {
+                        tab.findInPage()
+                    } label: {
+                        Label("Find on Page", systemImage: "doc.text.magnifyingglass")
+                    }
+                    .disabled(tab.isBlank)
+                }
+            }
+
+            // Kept short enough to show whole on a phone, so nothing hides
+            // above the top of the menu.
+            Section {
+                pageSettingsMenu
+                fingerprintMenu
+                extensionsMenu
             }
         } label: {
             toolbarIcon("ellipsis.circle")
         }
         .accessibilityLabel(Text("More"))
+    }
+
+    /// How the page looks and which device it sees: zoom, night mode, iPad
+    /// mode and the desktop website.
+    private var pageSettingsMenu: some View {
+        Menu {
+            zoomMenu
+            Toggle(isOn: $nightMode) {
+                Label("Night Mode", systemImage: "moon")
+            }
+            Toggle(isOn: Binding(get: { browser.isIPadMode }, set: { isOn in
+                browser.setIPadMode(isOn)
+                showToast(isOn ? "iPad mode on" : "iPad mode off")
+            })) {
+                Label("iPad Mode", systemImage: "ipad")
+            }
+            Button {
+                tab.setDesktopMode(!tab.isDesktopMode)
+            } label: {
+                if tab.isDesktopMode {
+                    Label("Request Mobile Website", systemImage: "iphone")
+                } else {
+                    Label("Request Desktop Website", systemImage: "desktopcomputer")
+                }
+            }
+            .disabled(tab.isBlank)
+        } label: {
+            Label("Page Settings", systemImage: "textformat.size")
+        }
     }
 
     private var zoomMenu: some View {

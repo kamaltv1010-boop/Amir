@@ -18,6 +18,16 @@ struct ShieldsPanel: View {
                     header
                 }
 
+                if Shields.site(of: tab.webView.url) != nil {
+                    Section {
+                        NavigationLink(destination: CookiesForm(tab: tab)) {
+                            SettingsLabel("Cookies", systemName: "birthday.cake", color: .brown)
+                        }
+                    } footer: {
+                        Text("Export this site's cookies as a header string, or import them.")
+                    }
+                }
+
                 if tab.shieldsUp {
                     Section {
                         HStack {

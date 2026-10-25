@@ -1453,6 +1453,28 @@
         }
       }
     },
+    "Export this site's cookies as a header string, or import them." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صدّر ملفات تعريف الارتباط لهذا الموقع بصيغة header string، أو استوردها."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export this site's cookies as a header string, or import them."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportez les cookies de ce site au format header string, ou importez-les."
+          }
+        }
+      }
+    },
     "Extensions" : {
       "localizations" : {
         "ar" : {
@@ -2549,6 +2571,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Options"
+          }
+        }
+      }
+    },
+    "Page Settings" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعدادات الصفحة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Page Settings"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages de la page"
           }
         }
       }
