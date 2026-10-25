@@ -1299,6 +1299,28 @@
         }
       }
     },
+    "Create" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إنشاء"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer"
+          }
+        }
+      }
+    },
     "Current Values" : {
       "localizations" : {
         "ar" : {
@@ -1365,6 +1387,50 @@
         }
       }
     },
+    "Delete Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف الملف الشخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer le profil"
+          }
+        }
+      }
+    },
+    "Delete “%@”?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف «%@»؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete “%@”?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer « %@ » ?"
+          }
+        }
+      }
+    },
     "Done" : {
       "localizations" : {
         "ar" : {
@@ -1405,6 +1471,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Refuser"
+          }
+        }
+      }
+    },
+    "Each profile has its own cookies, website data, history, tabs and fingerprints, so accounts stay apart. Bookmarks, pinned links, extensions and settings are shared." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لكل ملف شخصي ملفات تعريف الارتباط وبيانات المواقع والسجل وعلامات التبويب والبصمات الخاصة به، فتبقى الحسابات منفصلة. المفضلة والروابط المثبتة والامتدادات والإعدادات مشتركة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each profile has its own cookies, website data, history, tabs and fingerprints, so accounts stay apart. Bookmarks, pinned links, extensions and settings are shared."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque profil a ses propres cookies, données de sites, historique, onglets et empreintes, pour garder les comptes séparés. Les favoris, les liens épinglés, les extensions et les réglages sont partagés."
           }
         }
       }
@@ -2025,6 +2113,28 @@
         }
       }
     },
+    "Name" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الاسم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom"
+          }
+        }
+      }
+    },
     "New Audio Fingerprint" : {
       "localizations" : {
         "ar" : {
@@ -2109,6 +2219,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvel onglet privé"
+          }
+        }
+      }
+    },
+    "New Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملف شخصي جديد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouveau profil"
           }
         }
       }
@@ -2443,6 +2575,28 @@
         }
       }
     },
+    "On iOS 16 and earlier, only the first profile keeps its website data on the phone; the others keep theirs while the app is open." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في iOS 16 والإصدارات الأقدم، الملف الشخصي الأول وحده يحتفظ ببيانات المواقع على الهاتف؛ الملفات الأخرى تحتفظ بها ما دام التطبيق مفتوحًا."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On iOS 16 and earlier, only the first profile keeps its website data on the phone; the others keep theirs while the app is open."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur iOS 16 et antérieur, seul le premier profil conserve ses données de sites sur le téléphone ; les autres les gardent tant que l’app est ouverte."
+          }
+        }
+      }
+    },
     "Open" : {
       "localizations" : {
         "ar" : {
@@ -2685,6 +2839,28 @@
         }
       }
     },
+    "Personal" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnel"
+          }
+        }
+      }
+    },
     "Pin Link" : {
       "localizations" : {
         "ar" : {
@@ -2813,6 +2989,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onglets privés"
+          }
+        }
+      }
+    },
+    "Profile %lld" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملف شخصي %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile %lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil %lld"
+          }
+        }
+      }
+    },
+    "Profiles" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملفات الشخصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profiles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profils"
           }
         }
       }
@@ -3631,6 +3851,28 @@
         }
       }
     },
+    "Tap a profile to switch to it. Each one has its own cookies, website data, history, tabs and fingerprints." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضغط على ملف شخصي للتبديل إليه. لكل واحد ملفات تعريف الارتباط وبيانات المواقع والسجل وعلامات التبويب والبصمات الخاصة به."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap a profile to switch to it. Each one has its own cookies, website data, history, tabs and fingerprints."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez un profil pour y passer. Chacun a ses propres cookies, données de sites, historique, onglets et empreintes."
+          }
+        }
+      }
+    },
     "Tap ⋯ then “Add Bookmark” to save the current page." : {
       "localizations" : {
         "ar" : {
@@ -3737,6 +3979,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cela supprime les cookies, les données des sites et l’historique, ferme tous les onglets et change toutes les empreintes. Les signets et les liens épinglés sont conservés."
+          }
+        }
+      }
+    },
+    "This deletes the profile’s cookies, website data, history and tabs. Bookmarks and pinned links are kept." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يحذف هذا ملفات تعريف الارتباط وبيانات المواقع والسجل وعلامات التبويب الخاصة بالملف الشخصي. تبقى المفضلة والروابط المثبتة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This deletes the profile’s cookies, website data, history and tabs. Bookmarks and pinned links are kept."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela supprime les cookies, les données de sites, l’historique et les onglets du profil. Les favoris et les liens épinglés sont conservés."
           }
         }
       }

@@ -61,6 +61,19 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink(destination: ProfilesView(browser: browser)) {
+                        HStack {
+                            SettingsLabel("Profiles", systemName: "person.2.fill", color: .mint)
+                            Spacer()
+                            Text(verbatim: browser.profile.name)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                } footer: {
+                    Text("Each profile has its own cookies, website data, history, tabs and fingerprints, so accounts stay apart. Bookmarks, pinned links, extensions and settings are shared.")
+                }
+
+                Section {
                     Toggle(isOn: $nightMode) {
                         SettingsLabel("Night Mode", systemName: "moon.fill", color: .indigo)
                     }
@@ -171,6 +184,97 @@ struct SettingsView: View {
         let version = info?["CFBundleShortVersionString"] as? String ?? "1.0"
         let build = info?["CFBundleVersion"] as? String ?? "1"
         return "\(version) (\(build))"
+    }
+}
+
+/// The profiles: the one in use, a new one, and deleting one.
+private struct ProfilesView: View {
+    @ObservedObject var browser: BrowserModel
+    @State private var deleting: Profile?
+
+    var body: some View {
+        List {
+            Section {
+                ForEach(browser.profiles) { profile in
+                    HStack {
+                        Button {
+                            browser.switchProfile(to: profile)
+                        } label: {
+                            Label {
+                                Text(verbatim: profile.name)
+                                    .foregroundColor(.primary)
+                            } icon: {
+                                Image(systemName: profile.id == browser.profile.id ? "checkmark.circle.fill" : "circle")
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                        .buttonStyle(.borderless)
+                        Spacer()
+                        if !profile.isDefault {
+                            Button(role: .destructive) {
+                                deleting = profile
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .buttonStyle(.borderless)
+                            .accessibilityLabel(Text("Delete Profile"))
+                        }
+                    }
+                }
+            } footer: {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Tap a profile to switch to it. Each one has its own cookies, website data, history, tabs and fingerprints.")
+                    if !Profiles.keepsDataOfEveryProfile {
+                        Text("On iOS 16 and earlier, only the first profile keeps its website data on the phone; the others keep theirs while the app is open.")
+                    }
+                }
+            }
+
+            Section {
+                Button(action: newProfile) {
+                    Label("New Profile", systemImage: "plus")
+                }
+            }
+        }
+        .navigationTitle("Profiles")
+        .navigationBarTitleDisplayMode(.inline)
+        .confirmationDialog(deleteTitle, isPresented: isDeleting, titleVisibility: .visible) {
+            Button("Delete Profile", role: .destructive) {
+                if let profile = deleting {
+                    browser.deleteProfile(profile)
+                }
+                deleting = nil
+            }
+        } message: {
+            Text("This deletes the profile’s cookies, website data, history and tabs. Bookmarks and pinned links are kept.")
+        }
+    }
+
+    private var isDeleting: Binding<Bool> {
+        Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } })
+    }
+
+    private var deleteTitle: LocalizedStringKey {
+        let name = deleting?.name ?? ""
+        return "Delete “\(name)”?"
+    }
+
+    /// Asks for a name, then makes the profile and switches to it.
+    private func newProfile() {
+        let number = browser.profiles.count + 1
+        let alert = UIAlertController(title: String(localized: "New Profile"), message: nil, preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = String(localized: "Name")
+            field.text = String(localized: "Profile \(number)")
+            field.autocapitalizationType = .words
+            field.clearButtonMode = .whileEditing
+        }
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: String(localized: "Create"), style: .default) { _ in
+            let typed = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            browser.createProfile(named: typed.isEmpty ? String(localized: "Profile \(number)") : typed)
+        })
+        browser.present(alert)
     }
 }
 

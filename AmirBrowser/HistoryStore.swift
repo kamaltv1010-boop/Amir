@@ -8,8 +8,8 @@ struct HistoryEntry: Identifiable, Codable, Equatable {
 }
 
 /// The pages visited in normal tabs, newest first, saved in a file in
-/// Application Support. With "Clear Everything on Quit" on, history stays
-/// in memory only.
+/// Application Support (one per profile). With "Clear Everything on Quit"
+/// on, history stays in memory only.
 @MainActor
 final class HistoryStore: ObservableObject {
     @Published private(set) var entries: [HistoryEntry] = []
@@ -18,9 +18,9 @@ final class HistoryStore: ObservableObject {
     private let fileURL: URL?
     private var saveTask: Task<Void, Never>?
 
-    init() {
+    init(fileName: String = "History.json") {
         let folder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-        fileURL = folder?.appendingPathComponent("History.json")
+        fileURL = folder?.appendingPathComponent(fileName)
         if let folder {
             try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         }

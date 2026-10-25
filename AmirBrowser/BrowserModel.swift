@@ -20,7 +20,11 @@ final class BrowserModel: NSObject, ObservableObject {
     @Published private(set) var isIPadMode = false
 
     let stats = PrivacyStats()
-    let history = HistoryStore()
+    /// The profile in use, and every profile.
+    @Published private(set) var profile: Profile
+    @Published private(set) var profiles: [Profile] = Profiles.all
+    /// The history of the profile in use.
+    @Published private(set) var history: HistoryStore
     /// Sites that don't support https://, so they aren't upgraded again.
     var httpOnlyHosts: Set<String> = []
     /// The compiled tracker blocking rules, once ready.
@@ -28,10 +32,10 @@ final class BrowserModel: NSObject, ObservableObject {
     private var trackerRulesLoaded = false
     /// Set while a new session deletes the old website data.
     private var isClearingData = false
-    /// Normal tabs share their cookies and website data; private tabs share
-    /// theirs, in memory, until the last private tab closes. Extensions use
-    /// the normal tabs' store, so it is never replaced, only emptied.
-    private let dataStore: WKWebsiteDataStore
+    /// Normal tabs share their cookies and website data (the profile's);
+    /// private tabs share theirs, in memory, until the last private tab
+    /// closes. Extensions use the store of the profile the app started with.
+    private var dataStore: WKWebsiteDataStore
     private var privateDataStore: WKWebsiteDataStore?
     private var appliedPrivacySignature = ""
     /// Set while the model itself writes privacy settings, so the resulting
@@ -49,20 +53,24 @@ final class BrowserModel: NSObject, ObservableObject {
 
     override init() {
         let clearOnQuit = UserDefaults.standard.bool(forKey: Self.clearOnQuitKey)
-        dataStore = clearOnQuit ? .nonPersistent() : .default()
+        let profile = Profiles.current
+        self.profile = profile
+        dataStore = Profiles.dataStore(for: profile, inMemory: clearOnQuit)
+        history = HistoryStore(fileName: Profiles.historyFileName(for: profile))
         super.init()
         let screen = UIScreen.main.bounds.size
         FingerprintProtection.realScreen = (Int(min(screen.width, screen.height)), Int(max(screen.width, screen.height)))
         ExtensionManager.shared.start(dataStore: dataStore)
 
         if clearOnQuit {
-            // Every launch is a new session: no old pages, new fingerprints.
-            UserDefaults.standard.removeObject(forKey: Self.savedTabsKey)
+            // Every launch is a new session: no old pages, new fingerprints,
+            // and nothing left in any profile's store on the phone.
+            UserDefaults.standard.removeObject(forKey: Profiles.key(Self.savedTabsKey))
             FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
-            WKWebsiteDataStore.default().removeData(
-                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
-                modifiedSince: .distantPast
-            ) {}
+            let stores = [WKWebsiteDataStore.default()] + Profiles.storedProfiles.map { Profiles.dataStore(for: $0) }
+            for store in stores {
+                store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast) {}
+            }
         }
         restoreTabs()
         applyPrivacySettings()
@@ -205,24 +213,24 @@ final class BrowserModel: NSObject, ObservableObject {
         }
     }
 
-    /// Remembers the open normal tabs for the next launch, unless "Clear
-    /// Everything on Quit" is on.
+    /// Remembers the open normal tabs for the next launch (per profile),
+    /// unless "Clear Everything on Quit" is on.
     func saveTabs() {
         guard !UserDefaults.standard.bool(forKey: Self.clearOnQuitKey) else {
-            UserDefaults.standard.removeObject(forKey: Self.savedTabsKey)
+            UserDefaults.standard.removeObject(forKey: Profiles.key(Self.savedTabsKey))
             return
         }
         let saved = tabs.compactMap(\.saved)
         if let data = try? JSONEncoder().encode(saved) {
-            UserDefaults.standard.set(data, forKey: Self.savedTabsKey)
+            UserDefaults.standard.set(data, forKey: Profiles.key(Self.savedTabsKey))
         }
         let selected = tabs.filter { $0.saved != nil }.firstIndex { $0.id == selectedID }
-        UserDefaults.standard.set(selected ?? saved.count - 1, forKey: Self.selectedTabKey)
+        UserDefaults.standard.set(selected ?? saved.count - 1, forKey: Profiles.key(Self.selectedTabKey))
     }
 
     private func restoreTabs() {
         var saved: [SavedTab] = []
-        if let data = UserDefaults.standard.data(forKey: Self.savedTabsKey),
+        if let data = UserDefaults.standard.data(forKey: Profiles.key(Self.savedTabsKey)),
            let tabs = try? JSONDecoder().decode([SavedTab].self, from: data) {
             saved = tabs
         } else if let url = UserDefaults.standard.url(forKey: Self.lastURLKey) {
@@ -237,8 +245,56 @@ final class BrowserModel: NSObject, ObservableObject {
         if tabs.isEmpty {
             tabs = [BrowserTab(model: self, isPrivate: false)]
         }
-        let index = UserDefaults.standard.object(forKey: Self.selectedTabKey) as? Int ?? tabs.count - 1
+        let index = UserDefaults.standard.object(forKey: Profiles.key(Self.selectedTabKey)) as? Int ?? tabs.count - 1
         selectedID = tabs[max(0, min(index, tabs.count - 1))].id
+    }
+
+    // MARK: - Profiles
+
+    /// Shows another profile: closes every tab and opens the profile's
+    /// remembered tabs, with its website data, history and fingerprints.
+    func switchProfile(to newProfile: Profile) {
+        guard newProfile.id != profile.id, profiles.contains(where: { $0.id == newProfile.id }) else { return }
+        saveTabs()
+        for tab in privateTabs {
+            close(tab)
+        }
+        for tab in tabs {
+            ExtensionManager.shared.tabClosed(tab)
+            tab.close()
+        }
+        isUpdatingPrivacy = true
+        Profiles.select(newProfile)
+        isUpdatingPrivacy = false
+        profile = newProfile
+        httpOnlyHosts = []
+        dataStore = Profiles.dataStore(for: newProfile, inMemory: UserDefaults.standard.bool(forKey: Self.clearOnQuitKey))
+        history = HistoryStore(fileName: Profiles.historyFileName(for: newProfile))
+        restoreTabs()
+        tabs.forEach { ExtensionManager.shared.tabOpened($0) }
+        applyPrivacySettings()
+        saveTabs()
+        selectedTab.loadIfNeeded()
+    }
+
+    /// Makes a profile and shows it.
+    func createProfile(named name: String) {
+        let newProfile = Profiles.add(named: name)
+        profiles = Profiles.all
+        switchProfile(to: newProfile)
+    }
+
+    /// Deletes a profile with everything it kept. Deleting the profile in
+    /// use shows the first profile instead.
+    func deleteProfile(_ doomed: Profile) {
+        guard !doomed.isDefault else { return }
+        if doomed.id == profile.id {
+            switchProfile(to: profiles[0])
+        }
+        Profiles.delete(doomed) { [weak self] in
+            self?.profiles = Profiles.all
+        }
+        profiles = Profiles.all
     }
 
     // MARK: - Configuration

@@ -10,7 +10,8 @@ import WebKit
 ///
 /// Every kind has its own switch and its own seed. A site sees stable values
 /// until the seed changes, which keeps sites that read twice and compare
-/// working; a new seed gives every site new values for that kind.
+/// working; a new seed gives every site new values for that kind. Each
+/// profile has its own seeds.
 enum FingerprintProtection {
     enum Kind: String, CaseIterable, Identifiable {
         case canvas, webGL, audio, clientRects, screen, userAgent
@@ -21,8 +22,9 @@ enum FingerprintProtection {
             self == .canvas ? "canvasProtection" : "protection.\(rawValue)"
         }
 
+        /// The key of this kind's seed, in the profile in use.
         fileprivate var seedKey: String {
-            self == .canvas ? "canvasSeed" : "seed.\(rawValue)"
+            Profiles.key(self == .canvas ? "canvasSeed" : "seed.\(rawValue)")
         }
 
         var title: LocalizedStringKey {
@@ -344,7 +346,7 @@ enum FingerprintProtection {
     // The page runs after this script and could change Object and Math, so
     // what is needed later (for the frames the page makes) is kept from here.
     const { defineProperty, getOwnPropertyDescriptor, getOwnPropertyNames, setPrototypeOf } = Object;
-    const { imul, floor, min, max } = Math;
+    const { imul, floor, min, max, clz32 } = Math;
     const { isFinite } = Number;
     // The kind of an object, like "[object Uint8Array]", from any window.
     const tagOf = Function.prototype.call.bind(Object.prototype.toString);
@@ -364,39 +366,61 @@ enum FingerprintProtection {
       return (n ^ (n >>> 16)) >>> 0;
     };
 
-    // Sets the lowest bit of one channel in about 1 of 16 visible pixels,
-    // which changes about 1 in 32: invisible, but it changes every hash a
-    // fingerprinter takes. Setting the bit rather than flipping it means a
-    // second pass changes nothing, so a frame the protection reaches twice
-    // (from its page and from WebKit) stays protected. An opaque pixel gets
-    // a color bit; a translucent one gets its alpha bit, since the canvas
-    // stores colors multiplied by alpha and would swallow a color bit there.
-    // Pixels are keyed by their position in the whole canvas, counted from
-    // the top, so reading part of an image, or exporting it, gives the same
-    // noise as reading all of it. WebGL's readPixels hands rows bottom-up;
-    // `flipped` turns them into rows from the top, so pixels read that way
-    // match the same pixels in an exported image. Only the `width` by
-    // `height` pixels read are touched; 16-bit float pixels are scaled by
-    // 1/1024 instead.
+    // Changes about 1 in 32 of the pixels where a device shows itself: the
+    // antialiased edges, blends and gradients, whose colors are rare in the
+    // image, while flat fills (a color seen in more than 1 in 1024 pixels, or
+    // 4) stay exactly as drawn, so a site that draws a plain shape and checks
+    // the pixels sees nothing. Of a chosen pixel the lowest bit of one color
+    // channel is set (not flipped: a second pass then changes nothing, so a
+    // frame the protection reaches twice stays protected): invisible, but it
+    // changes every hash a fingerprinter takes. Pixels are keyed by their
+    // position in the whole canvas, counted from the top, so reading part of
+    // an image, or exporting it, gives the same noise as reading all of it.
+    // WebGL's readPixels hands rows bottom-up; `flipped` turns them into
+    // rows from the top, so pixels read that way match the same pixels in an
+    // exported image. Only the `width` by `height` pixels read are touched;
+    // 16-bit float pixels are scaled by 1/1024 instead.
     const addPixelNoise = (seed, data, width, height, left, top, fullWidth, fullHeight, flipped) => {
       const tag = tagOf(data);
       const bytes = tag === "[object Uint8ClampedArray]" || tag === "[object Uint8Array]";
       if (!bytes && tag !== "[object Float16Array]") return;
       if (!(width > 0 && height > 0)) return;
-      const end = min(data.length, width * height * 4);
-      for (let i = 0; i + 3 < end; i += 4) {
-        if (data[i + 3] === 0) continue;
+      const count = min(data.length >> 2, width * height);
+      // How often each color occurs, in a hashed table.
+      let isCommon = null;
+      if (bytes && count > 4) {
+        try {
+          const pixels = new Uint32Array(data.buffer, data.byteOffset, count);
+          const mask = (1 << min(16, 33 - clz32(count))) - 1;
+          const counts = new Uint32Array(mask + 1);
+          for (let i = 0; i < count; i++) counts[mix(pixels[i]) & mask]++;
+          const threshold = max(4, count >> 10);
+          isCommon = (p) => counts[mix(pixels[p]) & mask] > threshold;
+        } catch (e) {}
+      }
+      for (let i = 0, end = count * 4; i < end; i += 4) {
+        const alpha = data[i + 3];
+        if (alpha === 0) continue;
         const p = i >> 2;
+        if (isCommon && isCommon(p)) continue;
         const x = left + (p % width);
         const row = top + floor(p / width);
         const y = flipped ? fullHeight - 1 - row : row;
         const h = mix(seed ^ imul(y * fullWidth + x + 1, 0x9e3779b1));
         if ((h & 15) !== 0) continue;
+        const j = i + ((h >>> 4) % 3);
+        const bit = (h >>> 6) & 1;
         if (!bytes) {
-          data[i + ((h >>> 4) % 3)] *= 1 + (h & 64 ? 1 : -1) / 1024;
+          data[j] *= 1 + (bit ? 1 : -1) / 1024;
+        } else if (alpha === 255) {
+          data[j] = (data[j] & ~1) | bit;
         } else {
-          const j = data[i + 3] === 255 ? i + ((h >>> 4) % 3) : i + 3;
-          data[j] = (data[j] & ~1) | ((h >>> 6) & 1);
+          // The canvas stores a translucent pixel's colors multiplied by its
+          // alpha, so set the bit in that stored value and write back the
+          // color it reads as, which the canvas keeps through that
+          // multiplication; an exported image then shows the same pixel.
+          const stored = min(alpha, ((((data[j] * alpha + 127) / 255) | 0) & ~1) | bit);
+          data[j] = ((stored * 255 + (alpha >> 1)) / alpha) | 0;
         }
       }
     };
