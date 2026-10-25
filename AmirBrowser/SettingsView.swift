@@ -3,7 +3,6 @@ import WebKit
 
 struct SettingsView: View {
     @Binding var searchEngine: SearchEngine
-    @AppStorage(CanvasProtection.enabledKey) private var canvasProtection = true
 
     @Environment(\.dismiss) private var dismiss
     @State private var isConfirmingClear = false
@@ -23,11 +22,28 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Toggle("Canvas Protection", isOn: $canvasProtection)
+                    ForEach(FingerprintProtection.Kind.allCases) { kind in
+                        ProtectionToggle(kind: kind)
+                    }
                 } header: {
-                    Text("Privacy")
+                    Text("Fingerprint Protection")
                 } footer: {
-                    Text("Adds invisible noise to what websites read from canvases, so they can't use it to recognize your device. “New Canvas Fingerprint” in the ⋯ menu changes it.")
+                    Text("Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint.")
+                }
+
+                Section("Current Values") {
+                    HStack {
+                        Text("Screen Size")
+                        Spacer()
+                        Text(verbatim: "\(FingerprintProtection.screenSize.width) × \(FingerprintProtection.screenSize.height)")
+                            .foregroundColor(.secondary)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("User Agent")
+                        Text(verbatim: FingerprintProtection.userAgent)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
                 }
 
                 Section {
@@ -77,6 +93,23 @@ struct SettingsView: View {
             modifiedSince: .distantPast
         ) {
             didClear = true
+        }
+    }
+}
+
+/// One fingerprint protection's on/off switch, stored in UserDefaults.
+private struct ProtectionToggle: View {
+    let kind: FingerprintProtection.Kind
+    @AppStorage private var isOn: Bool
+
+    init(kind: FingerprintProtection.Kind) {
+        self.kind = kind
+        _isOn = AppStorage(wrappedValue: true, kind.enabledKey)
+    }
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            Label(kind.title, systemImage: kind.symbol)
         }
     }
 }

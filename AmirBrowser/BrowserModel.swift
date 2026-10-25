@@ -23,6 +23,12 @@ final class BrowserModel: NSObject, ObservableObject {
     /// What the address bar shows: the failed address while the error is up,
     /// the current page otherwise.
     @Published private(set) var displayedURL: URL?
+    /// The fingerprint protections that are switched on.
+    @Published private(set) var enabledProtections: Set<FingerprintProtection.Kind> = []
+    private var appliedPrivacySignature = ""
+    /// Set while the model itself writes privacy settings, so the resulting
+    /// UserDefaults notifications don't trigger a second reload.
+    private var isUpdatingPrivacy = false
 
     private let refreshControl = UIRefreshControl()
     private var lastContentProcessCrash: Date?
@@ -114,23 +120,40 @@ final class BrowserModel: NSObject, ObservableObject {
 
     func toggleDesktopMode() {
         isDesktopMode.toggle()
+        applyPrivacySettings()
         // The new content mode is applied in decidePolicyFor on the reload.
         reload()
     }
 
-    /// Installs the canvas protection script if it is switched on. Pages pick
-    /// up the change when they next load.
+    /// Installs the fingerprint protections that are on. Pages pick up the
+    /// change when they next load.
     func applyPrivacySettings() {
+        isUpdatingPrivacy = true
+        defer { isUpdatingPrivacy = false }
         let controller = webView.configuration.userContentController
         controller.removeAllUserScripts()
-        if CanvasProtection.isEnabled {
-            controller.addUserScript(CanvasProtection.userScript(seed: CanvasProtection.seed))
+        if let script = FingerprintProtection.userScript() {
+            controller.addUserScript(script)
         }
+        // Desktop mode needs WebKit's own desktop user agent.
+        let spoofAgent = FingerprintProtection.isEnabled(.userAgent) && !isDesktopMode
+        webView.customUserAgent = spoofAgent ? FingerprintProtection.userAgent : nil
+        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isEnabled))
+        appliedPrivacySignature = FingerprintProtection.signature
     }
 
-    /// Gives every site a new canvas fingerprint and reloads the page with it.
-    func newCanvasFingerprint() {
-        CanvasProtection.newSeed()
+    /// Re-applies the protections and reloads if a switch changed in Settings.
+    func privacySettingsMayHaveChanged() {
+        guard !isUpdatingPrivacy, FingerprintProtection.signature != appliedPrivacySignature else { return }
+        applyPrivacySettings()
+        reload()
+    }
+
+    /// Gives every site new values for `kinds` and reloads the page with them.
+    func newFingerprint(_ kinds: [FingerprintProtection.Kind]) {
+        isUpdatingPrivacy = true
+        kinds.forEach { FingerprintProtection.newSeed($0) }
+        isUpdatingPrivacy = false
         applyPrivacySettings()
         reload()
     }

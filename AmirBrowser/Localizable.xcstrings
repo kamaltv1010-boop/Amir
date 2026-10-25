@@ -67,24 +67,68 @@
         }
       }
     },
-    "Adds invisible noise to what websites read from canvases, so they can't use it to recognize your device. “New Canvas Fingerprint” in the ⋯ menu changes it." : {
+    "All fingerprints changed" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يضيف تشويشاً غير مرئي إلى ما تقرؤه المواقع من عناصر Canvas، حتى لا تستعملها للتعرّف على جهازك. يمكنك تغييره من «بصمة Canvas جديدة» في قائمة ⋯."
+            "value" : "تم تغيير كل البصمات"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adds invisible noise to what websites read from canvases, so they can't use it to recognize your device. “New Canvas Fingerprint” in the ⋯ menu changes it."
+            "value" : "All fingerprints changed"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajoute un bruit invisible à ce que les sites lisent des canvas, pour qu’ils ne puissent pas s’en servir pour reconnaître votre appareil. « Nouvelle empreinte Canvas » dans le menu ⋯ la change."
+            "value" : "Toutes les empreintes ont été modifiées"
+          }
+        }
+      }
+    },
+    "Audio" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصوت"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio"
+          }
+        }
+      }
+    },
+    "Audio fingerprint changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تغيير بصمة الصوت"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio fingerprint changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empreinte audio modifiée"
           }
         }
       }
@@ -199,24 +243,24 @@
         }
       }
     },
-    "Canvas Protection" : {
+    "Canvas" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "حماية Canvas"
+            "value" : "Canvas"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Canvas Protection"
+            "value" : "Canvas"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Protection Canvas"
+            "value" : "Canvas"
           }
         }
       }
@@ -239,6 +283,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empreinte Canvas modifiée"
+          }
+        }
+      }
+    },
+    "Change All" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تغيير الكل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change All"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout changer"
           }
         }
       }
@@ -309,6 +375,28 @@
         }
       }
     },
+    "Current Values" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "القيم الحالية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current Values"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valeurs actuelles"
+          }
+        }
+      }
+    },
     "Done" : {
       "localizations" : {
         "ar" : {
@@ -327,6 +415,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "Fingerprint" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البصمة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fingerprint"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empreinte"
+          }
+        }
+      }
+    },
+    "Fingerprint Protection" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الحماية من البصمة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fingerprint Protection"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection contre l’empreinte"
           }
         }
       }
@@ -419,6 +551,28 @@
         }
       }
     },
+    "New Audio Fingerprint" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بصمة صوت جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Audio Fingerprint"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle empreinte audio"
+          }
+        }
+      }
+    },
     "New Canvas Fingerprint" : {
       "localizations" : {
         "ar" : {
@@ -437,6 +591,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle empreinte Canvas"
+          }
+        }
+      }
+    },
+    "New Screen Size" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حجم شاشة جديد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Screen Size"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle taille d’écran"
+          }
+        }
+      }
+    },
+    "New User Agent" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User Agent جديد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New User Agent"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvel User-Agent"
+          }
+        }
+      }
+    },
+    "New WebGL Fingerprint" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بصمة WebGL جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New WebGL Fingerprint"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle empreinte WebGL"
           }
         }
       }
@@ -525,28 +745,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir une autre app ?"
-          }
-        }
-      }
-    },
-    "Privacy" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "الخصوصية"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confidentialité"
           }
         }
       }
@@ -657,6 +855,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Demander le site mobile"
+          }
+        }
+      }
+    },
+    "Screen Size" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حجم الشاشة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen Size"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille d’écran"
+          }
+        }
+      }
+    },
+    "Screen size changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تغيير حجم الشاشة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen size changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taille d’écran modifiée"
           }
         }
       }
@@ -815,6 +1057,50 @@
         }
       }
     },
+    "User Agent" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User Agent"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User Agent"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User-Agent"
+          }
+        }
+      }
+    },
+    "User agent changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تغيير User Agent"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User agent changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User-Agent modifié"
+          }
+        }
+      }
+    },
     "Version" : {
       "localizations" : {
         "ar" : {
@@ -833,6 +1119,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version"
+          }
+        }
+      }
+    },
+    "WebGL" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WebGL"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WebGL"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WebGL"
+          }
+        }
+      }
+    },
+    "WebGL fingerprint changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تغيير بصمة WebGL"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WebGL fingerprint changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empreinte WebGL modifiée"
+          }
+        }
+      }
+    },
+    "Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمكن للمواقع التعرّف على جهازك من هذه التفاصيل. عند تشغيل الحماية، تحصل المواقع على قيم معدّلة أو شائعة. يمكنك تغييرها في أي وقت من قائمة ⋯ ضمن «البصمة»."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les sites peuvent reconnaître votre appareil grâce à ces détails. Quand une protection est activée, ils reçoivent des valeurs modifiées ou courantes. Changez-les quand vous voulez depuis le menu ⋯, dans Empreinte."
           }
         }
       }

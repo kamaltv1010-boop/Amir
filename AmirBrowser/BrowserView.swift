@@ -4,7 +4,6 @@ struct BrowserView: View {
     @StateObject private var browser = BrowserModel()
     @StateObject private var bookmarks = BookmarkStore()
     @AppStorage(SearchEngine.storageKey) private var searchEngine = SearchEngine.google
-    @AppStorage(CanvasProtection.enabledKey) private var canvasProtection = true
 
     @State private var addressText = ""
     @FocusState private var isEditingAddress: Bool
@@ -56,9 +55,8 @@ struct BrowserView: View {
                 ? browser.displayedURL?.absoluteString ?? ""
                 : displayText(for: browser.displayedURL)
         }
-        .onChange(of: canvasProtection) { _ in
-            browser.applyPrivacySettings()
-            browser.reload()
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            browser.privacySettingsMayHaveChanged()
         }
         .sheet(item: $sheet) { sheet in
             switch sheet {
@@ -233,13 +231,7 @@ struct BrowserView: View {
                 }
             }
 
-            Button {
-                browser.newCanvasFingerprint()
-                showToast("Canvas fingerprint changed")
-            } label: {
-                Label("New Canvas Fingerprint", systemImage: "arrow.triangle.2.circlepath")
-            }
-            .disabled(!canvasProtection)
+            fingerprintMenu
 
             Divider()
 
@@ -252,6 +244,32 @@ struct BrowserView: View {
             toolbarIcon("ellipsis.circle")
         }
         .accessibilityLabel(Text("More"))
+    }
+
+    private var fingerprintMenu: some View {
+        Menu {
+            ForEach(FingerprintProtection.Kind.allCases) { kind in
+                Button {
+                    browser.newFingerprint([kind])
+                    showToast(kind.changedMessage)
+                } label: {
+                    Label(kind.newTitle, systemImage: kind.symbol)
+                }
+                .disabled(!browser.enabledProtections.contains(kind))
+            }
+
+            Divider()
+
+            Button {
+                browser.newFingerprint(Array(browser.enabledProtections))
+                showToast("All fingerprints changed")
+            } label: {
+                Label("Change All", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .disabled(browser.enabledProtections.isEmpty)
+        } label: {
+            Label("Fingerprint", systemImage: "hand.raised")
+        }
     }
 
     private func showToast(_ message: LocalizedStringKey) {
