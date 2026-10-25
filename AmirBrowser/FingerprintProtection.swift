@@ -3,8 +3,9 @@ import WebKit
 
 /// Fingerprint protection, in the spirit of Brave's "farbling". Pages can
 /// recognize a device from what it draws (canvas, WebGL), how it renders
-/// audio, its screen size and its user agent, even without cookies. With a
-/// protection on, pages read invisibly changed pixels and samples, or a common
+/// audio, the exact sizes it lays out text and elements at (ClientRects), its
+/// screen size and its user agent, even without cookies. With a protection
+/// on, pages read invisibly changed pixels, samples and sizes, or a common
 /// screen size and user agent, so these no longer identify the device.
 ///
 /// Every kind has its own switch and its own seed. A site sees stable values
@@ -12,7 +13,7 @@ import WebKit
 /// working; a new seed gives every site new values for that kind.
 enum FingerprintProtection {
     enum Kind: String, CaseIterable, Identifiable {
-        case canvas, webGL, audio, screen, userAgent
+        case canvas, webGL, audio, clientRects, screen, userAgent
 
         var id: Self { self }
 
@@ -29,6 +30,7 @@ enum FingerprintProtection {
             case .canvas: return "Canvas"
             case .webGL: return "WebGL"
             case .audio: return "Audio"
+            case .clientRects: return "ClientRects"
             case .screen: return "Screen Size"
             case .userAgent: return "User Agent"
             }
@@ -39,6 +41,7 @@ enum FingerprintProtection {
             case .canvas: return "New Canvas Fingerprint"
             case .webGL: return "New WebGL Fingerprint"
             case .audio: return "New Audio Fingerprint"
+            case .clientRects: return "New ClientRects Fingerprint"
             case .screen: return "New Screen Size"
             case .userAgent: return "New User Agent"
             }
@@ -49,6 +52,7 @@ enum FingerprintProtection {
             case .canvas: return "Canvas fingerprint changed"
             case .webGL: return "WebGL fingerprint changed"
             case .audio: return "Audio fingerprint changed"
+            case .clientRects: return "ClientRects fingerprint changed"
             case .screen: return "Screen size changed"
             case .userAgent: return "User agent changed"
             }
@@ -59,6 +63,7 @@ enum FingerprintProtection {
             case .canvas: return "paintbrush"
             case .webGL: return "cube"
             case .audio: return "waveform"
+            case .clientRects: return "ruler"
             case .screen: return "iphone"
             case .userAgent: return "globe"
             }
@@ -252,6 +257,7 @@ enum FingerprintProtection {
         if isEnabled(.canvas) { parts.append(canvasScript(seed: seed(.canvas))) }
         if isEnabled(.webGL) { parts.append(webGLScript(seed: seed(.webGL))) }
         if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
+        if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
         if isEnabled(.screen) { parts.append(screenScript(screenSize)) }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
         guard !parts.isEmpty else { return nil }
@@ -413,6 +419,53 @@ enum FingerprintProtection {
                 nudge(array, 0x51ed270b);
               };
             }
+          }
+        }
+
+        """#
+    }
+
+    private static func clientRectsScript(seed: UInt32) -> String {
+        #"""
+        // ClientRects: the edges of the boxes getBoundingClientRect() and
+        // getClientRects() report move by 0.00001 to 0.00002 pixels, far below
+        // anything visible, but it changes the hashes fingerprinting scripts
+        // take of these sizes. An edge is moved by its own value, so measuring
+        // twice, or an edge two boxes share, still agrees; zero stays zero, so
+        // hidden elements still measure 0. The browser returns new rects on
+        // every call, so they are changed in place and keep their types.
+        {
+          const rectsSeed = forSite(\#(seed));
+          const bits = new Float64Array(1);
+          const words = new Uint32Array(bits.buffer);
+          const shift = (value) => {
+            if (value === 0 || !Number.isFinite(value)) return value;
+            bits[0] = value;
+            const h = mix(mix(rectsSeed ^ words[1]) ^ words[0]);
+            return value + (h & 1 ? 1e-5 : -1e-5) * (1 + (h >>> 1) / 2147483648);
+          };
+          const shiftRect = (rect) => {
+            const left = shift(rect.left);
+            const top = shift(rect.top);
+            const right = Math.max(shift(rect.right), left);
+            const bottom = Math.max(shift(rect.bottom), top);
+            rect.x = left;
+            rect.y = top;
+            rect.width = right - left;
+            rect.height = bottom - top;
+            return rect;
+          };
+          for (const proto of [Element.prototype, Range.prototype]) {
+            const getBoundingClientRect = proto.getBoundingClientRect;
+            proto.getBoundingClientRect = function () {
+              return shiftRect(getBoundingClientRect.apply(this, arguments));
+            };
+            const getClientRects = proto.getClientRects;
+            proto.getClientRects = function () {
+              const rects = getClientRects.apply(this, arguments);
+              for (let i = 0; i < rects.length; i++) shiftRect(rects[i]);
+              return rects;
+            };
           }
         }
 

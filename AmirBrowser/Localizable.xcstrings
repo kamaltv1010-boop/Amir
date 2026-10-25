@@ -441,6 +441,50 @@
         }
       }
     },
+    "ClientRects" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ClientRects"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ClientRects"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ClientRects"
+          }
+        }
+      }
+    },
+    "ClientRects fingerprint changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تغيير بصمة ClientRects"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ClientRects fingerprint changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empreinte ClientRects modifiée"
+          }
+        }
+      }
+    },
     "Cookies and website data stay only in memory, never on the phone, and are gone when you close the app (swipe it away). Every launch starts fresh: open pages are closed and every fingerprint changes. Bookmarks and pinned links are kept. Takes effect from the next launch; “New Session” in the ⋯ menu starts fresh right away." : {
       "localizations" : {
         "ar" : {
@@ -723,6 +767,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle empreinte Canvas"
+          }
+        }
+      }
+    },
+    "New ClientRects Fingerprint" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بصمة ClientRects جديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New ClientRects Fingerprint"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle empreinte ClientRects"
           }
         }
       }
