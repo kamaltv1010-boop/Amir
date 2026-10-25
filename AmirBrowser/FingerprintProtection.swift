@@ -348,7 +348,9 @@ enum FingerprintProtection {
     const { defineProperty, getOwnPropertyDescriptor, getOwnPropertyNames, getPrototypeOf, setPrototypeOf } = Object;
     const { imul, floor, min, max, clz32 } = Math;
     const { isFinite } = Number;
+    const Uint8 = Uint8Array;
     const Uint32 = Uint32Array;
+    const now = Date.now;
     // Typed arrays are read through %TypedArray%.prototype's own getters and
     // method, which report what an array really is from any window, so a
     // page can't change what they say to send the noise elsewhere.
@@ -373,8 +375,11 @@ enum FingerprintProtection {
     // the channels of them already changed.
     const rendered = new WeakSet();
     const nudged = new WeakMap();
-    // Which kind of context each canvas has, "webgl" or "canvas", from any window.
+    // Each canvas's context: its kind, "webgl" or "canvas", and the settings
+    // it was made with, from any window.
     const kinds = new WeakMap();
+    // Each canvas's (or WebGL context's) candidate pixels, computed lately.
+    const marks = new WeakMap();
 
     // Integer hash, so a given pixel or sample always gets the same tweak.
     const mix = (n) => {
@@ -383,48 +388,97 @@ enum FingerprintProtection {
       return (n ^ (n >>> 16)) >>> 0;
     };
 
-    // Changes about 1 in 32 of the pixels where a device shows itself: the
-    // antialiased edges, blends and gradients, whose colors are rare in the
-    // image, while flat fills (a color seen in more than 1 in 1024 pixels, or
-    // 4) stay exactly as drawn, so a site that draws a plain shape and checks
-    // the pixels sees nothing. Of a chosen pixel the lowest bit of one color
-    // channel is set (not flipped: a second pass then changes nothing, so a
-    // frame the protection reaches twice stays protected): invisible, but it
-    // changes every hash a fingerprinter takes. Pixels are keyed by their
-    // position in the whole canvas, counted from the top, so reading part of
-    // an image, or exporting it, gives the same noise as reading all of it.
-    // WebGL's readPixels hands rows bottom-up; `flipped` turns them into
-    // rows from the top, so pixels read that way match the same pixels in an
-    // exported image. Only the `width` by `height` pixels read are touched;
-    // 16-bit float pixels are scaled by 1/1024 instead. A read of up to 64
-    // pixels is left alone: apps read a pixel or a few to find what is under
-    // a tap (an object drawn in its own color), and a fingerprint needs more.
-    const addPixelNoise = (seed, data, width, height, left, top, fullWidth, fullHeight, flipped) => {
+    // The 32-bit pixels of 8-bit RGBA data, as a view on it or a copy.
+    const wordsOf = (data, count) => {
+      try {
+        return new Uint32(bufferOf.call(data), byteOffsetOf.call(data), count);
+      } catch (e) {
+        return new Uint32(new Uint8(data).buffer, 0, count);
+      }
+    };
+
+    // Which pixels of an image may get noise, one bit each in the pixels'
+    // order: the visible ones whose color is rare in the image (seen in less
+    // than 1 in 64 pixels, so not a fill) and differs from a neighbor's: the
+    // antialiased edges, blends and gradients where a device shows itself.
+    // Flat shapes, however small, stay exactly as drawn, so a page reading
+    // what it drew (a shape in its own color under a tap) gets it back, and a
+    // site checking a plain drawing sees nothing.
+    const counts = new Uint32(65536);
+    const candidateBits = (data, width, height) => {
+      const count = width * height;
+      const pixels = wordsOf(data, count);
+      const bits = new Uint8((count + 7) >> 3);
+      const mask = (1 << min(16, 33 - clz32(count))) - 1;
+      counts.fill(0, 0, mask + 1);
+      for (let i = 0; i < count; i++) counts[mix(pixels[i]) & mask]++;
+      const threshold = max(4, count >> 6);
+      for (let y = 0, i = 0; y < height; y++) {
+        for (let x = 0; x < width; x++, i++) {
+          if (data[i * 4 + 3] === 0) continue;
+          const pixel = pixels[i];
+          if (counts[mix(pixel) & mask] > threshold) continue;
+          if ((x > 0 && pixels[i - 1] !== pixel) || (x + 1 < width && pixels[i + 1] !== pixel)
+            || (y > 0 && pixels[i - width] !== pixel) || (y + 1 < height && pixels[i + width] !== pixel)) {
+            bits[i >> 3] |= 1 << (i & 7);
+          }
+        }
+      }
+      return bits;
+    };
+
+    // The candidate pixels of the whole image a read of `width` by `height`
+    // at (left, top) comes from, so a part reads the same as the whole:
+    // from `data` when the read is the whole image, else from the pixels
+    // computed for `key` (the canvas or WebGL context) in the last quarter
+    // second, else from `readAll()`, a native read of the whole image.
+    const candidatesFor = (key, data, width, height, left, top, fullWidth, fullHeight, readAll) => {
+      if (tagOf(data) !== "Uint8ClampedArray" && tagOf(data) !== "Uint8Array") return null;
+      if (left === 0 && top === 0 && width === fullWidth && height === fullHeight) {
+        const bits = candidateBits(data, width, height);
+        if (key) marks.set(key, { time: now(), width, height, bits });
+        return bits;
+      }
+      const cached = key && marks.get(key);
+      if (cached && cached.width === fullWidth && cached.height === fullHeight && now() - cached.time < 250) {
+        return cached.bits;
+      }
+      const whole = readAll();
+      if (!whole) return null;
+      const bits = candidateBits(whole, fullWidth, fullHeight);
+      if (key) marks.set(key, { time: now(), width: fullWidth, height: fullHeight, bits });
+      return bits;
+    };
+
+    // Changes about 1 in 16 of the candidate pixels (`bits`, from
+    // candidatesFor; all visible pixels when null): invisible, but it
+    // changes every hash a fingerprinter takes. Of a chosen pixel the lowest
+    // bit of one color channel is set (not flipped: a second pass then
+    // changes nothing, so a frame the protection reaches twice stays
+    // protected). Pixels are keyed by their position in the whole image,
+    // counted from the top, so reading part of an image, or exporting it,
+    // gives the same noise as reading all of it. WebGL's readPixels hands
+    // rows bottom-up; `flipped` turns them into rows from the top, so pixels
+    // read that way match the same pixels in an exported image. Only the
+    // `width` by `height` pixels read are touched; 16-bit float pixels are
+    // scaled by 1/1024 instead.
+    const addPixelNoise = (seed, data, width, height, left, top, fullWidth, fullHeight, flipped, bits) => {
       const tag = tagOf(data);
       const bytes = tag === "Uint8ClampedArray" || tag === "Uint8Array";
       if (!bytes && tag !== "Float16Array") return;
       if (!(width > 0 && height > 0)) return;
       const count = min(lengthOf.call(data) >> 2, width * height);
-      if (count <= 64) return;
-      // How often each color occurs, in a hashed table.
-      let isCommon = null;
-      if (bytes) {
-        try {
-          const pixels = new Uint32(bufferOf.call(data), byteOffsetOf.call(data), count);
-          const mask = (1 << min(16, 33 - clz32(count))) - 1;
-          const counts = new Uint32(mask + 1);
-          for (let i = 0; i < count; i++) counts[mix(pixels[i]) & mask]++;
-          const threshold = max(4, count >> 10);
-          isCommon = (p) => counts[mix(pixels[p]) & mask] > threshold;
-        } catch (e) {}
-      }
       for (let i = 0, end = count * 4; i < end; i += 4) {
         const alpha = data[i + 3];
         if (alpha === 0) continue;
         const p = i >> 2;
-        if (isCommon && isCommon(p)) continue;
         const x = left + (p % width);
         const row = top + floor(p / width);
+        if (x < 0 || x >= fullWidth || row < 0 || row >= fullHeight) continue;
+        if (bits) {
+          const index = row * fullWidth + x;
+          if (!(bits[index >> 3] & (1 << (index & 7)))) continue;
+        }
         const y = flipped ? fullHeight - 1 - row : row;
         const h = mix(seed ^ imul(y * fullWidth + x + 1, 0x9e3779b1));
         if ((h & 15) !== 0) continue;
@@ -601,9 +655,10 @@ enum FingerprintProtection {
 
     private static func canvasScript(seed: UInt32) -> String {
         #"""
-        // Canvas: pixels read with getImageData get pixel noise. The image's
-        // and the canvas's properties are read with the built-ins as they are
-        // now, so a page can't redirect the noise by changing them later.
+        // Canvas: pixels read with getImageData get pixel noise, decided from
+        // the whole canvas. The image's and the canvas's properties are read
+        // with the built-ins as they are now, so a page can't redirect the
+        // noise by changing them later.
         {
           const canvasSeed = forSite(\#(seed));
           const getter = (proto, name) => {
@@ -614,24 +669,35 @@ enum FingerprintProtection {
           const imageData = getter(imageProto, "data");
           const imageWidth = getter(imageProto, "width");
           const imageHeight = getter(imageProto, "height");
-          const patchGetImageData = (proto) => {
+          const patchGetImageData = (proto, canvasProto) => {
             const contextCanvas = getter(proto, "canvas");
-            define(proto, "getImageData", (getImageData) => function (sx, sy, sw, sh) {
-              const image = getImageData.apply(this, arguments);
+            const canvasWidth = getter(canvasProto, "width");
+            const canvasHeight = getter(canvasProto, "height");
+            const getImageData = native(proto.getImageData);
+            define(proto, "getImageData", (original) => function (sx, sy, sw, sh) {
+              const image = original.apply(this, arguments);
               // A negative width or height reads to the left of, or above, (sx, sy).
               const left = (sx | 0) + (sw < 0 ? (sw | 0) : 0);
               const top = (sy | 0) + (sh < 0 ? (sh | 0) : 0);
+              const data = imageData(image);
               const width = imageWidth(image);
               const height = imageHeight(image);
-              const canvas = contextCanvas(this);
-              addPixelNoise(canvasSeed, imageData(image), width, height, left, top,
-                canvas ? canvas.width : width, canvas ? canvas.height : height, false);
+              let canvas, fullWidth = width, fullHeight = height;
+              try {
+                canvas = contextCanvas(this);
+                fullWidth = canvasWidth(canvas);
+                fullHeight = canvasHeight(canvas);
+              } catch (e) {}
+              const bits = candidatesFor(canvas, data, width, height, left, top, fullWidth, fullHeight, () => {
+                try { return imageData(getImageData.call(this, 0, 0, fullWidth, fullHeight)); } catch (e) { return null; }
+              });
+              addPixelNoise(canvasSeed, data, width, height, left, top, fullWidth, fullHeight, false, bits);
               return image;
             });
           };
-          patchGetImageData(window.CanvasRenderingContext2D.prototype);
-          if (window.OffscreenCanvasRenderingContext2D) {
-            patchGetImageData(window.OffscreenCanvasRenderingContext2D.prototype);
+          patchGetImageData(window.CanvasRenderingContext2D.prototype, window.HTMLCanvasElement.prototype);
+          if (window.OffscreenCanvasRenderingContext2D && window.OffscreenCanvas) {
+            patchGetImageData(window.OffscreenCanvasRenderingContext2D.prototype, window.OffscreenCanvas.prototype);
           }
         }
 
@@ -640,10 +706,12 @@ enum FingerprintProtection {
 
     private static func webGLScript(seed: UInt32) -> String {
         #"""
-        // WebGL: pixels read back with readPixels get pixel noise.
+        // WebGL: pixels read back with readPixels get pixel noise, decided
+        // from the whole drawing buffer.
         {
           const webGLSeed = forSite(\#(seed));
           const RGBA = 0x1908;
+          const UNSIGNED_BYTE = 0x1401;
           for (const name of ["WebGLRenderingContext", "WebGL2RenderingContext"]) {
             const proto = window[name] && window[name].prototype;
             if (!proto) continue;
@@ -653,14 +721,25 @@ enum FingerprintProtection {
             };
             const bufferWidth = getter("drawingBufferWidth");
             const bufferHeight = getter("drawingBufferHeight");
-            define(proto, "readPixels", (readPixels) => function (x, y, width, height, format, type, pixels, offset) {
-              readPixels.apply(this, arguments);
+            const readPixels = native(proto.readPixels);
+            define(proto, "readPixels", (original) => function (x, y, width, height, format, type, pixels, offset) {
+              original.apply(this, arguments);
               const tag = tagOf(pixels);
               if ((tag !== "Uint8Array" && tag !== "Uint8ClampedArray") || Number(format) !== RGBA) return;
               // WebGL2 can read into the array from `offset` on.
               const data = offset > 0 ? subarray.call(pixels, offset) : pixels;
-              addPixelNoise(webGLSeed, data, width | 0, height | 0, x | 0, y | 0,
-                bufferWidth(this), bufferHeight(this), true);
+              const fullWidth = bufferWidth(this);
+              const fullHeight = bufferHeight(this);
+              const bits = candidatesFor(this, data, width | 0, height | 0, x | 0, y | 0, fullWidth, fullHeight, () => {
+                try {
+                  const whole = new Uint8(fullWidth * fullHeight * 4);
+                  readPixels.call(this, 0, 0, fullWidth, fullHeight, RGBA, UNSIGNED_BYTE, whole);
+                  return whole;
+                } catch (e) {
+                  return null;
+                }
+              });
+              addPixelNoise(webGLSeed, data, width | 0, height | 0, x | 0, y | 0, fullWidth, fullHeight, true, bits);
             });
           }
         }
@@ -692,37 +771,58 @@ enum FingerprintProtection {
             native(contextProto.getImageData), native(contextProto.putImageData),
           ];
           const rememberContext = (proto) => {
-            define(proto, "getContext", (getContext) => function (type) {
+            define(proto, "getContext", (getContext) => function (type, settings) {
               const context = getContext.apply(this, arguments);
-              if (context) kinds.set(this, /^(experimental-)?webgl/i.test("" + type) ? "webgl" : "canvas");
+              if (context) {
+                const webgl = /^(experimental-)?webgl/i.test("" + type);
+                kinds.set(this, { kind: webgl ? "webgl" : "canvas", settings: !webgl && settings && typeof settings === "object" ? settings : undefined });
+              }
               return context;
             });
           };
+          // A canvas's size through the built-in getters: a page can't hide
+          // it, and anything but a canvas throws, as the export itself would.
+          const sizeOf = (proto) => {
+            const width = getOwnPropertyDescriptor(proto, "width");
+            const height = getOwnPropertyDescriptor(proto, "height");
+            return (canvas) => [width.get.call(canvas), height.get.call(canvas)];
+          };
           const canvasProto = window.HTMLCanvasElement.prototype;
           const canvasTools = tools(canvasProto, window.CanvasRenderingContext2D.prototype);
+          const canvasSize = sizeOf(canvasProto);
           const offscreenTools = window.OffscreenCanvas
             && tools(window.OffscreenCanvas.prototype, window.OffscreenCanvasRenderingContext2D
               && window.OffscreenCanvasRenderingContext2D.prototype);
+          const offscreenSize = window.OffscreenCanvas && sizeOf(window.OffscreenCanvas.prototype);
           rememberContext(canvasProto);
           if (window.OffscreenCanvas) rememberContext(window.OffscreenCanvas.prototype);
 
           const seedFor = (canvas) => {
-            if (kinds.get(canvas) === "webgl") {
+            const made = kinds.get(canvas);
+            if (made && made.kind === "webgl") {
               return seeds.webgl === null ? seeds.canvas : seeds.webgl;
             }
             return seeds.canvas;
           };
-          const noisyCopy = (canvas, makeCanvas, tools) => {
+          const noisyCopy = (canvas, makeCanvas, tools, sizeOf) => {
+            let width, height;
+            try {
+              [width, height] = sizeOf(canvas);
+            } catch (e) {
+              return null;
+            }
             const seed = seedFor(canvas);
-            const { width, height } = canvas;
             if (seed === null || !width || !height || !tools) return null;
             try {
               const [getContext, drawImage, getImageData, putImageData] = tools;
+              const made = kinds.get(canvas);
               const copy = makeCanvas(width, height);
-              const context = getContext.call(copy, "2d");
+              // The copy keeps the canvas's color space, so colors don't shift.
+              const context = getContext.call(copy, "2d", made && made.settings);
               drawImage.call(context, canvas, 0, 0);
               const image = getImageData.call(context, 0, 0, width, height);
-              addPixelNoise(seed, image.data, width, height, 0, 0, width, height, false);
+              const bits = candidatesFor(canvas, image.data, width, height, 0, 0, width, height, () => null);
+              addPixelNoise(seed, image.data, width, height, 0, 0, width, height, false, bits);
               putImageData.call(context, image, 0, 0);
               return copy;
             } catch (e) {
@@ -739,13 +839,13 @@ enum FingerprintProtection {
           };
           for (const name of ["toDataURL", "toBlob"]) {
             define(canvasProto, name, (original) => function () {
-              const copy = noisyCopy(this, makeCanvas, canvasTools);
+              const copy = noisyCopy(this, makeCanvas, canvasTools, canvasSize);
               return original.apply(copy || this, arguments);
             });
           }
           if (window.OffscreenCanvas && window.OffscreenCanvas.prototype.convertToBlob) {
             define(window.OffscreenCanvas.prototype, "convertToBlob", (convertToBlob) => function () {
-              const copy = noisyCopy(this, (width, height) => new window.OffscreenCanvas(width, height), offscreenTools);
+              const copy = noisyCopy(this, (width, height) => new window.OffscreenCanvas(width, height), offscreenTools, offscreenSize);
               return convertToBlob.apply(copy || this, arguments);
             });
           }
