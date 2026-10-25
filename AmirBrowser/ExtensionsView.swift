@@ -95,6 +95,8 @@ private struct ExtensionRow: View {
     @ObservedObject var manager: ExtensionManager
     let onOpenPage: () -> Void
 
+    @State private var isConfirmingRemoval = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
@@ -146,17 +148,43 @@ private struct ExtensionRow: View {
                 .font(.caption)
                 .foregroundColor(.orange)
             }
-            if info.hasOptionsPage {
-                Button {
-                    manager.openOptions(info.id)
-                    onOpenPage()
-                } label: {
-                    Label("Options", systemImage: "gearshape")
-                        .font(.subheadline)
+            // Borderless, so each button reacts on its own in the list row.
+            HStack(spacing: 20) {
+                if info.hasOptionsPage {
+                    Button {
+                        manager.openOptions(info.id)
+                        onOpenPage()
+                    } label: {
+                        Label("Options", systemImage: "gearshape")
+                    }
                 }
-                .buttonStyle(.borderless)
+                Spacer(minLength: 0)
+                Button(role: .destructive) {
+                    isConfirmingRemoval = true
+                } label: {
+                    Label("Remove", systemImage: "trash")
+                        .foregroundColor(.red)
+                }
             }
+            .font(.subheadline)
+            .buttonStyle(.borderless)
         }
         .padding(.vertical, 4)
+        .contextMenu {
+            Button(role: .destructive) {
+                isConfirmingRemoval = true
+            } label: {
+                Label("Remove Extension", systemImage: "trash")
+            }
+        }
+        .confirmationDialog(Text("Remove “\(info.name)”?"), isPresented: $isConfirmingRemoval, titleVisibility: .visible) {
+            Button("Remove Extension", role: .destructive) {
+                withAnimation {
+                    manager.remove(info.id)
+                }
+            }
+        } message: {
+            Text("The extension and its data are deleted from Noor.")
+        }
     }
 }

@@ -2553,6 +2553,28 @@
         }
       }
     },
+    "Remove" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إزالة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer"
+          }
+        }
+      }
+    },
     "Remove Bookmark" : {
       "localizations" : {
         "ar" : {
@@ -2575,6 +2597,28 @@
         }
       }
     },
+    "Remove Extension" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إزالة الامتداد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Extension"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer l’extension"
+          }
+        }
+      }
+    },
     "Remove Tracking From Links" : {
       "localizations" : {
         "ar" : {
@@ -2593,6 +2637,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Retirer le pistage des liens"
+          }
+        }
+      }
+    },
+    "Remove “%@”?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إزالة «%@»؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove “%@”?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer « %@ » ?"
           }
         }
       }
@@ -3231,6 +3297,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touchez ⋯ puis « Ajouter un signet » pour enregistrer la page actuelle."
+          }
+        }
+      }
+    },
+    "The extension and its data are deleted from Noor." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيُحذف الامتداد وبياناته من نور."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The extension and its data are deleted from Noor."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’extension et ses données sont supprimées de Noor."
           }
         }
       }
