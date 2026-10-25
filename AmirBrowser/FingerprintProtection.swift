@@ -345,11 +345,24 @@ enum FingerprintProtection {
     private static let shared = #"""
     // The page runs after this script and could change Object and Math, so
     // what is needed later (for the frames the page makes) is kept from here.
-    const { defineProperty, getOwnPropertyDescriptor, getOwnPropertyNames, setPrototypeOf } = Object;
+    const { defineProperty, getOwnPropertyDescriptor, getOwnPropertyNames, getPrototypeOf, setPrototypeOf } = Object;
     const { imul, floor, min, max, clz32 } = Math;
     const { isFinite } = Number;
-    // The kind of an object, like "[object Uint8Array]", from any window.
-    const tagOf = Function.prototype.call.bind(Object.prototype.toString);
+    const Uint32 = Uint32Array;
+    // Typed arrays are read through %TypedArray%.prototype's own getters and
+    // method, which report what an array really is from any window, so a
+    // page can't change what they say to send the noise elsewhere.
+    const typedArray = getPrototypeOf(Uint8Array.prototype);
+    const typedArrayGetter = (name) => getOwnPropertyDescriptor(typedArray, name).get;
+    const kindOf = typedArrayGetter(Symbol.toStringTag);
+    const lengthOf = typedArrayGetter("length");
+    const bufferOf = typedArrayGetter("buffer");
+    const byteOffsetOf = typedArrayGetter("byteOffset");
+    const subarray = typedArray.subarray;
+    // The kind of a typed array, like "Uint8Array", or undefined for anything else.
+    const tagOf = (array) => {
+      try { return kindOf.call(array); } catch (e) { return undefined; }
+    };
 
     // Each replacement's real built-in, for its toString() and for calling it.
     const originals = new WeakMap();
@@ -358,6 +371,8 @@ enum FingerprintProtection {
     const protectedWindows = new WeakSet();
     // The audio buffers already changed, by channel, from any window.
     const nudged = new WeakMap();
+    // Which kind of context each canvas has, "webgl" or "canvas", from any window.
+    const kinds = new WeakMap();
 
     // Integer hash, so a given pixel or sample always gets the same tweak.
     const mix = (n) => {
@@ -379,20 +394,23 @@ enum FingerprintProtection {
     // WebGL's readPixels hands rows bottom-up; `flipped` turns them into
     // rows from the top, so pixels read that way match the same pixels in an
     // exported image. Only the `width` by `height` pixels read are touched;
-    // 16-bit float pixels are scaled by 1/1024 instead.
+    // 16-bit float pixels are scaled by 1/1024 instead. A read of up to 64
+    // pixels is left alone: apps read a pixel or a few to find what is under
+    // a tap (an object drawn in its own color), and a fingerprint needs more.
     const addPixelNoise = (seed, data, width, height, left, top, fullWidth, fullHeight, flipped) => {
       const tag = tagOf(data);
-      const bytes = tag === "[object Uint8ClampedArray]" || tag === "[object Uint8Array]";
-      if (!bytes && tag !== "[object Float16Array]") return;
+      const bytes = tag === "Uint8ClampedArray" || tag === "Uint8Array";
+      if (!bytes && tag !== "Float16Array") return;
       if (!(width > 0 && height > 0)) return;
-      const count = min(data.length >> 2, width * height);
+      const count = min(lengthOf.call(data) >> 2, width * height);
+      if (count <= 64) return;
       // How often each color occurs, in a hashed table.
       let isCommon = null;
-      if (bytes && count > 4) {
+      if (bytes) {
         try {
-          const pixels = new Uint32Array(data.buffer, data.byteOffset, count);
+          const pixels = new Uint32(bufferOf.call(data), byteOffsetOf.call(data), count);
           const mask = (1 << min(16, 33 - clz32(count))) - 1;
-          const counts = new Uint32Array(mask + 1);
+          const counts = new Uint32(mask + 1);
           for (let i = 0; i < count; i++) counts[mix(pixels[i]) & mask]++;
           const threshold = max(4, count >> 10);
           isCommon = (p) => counts[mix(pixels[p]) & mask] > threshold;
@@ -623,17 +641,24 @@ enum FingerprintProtection {
         // WebGL: pixels read back with readPixels get pixel noise.
         {
           const webGLSeed = forSite(\#(seed));
+          const RGBA = 0x1908;
           for (const name of ["WebGLRenderingContext", "WebGL2RenderingContext"]) {
             const proto = window[name] && window[name].prototype;
             if (!proto) continue;
+            const getter = (name) => {
+              const descriptor = getOwnPropertyDescriptor(proto, name);
+              return descriptor && descriptor.get ? (context) => descriptor.get.call(context) : (context) => context[name];
+            };
+            const bufferWidth = getter("drawingBufferWidth");
+            const bufferHeight = getter("drawingBufferHeight");
             define(proto, "readPixels", (readPixels) => function (x, y, width, height, format, type, pixels, offset) {
               readPixels.apply(this, arguments);
               const tag = tagOf(pixels);
-              if ((tag !== "[object Uint8Array]" && tag !== "[object Uint8ClampedArray]") || format !== this.RGBA) return;
+              if ((tag !== "Uint8Array" && tag !== "Uint8ClampedArray") || Number(format) !== RGBA) return;
               // WebGL2 can read into the array from `offset` on.
-              const data = offset > 0 ? pixels.subarray(offset) : pixels;
+              const data = offset > 0 ? subarray.call(pixels, offset) : pixels;
               addPixelNoise(webGLSeed, data, width | 0, height | 0, x | 0, y | 0,
-                this.drawingBufferWidth, this.drawingBufferHeight, true);
+                bufferWidth(this), bufferHeight(this), true);
             });
           }
         }
@@ -659,7 +684,6 @@ enum FingerprintProtection {
         // can't be copied; the call then fails as it normally would.
         {
           const seeds = { canvas: \#(canvas), webgl: \#(webgl) };
-          const kinds = new WeakMap();
           // The built-ins a copy is made with: [getContext, drawImage, getImageData, putImageData].
           const tools = (canvasProto, contextProto) => contextProto && [
             native(canvasProto.getContext), native(contextProto.drawImage),
@@ -740,8 +764,8 @@ enum FingerprintProtection {
         {
           const audioSeed = forSite(\#(seed));
           const nudge = (data, salt) => {
-            if (tagOf(data) !== "[object Float32Array]") return;
-            for (let i = 0; i < data.length; i++) {
+            if (tagOf(data) !== "Float32Array") return;
+            for (let i = 0, length = lengthOf.call(data); i < length; i++) {
               const h = mix(audioSeed ^ salt ^ imul(i + 1, 0x9e3779b1));
               data[i] *= 1 + (h / 4294967296 - 0.5) * 2e-6;
             }
