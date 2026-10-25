@@ -749,6 +749,28 @@
         }
       }
     },
+    "Choose a File…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختيار ملف…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a File…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un fichier…"
+          }
+        }
+      }
+    },
     "Chrome Web Store" : {
       "localizations" : {
         "ar" : {
@@ -1101,6 +1123,94 @@
         }
       }
     },
+    "Cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cookies"
+          }
+        }
+      }
+    },
+    "Cookies are the small files that keep you signed in to a site. These are the cookies for this site only." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملفات تعريف الارتباط هي ملفات صغيرة تبقيك مسجّل الدخول في الموقع. هذه هي ملفات هذا الموقع فقط."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cookies are the small files that keep you signed in to a site. These are the cookies for this site only."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les cookies sont les petits fichiers qui vous gardent connecté à un site. Voici uniquement les cookies de ce site."
+          }
+        }
+      }
+    },
+    "Copied" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم النسخ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copié"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier"
+          }
+        }
+      }
+    },
     "Copy Link" : {
       "localizations" : {
         "ar" : {
@@ -1163,6 +1273,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impossible de télécharger cette extension depuis le Chrome Web Store. Vérifiez votre connexion et réessayez."
+          }
+        }
+      }
+    },
+    "Couldn't read this file." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّرت قراءة هذا الملف."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't read this file."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de lire ce fichier."
           }
         }
       }
@@ -1295,6 +1427,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chiffrée (HTTPS)"
+          }
+        }
+      }
+    },
+    "Export" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تصدير"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporter"
           }
         }
       }
@@ -1559,6 +1713,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Historique"
+          }
+        }
+      }
+    },
+    "Import" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استيراد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer"
+          }
+        }
+      }
+    },
+    "Import Cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استيراد ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer les cookies"
+          }
+        }
+      }
+    },
+    "Imported %lld cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم استيراد %lld من ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported %lld cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cookies importés"
           }
         }
       }
@@ -2047,6 +2267,50 @@
         }
       }
     },
+    "No cookies for this site." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا توجد ملفات تعريف ارتباط لهذا الموقع."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cookies for this site."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun cookie pour ce site."
+          }
+        }
+      }
+    },
+    "No cookies found in the text." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يُعثر على ملفات تعريف ارتباط في النص."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cookies found in the text."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun cookie trouvé dans le texte."
+          }
+        }
+      }
+    },
     "No history yet" : {
       "localizations" : {
         "ar" : {
@@ -2329,6 +2593,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les pages visitées dans les onglets normaux apparaissent ici."
+          }
+        }
+      }
+    },
+    "Paste a header string, or choose a file, then import. The page reloads with the new cookies." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصق header string، أو اختر ملفاً، ثم استورد. تُعاد الصفحة بملفات تعريف الارتباط الجديدة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste a header string, or choose a file, then import. The page reloads with the new cookies."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collez un header string, ou choisissez un fichier, puis importez. La page se recharge avec les nouveaux cookies."
           }
         }
       }
@@ -2769,6 +3055,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "S’exécuter à heures fixes"
+          }
+        }
+      }
+    },
+    "Save or Share…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حفظ أو مشاركة…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save or Share…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer ou partager…"
           }
         }
       }
@@ -3297,6 +3605,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touchez ⋯ puis « Ajouter un signet » pour enregistrer la page actuelle."
+          }
+        }
+      }
+    },
+    "The cookies in header string format: name=value; name2=value2." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملفات تعريف الارتباط بصيغة header string: name=value; name2=value2."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The cookies in header string format: name=value; name2=value2."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les cookies au format header string : name=value; name2=value2."
           }
         }
       }

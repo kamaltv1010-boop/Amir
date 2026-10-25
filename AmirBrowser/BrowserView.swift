@@ -102,6 +102,8 @@ struct BrowserView: View {
                         }
                 }
                 .navigationViewStyle(.stack)
+            case .cookies:
+                CookiesView(tab: browser.selectedTab)
             }
         }
     }
@@ -120,6 +122,7 @@ enum BrowserSheet: String, Identifiable {
     case settings
     case shields
     case extensions
+    case cookies
 
     var id: String { rawValue }
 }
@@ -459,6 +462,12 @@ private struct BrowserScreen: View {
                     }
                 }
                 .disabled(tab.webView.url == nil)
+                Button {
+                    sheet = .cookies
+                } label: {
+                    Label("Cookies", systemImage: "birthday.cake")
+                }
+                .disabled(tab.webView.url?.host == nil)
                 Button {
                     tab.share()
                 } label: {
