@@ -369,7 +369,9 @@ enum FingerprintProtection {
     const native = (fn) => originals.get(fn) || fn;
     // The windows protected from this script, each once.
     const protectedWindows = new WeakSet();
-    // The audio buffers already changed, by channel, from any window.
+    // The audio buffers the browser rendered or decoded, from any window, and
+    // the channels of them already changed.
+    const rendered = new WeakSet();
     const nudged = new WeakMap();
     // Which kind of context each canvas has, "webgl" or "canvas", from any window.
     const kinds = new WeakMap();
@@ -754,46 +756,109 @@ enum FingerprintProtection {
 
     private static func audioScript(seed: UInt32) -> String {
         #"""
-        // Audio: every rendered sample is scaled by its own factor between
-        // 1 - 0.000001 and 1 + 0.000001: about -120 dB, far below hearing,
-        // and silence stays silence, but it changes the sums audio
-        // fingerprinting scripts compute. Scaling survives the rounding of
-        // 32-bit floats, which adding a fixed 0.0000001 does not for loud
-        // samples or for decibel values. Each buffer channel is changed once,
-        // not on every read.
+        // Audio: the samples the browser renders or decodes (an
+        // OfflineAudioContext's result, decoded audio, a ScriptProcessorNode's
+        // input, an AnalyserNode's data) get the lowest four bits of their
+        // mantissa set from a hash: a change of at most 2 parts in a million,
+        // about -115 dB, far below hearing, but it changes the sums audio
+        // fingerprinting scripts compute. Setting bits, rather than adding or
+        // scaling, survives the rounding of 32-bit floats and leaves a second
+        // pass nothing to change; silence and infinities stay as they are. A
+        // buffer the page filled itself is left alone: it holds no trace of
+        // the device, and a site compares it with what it wrote to catch
+        // noise. Each rendered buffer's channel is changed once, not on every
+        // read; a ScriptProcessorNode brings new samples in the same buffer
+        // with every event, so it is changed again each time.
         {
           const audioSeed = forSite(\#(seed));
-          const nudge = (data, salt) => {
+          const nudge = (data, length) => {
             if (tagOf(data) !== "Float32Array") return;
-            for (let i = 0, length = lengthOf.call(data); i < length; i++) {
-              const h = mix(audioSeed ^ salt ^ imul(i + 1, 0x9e3779b1));
-              data[i] *= 1 + (h / 4294967296 - 0.5) * 2e-6;
+            const count = min(lengthOf.call(data), length);
+            let words;
+            try {
+              words = new Uint32(bufferOf.call(data), byteOffsetOf.call(data), count);
+            } catch (e) {
+              return;
+            }
+            for (let i = 0; i < count; i++) {
+              const word = words[i];
+              const exponent = word & 0x7f800000;
+              if (exponent === 0 || exponent === 0x7f800000) continue;
+              words[i] = (word & ~15) | (mix(audioSeed ^ imul(i + 1, 0x9e3779b1)) & 15);
             }
           };
-          if (window.AudioBuffer) {
-            define(window.AudioBuffer.prototype, "getChannelData", (getChannelData) => function (channel) {
-              const data = getChannelData.apply(this, arguments);
-              let channels = nudged.get(this);
-              if (!channels) nudged.set(this, (channels = new Set()));
-              if (!channels.has(channel)) {
-                channels.add(channel);
-                nudge(data, channel);
-              }
+          const mark = (buffer) => {
+            if (buffer && typeof buffer === "object") rendered.add(buffer);
+            return buffer;
+          };
+          const bufferProto = window.AudioBuffer && window.AudioBuffer.prototype;
+          if (bufferProto) {
+            const getChannelData = native(bufferProto.getChannelData);
+            const nudgeChannel = (buffer, index) => {
+              let channels = nudged.get(buffer);
+              if (!channels) nudged.set(buffer, (channels = new Set()));
+              if (channels.has(index)) return;
+              channels.add(index);
+              nudge(getChannelData.call(buffer, index), Infinity);
+            };
+            define(bufferProto, "getChannelData", (original) => function (channel) {
+              const data = original.apply(this, arguments);
+              if (rendered.has(this)) nudgeChannel(this, channel >>> 0);
               return data;
             });
-            if (window.AudioBuffer.prototype.copyFromChannel) {
-              define(window.AudioBuffer.prototype, "copyFromChannel", (copyFromChannel) => function (destination, channel) {
-                this.getChannelData(channel);
-                return copyFromChannel.apply(this, arguments);
-              });
-            }
+            define(bufferProto, "copyFromChannel", (original) => function (destination, channel) {
+              if (rendered.has(this) && tagOf(destination) === "Float32Array") {
+                try { nudgeChannel(this, channel >>> 0); } catch (e) {}
+              }
+              return original.apply(this, arguments);
+            });
           }
+
+          // What the browser renders or decodes.
+          const thenMark = (result) => result && typeof result.then === "function" ? result.then(mark) : result;
+          if (window.OfflineAudioContext) {
+            define(window.OfflineAudioContext.prototype, "startRendering", (original) => function () {
+              return thenMark(original.apply(this, arguments));
+            });
+          }
+          if (window.BaseAudioContext) {
+            define(window.BaseAudioContext.prototype, "decodeAudioData", (original) => function (data, success) {
+              if (typeof success === "function") {
+                arguments[1] = function (buffer) { return success.call(this, mark(buffer)); };
+              }
+              return thenMark(original.apply(this, arguments));
+            });
+          }
+          const markGetter = (proto, name, before) => {
+            const descriptor = proto && getOwnPropertyDescriptor(proto, name);
+            if (!descriptor || !descriptor.get) return;
+            defineGetter(proto, name, function () {
+              const buffer = descriptor.get.call(this);
+              if (before) before(this, buffer);
+              return mark(buffer);
+            });
+          };
+          markGetter(window.OfflineAudioCompletionEvent && window.OfflineAudioCompletionEvent.prototype, "renderedBuffer");
+          const events = new WeakSet();
+          markGetter(window.AudioProcessingEvent && window.AudioProcessingEvent.prototype, "inputBuffer", (event, buffer) => {
+            if (buffer && !events.has(event)) {
+              events.add(event);
+              nudged.delete(buffer);
+            }
+          });
+
           if (window.AnalyserNode) {
-            for (const name of ["getFloatFrequencyData", "getFloatTimeDomainData"]) {
-              if (!window.AnalyserNode.prototype[name]) continue;
-              define(window.AnalyserNode.prototype, name, (original) => function (array) {
+            const proto = window.AnalyserNode.prototype;
+            const getter = (name) => {
+              const descriptor = getOwnPropertyDescriptor(proto, name);
+              return descriptor && descriptor.get ? (node) => descriptor.get.call(node) : (node) => node[name];
+            };
+            const sizes = { getFloatFrequencyData: getter("frequencyBinCount"), getFloatTimeDomainData: getter("fftSize") };
+            for (const name in sizes) {
+              if (!proto[name]) continue;
+              define(proto, name, (original) => function (array) {
                 original.apply(this, arguments);
-                nudge(array, 0x51ed270b);
+                nudge(array, sizes[name](this));
               });
             }
           }
