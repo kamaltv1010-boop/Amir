@@ -118,6 +118,26 @@ def setup_testing(app_id, token):
         expired = " (expired)" if a.get("expired") else ""
         print(f"Build {a['version']}: {a['processingState']}{expired}, uploaded {a['uploadedDate']}")
 
+    # Uploads Apple has received but not finished processing don't show up
+    # as builds yet; their upload records say where they are.
+    for path, params in ((f"apps/{app_id}/buildUploads", {"limit": 5}),
+                         ("buildUploads", {"filter[app]": app_id, "limit": 5})):
+        status, body = call(path, token, params=params)
+        if status != 200:
+            continue
+        for upload in body.get("data", []):
+            a = upload.get("attributes", {})
+            version = a.get("cfBundleVersion") or "?"
+            state = a.get("state")
+            if isinstance(state, dict):
+                details = [m.get("description") or m.get("code") for key in ("errors", "warnings")
+                           for m in (state.get(key) or [])]
+                state = " ".join([str(state.get("state"))] + [d for d in details if d])
+            print(f"Upload {version}: {state}, created {a.get('createdDate') or a.get('uploadedDate')}")
+        break
+    else:
+        print("(Apple's upload list is not available to this key.)")
+
     status, body = call(f"apps/{app_id}/betaGroups", token)
     if status != 200:
         fail(f"Could not list TestFlight groups ({status} {describe(body)}).")
