@@ -147,7 +147,7 @@ enum FingerprintProtection {
     /// suspicion, while Opera for iOS is a known browser with the same
     /// engine and the same limits. So pages see Opera on an iPhone, as they
     /// would with Opera installed.
-    static let browserToken = "OPT/5.6.2"
+    static let browserToken = "OPT/6.7.3"
 
     /// A real iPhone or iPad: its screen size in points, a system version it
     /// can run, and the user agent Opera sends there.
