@@ -47,7 +47,7 @@ struct ShieldsPanel: View {
                             SettingsLabel("Fingerprint protection", systemName: "hand.raised.fill", color: .blue)
                             Spacer()
                             if isSignInSite {
-                                Text("Off for sign-in")
+                                Text("Noise only")
                                     .foregroundColor(.secondary)
                             } else {
                                 Text(verbatim: "\(browser.enabledProtections.count)/\(FingerprintProtection.Kind.allCases.count)")
@@ -59,7 +59,7 @@ struct ShieldsPanel: View {
                         Text("This Page")
                     } footer: {
                         if isSignInSite {
-                            Text("This site checks the browser closely when you sign in or create an account, so it sees this iPhone as it is: no fingerprint noise and no other phone's user agent. Trackers are still blocked.")
+                            Text("This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked.")
                         }
                     }
                 }

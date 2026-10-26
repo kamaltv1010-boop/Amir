@@ -26,8 +26,9 @@ enum Shields {
     /// Sites that check the browser closely when you sign in or create an
     /// account, and block or keep asking for codes when it looks unusual:
     /// Meta's, and Google, Apple and Microsoft accounts. They see this
-    /// iPhone as it is, with no fingerprint noise and no other device's user
-    /// agent; trackers are still blocked.
+    /// iPhone's own user agent and screen size, but still get the canvas,
+    /// WebGL, audio and ClientRects noise, so each profile looks to them
+    /// like another phone of the same kind; trackers are still blocked.
     static let signInSites = [
         "instagram.com", "facebook.com", "messenger.com", "threads.net", "threads.com", "whatsapp.com",
         "meta.com", "fb.com", "accounts.google.com", "appleid.apple.com", "idmsa.apple.com",

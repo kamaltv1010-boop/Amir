@@ -2487,6 +2487,28 @@
         }
       }
     },
+    "Noise only" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التشويش فقط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noise only"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruit seulement"
+          }
+        }
+      }
+    },
     "Noor" : {
       "localizations" : {
         "ar" : {
@@ -2549,28 +2571,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
-          }
-        }
-      }
-    },
-    "Off for sign-in" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "متوقفة لتسجيل الدخول"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Off for sign-in"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Désactivée pour la connexion"
           }
         }
       }
@@ -4049,24 +4049,24 @@
         }
       }
     },
-    "This site checks the browser closely when you sign in or create an account, so it sees this iPhone as it is: no fingerprint noise and no other phone's user agent. Trackers are still blocked." : {
+    "This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يفحص هذا الموقع المتصفح بدقة عند تسجيل الدخول أو إنشاء حساب، لذلك يرى هذا الـ iPhone كما هو: بدون تشويش البصمة وبدون User Agent هاتف آخر. وتبقى أدوات التتبع محظورة."
+            "value" : "يفحص هذا الموقع المتصفح بدقة عند تسجيل الدخول أو إنشاء حساب، لذا يرى وكيل المستخدم وحجم الشاشة الحقيقيين لهذا الـ iPhone. يبقى التشويش على Canvas و WebGL والصوت و ClientRects فعالًا، فيبدو كل ملف شخصي كهاتف مختلف. تبقى أدوات التتبع محظورة."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This site checks the browser closely when you sign in or create an account, so it sees this iPhone as it is: no fingerprint noise and no other phone's user agent. Trackers are still blocked."
+            "value" : "This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ce site vérifie de près le navigateur quand vous vous connectez ou créez un compte, il voit donc cet iPhone tel qu’il est : sans bruit d’empreinte ni User-Agent d’un autre téléphone. Les traqueurs restent bloqués."
+            "value" : "Ce site examine le navigateur de près à la connexion ou à la création d’un compte ; il voit donc le vrai user agent et la vraie taille d’écran de cet iPhone. Canvas, WebGL, l’audio et ClientRects restent bruités, donc chaque profil ressemble à un autre téléphone. Les traqueurs restent bloqués."
           }
         }
       }

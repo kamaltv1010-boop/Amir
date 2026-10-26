@@ -311,7 +311,9 @@ enum FingerprintProtection {
 
     /// The script for the protections that are on (the user agent is set on
     /// the web view instead), or nil if none of them is. Without
-    /// `protections` (shields down for the site) only iPad mode is left. In
+    /// `protections` (shields down for the site) only iPad mode is left. With
+    /// `realDevice` (a sign-in site) the screen size stays as it is, like
+    /// the user agent, since such sites check both against the device. In
     /// desktop mode WebKit reports a Mac on its own, so iPad mode leaves it
     /// alone there.
     ///
@@ -319,7 +321,7 @@ enum FingerprintProtection {
     /// frames (about:blank) the page makes, where WebKit runs no user
     /// scripts (see `framesScript`), so `protect` takes the window to work on.
     @MainActor
-    static func userScript(desktopMode: Bool, protections: Bool = true) -> WKUserScript? {
+    static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false) -> WKUserScript? {
         var parts: [String] = []
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
@@ -331,7 +333,7 @@ enum FingerprintProtection {
             }
             if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
             if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
-            if isEnabled(.screen) { parts.append(screenScript(screenSize)) }
+            if isEnabled(.screen) && !realDevice { parts.append(screenScript(screenSize)) }
         }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
         guard !parts.isEmpty else { return nil }
