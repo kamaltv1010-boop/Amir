@@ -768,37 +768,94 @@ enum FingerprintProtection {
       }
     }
 
-    // Service workers: the API's shape, where WebKit gives apps none.
+    // Service workers: the API's shape, where WebKit gives apps none. A
+    // registration succeeds, as in a browser, with a worker that reports
+    // itself active but never controls the page or runs; pushManager is
+    // absent, as in Safari outside a home-screen web app.
     {
       const nav = window.Navigator && window.Navigator.prototype;
-      if (nav && window.EventTarget && window.Promise && !("serviceWorker" in nav)) {
+      if (nav && window.EventTarget && window.Promise && window.URL && !("serviceWorker" in nav)) {
         const Container = nativeClass("ServiceWorkerContainer", window.EventTarget);
-        nativeClass("ServiceWorkerRegistration", window.EventTarget);
-        nativeClass("ServiceWorker", window.EventTarget);
-        const proto = Container.prototype;
-        const failure = () => new window.Promise((resolve, reject) => {
-          reject(new window.DOMException("The operation is insecure.", "SecurityError"));
-        });
-        const accessor = (name, get) => defineProperty(proto, name, {
+        const Registration = nativeClass("ServiceWorkerRegistration", window.EventTarget);
+        const Worker = nativeClass("ServiceWorker", window.EventTarget);
+        const states = new WeakMap();
+        const accessor = (proto, name, get) => defineProperty(proto, name, {
           get: method("get " + name, 0, get), enumerable: true, configurable: true,
         });
-        const handler = (name) => defineProperty(proto, name, {
-          get: method("get " + name, 0, function () { return null; }),
-          set: method("set " + name, 1, function () {}),
+        const handler = (proto, name) => defineProperty(proto, name, {
+          get: method("get " + name, 0, function () { return (states.get(this) || {})[name] || null; }),
+          set: method("set " + name, 1, function (value) { const state = states.get(this); if (state) state[name] = value; }),
           enumerable: true, configurable: true,
         });
-        let ready;
-        accessor("controller", function () { return null; });
-        accessor("ready", function () {
-          return ready || (ready = new window.Promise(() => {}));
+        const func = (proto, name, length, impl) => defineProperty(proto, name, {
+          value: method(name, length, impl), writable: true, enumerable: true, configurable: true,
         });
-        handler("oncontrollerchange");
-        handler("onmessage");
-        handler("onmessageerror");
-        defineProperty(proto, "register", { value: method("register", 1, failure), writable: true, enumerable: true, configurable: true });
-        defineProperty(proto, "getRegistration", { value: method("getRegistration", 0, function () { return window.Promise.resolve(undefined); }), writable: true, enumerable: true, configurable: true });
-        defineProperty(proto, "getRegistrations", { value: method("getRegistrations", 0, function () { return window.Promise.resolve([]); }), writable: true, enumerable: true, configurable: true });
-        defineProperty(proto, "startMessages", { value: method("startMessages", 0, function () {}), writable: true, enumerable: true, configurable: true });
+        const fail = (error) => new window.Promise((resolve, reject) => reject(error));
+
+        accessor(Worker.prototype, "scriptURL", function () { return (states.get(this) || {}).scriptURL || ""; });
+        accessor(Worker.prototype, "state", function () { return "activated"; });
+        handler(Worker.prototype, "onstatechange");
+        func(Worker.prototype, "postMessage", 1, function () {});
+
+        const registrations = [];
+        accessor(Registration.prototype, "scope", function () { return (states.get(this) || {}).scope || ""; });
+        accessor(Registration.prototype, "installing", function () { return null; });
+        accessor(Registration.prototype, "waiting", function () { return null; });
+        accessor(Registration.prototype, "active", function () { return (states.get(this) || {}).worker || null; });
+        accessor(Registration.prototype, "updateViaCache", function () { return "imports"; });
+        handler(Registration.prototype, "onupdatefound");
+        func(Registration.prototype, "update", 0, function () { return window.Promise.resolve(this); });
+        func(Registration.prototype, "unregister", 0, function () {
+          const index = registrations.indexOf(this);
+          if (index !== -1) registrations.splice(index, 1);
+          return window.Promise.resolve(index !== -1);
+        });
+
+        const proto = Container.prototype;
+        let ready, resolveReady;
+        accessor(proto, "controller", function () { return null; });
+        accessor(proto, "ready", function () {
+          if (!ready) ready = new window.Promise((resolve) => { resolveReady = resolve; });
+          return ready;
+        });
+        handler(proto, "oncontrollerchange");
+        handler(proto, "onmessage");
+        handler(proto, "onmessageerror");
+        func(proto, "register", 1, function (url, options) {
+          let script, scope;
+          try {
+            script = new window.URL(url, document.baseURI);
+            if (script.protocol !== "https:" && script.protocol !== "http:") {
+              return fail(new window.TypeError("serviceWorker.register() must be called with a script URL whose protocol is either HTTP or HTTPS"));
+            }
+            if (script.origin !== window.location.origin) {
+              return fail(new window.DOMException("Script origin does not match the registering document's origin", "SecurityError"));
+            }
+            scope = new window.URL(options && options.scope != null ? String(options.scope) : "./", script.href).href;
+          } catch (e) {
+            return fail(e);
+          }
+          let registration = registrations.find((r) => states.get(r).scope === scope);
+          if (!registration) {
+            registration = Object.create(Registration.prototype);
+            const worker = Object.create(Worker.prototype);
+            states.set(worker, { scriptURL: script.href });
+            states.set(registration, { scope, worker });
+            registrations.push(registration);
+          }
+          this.ready;
+          resolveReady(registration);
+          return window.Promise.resolve(registration);
+        });
+        func(proto, "getRegistration", 0, function (clientURL) {
+          let href;
+          try { href = new window.URL(clientURL === undefined ? "./" : String(clientURL), document.baseURI).href; } catch (e) { return fail(e); }
+          const found = registrations.filter((r) => href.indexOf(states.get(r).scope) === 0).sort((a, b) => states.get(b).scope.length - states.get(a).scope.length)[0];
+          return window.Promise.resolve(found);
+        });
+        func(proto, "getRegistrations", 0, function () { return window.Promise.resolve(registrations.slice()); });
+        func(proto, "startMessages", 0, function () {});
+
         let container;
         defineProperty(nav, "serviceWorker", {
           get: method("get serviceWorker", 0, function () {
@@ -807,6 +864,17 @@ enum FingerprintProtection {
           enumerable: true,
           configurable: true,
         });
+        // Where the built-in sits: after pdfViewerEnabled (or mimeTypes), so
+        // the properties that follow it there are put back after it.
+        const names = getOwnPropertyNames(nav);
+        const anchor = names.indexOf("pdfViewerEnabled") !== -1 ? names.indexOf("pdfViewerEnabled") : names.indexOf("mimeTypes");
+        if (anchor !== -1) {
+          for (const name of names.slice(anchor + 1)) {
+            if (name === "serviceWorker") continue;
+            const descriptor = getOwnPropertyDescriptor(nav, name);
+            try { delete nav[name]; defineProperty(nav, name, descriptor); } catch (e) {}
+          }
+        }
       }
     }
 
