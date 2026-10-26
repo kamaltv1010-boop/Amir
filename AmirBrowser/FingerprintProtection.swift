@@ -140,17 +140,8 @@ enum FingerprintProtection {
 
     // MARK: - Screen size and user agent
 
-    /// The browser's own token, at the end of every user agent. A browser
-    /// built on WebKit, as every browser on iOS is, has no service workers,
-    /// which Safari itself has: a site that sees Safari's user agent without
-    /// them takes the browser for an app's built-in one and treats it with
-    /// suspicion, while Opera for iOS is a known browser with the same
-    /// engine and the same limits. So pages see Opera on an iPhone, as they
-    /// would with Opera installed.
-    static let browserToken = "OPT/6.7.3"
-
     /// A real iPhone or iPad: its screen size in points, a system version it
-    /// can run, and the user agent Opera sends there.
+    /// can run, and the user agent Safari sends there.
     struct Device {
         let name: String
         let width: Int
@@ -165,7 +156,7 @@ enum FingerprintProtection {
             self.height = height
             system = "iOS \(iOS)"
             userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
-                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1 " + FingerprintProtection.browserToken
+                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
         }
 
         /// An iPad, with the user agent Safari sends there when "Request
@@ -176,7 +167,7 @@ enum FingerprintProtection {
             self.height = height
             system = "iPadOS \(iPadOS)"
             userAgent = "Mozilla/5.0 (iPad; CPU OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
-                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1 " + FingerprintProtection.browserToken
+                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
         }
     }
 
@@ -273,12 +264,11 @@ enum FingerprintProtection {
         return safariUserAgent
     }
 
-    /// What Opera sends on this iPhone: WebKit's own user agent, which has
+    /// What Safari sends on this iPhone: WebKit's own user agent, which has
     /// the system version as Safari reports it (frozen at an iOS 18 version
     /// since iOS 26), with the "Version/" and "Safari/" parts WebKit leaves
-    /// out, which some sign-in pages refuse as an app's built-in browser,
-    /// and the browser's token. Built from a web view the first time, on
-    /// the main thread.
+    /// out, which some sign-in pages refuse as an app's built-in browser.
+    /// Built from a web view the first time, on the main thread.
     @MainActor
     static let safariUserAgent: String = {
         let version = ProcessInfo.processInfo.operatingSystemVersion
@@ -288,7 +278,7 @@ enum FingerprintProtection {
            let mobile = webKit.range(of: " Mobile/") {
             var agent = webKit
             agent.insert(contentsOf: " Version/\(safari)", at: mobile.lowerBound)
-            return agent + " Safari/604.1 " + browserToken
+            return agent + " Safari/604.1"
         }
         let system: String
         if version.majorVersion >= 26 {
@@ -305,7 +295,7 @@ enum FingerprintProtection {
             system = parts.map(String.init).joined(separator: "_")
         }
         return "Mozilla/5.0 (iPhone; CPU iPhone OS \(system) like Mac OS X) AppleWebKit/605.1.15 "
-            + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1 " + browserToken
+            + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
     }()
 
     private static func device(for seed: UInt32, in list: [Device]) -> Device {
@@ -349,7 +339,7 @@ enum FingerprintProtection {
     /// scripts (see `framesScript`), so `protect` takes the window to work on.
     @MainActor
     static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false) -> WKUserScript? {
-        var parts: [String] = [serviceWorkerScript]
+        var parts: [String] = [browserScript]
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
             let webGLSeed = isEnabled(.webGL) ? seed(.webGL) : nil
@@ -753,14 +743,31 @@ enum FingerprintProtection {
 
     """#
 
-    /// Apple gives service workers to Safari and to browsers with its browser
-    /// entitlement (Opera, Chrome, Firefox), not to other apps' web views. A
-    /// site that sees a browser's user agent without navigator.serviceWorker
+    /// What tells an app's web view from Safari, on every page. Apple gives
+    /// service workers to Safari and to browsers with its browser entitlement
+    /// (Opera, Chrome, Firefox), not to other apps' web views, and gives
+    /// those web views a quarter of the storage quota (15% of the disk
+    /// instead of 60%). A site that sees Safari's user agent with either
     /// takes the browser for an app's built-in one and treats it with
     /// suspicion (Instagram asked every new account for a "confirm you're a
-    /// real person" check). Pages get the API's shape, with registrations
-    /// that fail as in a browser that keeps service workers from a page.
-    private static let serviceWorkerScript = #"""
+    /// real person" check, and not in Opera). Pages get the service worker
+    /// API's shape, with registrations that fail as in a browser that keeps
+    /// service workers from a page, and a browser's quota.
+    private static let browserScript = #"""
+    // Storage: the quota a browser reports.
+    {
+      const proto = window.StorageManager && window.StorageManager.prototype;
+      if (proto) {
+        define(proto, "estimate", (original) => function () {
+          const result = original.apply(this, arguments);
+          return result && typeof result.then === "function" ? result.then((estimate) => {
+            try { if (estimate && estimate.quota > 0) estimate.quota = estimate.quota * 4; } catch (e) {}
+            return estimate;
+          }) : result;
+        });
+      }
+    }
+
     // Service workers: the API's shape, where WebKit gives apps none.
     {
       const nav = window.Navigator && window.Navigator.prototype;
