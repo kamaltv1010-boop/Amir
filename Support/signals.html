@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Browser Signals</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+  /* Layout: one narrow column of label/value rows, readable in a single phone screenshot. */
+  :root {
+    --bg: #f6f5f1;
+    --fg: #1d1b16;
+    --muted: #6d675c;
+    --line: #dcd8cf;
+    --accent: #b4561c;
+    --mark: #e9dccb;
+    --font-body: "IBM Plex Sans", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --font-data: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17160f; --fg: #ece7dc; --muted: #9e978a; --line: #343126; --accent: #e8905a; --mark: #3a2d1d; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17160f; --fg: #ece7dc; --muted: #9e978a; --line: #343126; --accent: #e8905a; --mark: #3a2d1d; color-scheme: dark;
+  }
+  body {
+    background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px;
+    padding-block: max(12px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-bottom, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    max-width: 640px; margin: 0 auto;
+  }
+  h1 { font-size: 1.1rem; margin: 0 0 2px; letter-spacing: .01em; text-wrap: balance; }
+  .sub { color: var(--muted); font-size: .8rem; margin: 0 0 10px; }
+  .bar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  button {
+    font: 600 .8rem var(--font-body); color: var(--bg); background: var(--accent); border: 0; border-radius: 6px;
+    padding: 7px 12px; cursor: pointer;
+  }
+  button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .hash { font: 600 .8rem var(--font-data); background: var(--mark); padding: 5px 8px; border-radius: 6px; font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; font: .72rem/1.3 var(--font-data); }
+  td { padding: 3px 0; border-top: 1px solid var(--line); vertical-align: top; word-break: break-all; }
+  td:first-child { color: var(--muted); width: 34%; padding-right: 8px; white-space: nowrap; }
+  tr.odd td { background: transparent; }
+  .wrap { overflow-x: auto; }
+  pre { display: none; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none; } }
+</style>
+</head>
+<body>
+
+<h1>Browser Signals</h1>
+<p class="sub">What a website can see in this browser. Open it in each browser and compare.</p>
+<div class="bar">
+  <button id="copy" type="button">Copy all</button>
+  <span class="hash" id="hash">…</span>
+  <span class="sub" id="status"></span>
+</div>
+<div class="wrap"><table id="table"></table></div>
+<pre id="raw"></pre>
+
+<script>
+(async () => {
+  const sig = {};
+  const T = (v) => (v === undefined ? "undefined" : v === null ? "null" : typeof v === "function" ? "function" : typeof v === "object" ? "object" : String(v));
+  const has = (obj, key) => { try { return key in obj ? T(obj[key]) : "missing"; } catch (e) { return "error"; } };
+  const ok = (fn) => { try { return fn(); } catch (e) { return "error:" + (e && e.name); } };
+  const fnv = (s) => { let h = 0x811c9dc5 >>> 0; for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193) >>> 0; return h.toString(16).padStart(8, "0"); };
+
+  sig.userAgent = navigator.userAgent;
+  sig.serviceWorker = has(navigator, "serviceWorker");
+  sig.swRegister = ok(() => navigator.serviceWorker ? typeof navigator.serviceWorker.register : "-");
+  sig.swController = ok(() => navigator.serviceWorker ? T(navigator.serviceWorker.controller) : "-");
+  sig.ServiceWorkerContainer = has(window, "ServiceWorkerContainer");
+  sig.ApplePaySession = has(window, "ApplePaySession");
+  sig.applePayCanMakePayments = ok(() => window.ApplePaySession ? String(ApplePaySession.canMakePayments()) : "-");
+  sig.PaymentRequest = has(window, "PaymentRequest");
+  sig.PublicKeyCredential = has(window, "PublicKeyCredential");
+  sig.credentials = has(navigator, "credentials");
+  sig.Notification = has(window, "Notification") + (window.Notification ? "/" + Notification.permission : "");
+  sig.PushManager = has(window, "PushManager");
+  sig.safari = has(window, "safari");
+  sig.webkit = has(window, "webkit") + ok(() => window.webkit && window.webkit.messageHandlers ? "/handlers:" + Object.keys(window.webkit.messageHandlers).length : "");
+  sig.standalone = has(navigator, "standalone") + "/" + ok(() => String(navigator.standalone));
+  sig.plugins = ok(() => navigator.plugins.length + "/" + navigator.mimeTypes.length);
+  sig.languages = ok(() => navigator.languages.join(","));
+  sig.language = navigator.language;
+  sig.vendor = navigator.vendor;
+  sig.platform = navigator.platform;
+  sig.appVersion = navigator.appVersion;
+  sig.webdriver = String(navigator.webdriver);
+  sig.cookieEnabled = String(navigator.cookieEnabled);
+  sig.localStorage = ok(() => { localStorage.setItem("_t", "1"); localStorage.removeItem("_t"); return "ok"; });
+  sig.indexedDB = has(window, "indexedDB");
+  sig.screen = ok(() => screen.width + "x" + screen.height + " @" + devicePixelRatio + " depth " + screen.colorDepth);
+  sig.avail = ok(() => screen.availWidth + "x" + screen.availHeight);
+  sig.inner = innerWidth + "x" + innerHeight;
+  sig.outer = outerWidth + "x" + outerHeight;
+  sig.visualViewport = ok(() => visualViewport ? Math.round(visualViewport.width) + "x" + Math.round(visualViewport.height) + " s" + visualViewport.scale : "missing");
+  sig.timezone = ok(() => Intl.DateTimeFormat().resolvedOptions().timeZone + " " + new Date().getTimezoneOffset());
+  sig.hardwareConcurrency = has(navigator, "hardwareConcurrency") + "/" + navigator.hardwareConcurrency;
+  sig.deviceMemory = has(navigator, "deviceMemory");
+  sig.maxTouchPoints = String(navigator.maxTouchPoints);
+  sig.share = has(navigator, "share");
+  sig.clipboard = has(navigator, "clipboard");
+  sig.permissions = has(navigator, "permissions");
+  sig.mediaDevices = has(navigator, "mediaDevices") + "/" + ok(() => navigator.mediaDevices ? typeof navigator.mediaDevices.getUserMedia : "-");
+  sig.DeviceMotionPermission = ok(() => typeof DeviceMotionEvent !== "undefined" ? typeof DeviceMotionEvent.requestPermission : "missing");
+  sig.webkitSpeechRecognition = has(window, "webkitSpeechRecognition");
+  sig.AudioContext = has(window, "AudioContext") + "/" + has(window, "webkitAudioContext");
+  sig.RTCPeerConnection = has(window, "RTCPeerConnection");
+  sig.MediaSource = has(window, "MediaSource") + "/" + has(window, "ManagedMediaSource");
+  sig.WebGL2 = has(window, "WebGL2RenderingContext");
+  sig.WebGPU = has(navigator, "gpu");
+  sig.WebAssembly = has(window, "WebAssembly");
+  sig.SharedArrayBuffer = has(window, "SharedArrayBuffer") + " iso:" + String(window.crossOriginIsolated);
+  sig.wakeLock = has(navigator, "wakeLock");
+  sig.locks = has(navigator, "locks");
+  sig.storage = has(navigator, "storage");
+  sig.getBattery = has(navigator, "getBattery");
+  sig.bluetooth = has(navigator, "bluetooth") + " usb:" + has(navigator, "usb") + " xr:" + has(navigator, "xr");
+  sig.contacts = has(navigator, "contacts") + " keyboard:" + has(navigator, "keyboard");
+  sig.showOpenFilePicker = has(window, "showOpenFilePicker");
+  sig.requestIdleCallback = has(window, "requestIdleCallback");
+  sig.chrome = has(window, "chrome") + " opr:" + has(window, "opr") + " opera:" + has(window, "opera");
+  sig.ancestorOrigins = has(location, "ancestorOrigins");
+  sig.isSecureContext = String(window.isSecureContext);
+  sig.displayMode = ok(() => matchMedia("(display-mode: standalone)").matches ? "standalone" : "browser");
+  sig.referrer = document.referrer || "(none)";
+  sig.webgl = ok(() => {
+    const c = document.createElement("canvas"); const gl = c.getContext("webgl");
+    if (!gl) return "missing";
+    const d = gl.getExtension("WEBGL_debug_renderer_info");
+    return (d ? gl.getParameter(d.UNMASKED_VENDOR_WEBGL) + " / " + gl.getParameter(d.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.VENDOR) + " / " + gl.getParameter(gl.RENDERER));
+  });
+  sig.canvasHash = ok(() => {
+    const c = document.createElement("canvas"); c.width = 240; c.height = 60; const x = c.getContext("2d");
+    x.fillStyle = "#f60"; x.fillRect(10, 5, 60, 20); x.fillStyle = "#069"; x.font = "14px Arial"; x.fillText("Cwm fjord glyphs 😃", 4, 40);
+    x.fillStyle = "rgba(102,204,0,.5)"; x.beginPath(); x.arc(200, 30, 20, 0, Math.PI * 2); x.fill();
+    return fnv(c.toDataURL());
+  });
+  sig.toDataURLNative = ok(() => Function.prototype.toString.call(HTMLCanvasElement.prototype.toDataURL).replace(/\s+/g, " "));
+  sig.storageQuotaMB = await ok(async () => navigator.storage && navigator.storage.estimate ? Math.round((await navigator.storage.estimate()).quota / 1048576) : "-");
+  sig.errorStack = ok(() => { try { null.x; } catch (e) { return String(e.stack).split("\n")[0].slice(0, 60); } });
+
+  const table = document.getElementById("table");
+  const lines = [];
+  for (const [k, v] of Object.entries(sig)) {
+    const value = await v;
+    lines.push(k + ": " + value);
+    const tr = document.createElement("tr");
+    const a = document.createElement("td"); a.textContent = k;
+    const b = document.createElement("td"); b.textContent = String(value);
+    tr.append(a, b); table.append(tr);
+  }
+  const text = lines.join("\n");
+  document.getElementById("raw").textContent = text;
+  document.getElementById("hash").textContent = "#" + fnv(text);
+  document.getElementById("copy").addEventListener("click", () => {
+    const status = document.getElementById("status");
+    const fallback = () => {
+      const pre = document.getElementById("raw"); pre.style.display = "block";
+      const range = document.createRange(); range.selectNodeContents(pre);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      status.textContent = "Selected, copy by hand";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => { status.textContent = "Copied"; }, fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
