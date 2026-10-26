@@ -140,8 +140,17 @@ enum FingerprintProtection {
 
     // MARK: - Screen size and user agent
 
+    /// The browser's own token, at the end of every user agent. A browser
+    /// built on WebKit, as every browser on iOS is, has no service workers,
+    /// which Safari itself has: a site that sees Safari's user agent without
+    /// them takes the browser for an app's built-in one and treats it with
+    /// suspicion, while Opera for iOS is a known browser with the same
+    /// engine and the same limits. So pages see Opera on an iPhone, as they
+    /// would with Opera installed.
+    static let browserToken = "OPT/5.6.2"
+
     /// A real iPhone or iPad: its screen size in points, a system version it
-    /// can run, and the user agent Safari sends there.
+    /// can run, and the user agent Opera sends there.
     struct Device {
         let name: String
         let width: Int
@@ -156,7 +165,7 @@ enum FingerprintProtection {
             self.height = height
             system = "iOS \(iOS)"
             userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
-                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
+                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1 " + FingerprintProtection.browserToken
         }
 
         /// An iPad, with the user agent Safari sends there when "Request
@@ -167,7 +176,7 @@ enum FingerprintProtection {
             self.height = height
             system = "iPadOS \(iPadOS)"
             userAgent = "Mozilla/5.0 (iPad; CPU OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
-                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
+                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1 " + FingerprintProtection.browserToken
         }
     }
 
@@ -252,8 +261,8 @@ enum FingerprintProtection {
 
     /// The user agent for a page: another device's with the user agent
     /// protection on (unless `protections` is off for the site) and in iPad
-    /// mode, or the one Safari itself sends here. Desktop mode keeps
-    /// WebKit's own.
+    /// mode, or this device's own. Desktop mode keeps WebKit's own.
+    @MainActor
     static func userAgent(protections: Bool, desktopMode: Bool) -> String? {
         if desktopMode {
             return nil
@@ -264,21 +273,39 @@ enum FingerprintProtection {
         return safariUserAgent
     }
 
-    /// What Safari sends on this iPhone. WebKit's own user agent leaves out
-    /// Safari's "Version/" and "Safari/" parts, which some sign-in pages
-    /// refuse as an app's built-in browser.
+    /// What Opera sends on this iPhone: WebKit's own user agent, which has
+    /// the system version as Safari reports it (frozen at an iOS 18 version
+    /// since iOS 26), with the "Version/" and "Safari/" parts WebKit leaves
+    /// out, which some sign-in pages refuse as an app's built-in browser,
+    /// and the browser's token. Built from a web view the first time, on
+    /// the main thread.
+    @MainActor
     static let safariUserAgent: String = {
         let version = ProcessInfo.processInfo.operatingSystemVersion
+        let safari = "\(version.majorVersion).\(version.minorVersion)"
+        if let webKit = WKWebView(frame: .zero).value(forKey: "userAgent") as? String,
+           webKit.hasPrefix("Mozilla/5.0 (iPhone;"), !webKit.contains("Version/"),
+           let mobile = webKit.range(of: " Mobile/") {
+            var agent = webKit
+            agent.insert(contentsOf: " Version/\(safari)", at: mobile.lowerBound)
+            return agent + " Safari/604.1 " + browserToken
+        }
         let system: String
         if version.majorVersion >= 26 {
-            // Safari freezes the system version at 18.6, and 18.7 from 26.2.
-            system = version.majorVersion == 26 && version.minorVersion < 2 ? "18_6" : "18_7"
+            // Safari freezes the system version: 18_6 on 26.0, 18_6_2 on 26.1, 18_7 from 26.2.
+            if version.majorVersion == 26 && version.minorVersion == 0 {
+                system = "18_6"
+            } else if version.majorVersion == 26 && version.minorVersion == 1 {
+                system = "18_6_2"
+            } else {
+                system = "18_7"
+            }
         } else {
             let parts = [version.majorVersion, version.minorVersion] + (version.patchVersion > 0 ? [version.patchVersion] : [])
             system = parts.map(String.init).joined(separator: "_")
         }
         return "Mozilla/5.0 (iPhone; CPU iPhone OS \(system) like Mac OS X) AppleWebKit/605.1.15 "
-            + "(KHTML, like Gecko) Version/\(version.majorVersion).\(version.minorVersion) Mobile/15E148 Safari/604.1"
+            + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1 " + browserToken
     }()
 
     private static func device(for seed: UInt32, in list: [Device]) -> Device {
