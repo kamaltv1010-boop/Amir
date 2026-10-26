@@ -335,9 +335,14 @@ enum FingerprintProtection {
         }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
         guard !parts.isEmpty else { return nil }
+        // Each part runs on its own, so a part that fails in some WebKit
+        // version leaves the others working.
+        let guarded = (parts + [framesScript]).map { "try {\n" + $0 + "} catch (e) {}\n" }.joined()
         let source = "(() => {\n" + shared
-            + "const protect = (window) => {\n" + helpers + parts.joined(separator: "\n") + framesScript + "};\n"
-            + "protect(window);\n})();"
+            + "const protect = (window) => {\n" + helpers + guarded + "protectedWindows.add(window);\n};\n"
+            // A window another copy of this script protected (its page's,
+            // when the frame started empty) is left as it is.
+            + "if (!isProtected(window)) protect(window);\n})();"
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }
 
@@ -369,6 +374,18 @@ enum FingerprintProtection {
     // Each replacement's real built-in, for its toString() and for calling it.
     const originals = new WeakMap();
     const native = (fn) => originals.get(fn) || fn;
+    // Every replacement's source carries this mark, so a copy of this script
+    // in another window (WebKit runs one per page) recognizes it too.
+    const MARK = "/* noor lookalike */";
+    const nativeToString = Function.prototype.toString;
+    // What a built-in's toString() looks like here, with "toString" for the name.
+    const nativeShape = nativeToString.call(nativeToString);
+    // Whether a window is protected already, by this or another copy of
+    // this script: its toString() then hides the mark in this probe.
+    const probe = function () { /* noor lookalike */ };
+    const isProtected = (win) => {
+      try { return win.Function.prototype.toString.call(probe).indexOf(MARK) === -1; } catch (e) { return false; }
+    };
     // The windows protected from this script, each once.
     const protectedWindows = new WeakSet();
     // The audio buffers the browser rendered or decoded, from any window, and
@@ -434,6 +451,7 @@ enum FingerprintProtection {
     // second, else from `readAll()`, a native read of the whole image.
     const candidatesFor = (key, data, width, height, left, top, fullWidth, fullHeight, readAll) => {
       if (tagOf(data) !== "Uint8ClampedArray" && tagOf(data) !== "Uint8Array") return null;
+      if (lengthOf.call(data) < width * height * 4) return null;
       if (left === 0 && top === 0 && width === fullWidth && height === fullHeight) {
         const bits = candidateBits(data, width, height);
         if (key) marks.set(key, { time: now(), width, height, bits });
@@ -504,8 +522,9 @@ enum FingerprintProtection {
     /// The start of `protect(window)`: how built-ins are replaced, and the
     /// site key.
     private static let helpers = #"""
-    // Protects `window`: the page's own, or an empty frame it made.
-    protectedWindows.add(window);
+    // Protects `window`: the page's own, or an empty frame it made. It is
+    // marked protected once everything is in place (at the end), so a run
+    // that fails is tried again.
     const document = window.document;
 
     // Keeps every built-in we replace indistinguishable from the original, so
@@ -515,8 +534,10 @@ enum FingerprintProtection {
     // and can't be constructed, and compares its own properties with a
     // built-in's; without this the protections themselves give the browser
     // away. `originals` sends each replacement's (and the patched toString's
-    // own) toString() to the real function it stands for.
-    const nativeToString = window.Function.prototype.toString;
+    // own) toString() to the real function it stands for; a replacement made
+    // by another copy of this script, which a page can reach through a
+    // frame's toString, is recognized by its mark and shown as a built-in.
+    const windowToString = window.Function.prototype.toString;
 
     // A function that stands in for `original` and runs `impl` with the same
     // this and arguments. A method of an object literal has no "prototype"
@@ -527,7 +548,7 @@ enum FingerprintProtection {
     const lookalike = (original, impl) => {
       const replacement = {
         [original.name]() {
-          "use strict";
+          "use strict"; /* noor lookalike */
           return impl.apply(this, arguments);
         },
       }[original.name];
@@ -542,8 +563,12 @@ enum FingerprintProtection {
       return replacement;
     };
 
-    window.Function.prototype.toString = lookalike(nativeToString, function () {
-      return nativeToString.apply(native(this), arguments);
+    window.Function.prototype.toString = lookalike(windowToString, function () {
+      const source = windowToString.apply(native(this), arguments);
+      if (typeof source === "string" && source.indexOf(MARK) !== -1) {
+        return nativeShape.replace("toString", this.name);
+      }
+      return source;
     });
 
     // Replaces object[name] (a method) with make(original).
@@ -607,6 +632,8 @@ enum FingerprintProtection {
       const protectWindow = (other) => {
         try {
           if (!other || protectedWindows.has(other) || other.location.href !== "about:blank") return;
+          // Protected by another copy of this script already.
+          if (isProtected(other)) return;
         } catch (e) {
           return;
         }
@@ -617,32 +644,44 @@ enum FingerprintProtection {
         protectWindow(other);
         return other;
       });
-      const frameProto = window.HTMLIFrameElement && window.HTMLIFrameElement.prototype;
-      const contentWindow = frameProto && getOwnPropertyDescriptor(frameProto, "contentWindow");
-      const contentDocument = frameProto && getOwnPropertyDescriptor(frameProto, "contentDocument");
-      if (contentWindow && contentWindow.get) {
-        const protectFrame = (frame) => {
+      // The elements that hold a frame, and their windows' getters.
+      const owners = [];
+      for (const name of ["HTMLIFrameElement", "HTMLFrameElement", "HTMLObjectElement"]) {
+        const proto = window[name] && window[name].prototype;
+        const contentWindow = proto && getOwnPropertyDescriptor(proto, "contentWindow");
+        if (contentWindow && contentWindow.get) owners.push([proto, contentWindow]);
+      }
+      const protectFrame = (frame) => {
+        for (const [proto, contentWindow] of owners) {
           try { protectWindow(contentWindow.get.call(frame)); } catch (e) {}
-        };
-        defineGetter(frameProto, "contentWindow", function () {
+        }
+      };
+      for (const [proto, contentWindow] of owners) {
+        defineGetter(proto, "contentWindow", function () {
           protectFrame(this);
           return contentWindow.get.call(this);
         });
+        const contentDocument = getOwnPropertyDescriptor(proto, "contentDocument");
         if (contentDocument && contentDocument.get) {
-          defineGetter(frameProto, "contentDocument", function () {
+          defineGetter(proto, "contentDocument", function () {
             protectFrame(this);
             return contentDocument.get.call(this);
           });
         }
+      }
+      if (owners.length) {
+        const names = ["iframe", "frame", "object"];
         try {
           new window.MutationObserver((records) => {
             for (const record of records) {
               for (const node of record.addedNodes) {
                 if (node.nodeType !== 1) continue;
-                if (node.localName === "iframe") {
+                if (names.indexOf(node.localName) !== -1) {
                   protectFrame(node);
                 } else if (node.getElementsByTagName) {
-                  for (const frame of node.getElementsByTagName("iframe")) protectFrame(frame);
+                  for (const name of names) {
+                    for (const frame of node.getElementsByTagName(name)) protectFrame(frame);
+                  }
                 }
               }
             }
@@ -676,22 +715,24 @@ enum FingerprintProtection {
             const getImageData = native(proto.getImageData);
             define(proto, "getImageData", (original) => function (sx, sy, sw, sh) {
               const image = original.apply(this, arguments);
-              // A negative width or height reads to the left of, or above, (sx, sy).
-              const left = (sx | 0) + (sw < 0 ? (sw | 0) : 0);
-              const top = (sy | 0) + (sh < 0 ? (sh | 0) : 0);
-              const data = imageData(image);
-              const width = imageWidth(image);
-              const height = imageHeight(image);
-              let canvas, fullWidth = width, fullHeight = height;
               try {
-                canvas = contextCanvas(this);
-                fullWidth = canvasWidth(canvas);
-                fullHeight = canvasHeight(canvas);
+                // A negative width or height reads to the left of, or above, (sx, sy).
+                const left = (sx | 0) + (sw < 0 ? (sw | 0) : 0);
+                const top = (sy | 0) + (sh < 0 ? (sh | 0) : 0);
+                const data = imageData(image);
+                const width = imageWidth(image);
+                const height = imageHeight(image);
+                let canvas, fullWidth = width, fullHeight = height;
+                try {
+                  canvas = contextCanvas(this);
+                  fullWidth = canvasWidth(canvas);
+                  fullHeight = canvasHeight(canvas);
+                } catch (e) {}
+                const bits = candidatesFor(canvas, data, width, height, left, top, fullWidth, fullHeight, () => {
+                  try { return imageData(getImageData.call(this, 0, 0, fullWidth, fullHeight)); } catch (e) { return null; }
+                });
+                addPixelNoise(canvasSeed, data, width, height, left, top, fullWidth, fullHeight, false, bits);
               } catch (e) {}
-              const bits = candidatesFor(canvas, data, width, height, left, top, fullWidth, fullHeight, () => {
-                try { return imageData(getImageData.call(this, 0, 0, fullWidth, fullHeight)); } catch (e) { return null; }
-              });
-              addPixelNoise(canvasSeed, data, width, height, left, top, fullWidth, fullHeight, false, bits);
               return image;
             });
           };
@@ -724,22 +765,24 @@ enum FingerprintProtection {
             const readPixels = native(proto.readPixels);
             define(proto, "readPixels", (original) => function (x, y, width, height, format, type, pixels, offset) {
               original.apply(this, arguments);
-              const tag = tagOf(pixels);
-              if ((tag !== "Uint8Array" && tag !== "Uint8ClampedArray") || Number(format) !== RGBA) return;
-              // WebGL2 can read into the array from `offset` on.
-              const data = offset > 0 ? subarray.call(pixels, offset) : pixels;
-              const fullWidth = bufferWidth(this);
-              const fullHeight = bufferHeight(this);
-              const bits = candidatesFor(this, data, width | 0, height | 0, x | 0, y | 0, fullWidth, fullHeight, () => {
-                try {
-                  const whole = new Uint8(fullWidth * fullHeight * 4);
-                  readPixels.call(this, 0, 0, fullWidth, fullHeight, RGBA, UNSIGNED_BYTE, whole);
-                  return whole;
-                } catch (e) {
-                  return null;
-                }
-              });
-              addPixelNoise(webGLSeed, data, width | 0, height | 0, x | 0, y | 0, fullWidth, fullHeight, true, bits);
+              try {
+                const tag = tagOf(pixels);
+                if ((tag !== "Uint8Array" && tag !== "Uint8ClampedArray") || Number(format) !== RGBA) return;
+                // WebGL2 can read into the array from `offset` on.
+                const data = offset > 0 ? subarray.call(pixels, offset) : pixels;
+                const fullWidth = bufferWidth(this);
+                const fullHeight = bufferHeight(this);
+                const bits = candidatesFor(this, data, width | 0, height | 0, x | 0, y | 0, fullWidth, fullHeight, () => {
+                  try {
+                    const whole = new Uint8(fullWidth * fullHeight * 4);
+                    readPixels.call(this, 0, 0, fullWidth, fullHeight, RGBA, UNSIGNED_BYTE, whole);
+                    return whole;
+                  } catch (e) {
+                    return null;
+                  }
+                });
+                addPixelNoise(webGLSeed, data, width | 0, height | 0, x | 0, y | 0, fullWidth, fullHeight, true, bits);
+              } catch (e) {}
             });
           }
         }
@@ -903,7 +946,7 @@ enum FingerprintProtection {
             };
             define(bufferProto, "getChannelData", (original) => function (channel) {
               const data = original.apply(this, arguments);
-              if (rendered.has(this)) nudgeChannel(this, channel >>> 0);
+              try { if (rendered.has(this)) nudgeChannel(this, channel >>> 0); } catch (e) {}
               return data;
             });
             define(bufferProto, "copyFromChannel", (original) => function (destination, channel) {
@@ -958,7 +1001,7 @@ enum FingerprintProtection {
               if (!proto[name]) continue;
               define(proto, name, (original) => function (array) {
                 original.apply(this, arguments);
-                nudge(array, sizes[name](this));
+                try { nudge(array, sizes[name](this)); } catch (e) {}
               });
             }
           }
@@ -999,11 +1042,13 @@ enum FingerprintProtection {
           };
           for (const proto of [window.Element.prototype, window.Range.prototype]) {
             define(proto, "getBoundingClientRect", (original) => function () {
-              return shiftRect(original.apply(this, arguments));
+              const rect = original.apply(this, arguments);
+              try { shiftRect(rect); } catch (e) {}
+              return rect;
             });
             define(proto, "getClientRects", (original) => function () {
               const rects = original.apply(this, arguments);
-              for (let i = 0; i < rects.length; i++) shiftRect(rects[i]);
+              try { for (let i = 0; i < rects.length; i++) shiftRect(rects[i]); } catch (e) {}
               return rects;
             });
           }
