@@ -349,7 +349,7 @@ enum FingerprintProtection {
     /// scripts (see `framesScript`), so `protect` takes the window to work on.
     @MainActor
     static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false) -> WKUserScript? {
-        var parts: [String] = []
+        var parts: [String] = [serviceWorkerScript]
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
             let webGLSeed = isEnabled(.webGL) ? seed(.webGL) : nil
@@ -363,7 +363,6 @@ enum FingerprintProtection {
             if isEnabled(.screen) && !realDevice { parts.append(screenScript(screenSize)) }
         }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
-        guard !parts.isEmpty else { return nil }
         // Each part runs on its own, so a part that fails in some WebKit
         // version leaves the others working.
         let guarded = (parts + [framesScript]).map { "try {\n" + $0 + "} catch (e) {}\n" }.joined()
@@ -600,6 +599,39 @@ enum FingerprintProtection {
       return source;
     });
 
+    // A method of a built-in that doesn't exist here: `name` and `length`
+    // as a built-in's, no "prototype", and the mark, so toString() shows it
+    // as a built-in.
+    const method = (name, length, impl) => {
+      const fn = {
+        [name]() {
+          "use strict"; /* noor lookalike */
+          return impl.apply(this, arguments);
+        },
+      }[name];
+      setPrototypeOf(fn, window.Function.prototype);
+      defineProperty(fn, "length", { value: length, configurable: true });
+      return fn;
+    };
+
+    // A built-in class that doesn't exist here, on `window`: constructing
+    // it throws like a built-in, its prototype chain follows `parent`'s,
+    // and it has a built-in's own properties and toString().
+    const nativeClass = (name, parent) => {
+      const C = {
+        [name]: function () {
+          "use strict"; /* noor lookalike */
+          throw new window.TypeError("Illegal constructor");
+        },
+      }[name];
+      setPrototypeOf(C, parent);
+      setPrototypeOf(C.prototype, parent.prototype);
+      defineProperty(C, "prototype", { writable: false });
+      defineProperty(C.prototype, Symbol.toStringTag, { value: name, configurable: true });
+      defineProperty(window, name, { value: C, writable: true, enumerable: false, configurable: true });
+      return C;
+    };
+
     // Replaces object[name] (a method) with make(original).
     const define = (object, name, make) => {
       const original = object && object[name];
@@ -716,6 +748,58 @@ enum FingerprintProtection {
             }
           }).observe(document, { childList: true, subtree: true });
         } catch (e) {}
+      }
+    }
+
+    """#
+
+    /// Apple gives service workers to Safari and to browsers with its browser
+    /// entitlement (Opera, Chrome, Firefox), not to other apps' web views. A
+    /// site that sees a browser's user agent without navigator.serviceWorker
+    /// takes the browser for an app's built-in one and treats it with
+    /// suspicion (Instagram asked every new account for a "confirm you're a
+    /// real person" check). Pages get the API's shape, with registrations
+    /// that fail as in a browser that keeps service workers from a page.
+    private static let serviceWorkerScript = #"""
+    // Service workers: the API's shape, where WebKit gives apps none.
+    {
+      const nav = window.Navigator && window.Navigator.prototype;
+      if (nav && window.EventTarget && window.Promise && !("serviceWorker" in nav)) {
+        const Container = nativeClass("ServiceWorkerContainer", window.EventTarget);
+        nativeClass("ServiceWorkerRegistration", window.EventTarget);
+        nativeClass("ServiceWorker", window.EventTarget);
+        const proto = Container.prototype;
+        const failure = () => new window.Promise((resolve, reject) => {
+          reject(new window.DOMException("The operation is insecure.", "SecurityError"));
+        });
+        const accessor = (name, get) => defineProperty(proto, name, {
+          get: method("get " + name, 0, get), enumerable: true, configurable: true,
+        });
+        const handler = (name) => defineProperty(proto, name, {
+          get: method("get " + name, 0, function () { return null; }),
+          set: method("set " + name, 1, function () {}),
+          enumerable: true, configurable: true,
+        });
+        let ready;
+        accessor("controller", function () { return null; });
+        accessor("ready", function () {
+          return ready || (ready = new window.Promise(() => {}));
+        });
+        handler("oncontrollerchange");
+        handler("onmessage");
+        handler("onmessageerror");
+        defineProperty(proto, "register", { value: method("register", 1, failure), writable: true, enumerable: true, configurable: true });
+        defineProperty(proto, "getRegistration", { value: method("getRegistration", 0, function () { return window.Promise.resolve(undefined); }), writable: true, enumerable: true, configurable: true });
+        defineProperty(proto, "getRegistrations", { value: method("getRegistrations", 0, function () { return window.Promise.resolve([]); }), writable: true, enumerable: true, configurable: true });
+        defineProperty(proto, "startMessages", { value: method("startMessages", 0, function () {}), writable: true, enumerable: true, configurable: true });
+        let container;
+        defineProperty(nav, "serviceWorker", {
+          get: method("get serviceWorker", 0, function () {
+            return container || (container = Object.create(proto));
+          }),
+          enumerable: true,
+          configurable: true,
+        });
       }
     }
 
