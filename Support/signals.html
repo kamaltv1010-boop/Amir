@@ -153,6 +153,43 @@
   sig.toDataURLNative = ok(() => Function.prototype.toString.call(HTMLCanvasElement.prototype.toDataURL).replace(/\s+/g, " "));
   sig.storageQuotaMB = await ok(async () => navigator.storage && navigator.storage.estimate ? Math.round((await navigator.storage.estimate()).quota / 1048576) : "-");
   sig.errorStack = ok(() => { try { null.x; } catch (e) { return String(e.stack).split("\n")[0].slice(0, 60); } });
+  // Behaviour, not just presence.
+  const timed = async (fn, ms) => { let t; const timeout = new Promise((r) => { t = setTimeout(() => r("timeout"), ms); }); try { return await Promise.race([fn(), timeout]); } catch (e) { return "error:" + (e && (e.name + " " + String(e.message).slice(0, 40))); } finally { clearTimeout(t); } };
+  sig.swRegisterResult = await timed(async () => { const r = await navigator.serviceWorker.register("data:text/javascript,"); return "ok scope " + (r && r.scope ? "set" : "none"); }, 4000);
+  sig.swRegisterSameOrigin = await timed(async () => { const r = await navigator.serviceWorker.register("./sw-probe.js"); return "ok " + (r.installing ? "installing" : r.waiting ? "waiting" : r.active ? "active" : "none"); }, 6000);
+  sig.swGetRegistrations = await timed(async () => (await navigator.serviceWorker.getRegistrations()).length, 3000);
+  sig.storagePersisted = await timed(async () => String(await navigator.storage.persisted()), 3000);
+  sig.storagePersistRequest = await timed(async () => String(await navigator.storage.persist()), 3000);
+  sig.mediaDevicesCount = await timed(async () => { const d = await navigator.mediaDevices.enumerateDevices(); return d.length + " " + d.map((x) => x.kind.replace("input", "i").replace("output", "o")).join(","); }, 3000);
+  sig.speechVoices = ok(() => typeof speechSynthesis !== "undefined" ? speechSynthesis.getVoices().length : "missing");
+  sig.notificationsPermission = await timed(async () => (await navigator.permissions.query({ name: "notifications" })).state, 3000);
+  sig.cameraPermission = await timed(async () => (await navigator.permissions.query({ name: "camera" })).state, 3000);
+  sig.geolocationPermission = await timed(async () => (await navigator.permissions.query({ name: "geolocation" })).state, 3000);
+  sig.hasStorageAccess = await timed(async () => String(await document.hasStorageAccess()), 3000);
+  sig.cookieStore = has(window, "cookieStore");
+  sig.webrtcCandidates = await timed(() => new Promise((resolve) => {
+    const pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] }); const types = new Set();
+    pc.createDataChannel("x"); pc.onicecandidate = (e) => { if (!e.candidate) { pc.close(); resolve([...types].join(",") || "none"); return; } const m = /typ (\w+)/.exec(e.candidate.candidate); if (m) types.add(m[1]); if (/\.local/.test(e.candidate.candidate)) types.add("mdns"); };
+    pc.createOffer().then((o) => pc.setLocalDescription(o));
+  }), 5000);
+  sig.fonts = ok(() => ["-apple-system", "Arial", "Helvetica Neue", "Courier New", "Georgia", "Times New Roman", "Verdana", "Trebuchet MS", "Gill Sans", "Palatino", "Menlo", "Avenir", "Futura", "Noteworthy", "Zapfino", "Al Nile", "Damascus", "KufiStandardGK", "Roboto", "Segoe UI", "Ubuntu"].filter((f) => document.fonts.check('12px "' + f + '"')).length + "/21");
+  sig.webglExtensions = ok(() => { const gl = document.createElement("canvas").getContext("webgl"); return gl ? gl.getSupportedExtensions().length + " ext, " + gl.getParameter(gl.MAX_TEXTURE_SIZE) + " tex" : "missing"; });
+  sig.audioFingerprint = await timed(async () => { const c = new OfflineAudioContext(1, 5000, 44100); const o = c.createOscillator(); o.type = "triangle"; o.frequency.value = 10000; const comp = c.createDynamicsCompressor(); o.connect(comp); comp.connect(c.destination); o.start(0); const b = await c.startRendering(); const d = b.getChannelData(0); let sum = 0; for (let i = 4500; i < 5000; i++) sum += Math.abs(d[i]); return sum.toFixed(6) + " sr" + c.sampleRate; }, 5000);
+  sig.performanceMemory = has(performance, "memory") + " nav:" + ok(() => performance.getEntriesByType("navigation").length);
+  sig.screenOrientation = ok(() => screen.orientation.type + " " + screen.orientation.angle);
+  sig.screenXY = ok(() => screenX + "," + screenY + " avail " + screen.availLeft + "," + screen.availTop);
+  sig.historyLength = String(history.length);
+  sig.external = has(window, "external");
+  sig.gamepads = ok(() => typeof navigator.getGamepads === "function" ? navigator.getGamepads().length : "missing");
+  sig.doNotTrack = String(navigator.doNotTrack) + " gpc:" + String(navigator.globalPrivacyControl);
+  sig.intl = ok(() => Intl.DateTimeFormat().resolvedOptions().locale + " " + new Intl.NumberFormat().format(1234567.89) + " " + Intl.DateTimeFormat().resolvedOptions().calendar);
+  sig.dateString = ok(() => new Date(0).toString().slice(0, 45));
+  sig.matchMedia = ok(() => ["(hover: hover)", "(pointer: fine)", "(prefers-color-scheme: dark)", "(prefers-reduced-motion: reduce)", "(dynamic-range: high)", "(color-gamut: p3)", "(display-mode: standalone)"].filter((q) => matchMedia(q).matches).join(" ") || "none");
+  sig.navigatorKeys = ok(() => Object.getOwnPropertyNames(Navigator.prototype).length + ": " + Object.getOwnPropertyNames(Navigator.prototype).slice(0, 60).join(","));
+  sig.windowKeysCount = ok(() => Object.getOwnPropertyNames(window).length);
+  sig.webkitPresent = has(window, "webkit");
+  sig.clientHints = has(navigator, "userAgentData");
+  sig.scriptTiming = ok(() => Math.round(performance.now()) + "ms");
 
   const table = document.getElementById("table");
   const lines = [];
