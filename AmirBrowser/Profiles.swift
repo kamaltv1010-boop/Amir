@@ -140,6 +140,19 @@ enum Profiles {
         }
     }
 
+    /// Deletes every profile but the default one, with everything each
+    /// kept, and selects the default profile. Call it with no tab of those
+    /// profiles open.
+    static func deleteAll(completion: @escaping () -> Void) {
+        let doomed = all.filter { !$0.isDefault }
+        let group = DispatchGroup()
+        for profile in doomed {
+            group.enter()
+            delete(profile) { group.leave() }
+        }
+        group.notify(queue: .main, execute: completion)
+    }
+
     @available(iOS 17.0, *)
     private static func removeStore(for id: UUID, attempts: Int, completion: @escaping () -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

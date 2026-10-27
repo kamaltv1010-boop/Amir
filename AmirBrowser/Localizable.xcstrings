@@ -1387,6 +1387,50 @@
         }
       }
     },
+    "Delete All Profiles" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف كل الملفات الشخصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All Profiles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer tous les profils"
+          }
+        }
+      }
+    },
+    "Delete All Profiles?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف كل الملفات الشخصية؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete All Profiles?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer tous les profils ?"
+          }
+        }
+      }
+    },
     "Delete Profile" : {
       "localizations" : {
         "ar" : {
@@ -3015,6 +3059,28 @@
         }
       }
     },
+    "Profile: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملف الشخصي: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil : %@"
+          }
+        }
+      }
+    },
     "Profiles" : {
       "localizations" : {
         "ar" : {
@@ -3807,6 +3873,28 @@
         }
       }
     },
+    "Switched to “%@”" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم التبديل إلى «%@»"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switched to “%@”"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passé à « %@ »"
+          }
+        }
+      }
+    },
     "Tabs" : {
       "localizations" : {
         "ar" : {
@@ -3939,6 +4027,28 @@
         }
       }
     },
+    "The profiles are also in the ⋯ menu and on the start page, to switch quickly." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملفات الشخصية موجودة أيضاً في قائمة ⋯ وفي صفحة البداية، للتبديل بسرعة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The profiles are also in the ⋯ menu and on the start page, to switch quickly."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les profils sont aussi dans le menu ⋯ et sur la page de démarrage, pour changer rapidement."
+          }
+        }
+      }
+    },
     "This Page" : {
       "localizations" : {
         "ar" : {
@@ -3961,24 +4071,46 @@
         }
       }
     },
-    "This deletes cookies, website data and history, closes all tabs and changes every fingerprint. Bookmarks and pinned links are kept." : {
+    "This deletes every profile except “%@”, with its cookies, website data, history and tabs. Bookmarks and pinned links are kept." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سيؤدي هذا إلى حذف ملفات تعريف الارتباط وبيانات المواقع والسجل، وإغلاق كل علامات التبويب، وتغيير كل البصمات. تبقى المفضلة والروابط المثبتة."
+            "value" : "يحذف هذا كل الملفات الشخصية ما عدا «%@»، مع ملفات تعريف الارتباط وبيانات المواقع والسجل وعلامات التبويب الخاصة بها. تبقى المفضلة والروابط المثبتة."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This deletes cookies, website data and history, closes all tabs and changes every fingerprint. Bookmarks and pinned links are kept."
+            "value" : "This deletes every profile except “%@”, with its cookies, website data, history and tabs. Bookmarks and pinned links are kept."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cela supprime les cookies, les données des sites et l’historique, ferme tous les onglets et change toutes les empreintes. Les signets et les liens épinglés sont conservés."
+            "value" : "Cela supprime tous les profils sauf « %@ », avec leurs cookies, données des sites, historique et onglets. Les signets et les liens épinglés sont conservés."
+          }
+        }
+      }
+    },
+    "This deletes the cookies, website data and history of the profile in use, closes its tabs and changes all its fingerprints. Other profiles, bookmarks and pinned links are kept." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيؤدي هذا إلى حذف ملفات تعريف الارتباط وبيانات المواقع والسجل الخاصة بالملف الشخصي المستخدم، وإغلاق علامات التبويب الخاصة به، وتغيير كل بصماته. تبقى الملفات الشخصية الأخرى والمفضلة والروابط المثبتة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This deletes the cookies, website data and history of the profile in use, closes its tabs and changes all its fingerprints. Other profiles, bookmarks and pinned links are kept."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela supprime les cookies, les données des sites et l’historique du profil en cours, ferme ses onglets et change toutes ses empreintes. Les autres profils, les signets et les liens épinglés sont conservés."
           }
         }
       }

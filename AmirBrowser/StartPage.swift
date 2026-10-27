@@ -3,11 +3,13 @@ import SwiftUI
 /// What a new tab shows: a search field, privacy stats like Brave's, and
 /// the bookmarks as favorites.
 struct StartPage: View {
+    @ObservedObject var browser: BrowserModel
     @ObservedObject var stats: PrivacyStats
     @ObservedObject var bookmarks: BookmarkStore
     let isPrivate: Bool
     let onSearch: () -> Void
     let onOpen: (URL) -> Void
+    let onSwitchProfile: (Profile) -> Void
 
     private let columns = [GridItem(.adaptive(minimum: 72, maximum: 96), spacing: 12)]
 
@@ -51,7 +53,32 @@ struct StartPage: View {
                 .shadow(color: Theme.brandColor.opacity(0.35), radius: 12, y: 6)
             Text(isPrivate ? "Private Browsing" : "Noor")
                 .font(.system(.largeTitle, design: .rounded).weight(.bold))
+            if !isPrivate {
+                profileChip
+            }
         }
+    }
+
+    /// The profile in use; tap it to switch, make or delete profiles
+    /// without going to Settings.
+    private var profileChip: some View {
+        Menu {
+            ProfileMenuItems(browser: browser, didSwitch: onSwitchProfile)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "person.crop.circle.fill")
+                Text(verbatim: browser.profile.name)
+                    .lineLimit(1)
+                Image(systemName: "chevron.down")
+                    .font(.caption2.weight(.bold))
+            }
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(.accentColor)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(Color.accentColor.opacity(0.12), in: Capsule())
+        }
+        .accessibilityLabel(Text("Profiles"))
     }
 
     private var searchField: some View {

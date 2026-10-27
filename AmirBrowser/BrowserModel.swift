@@ -284,14 +284,31 @@ final class BrowserModel: NSObject, ObservableObject {
         switchProfile(to: newProfile)
     }
 
+    /// The profile that can't be deleted.
+    private var defaultProfile: Profile {
+        profiles.first { $0.isDefault } ?? profiles[0]
+    }
+
     /// Deletes a profile with everything it kept. Deleting the profile in
-    /// use shows the first profile instead.
+    /// use shows the default profile instead.
     func deleteProfile(_ doomed: Profile) {
         guard !doomed.isDefault else { return }
         if doomed.id == profile.id {
-            switchProfile(to: profiles[0])
+            switchProfile(to: defaultProfile)
         }
         Profiles.delete(doomed) { [weak self] in
+            self?.profiles = Profiles.all
+        }
+        profiles = Profiles.all
+    }
+
+    /// Deletes every profile but the default one, with everything each
+    /// kept, and shows the default profile.
+    func deleteAllProfiles() {
+        if !profile.isDefault {
+            switchProfile(to: defaultProfile)
+        }
+        Profiles.deleteAll { [weak self] in
             self?.profiles = Profiles.all
         }
         profiles = Profiles.all
@@ -332,9 +349,10 @@ final class BrowserModel: NSObject, ObservableObject {
 
     // MARK: - New session
 
-    /// Deletes cookies, cache, all other website data and history, closes
-    /// every tab, gives every site new fingerprints and opens an empty tab.
-    /// Bookmarks and pinned links are kept.
+    /// Deletes the cookies, cache, all other website data and history of the
+    /// profile in use, closes every tab, gives every site new fingerprints
+    /// in that profile and opens an empty tab. Other profiles, bookmarks and
+    /// pinned links are kept.
     func startNewSession() {
         // Nothing loads until the old data is gone.
         isClearingData = true

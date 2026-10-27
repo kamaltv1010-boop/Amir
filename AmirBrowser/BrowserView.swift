@@ -80,7 +80,7 @@ struct BrowserView: View {
                 showToast("New session started")
             }
         } message: {
-            Text("This deletes cookies, website data and history, closes all tabs and changes every fingerprint. Bookmarks and pinned links are kept.")
+            Text("This deletes the cookies, website data and history of the profile in use, closes its tabs and changes all its fingerprints. Other profiles, bookmarks and pinned links are kept.")
         }
         .sheet(item: $sheet) { sheet in
             switch sheet {
@@ -156,11 +156,13 @@ private struct BrowserScreen: View {
                     .opacity(tab.isBlank ? 0 : 1)
                 if tab.isBlank {
                     StartPage(
+                        browser: browser,
                         stats: browser.stats,
                         bookmarks: bookmarks,
                         isPrivate: tab.isPrivate,
                         onSearch: { isEditingAddress = true },
-                        onOpen: { tab.load($0) }
+                        onOpen: { tab.load($0) },
+                        onSwitchProfile: { showToast("Switched to “\($0.name)”") }
                     )
                 }
                 if let storeID = ChromeWebStore.extensionID(in: tab.currentURL) {
@@ -385,6 +387,17 @@ private struct BrowserScreen: View {
                     sheet = .settings
                 } label: {
                     Label("Settings", systemImage: "gearshape")
+                }
+                Menu {
+                    ProfileMenuItems(browser: browser) { profile in
+                        showToast("Switched to “\(profile.name)”")
+                    }
+                } label: {
+                    Label {
+                        Text("Profile: \(browser.profile.name)")
+                    } icon: {
+                        Image(systemName: "person.crop.circle")
+                    }
                 }
                 Button(role: .destructive) {
                     isConfirmingNewSession = true

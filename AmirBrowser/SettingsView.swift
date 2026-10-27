@@ -231,9 +231,20 @@ private struct ProfilesView: View {
             }
 
             Section {
-                Button(action: newProfile) {
+                Button {
+                    ProfilePrompts.newProfile(in: browser)
+                } label: {
                     Label("New Profile", systemImage: "plus")
                 }
+                if browser.profiles.count > 1 {
+                    Button(role: .destructive) {
+                        ProfilePrompts.confirmDeleteAll(in: browser)
+                    } label: {
+                        Label("Delete All Profiles", systemImage: "trash")
+                    }
+                }
+            } footer: {
+                Text("The profiles are also in the ⋯ menu and on the start page, to switch quickly.")
             }
         }
         .navigationTitle("Profiles")
@@ -257,24 +268,6 @@ private struct ProfilesView: View {
     private var deleteTitle: LocalizedStringKey {
         let name = deleting?.name ?? ""
         return "Delete “\(name)”?"
-    }
-
-    /// Asks for a name, then makes the profile and switches to it.
-    private func newProfile() {
-        let number = browser.profiles.count + 1
-        let alert = UIAlertController(title: String(localized: "New Profile"), message: nil, preferredStyle: .alert)
-        alert.addTextField { field in
-            field.placeholder = String(localized: "Name")
-            field.text = String(localized: "Profile \(number)")
-            field.autocapitalizationType = .words
-            field.clearButtonMode = .whileEditing
-        }
-        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
-        alert.addAction(UIAlertAction(title: String(localized: "Create"), style: .default) { _ in
-            let typed = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            browser.createProfile(named: typed.isEmpty ? String(localized: "Profile \(number)") : typed)
-        })
-        browser.present(alert)
     }
 }
 
