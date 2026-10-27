@@ -4511,24 +4511,24 @@
         }
       }
     },
-    "Websites see one of 10 real iPads instead of an iPhone." : {
+    "Websites see one of 10 real iPads instead of an iPhone, and pages lay out at the iPad’s width, scaled to fit the screen, like on a tablet." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ترى المواقع واحداً من 10 أجهزة iPad حقيقية بدل iPhone."
+            "value" : "ترى المواقع واحداً من 10 أجهزة iPad حقيقية بدل iPhone، وتُعرض الصفحات بعرض الـ iPad مصغّرة لتناسب الشاشة، كما على جهاز لوحي."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Websites see one of 10 real iPads instead of an iPhone."
+            "value" : "Websites see one of 10 real iPads instead of an iPhone, and pages lay out at the iPad’s width, scaled to fit the screen, like on a tablet."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les sites voient l’un de 10 vrais iPad au lieu d’un iPhone."
+            "value" : "Les sites voient l’un de 10 vrais iPad au lieu d’un iPhone, et les pages s’affichent à la largeur de l’iPad, réduites pour tenir à l’écran, comme sur une tablette."
           }
         }
       }

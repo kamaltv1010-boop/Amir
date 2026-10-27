@@ -149,11 +149,16 @@ enum FingerprintProtection {
         /// For example "iOS 17.4.1" or "iPadOS 17.4.1".
         let system: String
         let userAgent: String
+        /// The processor cores Safari reports there (navigator.hardwareConcurrency,
+        /// which WebKit caps at 8): 6 on every iPhone and A-series iPad, 8
+        /// on the M-series iPads.
+        let cores: Int
 
         init(_ name: String, _ width: Int, _ height: Int, iOS: String, uaOS: String, safari: String) {
             self.name = name
             self.width = width
             self.height = height
+            cores = 6
             system = "iOS \(iOS)"
             userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
                 + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
@@ -161,10 +166,11 @@ enum FingerprintProtection {
 
         /// An iPad, with the user agent Safari sends there when "Request
         /// Desktop Website" is off (with it on, Safari claims to be a Mac).
-        init(_ name: String, _ width: Int, _ height: Int, iPadOS: String, uaOS: String, safari: String) {
+        init(_ name: String, _ width: Int, _ height: Int, iPadOS: String, uaOS: String, safari: String, cores: Int) {
             self.name = name
             self.width = width
             self.height = height
+            self.cores = cores
             system = "iPadOS \(iPadOS)"
             userAgent = "Mozilla/5.0 (iPad; CPU OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
                 + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
@@ -200,16 +206,16 @@ enum FingerprintProtection {
     /// Real iPads with an iPadOS version each one supports, for iPad mode.
     /// Safari on iPadOS 26 freezes the version like on iPhone.
     static let iPads: [Device] = [
-        Device("iPad (9th generation)", 810, 1080, iPadOS: "16.7.10", uaOS: "16_7_10", safari: "16.6"),
-        Device("iPad mini (6th generation)", 744, 1133, iPadOS: "17.1.2", uaOS: "17_1_2", safari: "17.1"),
-        Device("iPad Pro 12.9-inch (5th generation)", 1024, 1366, iPadOS: "17.3.1", uaOS: "17_3_1", safari: "17.3"),
-        Device("iPad Air (5th generation)", 820, 1180, iPadOS: "17.5.1", uaOS: "17_5_1", safari: "17.5"),
-        Device("iPad (10th generation)", 820, 1180, iPadOS: "17.6.1", uaOS: "17_6_1", safari: "17.6"),
-        Device("iPad Pro 11-inch (4th generation)", 834, 1194, iPadOS: "18.1.1", uaOS: "18_1_1", safari: "18.1"),
-        Device("iPad Air 13-inch (M2)", 1024, 1366, iPadOS: "18.3.2", uaOS: "18_3_2", safari: "18.3"),
-        Device("iPad Pro 11-inch (M4)", 834, 1210, iPadOS: "18.5", uaOS: "18_5", safari: "18.5"),
-        Device("iPad mini (A17 Pro)", 744, 1133, iPadOS: "26.0", uaOS: "18_6", safari: "26.0"),
-        Device("iPad Pro 13-inch (M4)", 1032, 1376, iPadOS: "26.1", uaOS: "18_6", safari: "26.1"),
+        Device("iPad (9th generation)", 810, 1080, iPadOS: "16.7.10", uaOS: "16_7_10", safari: "16.6", cores: 6),
+        Device("iPad mini (6th generation)", 744, 1133, iPadOS: "17.1.2", uaOS: "17_1_2", safari: "17.1", cores: 6),
+        Device("iPad Pro 12.9-inch (5th generation)", 1024, 1366, iPadOS: "17.3.1", uaOS: "17_3_1", safari: "17.3", cores: 8),
+        Device("iPad Air (5th generation)", 820, 1180, iPadOS: "17.5.1", uaOS: "17_5_1", safari: "17.5", cores: 8),
+        Device("iPad (10th generation)", 820, 1180, iPadOS: "17.6.1", uaOS: "17_6_1", safari: "17.6", cores: 6),
+        Device("iPad Pro 11-inch (4th generation)", 834, 1194, iPadOS: "18.1.1", uaOS: "18_1_1", safari: "18.1", cores: 8),
+        Device("iPad Air 13-inch (M2)", 1024, 1366, iPadOS: "18.3.2", uaOS: "18_3_2", safari: "18.3", cores: 8),
+        Device("iPad Pro 11-inch (M4)", 834, 1210, iPadOS: "18.5", uaOS: "18_5", safari: "18.5", cores: 8),
+        Device("iPad mini (A17 Pro)", 744, 1133, iPadOS: "26.0", uaOS: "18_6", safari: "26.0", cores: 6),
+        Device("iPad Pro 13-inch (M4)", 1032, 1376, iPadOS: "26.1", uaOS: "18_6", safari: "26.1", cores: 8),
     ]
 
     /// The devices pages can see: the iPads in iPad mode, the iPhones otherwise.
@@ -330,7 +336,8 @@ enum FingerprintProtection {
     /// the web view instead), or nil if none of them is. Without
     /// `protections` (shields down for the site) only iPad mode is left. With
     /// `realDevice` (a sign-in site) the screen size stays as it is, like
-    /// the user agent, since such sites check both against the device. In
+    /// the user agent, since such sites check both against the device,
+    /// except in iPad mode, where the user agent is an iPad's anyway. In
     /// desktop mode WebKit reports a Mac on its own, so iPad mode leaves it
     /// alone there.
     ///
@@ -340,6 +347,7 @@ enum FingerprintProtection {
     @MainActor
     static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false) -> WKUserScript? {
         var parts: [String] = [browserScript]
+        let isIPad = isIPadMode && !desktopMode
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
             let webGLSeed = isEnabled(.webGL) ? seed(.webGL) : nil
@@ -350,9 +358,14 @@ enum FingerprintProtection {
             }
             if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
             if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
-            if isEnabled(.screen) && !realDevice { parts.append(screenScript(screenSize)) }
+            if isEnabled(.screen) && !realDevice && !isIPad { parts.append(screenScript(screenSize)) }
         }
-        if isIPadMode && !desktopMode { parts.append(iPadScript) }
+        if isIPad {
+            // An iPad's user agent needs an iPad's screen, whatever the
+            // screen size switch and the site.
+            parts.append(screenScript(screenSize))
+            parts.append(iPadScript(cores: userAgentDevice.cores, width: screenSize.width))
+        }
         // Each part runs on its own, so a part that fails in some WebKit
         // version leaves the others working.
         let guarded = (parts + [framesScript]).map { "try {\n" + $0 + "} catch (e) {}\n" }.joined()
@@ -1258,12 +1271,58 @@ enum FingerprintProtection {
         """#
     }
 
-    /// WebKit takes navigator.platform from the real device, not from the
-    /// user agent, so an iPhone would still say "iPhone" next to an iPad's
-    /// user agent.
-    private static let iPadScript = #"""
-    // iPad mode: pages see the platform Safari reports on an iPad.
-    defineGetter(window.Navigator.prototype, "platform", () => "iPad");
+    /// What else an iPad shows, which WebKit takes from the real device: the
+    /// platform (an iPhone would still say "iPhone" next to an iPad's user
+    /// agent), the core count and the pixel density (2 on every iPad, 3 on
+    /// this phone). And the page is laid out at the iPad's width and scaled
+    /// to fit the screen, as a tablet's page looks, instead of at the
+    /// phone's width: its viewport meta is set to that width, whatever the
+    /// page asks for, and the text isn't enlarged for the zoomed-out page
+    /// as WebKit does on a phone.
+    private static func iPadScript(cores: Int, width: Int) -> String {
+        #"""
+        // iPad mode: pages see the platform, cores and pixel density Safari
+        // reports on an iPad, and lay out at the iPad's width.
+        defineGetter(window.Navigator.prototype, "platform", () => "iPad");
+        defineGetter(window.Navigator.prototype, "hardwareConcurrency", () => \#(cores));
+        defineGetter(window, "devicePixelRatio", () => 2);
+        if (window.top === window) {
+          const doc = window.document;
+          const content = "width=\#(width)";
+          let style = null;
+          const fix = () => {
+            const scope = doc.head || doc;
+            let found = false;
+            for (const meta of scope.querySelectorAll('meta[name="viewport" i]')) {
+              found = true;
+              if (meta.getAttribute("content") !== content) meta.setAttribute("content", content);
+            }
+            if (!found && doc.head) {
+              const meta = doc.createElement("meta");
+              meta.setAttribute("name", "viewport");
+              meta.setAttribute("content", content);
+              doc.head.appendChild(meta);
+            }
+            if (!style && doc.head) {
+              style = doc.createElement("style");
+              style.textContent = "html, body { -webkit-text-size-adjust: none !important; }";
+              doc.head.appendChild(style);
+            }
+          };
+          const options = { childList: true, subtree: true, attributes: true, attributeFilter: ["name", "content"] };
+          const observer = new window.MutationObserver(fix);
+          // Until the page is parsed, a viewport meta can turn up anywhere;
+          // after that only the head is watched, so the page's own changes
+          // cost nothing.
+          observer.observe(doc, options);
+          doc.addEventListener("DOMContentLoaded", () => {
+            observer.disconnect();
+            if (doc.head) observer.observe(doc.head, options);
+            fix();
+          }, { once: true });
+          fix();
+        }
 
-    """#
+        """#
+    }
 }
