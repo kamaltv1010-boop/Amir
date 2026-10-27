@@ -178,8 +178,8 @@ enum FingerprintProtection {
     }
 
     /// Real iPhones with an iOS version each one supports. Safari on iOS 26
-    /// reports a frozen "iPhone OS 18_6" (18_7 from 26.2) and the real
-    /// version only in "Version/".
+    /// and 27 reports a frozen "iPhone OS 18_6" (18_7 from 26.2) and the
+    /// real version only in "Version/".
     static let iPhones: [Device] = [
         Device("iPhone SE (2nd generation)", 375, 667, iOS: "16.6.1", uaOS: "16_6_1", safari: "16.6"),
         Device("iPhone 11 Pro", 375, 812, iOS: "16.7.10", uaOS: "16_7_10", safari: "16.6"),
@@ -201,6 +201,8 @@ enum FingerprintProtection {
         Device("iPhone 14", 390, 844, iOS: "26.0", uaOS: "18_6", safari: "26.0"),
         Device("iPhone 14 Pro Max", 430, 932, iOS: "26.1", uaOS: "18_6", safari: "26.1"),
         Device("iPhone 16 Pro Max", 440, 956, iOS: "26.2", uaOS: "18_7", safari: "26.2"),
+        Device("iPhone 17 Pro", 402, 874, iOS: "26.6.1", uaOS: "18_7", safari: "26.6.1"),
+        Device("iPhone 17 Pro Max", 440, 956, iOS: "27.0", uaOS: "18_7", safari: "27.0"),
     ]
 
     /// Real iPads with an iPadOS version each one supports, for iPad mode.
@@ -216,6 +218,9 @@ enum FingerprintProtection {
         Device("iPad Pro 11-inch (M4)", 834, 1210, iPadOS: "18.5", uaOS: "18_5", safari: "18.5", cores: 8),
         Device("iPad mini (A17 Pro)", 744, 1133, iPadOS: "26.0", uaOS: "18_6", safari: "26.0", cores: 6),
         Device("iPad Pro 13-inch (M4)", 1032, 1376, iPadOS: "26.1", uaOS: "18_6", safari: "26.1", cores: 8),
+        Device("iPad Pro 11-inch (M5)", 834, 1210, iPadOS: "26.4", uaOS: "18_7", safari: "26.4", cores: 8),
+        Device("iPad Pro 13-inch (M5)", 1032, 1376, iPadOS: "26.6.1", uaOS: "18_7", safari: "26.6.1", cores: 8),
+        Device("iPad Air 13-inch (M3)", 1024, 1366, iPadOS: "27.0", uaOS: "18_7", safari: "27.0", cores: 8),
     ]
 
     /// The devices pages can see: the iPads in iPad mode, the iPhones otherwise.
@@ -364,7 +369,7 @@ enum FingerprintProtection {
             // An iPad's user agent needs an iPad's screen, whatever the
             // screen size switch and the site.
             parts.append(screenScript(screenSize))
-            parts.append(iPadScript(cores: userAgentDevice.cores, width: screenSize.width))
+            parts.append(iPadScript(cores: userAgentDevice.cores))
         }
         // Each part runs on its own, so a part that fails in some WebKit
         // version leaves the others working.
@@ -1266,6 +1271,9 @@ enum FingerprintProtection {
           const height = \#(size.height);
           for (const name of ["width", "availWidth"]) defineGetter(window.Screen.prototype, name, () => width);
           for (const name of ["height", "availHeight"]) defineGetter(window.Screen.prototype, name, () => height);
+          // Safari reports the screen as the window's outer size.
+          defineGetter(window, "outerWidth", () => width);
+          defineGetter(window, "outerHeight", () => height);
         }
 
         """#
@@ -1274,53 +1282,31 @@ enum FingerprintProtection {
     /// What else an iPad shows, which WebKit takes from the real device: the
     /// platform (an iPhone would still say "iPhone" next to an iPad's user
     /// agent), the core count and the pixel density (2 on every iPad, 3 on
-    /// this phone). And the page is laid out at the iPad's width and scaled
-    /// to fit the screen, as a tablet's page looks, instead of at the
-    /// phone's width: its viewport meta is set to that width, whatever the
-    /// page asks for, and the text isn't enlarged for the zoomed-out page
-    /// as WebKit does on a phone.
-    private static func iPadScript(cores: Int, width: Int) -> String {
+    /// this phone). The page itself is shown as big as the iPad's screen
+    /// and scaled down (see `WebViewContainer`), so it lays out at the
+    /// iPad's width on its own; only WebKit's text enlargement for pages
+    /// zoomed out on a phone is turned off, as an iPad has none.
+    private static func iPadScript(cores: Int) -> String {
         #"""
         // iPad mode: pages see the platform, cores and pixel density Safari
-        // reports on an iPad, and lay out at the iPad's width.
+        // reports on an iPad, and no text enlargement, as on an iPad.
         defineGetter(window.Navigator.prototype, "platform", () => "iPad");
         defineGetter(window.Navigator.prototype, "hardwareConcurrency", () => \#(cores));
         defineGetter(window, "devicePixelRatio", () => 2);
         if (window.top === window) {
           const doc = window.document;
-          const content = "width=\#(width)";
-          let style = null;
-          const fix = () => {
-            const scope = doc.head || doc;
-            let found = false;
-            for (const meta of scope.querySelectorAll('meta[name="viewport" i]')) {
-              found = true;
-              if (meta.getAttribute("content") !== content) meta.setAttribute("content", content);
-            }
-            if (!found && doc.head) {
-              const meta = doc.createElement("meta");
-              meta.setAttribute("name", "viewport");
-              meta.setAttribute("content", content);
-              doc.head.appendChild(meta);
-            }
-            if (!style && doc.head) {
-              style = doc.createElement("style");
-              style.textContent = "html, body { -webkit-text-size-adjust: none !important; }";
-              doc.head.appendChild(style);
-            }
+          const addStyle = () => {
+            if (!doc.head) return false;
+            const style = doc.createElement("style");
+            style.textContent = "html, body { -webkit-text-size-adjust: none !important; }";
+            doc.head.appendChild(style);
+            return true;
           };
-          const options = { childList: true, subtree: true, attributes: true, attributeFilter: ["name", "content"] };
-          const observer = new window.MutationObserver(fix);
-          // Until the page is parsed, a viewport meta can turn up anywhere;
-          // after that only the head is watched, so the page's own changes
-          // cost nothing.
-          observer.observe(doc, options);
-          doc.addEventListener("DOMContentLoaded", () => {
-            observer.disconnect();
-            if (doc.head) observer.observe(doc.head, options);
-            fix();
-          }, { once: true });
-          fix();
+          if (!addStyle()) {
+            // The head isn't parsed yet when this runs.
+            const observer = new window.MutationObserver(() => { if (addStyle()) observer.disconnect(); });
+            observer.observe(doc, { childList: true, subtree: true });
+          }
         }
 
         """#
