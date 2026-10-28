@@ -152,7 +152,7 @@ private struct BrowserScreen: View {
                 pinnedLinks
             }
             ZStack {
-                WebView(webView: tab.webView, tabletScreen: tabletScreen)
+                WebView(webView: tab.webView)
                     .opacity(tab.isBlank ? 0 : 1)
                 if tab.isBlank {
                     StartPage(
@@ -376,14 +376,6 @@ private struct BrowserScreen: View {
             moreMenu
         }
         .padding(.horizontal, 20)
-    }
-
-    /// The screen of the iPad the page is shown as on, in iPad mode (not in
-    /// desktop mode, where WebKit shows a Mac's page on its own).
-    private var tabletScreen: CGSize? {
-        guard browser.isIPadMode, !tab.isDesktopMode else { return nil }
-        let device = FingerprintProtection.screenDevice
-        return CGSize(width: device.width, height: device.height)
     }
 
     // MARK: - Menu

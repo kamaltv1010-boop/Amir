@@ -290,7 +290,7 @@ private struct FingerprintSettingsView: View {
                     SettingsLabel("iPad Mode", systemName: "ipad", color: .blue)
                 }
             } footer: {
-                Text("Websites see one of 13 real iPads instead of an iPhone, and the page is shown as big as the iPad’s screen, scaled down to fit, like on a tablet.")
+                Text("Websites see one of 10 real iPads instead of an iPhone.")
             }
 
             Section("Current Values") {
