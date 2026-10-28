@@ -451,6 +451,10 @@ enum FingerprintProtection {
     // Each canvas's context: its kind, "webgl" or "canvas", and the settings
     // it was made with, from any window.
     const kinds = new WeakMap();
+    // The canvases holding what a device's rendering decided (text, paths,
+    // images…), the only ones that get noise, and those a clip limits.
+    const painted = new WeakSet();
+    const clipped = new WeakSet();
     // Each canvas's (or WebGL context's) candidate pixels, computed lately.
     const marks = new WeakMap();
 
@@ -1010,7 +1014,14 @@ enum FingerprintProtection {
     private static func canvasScript(seed: UInt32) -> String {
         #"""
         // Canvas: pixels read with getImageData get pixel noise, decided from
-        // the whole canvas. The image's and the canvas's properties are read
+        // the whole canvas, once the canvas holds what a device's rendering
+        // decided: text, paths, images, gradients, shadows, blends, anything
+        // transformed or clipped. A canvas a page only filled with whole,
+        // opaque rectangles in plain colors reads back exactly as drawn,
+        // the same on every device, so there is nothing in it to hide (and
+        // a site draws such a canvas and reads it back to catch noise).
+        // Clearing the whole canvas, giving it a new size or resetting it
+        // starts over. The image's and the canvas's properties are read
         // with the built-ins as they are now, so a page can't redirect the
         // noise by changing them later.
         {
@@ -1023,23 +1034,28 @@ enum FingerprintProtection {
           const imageData = getter(imageProto, "data");
           const imageWidth = getter(imageProto, "width");
           const imageHeight = getter(imageProto, "height");
-          const patchGetImageData = (proto, canvasProto) => {
+          const whole = (values) => values.every((v) => typeof v === "number" && isFinite(v) && v % 1 === 0);
+          const patch2D = (proto, canvasProto) => {
             const contextCanvas = getter(proto, "canvas");
             const canvasWidth = getter(canvasProto, "width");
             const canvasHeight = getter(canvasProto, "height");
             const getImageData = native(proto.getImageData);
+            const canvasOf = (context) => {
+              try { return contextCanvas(context) || null; } catch (e) { return null; }
+            };
             define(proto, "getImageData", (original) => function (sx, sy, sw, sh) {
               const image = original.apply(this, arguments);
               try {
+                const canvas = canvasOf(this);
+                if (!canvas || !painted.has(canvas)) return image;
                 // A negative width or height reads to the left of, or above, (sx, sy).
                 const left = (sx | 0) + (sw < 0 ? (sw | 0) : 0);
                 const top = (sy | 0) + (sh < 0 ? (sh | 0) : 0);
                 const data = imageData(image);
                 const width = imageWidth(image);
                 const height = imageHeight(image);
-                let canvas, fullWidth = width, fullHeight = height;
+                let fullWidth = width, fullHeight = height;
                 try {
-                  canvas = contextCanvas(this);
                   fullWidth = canvasWidth(canvas);
                   fullHeight = canvasHeight(canvas);
                 } catch (e) {}
@@ -1050,10 +1066,103 @@ enum FingerprintProtection {
               } catch (e) {}
               return image;
             });
+
+            // What a device's rendering decides: text, paths, images, and
+            // anything drawn within a clip.
+            const paint = (context) => {
+              const canvas = canvasOf(context);
+              if (canvas) painted.add(canvas);
+            };
+            for (const name of ["fillText", "strokeText", "fill", "stroke", "drawImage", "strokeRect", "drawFocusIfNeeded"]) {
+              define(proto, name, (original) => function () {
+                paint(this);
+                return original.apply(this, arguments);
+              });
+            }
+            define(proto, "clip", (original) => function () {
+              const canvas = canvasOf(this);
+              if (canvas) { painted.add(canvas); clipped.add(canvas); }
+              return original.apply(this, arguments);
+            });
+            // A rectangle is exact when it is whole, in a plain opaque color,
+            // drawn as is: no gradient or pattern, blending, filter, shadow
+            // or transform beyond a whole move.
+            const state = {};
+            for (const name of ["fillStyle", "globalAlpha", "globalCompositeOperation", "filter", "shadowColor", "shadowBlur", "shadowOffsetX", "shadowOffsetY"]) {
+              state[name] = getter(proto, name);
+            }
+            const getTransform = typeof proto.getTransform === "function" ? proto.getTransform : null;
+            const wholeMove = (context) => {
+              if (!getTransform) return true;
+              const m = getTransform.call(context);
+              return m.a === 1 && m.b === 0 && m.c === 0 && m.d === 1 && m.e % 1 === 0 && m.f % 1 === 0;
+            };
+            const plain = (context) => {
+              try {
+                if (!/^#[0-9a-f]{6}$/i.test(String(state.fillStyle(context)))) return false;
+                if (state.globalAlpha(context) !== 1 || state.globalCompositeOperation(context) !== "source-over") return false;
+                const filter = state.filter(context);
+                if (filter !== undefined && filter !== "none") return false;
+                if ((state.shadowBlur(context) !== 0 || state.shadowOffsetX(context) !== 0 || state.shadowOffsetY(context) !== 0)
+                  && state.shadowColor(context) !== "rgba(0, 0, 0, 0)") return false;
+                return wholeMove(context);
+              } catch (e) {
+                return false;
+              }
+            };
+            define(proto, "fillRect", (original) => function (x, y, w, h) {
+              const canvas = canvasOf(this);
+              if (canvas && !painted.has(canvas) && !(whole([x, y, w, h]) && plain(this))) painted.add(canvas);
+              return original.apply(this, arguments);
+            });
+            // Clearing the whole canvas starts over, unless a clip limits it.
+            define(proto, "clearRect", (original) => function (x, y, w, h) {
+              try {
+                const canvas = canvasOf(this);
+                if (canvas && painted.has(canvas) && !clipped.has(canvas) && whole([x, y, w, h]) && wholeMove(this)) {
+                  const m = getTransform ? getTransform.call(this) : { e: 0, f: 0 };
+                  const left = x + m.e, top = y + m.f;
+                  if (left <= 0 && top <= 0 && left + w >= canvasWidth(canvas) && top + h >= canvasHeight(canvas)) painted.delete(canvas);
+                }
+              } catch (e) {}
+              return original.apply(this, arguments);
+            });
+            if (typeof proto.reset === "function") {
+              define(proto, "reset", (original) => function () {
+                const canvas = canvasOf(this);
+                if (canvas) { painted.delete(canvas); clipped.delete(canvas); }
+                return original.apply(this, arguments);
+              });
+            }
+            // A new size clears the canvas too.
+            for (const name of ["width", "height"]) {
+              const descriptor = getOwnPropertyDescriptor(canvasProto, name);
+              if (!descriptor || !descriptor.set) continue;
+              defineProperty(canvasProto, name, {
+                get: descriptor.get,
+                set: lookalike(descriptor.set, function (value) {
+                  descriptor.set.call(this, value);
+                  painted.delete(this);
+                  clipped.delete(this);
+                }),
+                configurable: true,
+                enumerable: descriptor.enumerable,
+              });
+            }
           };
-          patchGetImageData(window.CanvasRenderingContext2D.prototype, window.HTMLCanvasElement.prototype);
+          patch2D(window.CanvasRenderingContext2D.prototype, window.HTMLCanvasElement.prototype);
           if (window.OffscreenCanvasRenderingContext2D && window.OffscreenCanvas) {
-            patchGetImageData(window.OffscreenCanvasRenderingContext2D.prototype, window.OffscreenCanvas.prototype);
+            patch2D(window.OffscreenCanvasRenderingContext2D.prototype, window.OffscreenCanvas.prototype);
+          }
+          // A bitmap put in a canvas was painted elsewhere (a decoded image,
+          // a video frame).
+          const bitmapProto = window.ImageBitmapRenderingContext && window.ImageBitmapRenderingContext.prototype;
+          if (bitmapProto) {
+            const bitmapCanvas = getter(bitmapProto, "canvas");
+            define(bitmapProto, "transferFromImageBitmap", (original) => function () {
+              try { const canvas = bitmapCanvas(this); if (canvas) painted.add(canvas); } catch (e) {}
+              return original.apply(this, arguments);
+            });
           }
         }
 
@@ -1115,7 +1224,8 @@ enum FingerprintProtection {
         let webgl = webGLSeed.map { "forSite(\($0))" } ?? "null"
         return #"""
         // Canvas exports: toDataURL, toBlob and convertToBlob read a noisy
-        // copy, so the canvas on screen is never changed. The copy gets the
+        // copy (of a canvas with something a device decided in it, see the
+        // canvas script), so the canvas on screen is never changed. The copy gets the
         // WebGL noise for a canvas drawn with WebGL, which getContext
         // remembers, and the canvas noise otherwise. The copy is made with
         // the built-ins as they are now, so a page can't change them later
@@ -1171,9 +1281,13 @@ enum FingerprintProtection {
             }
             const seed = seedFor(canvas);
             if (seed === null || !width || !height || !tools) return null;
+            // A canvas with nothing a device decided in it (see the canvas
+            // script) exports exactly as drawn; one drawn with WebGL always
+            // has.
+            const made = kinds.get(canvas);
+            if (!painted.has(canvas) && !(made && made.kind === "webgl")) return null;
             try {
               const [getContext, drawImage, getImageData, putImageData] = tools;
-              const made = kinds.get(canvas);
               const copy = makeCanvas(width, height);
               // The copy keeps the canvas's color space, so colors don't shift.
               const context = getContext.call(copy, "2d", made && made.settings);
@@ -1327,37 +1441,50 @@ enum FingerprintProtection {
 
     private static func clientRectsScript(seed: UInt32) -> String {
         #"""
-        // ClientRects: the edges of the boxes getBoundingClientRect() and
-        // getClientRects() report move by 0.000015 to 0.00006 pixels, far
-        // below anything visible, but it changes the hashes fingerprinting
-        // scripts take of these sizes. An edge is moved by its own value, so
-        // measuring twice, or an edge two boxes share, still agrees; zero
-        // stays zero, so hidden elements still measure 0. The move is a
-        // multiple of 1/65536 of a pixel, exact in binary like the layout's
-        // own 1/64 steps, so right - left is still width to the last bit, as
-        // a site checks; a value that isn't a layout step (a rotated box)
-        // is left as it is, since such boxes are checked against known
-        // sizes. The browser returns new rects on every call, so they are
-        // changed in place and keep their types.
+        // ClientRects: of the boxes getBoundingClientRect() and
+        // getClientRects() report, the positions and sizes with a fraction
+        // of a pixel (what the fonts and their rendering decide, where a
+        // device shows itself) move by one step of the layout's own
+        // 1/64-pixel grid, up or down as the value's hash says: far below
+        // anything visible, but it changes the hashes fingerprinting
+        // scripts take of these sizes. A whole number (a size a page set
+        // itself) stays as it is, so a page measures back exactly what it
+        // laid out, as a site checks against offsetWidth and the styles;
+        // zero stays zero, so hidden elements still measure 0; a value off
+        // the grid (a rotated or zoomed box) is left as it is, since such
+        // boxes are checked against known sizes. A value always moves the
+        // same way, so measuring twice, or two equal boxes, still agree,
+        // and the move keeps the value's rounding, so offsetWidth and the
+        // like still agree too. A box's right is its left plus its width
+        // to the last bit, as a site checks. The boxes IntersectionObserver
+        // and ResizeObserver report move the same way. The browser returns
+        // new rects on every call, so they are changed in place and keep
+        // their types.
         {
           const rectsSeed = forSite(\#(seed));
           const bits = new Float64Array(1);
           const words = new Uint32Array(bits.buffer);
+          const STEP = 1 / 64;
+          const rounded = (value) => value < 0 ? -floor(0.5 - value) : floor(value + 0.5);
           const shift = (value) => {
-            if (value === 0 || !isFinite(value) || (value * 64) % 1 !== 0) return value;
+            if (!isFinite(value) || value % 1 === 0 || (value * 64) % 1 !== 0) return value;
             bits[0] = value;
             const h = mix(mix(rectsSeed ^ words[1]) ^ words[0]);
-            return value + (h & 1 ? 1 : -1) * (1 + ((h >>> 1) & 3)) / 65536;
+            const step = h & 1 ? STEP : -STEP;
+            for (const moved of [value + step, value - step]) {
+              if (rounded(moved) === rounded(value) && (moved > 0) === (value > 0)) return moved;
+            }
+            return value;
           };
           const shiftRect = (rect) => {
             const left = shift(rect.left);
             const top = shift(rect.top);
-            const right = max(shift(rect.right), left);
-            const bottom = max(shift(rect.bottom), top);
+            const width = shift(rect.width);
+            const height = shift(rect.height);
             rect.x = left;
             rect.y = top;
-            rect.width = right - left;
-            rect.height = bottom - top;
+            rect.width = width;
+            rect.height = height;
             return rect;
           };
           for (const proto of [window.Element.prototype, window.Range.prototype]) {
@@ -1371,6 +1498,29 @@ enum FingerprintProtection {
               try { for (let i = 0; i < rects.length; i++) shiftRect(rects[i]); } catch (e) {}
               return rects;
             });
+          }
+          // The read-only boxes the observers report are replaced by moved
+          // copies, one per entry and box, so an entry gives the same box
+          // each time, as the browser does.
+          const copies = new WeakMap();
+          const movedCopy = (entry, name, rect) => {
+            if (!rect || !window.DOMRectReadOnly) return rect;
+            let own = copies.get(entry);
+            if (!own) { own = {}; copies.set(entry, own); }
+            if (!(name in own)) {
+              own[name] = new window.DOMRectReadOnly(shift(rect.x), shift(rect.y), shift(rect.width), shift(rect.height));
+            }
+            return own[name];
+          };
+          const intersection = window.IntersectionObserverEntry && window.IntersectionObserverEntry.prototype;
+          for (const name of ["boundingClientRect", "intersectionRect", "rootBounds"]) {
+            if (intersection) defineGetter(intersection, name, function (rect) { return movedCopy(this, name, rect); });
+          }
+          const resize = window.ResizeObserverEntry && window.ResizeObserverEntry.prototype;
+          if (resize) defineGetter(resize, "contentRect", function (rect) { return movedCopy(this, "contentRect", rect); });
+          const size = window.ResizeObserverSize && window.ResizeObserverSize.prototype;
+          for (const name of ["inlineSize", "blockSize"]) {
+            if (size) defineGetter(size, name, (value) => shift(value));
           }
         }
 
