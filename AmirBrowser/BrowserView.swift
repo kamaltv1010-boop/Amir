@@ -378,6 +378,25 @@ private struct BrowserScreen: View {
         .padding(.horizontal, 20)
     }
 
+    /// Whether the page is in `store`, under its own address or the one it
+    /// gives itself.
+    private func isSaved(in store: BookmarkStore) -> Bool {
+        guard let url = tab.webView.url else { return false }
+        return store.contains(url) || store.contains(tab.bookmarkURL ?? url)
+    }
+
+    /// Saves the page under the address it gives itself (see
+    /// `BrowserTab.bookmarkURL`), or removes it under whichever address it
+    /// was saved.
+    private func toggle(_ store: BookmarkStore) {
+        guard let url = tab.webView.url else { return }
+        if store.contains(url) {
+            store.remove(url)
+        } else {
+            store.toggle(title: tab.title, url: tab.bookmarkURL ?? url)
+        }
+    }
+
     // MARK: - Menu
 
     private var moreMenu: some View {
@@ -431,11 +450,9 @@ private struct BrowserScreen: View {
                 }
                 .disabled(tab.webView.url?.host == nil)
                 Button {
-                    if let url = tab.webView.url {
-                        bookmarks.toggle(title: tab.title, url: url)
-                    }
+                    toggle(bookmarks)
                 } label: {
-                    if let url = tab.webView.url, bookmarks.contains(url) {
+                    if isSaved(in: bookmarks) {
                         Label("Remove Bookmark", systemImage: "star.slash")
                     } else {
                         Label("Add Bookmark", systemImage: "star")
@@ -443,11 +460,9 @@ private struct BrowserScreen: View {
                 }
                 .disabled(tab.webView.url == nil)
                 Button {
-                    if let url = tab.webView.url {
-                        pins.toggle(title: tab.title, url: url)
-                    }
+                    toggle(pins)
                 } label: {
-                    if let url = tab.webView.url, pins.contains(url) {
+                    if isSaved(in: pins) {
                         Label("Unpin This Page", systemImage: "pin.slash")
                     } else {
                         Label("Pin This Page", systemImage: "pin")

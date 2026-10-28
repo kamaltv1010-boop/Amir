@@ -40,6 +40,9 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
     @Published private(set) var displayedURL: URL?
     /// Trackers blocked on the current page.
     @Published private(set) var trackersBlocked = 0
+    /// The address the page gives itself (its canonical link), when on the
+    /// same site: what a bookmark or a pin of it keeps.
+    @Published private(set) var canonicalURL: URL?
     /// Whether shields are up for the current site.
     @Published private(set) var shieldsUp = true
     /// A picture of the page for the tab overview.
@@ -442,6 +445,7 @@ extension BrowserTab: WKNavigationDelegate {
         dialogCount = 0
         isSuppressingDialogs = false
         trackersBlocked = 0
+        canonicalURL = nil
         if let upgrade, upgrade.navigation === navigation {
             self.upgrade = nil
             model?.stats.connectionUpgraded()
@@ -452,7 +456,46 @@ extension BrowserTab: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         refreshControl.endRefreshing()
         lastCleanedURL = nil
+        readCanonicalURL()
         model?.tabDidFinishLoading(self)
+    }
+
+    /// What a bookmark or a pin of this page keeps: the address the page
+    /// gives itself (its canonical link, when on the same site), or the
+    /// address without tracking codes. The address of the moment (a sign-up
+    /// flow's, a campaign's) would bring the page back to that moment, and
+    /// tell the site where the visit came from.
+    var bookmarkURL: URL? {
+        guard let url = webView.url else { return nil }
+        return canonicalURL ?? LinkCleaner.clean(url) ?? url
+    }
+
+    /// Reads the page's canonical link, when it points to the same site.
+    private func readCanonicalURL() {
+        guard let pageURL = webView.url, Self.isWebPage(pageURL) else {
+            canonicalURL = nil
+            return
+        }
+        let script = "(function () { var link = document.querySelector('link[rel=\"canonical\"]'); return link && link.href ? String(link.href) : ''; })()"
+        webView.evaluateJavaScript(script) { [weak self] result, _ in
+            guard let self, self.webView.url == pageURL,
+                  let href = result as? String, let url = URL(string: href),
+                  Self.isWebPage(url), Self.isSameSite(url, pageURL)
+            else { return }
+            self.canonicalURL = url
+        }
+    }
+
+    private static func isWebPage(_ url: URL) -> Bool {
+        ["http", "https"].contains(url.scheme?.lowercased() ?? "")
+    }
+
+    /// Whether two addresses are on the same site ("www." aside).
+    private static func isSameSite(_ a: URL, _ b: URL) -> Bool {
+        guard var hostA = a.host?.lowercased(), var hostB = b.host?.lowercased() else { return false }
+        if hostA.hasPrefix("www.") { hostA.removeFirst(4) }
+        if hostB.hasPrefix("www.") { hostB.removeFirst(4) }
+        return hostA == hostB || hostA.hasSuffix("." + hostB) || hostB.hasSuffix("." + hostA)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
