@@ -392,6 +392,42 @@ enum FingerprintProtection {
     // Each replacement's real built-in, for its toString() and for calling it.
     const originals = new WeakMap();
     const native = (fn) => originals.get(fn) || fn;
+
+    // An error thrown by a native function a page calls through one of
+    // the lookalikes carries their frames in its stack, between the page's
+    // and the native one's; a site that compares stacks would see them.
+    // The frames are known by this script's own location (a file in the
+    // app, or none for a script WebKit injects) and taken out, so the
+    // stack reads as the native function's own.
+    const ownLocation = (() => {
+      try {
+        throw new Error();
+      } catch (error) {
+        const line = String(error.stack || "").split("\n").find((l) => /^\s+at |@/.test(l)) || "";
+        const match = line.match(/\(([^()]*?)(?::\d+){0,2}\)\s*$/) || line.match(/@(.*?)(?::\d+){0,2}\s*$/) || line.match(/^\s+at\s+(.*?)(?::\d+){0,2}\s*$/);
+        return match ? match[1] : "";
+      }
+    })();
+    const isOwnFrame = (line) => ownLocation ? line.includes(ownLocation) : /^[^@]*@$/.test(line.trim());
+    // Only the innermost frames can be this script's: those just after the
+    // message (V8 shows no frame for the native function itself; WebKit
+    // shows it as "[native code]", kept).
+    const scrubbed = (error) => {
+      try {
+        if (error && typeof error === "object" && typeof error.stack === "string") {
+          const lines = error.stack.split("\n");
+          let first = 1;
+          while (first < lines.length && /\[native code\]/.test(lines[first])) first++;
+          let last = first;
+          while (last < lines.length && isOwnFrame(lines[last])) last++;
+          if (last > first) {
+            lines.splice(first, last - first);
+            error.stack = lines.join("\n");
+          }
+        }
+      } catch (e) {}
+      return error;
+    };
     // Every replacement's source carries this mark, so a copy of this script
     // in another window (WebKit runs one per page) recognizes it too.
     const MARK = "/* noor lookalike */";
@@ -567,7 +603,11 @@ enum FingerprintProtection {
       const replacement = {
         [original.name]() {
           "use strict"; /* noor lookalike */
-          return impl.apply(this, arguments);
+          try {
+            return impl.apply(this, arguments);
+          } catch (error) {
+            throw scrubbed(error);
+          }
         },
       }[original.name];
       setPrototypeOf(replacement, window.Function.prototype);
@@ -596,7 +636,11 @@ enum FingerprintProtection {
       const fn = {
         [name]() {
           "use strict"; /* noor lookalike */
-          return impl.apply(this, arguments);
+          try {
+            return impl.apply(this, arguments);
+          } catch (error) {
+            throw scrubbed(error);
+          }
         },
       }[name];
       setPrototypeOf(fn, window.Function.prototype);
@@ -629,14 +673,23 @@ enum FingerprintProtection {
       object[name] = lookalike(original, make(original));
     };
 
-    // Replaces a property's getter, keeping the native enumerability and
-    // making the getter look like the native one.
+    // Replaces a native property's getter, keeping the enumerability and
+    // making the getter look like the native one: it still refuses a wrong
+    // `this` ("Illegal invocation") as the native getter does, since a site
+    // calls getters on the wrong object to find replaced ones. A property
+    // the browser doesn't have is left missing.
     const defineGetter = (object, name, get) => {
       const descriptor = getOwnPropertyDescriptor(object, name);
+      if (!descriptor || !descriptor.get) return;
+      const original = descriptor.get;
       defineProperty(object, name, {
-        get: descriptor && descriptor.get ? lookalike(descriptor.get, get) : get,
+        get: lookalike(original, function () {
+          original.call(this);
+          return get.call(this);
+        }),
+        set: descriptor.set,
         configurable: true,
-        enumerable: descriptor ? descriptor.enumerable : true,
+        enumerable: descriptor.enumerable,
       });
     };
 
