@@ -621,10 +621,43 @@ enum FingerprintProtection {
       try {
         return impl.apply(self, args);
       } catch (error) {
-        throw scrubbed(error);
+        throw cleaned(error);
       } finally {
         if (limit !== undefined) { try { if (Err.stackTraceLimit === limit + OWN_FRAMES) Err.stackTraceLimit = limit; } catch (e) {} }
       }
+    };
+
+    // An error thrown through a replacement, with this script's frames
+    // taken out. V8 hands a page that set Error.prepareStackTrace the
+    // frames as objects, each naming its file, when the stack is first
+    // read: the stack is read here first, through a stand-in that gives
+    // the page's function every frame but this script's own, so the page
+    // gets what it would from a plain browser.
+    const isOwnSite = (site) => {
+      try {
+        const file = site.getFileName() || site.getScriptNameOrSourceURL();
+        return typeof file === "string" && (ownLocation ? file.indexOf(ownLocation) !== -1 : false);
+      } catch (e) {
+        return false;
+      }
+    };
+    const cleaned = (error) => {
+      let prepare;
+      try { prepare = Err.prepareStackTrace; } catch (e) { prepare = undefined; }
+      if (typeof prepare !== "function" || !error || typeof error !== "object") return scrubbed(error);
+      const standIn = function (err, sites) {
+        let kept = sites;
+        try { kept = sites.filter((site) => !isOwnSite(site)); } catch (e) {}
+        return prepare.call(this, err, kept);
+      };
+      try { Err.prepareStackTrace = standIn; } catch (e) { return scrubbed(error); }
+      try {
+        void error.stack;
+      } catch (e) {
+      } finally {
+        try { if (Err.prepareStackTrace === standIn) Err.prepareStackTrace = prepare; } catch (e) {}
+      }
+      return error;
     };
 
     const lookalike = (original, impl) => {
