@@ -1183,7 +1183,11 @@ enum FingerprintProtection {
               });
             }
           };
-          patch2D(window.CanvasRenderingContext2D.prototype, window.HTMLCanvasElement.prototype);
+          // A worker has no canvas element, only OffscreenCanvas: the same
+          // drawing reads the same there as in its page.
+          if (window.CanvasRenderingContext2D && window.HTMLCanvasElement) {
+            patch2D(window.CanvasRenderingContext2D.prototype, window.HTMLCanvasElement.prototype);
+          }
           if (window.OffscreenCanvasRenderingContext2D && window.OffscreenCanvas) {
             patch2D(window.OffscreenCanvasRenderingContext2D.prototype, window.OffscreenCanvas.prototype);
           }
@@ -1288,14 +1292,15 @@ enum FingerprintProtection {
             const height = getOwnPropertyDescriptor(proto, "height");
             return (canvas) => [width.get.call(canvas), height.get.call(canvas)];
           };
-          const canvasProto = window.HTMLCanvasElement.prototype;
-          const canvasTools = tools(canvasProto, window.CanvasRenderingContext2D.prototype);
-          const canvasSize = sizeOf(canvasProto);
+          // A worker has no canvas element (and no document), only OffscreenCanvas.
+          const canvasProto = window.HTMLCanvasElement && window.HTMLCanvasElement.prototype;
+          const canvasTools = canvasProto && window.CanvasRenderingContext2D && tools(canvasProto, window.CanvasRenderingContext2D.prototype);
+          const canvasSize = canvasProto && sizeOf(canvasProto);
           const offscreenTools = window.OffscreenCanvas
             && tools(window.OffscreenCanvas.prototype, window.OffscreenCanvasRenderingContext2D
               && window.OffscreenCanvasRenderingContext2D.prototype);
           const offscreenSize = window.OffscreenCanvas && sizeOf(window.OffscreenCanvas.prototype);
-          rememberContext(canvasProto);
+          if (canvasProto) rememberContext(canvasProto);
           if (window.OffscreenCanvas) rememberContext(window.OffscreenCanvas.prototype);
 
           const seedFor = (canvas) => {
@@ -1335,18 +1340,20 @@ enum FingerprintProtection {
             }
           };
 
-          const createElement = document.createElement;
-          const makeCanvas = (width, height) => {
-            const canvas = createElement.call(document, "canvas");
-            canvas.width = width;
-            canvas.height = height;
-            return canvas;
-          };
-          for (const name of ["toDataURL", "toBlob"]) {
-            define(canvasProto, name, (original) => function () {
-              const copy = noisyCopy(this, makeCanvas, canvasTools, canvasSize);
-              return original.apply(copy || this, arguments);
-            });
+          if (canvasProto && typeof document !== "undefined") {
+            const createElement = document.createElement;
+            const makeCanvas = (width, height) => {
+              const canvas = createElement.call(document, "canvas");
+              canvas.width = width;
+              canvas.height = height;
+              return canvas;
+            };
+            for (const name of ["toDataURL", "toBlob"]) {
+              define(canvasProto, name, (original) => function () {
+                const copy = noisyCopy(this, makeCanvas, canvasTools, canvasSize);
+                return original.apply(copy || this, arguments);
+              });
+            }
           }
           if (window.OffscreenCanvas && window.OffscreenCanvas.prototype.convertToBlob) {
             define(window.OffscreenCanvas.prototype, "convertToBlob", (convertToBlob) => function () {
