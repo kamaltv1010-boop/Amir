@@ -393,6 +393,37 @@ enum FingerprintProtection {
     const originals = new WeakMap();
     const native = (fn) => originals.get(fn) || fn;
 
+    // A page sees how often, and in which order, a built-in reads what it
+    // is given (an argument's valueOf or getter can count). A replacement
+    // that needs an argument too reads it once, as the browser does, and
+    // hands the browser the value read; anything the browser refuses (a
+    // wrong `this`, too few arguments) it is left to refuse, before any of
+    // it is read. readNumbers reads the numbers from `from` to `to` in
+    // order (ToNumber), up to the first that isn't finite, which the
+    // browser refuses or reads as 0 itself.
+    const arraySlice = Array.prototype.slice;
+    const readNumbers = (args, from, to) => {
+      const list = arraySlice.call(args);
+      for (let i = from; i < to && i < list.length; i++) {
+        // undefined (an optional argument left out) the browser reads itself.
+        if (list[i] === undefined) break;
+        const value = +list[i];
+        list[i] = value;
+        if (!isFinite(value)) break;
+      }
+      return list;
+    };
+    // Whether `object` is what `get` (a built-in getter) belongs to: the
+    // getter refuses anything else without reading it.
+    const isA = (get, object) => {
+      try {
+        get.call(object);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
     // An error thrown by a native function a page calls through one of
     // the lookalikes carries their frames in its stack, between the page's
     // and the native one's; a site that compares stacks would see them.
@@ -437,9 +468,15 @@ enum FingerprintProtection {
     // What a built-in's toString() looks like here, with "toString" for the name.
     const nativeShape = nativeToString.call(nativeToString);
     // Whether a window is protected already, by this or another copy of
-    // this script: its toString() then hides the mark in this probe.
+    // this script: its toString() then hides the mark in this probe. Where
+    // this script's source doesn't show at all (the Windows app runs it in
+    // a worker as the inspector's own code, which shows as built-in), there
+    // is no telling, and a window this script hasn't protected is taken as
+    // not protected.
     const probe = function () { /* noor lookalike */ };
+    const markShows = nativeToString.call(probe).indexOf(MARK) !== -1;
     const isProtected = (win) => {
+      if (!markShows) return false;
       try { return win.Function.prototype.toString.call(probe).indexOf(MARK) === -1; } catch (e) { return false; }
     };
     // The windows protected from this script, each once.
@@ -610,9 +647,62 @@ enum FingerprintProtection {
     // a stack only to its limit, the limit is raised by this script's three
     // frames for the call, so a deep stack keeps as many of the page's
     // frames as in a plain browser. A page's own limit is kept.
+    //
+    // A host can run this script from a realm of its own, one a page's
+    // stack traces leave out (the Windows app runs it from an empty frame's,
+    // see `hosted`): there it has no frames to hide and no limit to raise.
+    // The browser calls nothing back in a realm whose frame is gone, nor
+    // keeps for later a callback handed over from there, so with such a
+    // realm (`outside`, given by the host) what the browser calls back is
+    // made, and handed over, in the page's realm; an error of the script's
+    // own realm reaches the page as one of the page's kinds, and one a
+    // native call made from the page's realm throws is made again here,
+    // without the frame that made the call.
+    const hosted = {};
+    const outside = hosted.outside || null;
+    // The page's error kinds, and the script's own, taken now (a page that
+    // sets document.domain stops this realm reading its window later).
+    const ownKinds = [TypeError, RangeError, ReferenceError, SyntaxError, EvalError, URIError, Error];
+    const pageKinds = ownKinds.map((kind) => window[kind.name]);
+    const PageException = window.DOMException;
+    const pageError = (error) => {
+      try {
+        if (error && typeof error === "object") {
+          for (let i = 0; i < ownKinds.length; i++) {
+            if (error instanceof ownKinds[i]) {
+              return ownKinds[i] === pageKinds[i] || typeof pageKinds[i] !== "function" ? error : new pageKinds[i](error.message);
+            }
+          }
+        }
+      } catch (e) {}
+      return error;
+    };
+    const madeAgain = (error) => {
+      try {
+        if (PageException && error instanceof PageException) return new PageException(error.message, error.name);
+        for (const kind of pageKinds) {
+          if (typeof kind === "function" && error && getPrototypeOf(error) === kind.prototype) return new kind(error.message);
+        }
+      } catch (e) {}
+      return error;
+    };
+    const fromPage = (fn, self, args) => {
+      try {
+        return outside.apply(fn, self, args);
+      } catch (error) {
+        throw madeAgain(error);
+      }
+    };
     const Err = window.Error;
     const OWN_FRAMES = 3;
     const run = (impl, self, args) => {
+      if (hosted.framesHidden) {
+        try {
+          return impl.apply(self, args);
+        } catch (error) {
+          throw outside ? pageError(error) : error;
+        }
+      }
       let limit;
       try {
         limit = Err.stackTraceLimit;
@@ -756,9 +846,9 @@ enum FingerprintProtection {
       try { if (window.top.location.hostname) return window.top.location.hostname; } catch (e) {}
       try {
         const origins = window.location.ancestorOrigins;
-        if (origins && origins.length) return new URL(origins[origins.length - 1]).hostname;
+        if (origins && origins.length) return new window.URL(origins[origins.length - 1]).hostname;
       } catch (e) {}
-      try { const h = new URL(document.referrer).hostname; if (h) return h; } catch (e) {}
+      try { const h = new window.URL(document.referrer).hostname; if (h) return h; } catch (e) {}
       try { return window.location.hostname; } catch (e) { return ""; }
     })();
 
@@ -834,15 +924,33 @@ enum FingerprintProtection {
         // be untouched until the observer below runs, so the ways a page
         // adds nodes protect the frames they add before they return.
         const selector = names.join(",");
+        // What a node is, and the frames in it, read with the built-ins:
+        // what isn't a node is never read (the browser reads none of it
+        // either), nor a property a page put on a node.
+        const getterOf = (proto, name) => {
+          const descriptor = proto && getOwnPropertyDescriptor(proto, name);
+          return descriptor && descriptor.get ? descriptor.get : null;
+        };
+        const nodeTypeGet = getterOf(window.Node.prototype, "nodeType");
+        const localNameGet = getterOf(window.Element.prototype, "localName");
+        const parentNodeGet = getterOf(window.Node.prototype, "parentNode");
+        const elementQuery = window.Element.prototype.querySelectorAll;
+        const fragmentQuery = window.DocumentFragment.prototype.querySelectorAll;
+        const listLength = getterOf(window.NodeList.prototype, "length");
+        const listItem = window.NodeList.prototype.item;
+        const addedNodesGet = getterOf(window.MutationRecord && window.MutationRecord.prototype, "addedNodes");
+        const elementChildGet = getterOf(window.Element.prototype, "firstElementChild");
+        const fragmentChildGet = getterOf(window.DocumentFragment.prototype, "firstElementChild");
         const framesIn = (node) => {
           const found = [];
           try {
-            if (!node || (node.nodeType !== 1 && node.nodeType !== 11)) return found;
-            if (node.nodeType === 1 && names.indexOf(node.localName) !== -1) found.push(node);
-            if (node.firstElementChild) {
-              const list = node.querySelectorAll(selector);
-              for (let i = 0; i < list.length; i++) found.push(list[i]);
-            }
+            const type = nodeTypeGet.call(node);
+            if (type !== 1 && type !== 11) return found;
+            if (type === 1 && names.indexOf(localNameGet.call(node)) !== -1) found.push(node);
+            const childGet = type === 1 ? elementChildGet : fragmentChildGet;
+            if (childGet && !childGet.call(node)) return found;
+            const list = (type === 1 ? elementQuery : fragmentQuery).call(node, selector);
+            for (let i = 0, count = listLength.call(list); i < count; i++) found.push(listItem.call(list, i));
           } catch (e) {}
           return found;
         };
@@ -881,26 +989,26 @@ enum FingerprintProtection {
         hookInsert(window.Element.prototype, "insertAdjacentElement", (args) => [args[1]]);
         define(window.Element.prototype, "insertAdjacentHTML", (original) => function () {
           const result = original.apply(this, arguments);
-          for (const frame of framesIn(this.parentNode || this)) protectFrame(frame);
+          for (const frame of framesIn(parentNodeGet.call(this) || this)) protectFrame(frame);
           return result;
         });
         hookHTML(window.Element.prototype, "innerHTML");
         hookHTML(window.ShadowRoot && window.ShadowRoot.prototype, "innerHTML");
         try {
-          new window.MutationObserver((records) => {
-            for (const record of records) {
-              for (const node of record.addedNodes) {
-                if (node.nodeType !== 1) continue;
-                if (names.indexOf(node.localName) !== -1) {
-                  protectFrame(node);
-                } else if (node.getElementsByTagName) {
-                  for (const name of names) {
-                    for (const frame of node.getElementsByTagName(name)) protectFrame(frame);
-                  }
+          const added = (records) => {
+            try {
+              for (let r = 0; r < records.length; r++) {
+                const nodes = addedNodesGet.call(records[r]);
+                for (let i = 0, count = listLength.call(nodes); i < count; i++) {
+                  for (const frame of framesIn(listItem.call(nodes, i))) protectFrame(frame);
                 }
               }
-            }
-          }).observe(document, { childList: true, subtree: true });
+            } catch (e) {}
+          };
+          const observer = outside
+            ? outside.construct(window.MutationObserver, [outside.callback(added)])
+            : new window.MutationObserver(added);
+          observer.observe(document, { childList: true, subtree: true });
         } catch (e) {}
       }
     }
@@ -1076,11 +1184,16 @@ enum FingerprintProtection {
             const canvasOf = (context) => {
               try { return contextCanvas(context) || null; } catch (e) { return null; }
             };
-            define(proto, "getImageData", (original) => function (sx, sy, sw, sh) {
-              const image = original.apply(this, arguments);
+            const contextCanvasGet = (getOwnPropertyDescriptor(proto, "canvas") || {}).get;
+            define(proto, "getImageData", (original) => function () {
+              if (arguments.length < 4 || (contextCanvasGet && !isA(contextCanvasGet, this))) return original.apply(this, arguments);
+              const args = readNumbers(arguments, 0, 4);
+              const image = original.apply(this, args);
               try {
                 const canvas = canvasOf(this);
                 if (!canvas || !painted.has(canvas)) return image;
+                const sx = args[0], sy = args[1], sw = args[2], sh = args[3];
+                if (![sx, sy, sw, sh].every(isFinite)) return image;
                 // A negative width or height reads to the left of, or above, (sx, sy).
                 const left = (sx | 0) + (sw < 0 ? (sw | 0) : 0);
                 const top = (sy | 0) + (sh < 0 ? (sh | 0) : 0);
@@ -1224,12 +1337,20 @@ enum FingerprintProtection {
             const bufferWidth = getter("drawingBufferWidth");
             const bufferHeight = getter("drawingBufferHeight");
             const readPixels = native(proto.readPixels);
-            define(proto, "readPixels", (original) => function (x, y, width, height, format, type, pixels, offset) {
-              original.apply(this, arguments);
+            const bufferWidthGet = (getOwnPropertyDescriptor(proto, "drawingBufferWidth") || {}).get;
+            define(proto, "readPixels", (original) => function () {
+              if (arguments.length < 7 || !bufferWidthGet || !isA(bufferWidthGet, this)) return original.apply(this, arguments);
+              const args = readNumbers(arguments, 0, 6);
+              original.apply(this, args);
               try {
+                const x = args[0], y = args[1], width = args[2], height = args[3], format = args[4];
+                const pixels = args[6], offset = args[7];
+                if (![x, y, width, height].every(isFinite)) return;
                 const tag = tagOf(pixels);
-                if ((tag !== "Uint8Array" && tag !== "Uint8ClampedArray") || Number(format) !== RGBA) return;
-                // WebGL2 can read into the array from `offset` on.
+                if ((tag !== "Uint8Array" && tag !== "Uint8ClampedArray") || format !== RGBA) return;
+                // WebGL2 can read into the array from `offset` on (an offset
+                // that isn't a number was read by the browser, and is left).
+                if (offset !== undefined && typeof offset !== "number") return;
                 const data = offset > 0 ? subarray.call(pixels, offset) : pixels;
                 const fullWidth = bufferWidth(this);
                 const fullHeight = bufferHeight(this);
@@ -1275,12 +1396,30 @@ enum FingerprintProtection {
             native(canvasProto.getContext), native(contextProto.drawImage),
             native(contextProto.getImageData), native(contextProto.putImageData),
           ];
+          // The settings a 2D context was made with, as it reports them.
+          const attributeReaders = [window.CanvasRenderingContext2D, window.OffscreenCanvasRenderingContext2D]
+            .map((type) => type && type.prototype && type.prototype.getContextAttributes)
+            .filter((read) => typeof read === "function");
+          const attributesOf = (context) => {
+            for (const read of attributeReaders) {
+              try { return read.call(context); } catch (e) {}
+            }
+            return undefined;
+          };
           const rememberContext = (proto) => {
-            define(proto, "getContext", (getContext) => function (type, settings) {
-              const context = getContext.apply(this, arguments);
+            const canvasWidthGet = (getOwnPropertyDescriptor(proto, "width") || {}).get;
+            define(proto, "getContext", (getContext) => function () {
+              if (!arguments.length || (canvasWidthGet && !isA(canvasWidthGet, this))) return getContext.apply(this, arguments);
+              const args = arraySlice.call(arguments);
+              const type = args[0] = `${args[0]}`;
+              const context = getContext.apply(this, args);
               if (context) {
-                const webgl = /^(experimental-)?webgl/i.test("" + type);
-                kinds.set(this, { kind: webgl ? "webgl" : "canvas", settings: !webgl && settings && typeof settings === "object" ? settings : undefined });
+                const webgl = /^(experimental-)?webgl/i.test(type);
+                // Not read again from what the page gave, where the context
+                // tells (a browser whose contexts don't keeps the page's).
+                const given = args[1] && typeof args[1] === "object" ? args[1] : undefined;
+                const settings = webgl ? undefined : attributeReaders.length ? attributesOf(context) : given;
+                kinds.set(this, { kind: webgl ? "webgl" : "canvas", settings });
               }
               return context;
             });
@@ -1348,10 +1487,23 @@ enum FingerprintProtection {
               canvas.height = height;
               return canvas;
             };
+            const canvasWidthGet = (getOwnPropertyDescriptor(canvasProto, "width") || {}).get;
             for (const name of ["toDataURL", "toBlob"]) {
+              const blob = name === "toBlob";
               define(canvasProto, name, (original) => function () {
+                // What the browser refuses (anything but a canvas, a toBlob
+                // with nothing to call back) it refuses itself, before
+                // anything is read; the type is read once, here, and handed
+                // over read.
+                if ((canvasWidthGet && !isA(canvasWidthGet, this)) || (blob && typeof arguments[0] !== "function")) return original.apply(this, arguments);
+                const args = arraySlice.call(arguments);
+                const at = blob ? 1 : 0;
+                if (args.length > at && args[at] !== undefined) args[at] = `${args[at]}`;
                 const copy = noisyCopy(this, makeCanvas, canvasTools, canvasSize);
-                return original.apply(copy || this, arguments);
+                // toBlob keeps its callback for later, so with `outside` it is
+                // called from the page's realm.
+                if (blob && outside) return fromPage(original, copy || this, args);
+                return original.apply(copy || this, args);
               });
             }
           }
@@ -1413,16 +1565,24 @@ enum FingerprintProtection {
               channels.add(index);
               nudge(getChannelData.call(buffer, index), Infinity);
             };
-            define(bufferProto, "getChannelData", (original) => function (channel) {
-              const data = original.apply(this, arguments);
-              try { if (rendered.has(this)) nudgeChannel(this, channel >>> 0); } catch (e) {}
+            // The channel is read once (see readNumbers), after the browser's
+            // own checks of what comes before it.
+            const bufferLengthGet = (getOwnPropertyDescriptor(bufferProto, "length") || {}).get;
+            const isBuffer = (object) => !bufferLengthGet || isA(bufferLengthGet, object);
+            define(bufferProto, "getChannelData", (original) => function () {
+              if (!arguments.length || !isBuffer(this)) return original.apply(this, arguments);
+              const args = readNumbers(arguments, 0, 1);
+              const data = original.apply(this, args);
+              try { if (rendered.has(this)) nudgeChannel(this, args[0] >>> 0); } catch (e) {}
               return data;
             });
-            define(bufferProto, "copyFromChannel", (original) => function (destination, channel) {
-              if (rendered.has(this) && tagOf(destination) === "Float32Array") {
-                try { nudgeChannel(this, channel >>> 0); } catch (e) {}
+            define(bufferProto, "copyFromChannel", (original) => function (destination) {
+              if (arguments.length < 2 || !isBuffer(this) || tagOf(destination) !== "Float32Array") return original.apply(this, arguments);
+              const args = readNumbers(arguments, 1, 3);
+              if (rendered.has(this) && isFinite(args[1])) {
+                try { nudgeChannel(this, args[1] >>> 0); } catch (e) {}
               }
-              return original.apply(this, arguments);
+              return original.apply(this, args);
             });
           }
 
@@ -1434,11 +1594,33 @@ enum FingerprintProtection {
             });
           }
           if (window.BaseAudioContext) {
-            define(window.BaseAudioContext.prototype, "decodeAudioData", (original) => function (data, success) {
-              if (typeof success === "function") {
-                arguments[1] = function (buffer) { return success.call(this, mark(buffer)); };
+            // Its callbacks are kept for later, so with `outside` it is called
+            // from the page's realm, when it is given what it takes (what it
+            // refuses, it refuses at once, from here).
+            const bytesOf = (getOwnPropertyDescriptor(ArrayBuffer.prototype, "byteLength") || {}).get;
+            const detachedOf = (getOwnPropertyDescriptor(ArrayBuffer.prototype, "detached") || {}).get;
+            const decodable = (data) => {
+              if (!bytesOf) return false;
+              try {
+                bytesOf.call(data);
+                return !(detachedOf && detachedOf.call(data));
+              } catch (e) {
+                return false;
               }
-              return thenMark(original.apply(this, arguments));
+            };
+            const contextStateGet = (getOwnPropertyDescriptor(window.BaseAudioContext.prototype, "state") || {}).get;
+            define(window.BaseAudioContext.prototype, "decodeAudioData", (original) => function (data, success) {
+              const viaPage = Boolean(outside) && Boolean(contextStateGet) && isA(contextStateGet, this) && decodable(data) &&
+                (arguments[1] == null || typeof arguments[1] === "function") && (arguments[2] == null || typeof arguments[2] === "function");
+              if (typeof success === "function") {
+                const decoded = function (buffer) { return success.call(this, mark(buffer)); };
+                arguments[1] = viaPage ? outside.callback(decoded) : decoded;
+              }
+              if (!viaPage) return thenMark(original.apply(this, arguments));
+              // A refusal made at once, from the page's realm, would carry
+              // that realm's frame: it is made again here.
+              const result = fromPage(original, this, arguments);
+              return result && typeof result.then === "function" ? result.then(mark, (error) => { throw madeAgain(error); }) : result;
             });
           }
           const markGetter = (proto, name, before) => {
@@ -1622,8 +1804,13 @@ enum FingerprintProtection {
             const result = answer(range, feature, text);
             return result === null ? whole : result ? "(min-width: 0px)" : "(min-width: 99999px)";
           });
+          const windowSelfGet = (getOwnPropertyDescriptor(window, "self") || {}).get;
           define(window, "matchMedia", (original) => function (query) {
-            const text = arguments.length ? String(query) : "";
+            // A call the browser refuses (no query, anything but a window)
+            // it refuses itself; the query is read once, as the browser
+            // reads it (a symbol throws).
+            if (!arguments.length || (this != null && windowSelfGet && !isA(windowSelfGet, this))) return original.apply(this, arguments);
+            const text = `${query}`;
             const rewritten = rewrite(text);
             const list = original.call(this, rewritten);
             if (rewritten !== text) {
