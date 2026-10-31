@@ -1063,6 +1063,13 @@ enum FingerprintProtection {
           value: method(name, length, impl), writable: true, enumerable: true, configurable: true,
         });
         const fail = (error) => new window.Promise((resolve, reject) => reject(error));
+        // The container, a registration and its worker are event targets, as
+        // a site listens on them (navigator.serviceWorker.addEventListener):
+        // made as real ones, so the browser's own addEventListener takes
+        // them, and given the API's prototype.
+        const eventTarget = (proto) => {
+          try { return setPrototypeOf(new window.EventTarget(), proto); } catch (e) { return Object.create(proto); }
+        };
 
         accessor(Worker.prototype, "scriptURL", function () { return (states.get(this) || {}).scriptURL || ""; });
         accessor(Worker.prototype, "state", function () { return "activated"; });
@@ -1109,8 +1116,8 @@ enum FingerprintProtection {
           }
           let registration = registrations.find((r) => states.get(r).scope === scope);
           if (!registration) {
-            registration = Object.create(Registration.prototype);
-            const worker = Object.create(Worker.prototype);
+            registration = eventTarget(Registration.prototype);
+            const worker = eventTarget(Worker.prototype);
             states.set(worker, { scriptURL: script.href });
             states.set(registration, { scope, worker });
             registrations.push(registration);
@@ -1131,7 +1138,7 @@ enum FingerprintProtection {
         let container;
         defineProperty(nav, "serviceWorker", {
           get: method("get serviceWorker", 0, function () {
-            return container || (container = Object.create(proto));
+            return container || (container = eventTarget(proto));
           }),
           enumerable: true,
           configurable: true,
