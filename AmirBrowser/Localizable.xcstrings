@@ -45,6 +45,28 @@
         }
       }
     },
+    "%lld free proxies found" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم العثور على %lld بروكسي مجاني"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld free proxies found"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld proxys gratuits trouvés"
+          }
+        }
+      }
+    },
     "%lld profiles done: %lld new cookies" : {
       "localizations" : {
         "ar" : {
@@ -85,6 +107,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld profils créés"
+          }
+        }
+      }
+    },
+    "A Different Proxy for Each Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بروكسي مختلف لكل ملف شخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Different Proxy for Each Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un proxy différent par profil"
           }
         }
       }
@@ -199,6 +243,28 @@
         }
       }
     },
+    "Add" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter"
+          }
+        }
+      }
+    },
     "Add Bookmark" : {
       "localizations" : {
         "ar" : {
@@ -283,6 +349,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter depuis Fichiers…"
+          }
+        }
+      }
+    },
+    "Add My Proxies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إضافة بروكسياتي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add My Proxies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter mes proxys"
           }
         }
       }
@@ -903,6 +991,28 @@
         }
       }
     },
+    "Change Proxy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تغيير البروكسي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change Proxy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer de proxy"
+          }
+        }
+      }
+    },
     "Change fingerprint protection and see the sites with shields down in Settings." : {
       "localizations" : {
         "ar" : {
@@ -943,6 +1053,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modifier les pages"
+          }
+        }
+      }
+    },
+    "Check All Proxies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فحص كل البروكسيات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check All Proxies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifier tous les proxys"
+          }
+        }
+      }
+    },
+    "Checked %lld of %lld: %lld work" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم فحص %lld من %lld: %lld تعمل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checked %lld of %lld: %lld work"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld vérifiés sur %lld : %lld fonctionnent"
           }
         }
       }
@@ -1827,6 +1981,50 @@
         }
       }
     },
+    "Delete Free Proxies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف البروكسيات المجانية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Free Proxies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer les proxys gratuits"
+          }
+        }
+      }
+    },
+    "Delete Free Proxies?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف البروكسيات المجانية؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Free Proxies?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer les proxys gratuits ?"
+          }
+        }
+      }
+    },
     "Delete Profile" : {
       "localizations" : {
         "ar" : {
@@ -2245,6 +2443,28 @@
         }
       }
     },
+    "Find %lld Free Proxies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "العثور على %lld بروكسي مجاني"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find %lld Free Proxies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trouver %lld proxys gratuits"
+          }
+        }
+      }
+    },
     "Find on Page" : {
       "localizations" : {
         "ar" : {
@@ -2263,6 +2483,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher dans la page"
+          }
+        }
+      }
+    },
+    "Finding free proxies…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ البحث عن بروكسيات مجانية…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding free proxies…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recherche de proxys gratuits…"
           }
         }
       }
@@ -2377,6 +2619,50 @@
         }
       }
     },
+    "Free" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مجاني"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratuit"
+          }
+        }
+      }
+    },
+    "Free proxies come from public lists and are checked from this phone: only those that open pages are kept, each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow, stop working after a while (find new ones then), and Instagram, X or Google often block them. For accounts, use proxies of your own." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تأتي البروكسيات المجانية من قوائم عامة وتُفحص من هذا الهاتف: لا يُحتفظ إلا بالتي تفتح الصفحات، لكل منها عنوانه الخاص، والأسرع أولاً. يديرها أشخاص مجهولون: يرون المواقع التي تفتحها (لا ما ترسله إلى مواقع https://)، وغالباً ما تكون بطيئة، وتتوقف عن العمل بعد مدة (ابحث عن غيرها حينها)، وكثيراً ما تحظرها Instagram وX وGoogle. لحساباتك، استخدم بروكسيات خاصة بك."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free proxies come from public lists and are checked from this phone: only those that open pages are kept, each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow, stop working after a while (find new ones then), and Instagram, X or Google often block them. For accounts, use proxies of your own."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les proxys gratuits viennent de listes publiques et sont vérifiés depuis ce téléphone : seuls ceux qui ouvrent des pages sont gardés, chacun avec sa propre adresse, les plus rapides d’abord. Des inconnus les gèrent : ils voient quels sites vous ouvrez (pas ce que vous envoyez aux sites https://), sont souvent lents, cessent de fonctionner au bout d’un moment (cherchez-en alors de nouveaux), et Instagram, X ou Google les bloquent souvent. Pour vos comptes, utilisez vos propres proxys."
+          }
+        }
+      }
+    },
     "Germany" : {
       "localizations" : {
         "ar" : {
@@ -2395,6 +2681,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Allemagne"
+          }
+        }
+      }
+    },
+    "Getting the lists of free proxies…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تنزيل قوائم البروكسيات المجانية…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting the lists of free proxies…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Téléchargement des listes de proxys gratuits…"
           }
         }
       }
@@ -3279,6 +3587,28 @@
         }
       }
     },
+    "No proxy yet: pages don’t open. Find free proxies or add yours." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد بروكسي بعد: لا تُفتح الصفحات. ابحث عن بروكسيات مجانية أو أضف بروكسياتك."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No proxy yet: pages don’t open. Find free proxies or add yours."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun proxy pour l’instant : les pages ne s’ouvrent pas. Trouvez des proxys gratuits ou ajoutez les vôtres."
+          }
+        }
+      }
+    },
     "Noise only" : {
       "localizations" : {
         "ar" : {
@@ -3297,6 +3627,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bruit seulement"
+          }
+        }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun"
           }
         }
       }
@@ -3367,6 +3719,50 @@
         }
       }
     },
+    "Not working" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يعمل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not working"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne fonctionne pas"
+          }
+        }
+      }
+    },
+    "Now through %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الآن عبر %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Now through %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désormais via %@"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "ar" : {
@@ -3385,6 +3781,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "متوقف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
+          }
+        }
+      }
+    },
+    "Off: sites see this phone’s own address." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "متوقف: ترى المواقع عنوان هذا الهاتف."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off: sites see this phone’s own address."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé : les sites voient l’adresse de ce téléphone."
           }
         }
       }
@@ -3429,6 +3869,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un par ligne : une adresse (hespress.com) ou une page (https://www.youtube.com/). Ils sont visités dans un nouvel ordre à chaque fois."
+          }
+        }
+      }
+    },
+    "One proxy per line, as your provider gives them: host:port, host:port:user:password or user:password@host:port. “socks5://” or “http://” in front of a line sets its type." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بروكسي واحد في كل سطر، كما يعطيها مزوّدك: host:port أو host:port:user:password أو user:password@host:port. تحدد «socks5://» أو «http://» في بداية السطر نوعه."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One proxy per line, as your provider gives them: host:port, host:port:user:password or user:password@host:port. “socks5://” or “http://” in front of a line sets its type."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un proxy par ligne, tels que votre fournisseur les donne : hôte:port, hôte:port:utilisateur:mot de passe ou utilisateur:mot de passe@hôte:port. « socks5:// » ou « http:// » au début d’une ligne en fixe le type."
           }
         }
       }
@@ -3627,6 +4089,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les pages visitées dans les onglets normaux apparaissent ici."
+          }
+        }
+      }
+    },
+    "Pages, and the cookies collected in the background, go through the proxy: sites see its address and country, not yours. With a different proxy for each profile, two profiles never share an address. A proxy that stops working stops the pages (they never go around it): change the proxy. WebRTC, which could tell sites your own address, finds none while a proxy is on. Pages already open may take a minute to switch to a new proxy; to switch them at once, close Noor and open it again." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تمر الصفحات، وملفات تعريف الارتباط التي تُجمع في الخلفية، عبر البروكسي: ترى المواقع عنوانه وبلده، لا عنوانك. مع بروكسي مختلف لكل ملف شخصي، لا يتشارك ملفان شخصيان العنوان نفسه أبداً. إذا توقف البروكسي عن العمل تتوقف الصفحات (لا تتجاوزه أبداً): غيّر البروكسي. لا يجد WebRTC، الذي قد يكشف عنوانك للمواقع، أي عنوان ما دام البروكسي مفعّلاً. قد تحتاج الصفحات المفتوحة إلى دقيقة لتنتقل إلى بروكسي جديد؛ لتنتقل فوراً، أغلق Noor وافتحه من جديد."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pages, and the cookies collected in the background, go through the proxy: sites see its address and country, not yours. With a different proxy for each profile, two profiles never share an address. A proxy that stops working stops the pages (they never go around it): change the proxy. WebRTC, which could tell sites your own address, finds none while a proxy is on. Pages already open may take a minute to switch to a new proxy; to switch them at once, close Noor and open it again."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pages, et les cookies collectés en arrière-plan, passent par le proxy : les sites voient son adresse et son pays, pas les vôtres. Avec un proxy différent par profil, deux profils ne partagent jamais une adresse. Un proxy qui ne fonctionne plus bloque les pages (elles ne le contournent jamais) : changez de proxy. WebRTC, qui pourrait révéler votre adresse aux sites, n’en trouve aucune tant qu’un proxy est actif. Les pages déjà ouvertes peuvent mettre une minute à passer au nouveau proxy ; pour qu’elles passent tout de suite, fermez Noor et rouvrez-le."
           }
         }
       }
@@ -3957,6 +4441,226 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les protections sont désactivées pour ce site, qui voit cet iPhone tel qu’il est. Relevez les boucliers si le site fonctionne sans."
+          }
+        }
+      }
+    },
+    "Proxies need iOS 17 or later." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تتطلب البروكسيات iOS 17 أو أحدث."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxies need iOS 17 or later."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les proxys nécessitent iOS 17 ou une version ultérieure."
+          }
+        }
+      }
+    },
+    "Proxies: %lld" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البروكسيات: %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxies: %lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxys : %lld"
+          }
+        }
+      }
+    },
+    "Proxy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البروكسي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy"
+          }
+        }
+      }
+    },
+    "Proxy Settings" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعدادات البروكسي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy Settings"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages du proxy"
+          }
+        }
+      }
+    },
+    "Proxy of “%@”" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بروكسي «%@»"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy of “%@”"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy de « %@ »"
+          }
+        }
+      }
+    },
+    "Proxy off" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم إيقاف البروكسي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy off"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy désactivé"
+          }
+        }
+      }
+    },
+    "Proxy on" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تشغيل البروكسي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy on"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy activé"
+          }
+        }
+      }
+    },
+    "Proxy: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البروكسي: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy : %@"
+          }
+        }
+      }
+    },
+    "Proxy: None" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البروكسي: لا يوجد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy: None"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy : aucun"
+          }
+        }
+      }
+    },
+    "Proxy: Off" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البروكسي: متوقف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy: Off"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proxy : désactivé"
           }
         }
       }
@@ -5105,6 +5809,28 @@
         }
       }
     },
+    "Tap a proxy to go through it in this profile. Swipe one to delete it." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضغط على بروكسي لتمر عبره في هذا الملف الشخصي. اسحب بروكسياً لحذفه."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap a proxy to go through it in this profile. Swipe one to delete it."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez un proxy pour passer par lui dans ce profil. Balayez-en un pour le supprimer."
+          }
+        }
+      }
+    },
     "Tap ⋯ then “Add Bookmark” to save the current page." : {
       "localizations" : {
         "ar" : {
@@ -5167,6 +5893,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L’extension et ses données sont supprimées de Noor."
+          }
+        }
+      }
+    },
+    "The lists of free proxies couldn’t be reached" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر الوصول إلى قوائم البروكسيات المجانية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The lists of free proxies couldn’t be reached"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les listes de proxys gratuits sont injoignables"
+          }
+        }
+      }
+    },
+    "The lists of free proxies couldn’t be reached. Check the connection and try again." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذّر الوصول إلى قوائم البروكسيات المجانية. تحقق من الاتصال وحاول مرة أخرى."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The lists of free proxies couldn’t be reached. Check the connection and try again."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les listes de proxys gratuits sont injoignables. Vérifiez la connexion et réessayez."
           }
         }
       }
@@ -5523,6 +6293,28 @@
         }
       }
     },
+    "Type" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "النوع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
     "Türkiye" : {
       "localizations" : {
         "ar" : {
@@ -5673,6 +6465,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Passer les connexions en HTTPS"
+          }
+        }
+      }
+    },
+    "Use a Proxy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخدام بروكسي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use a Proxy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser un proxy"
           }
         }
       }

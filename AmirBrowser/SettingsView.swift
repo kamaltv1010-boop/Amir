@@ -6,6 +6,7 @@ struct SettingsView: View {
     @Binding var searchEngine: SearchEngine
 
     @ObservedObject private var extensions = ExtensionManager.shared
+    @ObservedObject private var proxyManager = ProxyManager.shared
     @AppStorage(BrowserModel.clearOnQuitKey) private var clearOnQuit = false
     @AppStorage(TrackerBlocker.enabledKey) private var blockTrackers = true
     @AppStorage(HTTPSUpgrade.enabledKey) private var upgradeConnections = true
@@ -72,6 +73,17 @@ struct SettingsView: View {
                     }
                     Toggle(isOn: $replaceDeleted) {
                         SettingsLabel("Replace a Profile When Deleted", systemName: "arrow.triangle.2.circlepath", color: .teal)
+                    }
+                    if ProxyManager.isAvailable {
+                        NavigationLink(destination: ProxyView(browser: browser)) {
+                            HStack {
+                                SettingsLabel("Proxy", systemName: "network", color: .blue)
+                                Spacer()
+                                proxyDetail
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1)
+                            }
+                        }
                     }
                 } footer: {
                     VStack(alignment: .leading, spacing: 6) {
@@ -171,6 +183,18 @@ struct SettingsView: View {
 
     private var isConfirming: Binding<Bool> {
         Binding(get: { confirmation != nil }, set: { if !$0 { confirmation = nil } })
+    }
+
+    /// The proxy of the profile in use: its country, or that it is off.
+    private var proxyDetail: Text {
+        switch proxyManager.route(for: browser.profile.id) {
+        case .direct:
+            return Text("Off")
+        case .noProxy:
+            return Text("None")
+        case .proxy(let proxy):
+            return Text(verbatim: "\(proxy.flag) \(proxy.countryName ?? proxy.address)")
+        }
     }
 
     private var confirmationTitle: LocalizedStringKey {

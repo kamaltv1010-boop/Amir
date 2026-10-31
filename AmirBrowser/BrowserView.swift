@@ -111,6 +111,25 @@ struct BrowserView: View {
                 .navigationViewStyle(.stack)
             case .cookies:
                 CookiesView(browser: browser, tab: browser.selectedTab)
+            case .proxy:
+                NavigationView {
+                    ProxyView(browser: browser)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { self.sheet = nil }
+                            }
+                        }
+                }
+                .navigationViewStyle(.stack)
+            }
+        }
+        // A search for free proxies that ends says what it found.
+        .onReceive(ProxyManager.shared.searchEnded) { search in
+            if search.phase == .failed {
+                showToast("The lists of free proxies couldn’t be reached")
+            } else {
+                let found = search.found
+                showToast("\(found) free proxies found")
             }
         }
     }
@@ -158,6 +177,7 @@ enum BrowserSheet: String, Identifiable {
     case shields
     case extensions
     case cookies
+    case proxy
 
     var id: String { rawValue }
 }
@@ -170,6 +190,7 @@ private struct BrowserScreen: View {
     @ObservedObject var bookmarks: BookmarkStore
     @ObservedObject var pins: BookmarkStore
     @ObservedObject var extensions = ExtensionManager.shared
+    @ObservedObject var proxyManager = ProxyManager.shared
     let searchEngine: SearchEngine
     @Binding var isEditingAddress: Bool
     @Binding var isShowingTabs: Bool
@@ -456,6 +477,9 @@ private struct BrowserScreen: View {
                         Image(systemName: "person.crop.circle")
                     }
                 }
+                if ProxyManager.isAvailable {
+                    proxyMenu
+                }
                 Button(role: .destructive) {
                     isConfirmingNewSession = true
                 } label: {
@@ -539,6 +563,59 @@ private struct BrowserScreen: View {
             toolbarIcon("ellipsis.circle")
         }
         .accessibilityLabel(Text("More"))
+    }
+
+    /// The proxy of the profile in use: on or off, another one, and the
+    /// proxy settings.
+    private var proxyMenu: some View {
+        Menu {
+            Toggle(isOn: Binding(get: { proxyManager.isEnabled }, set: { isOn in
+                proxyManager.setEnabled(isOn)
+                if !isOn {
+                    showToast("Proxy off")
+                } else if proxyManager.proxies.isEmpty {
+                    showToast("Finding free proxies…")
+                } else {
+                    showToast("Proxy on")
+                }
+            })) {
+                Label("Use a Proxy", systemImage: "network")
+            }
+            if proxyManager.isEnabled, proxyManager.proxies.count > 1 {
+                Button {
+                    if let next = proxyManager.changeProxy(for: browser.profile.id) {
+                        let name = "\(next.flag) \(next.countryName ?? next.address)"
+                        showToast("Now through \(name)")
+                    }
+                } label: {
+                    Label("Change Proxy", systemImage: "arrow.triangle.2.circlepath")
+                }
+            }
+            Button {
+                sheet = .proxy
+            } label: {
+                Label("Proxy Settings", systemImage: "gearshape")
+            }
+        } label: {
+            Label {
+                proxyTitle
+            } icon: {
+                Image(systemName: "network")
+            }
+        }
+    }
+
+    /// "Proxy: 🇩🇪 Germany", or that it is off, or that there is none.
+    private var proxyTitle: Text {
+        switch proxyManager.route(for: browser.profile.id) {
+        case .direct:
+            return Text("Proxy: Off")
+        case .noProxy:
+            return Text("Proxy: None")
+        case .proxy(let proxy):
+            let name = "\(proxy.flag) \(proxy.countryName ?? proxy.address)"
+            return Text("Proxy: \(name)")
+        }
     }
 
     /// How the page looks and which device it sees: zoom, night mode, iPad

@@ -287,7 +287,10 @@ final class CookieCollector: ObservableObject {
 
     /// The website data store a profile's tabs use (its cookies).
     static func store(for profile: Profile) -> WKWebsiteDataStore {
-        Profiles.dataStore(for: profile, inMemory: UserDefaults.standard.bool(forKey: BrowserModel.clearOnQuitKey))
+        let store = Profiles.dataStore(for: profile, inMemory: UserDefaults.standard.bool(forKey: BrowserModel.clearOnQuitKey))
+        // Collected through the profile's proxy, as its pages go.
+        ProxyManager.shared.attach(store, to: profile.id)
+        return store
     }
 
     /// How many cookies a profile keeps, and for how many sites.
@@ -655,7 +658,8 @@ final class CookieCollection: NSObject, WKNavigationDelegate {
         let controller = webView.configuration.userContentController
         controller.removeAllUserScripts()
         controller.removeAllContentRuleLists()
-        if let script = FingerprintProtection.userScript(desktopMode: false, protections: shieldsUp, realDevice: isSignInSite, profile: profile) {
+        let proxied = ProxyManager.shared.isProxied(profile.id)
+        if let script = FingerprintProtection.userScript(desktopMode: false, protections: shieldsUp, realDevice: isSignInSite, profile: profile, proxied: proxied) {
             controller.addUserScript(script)
         }
         if shieldsUp, TrackerBlocker.isEnabled, let rules = collector?.model?.trackerRules {

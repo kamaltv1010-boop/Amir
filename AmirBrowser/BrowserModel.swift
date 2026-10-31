@@ -43,6 +43,8 @@ final class BrowserModel: NSObject, ObservableObject {
     private var isUpdatingPrivacy = false
     /// Called with a link the user pinned from the long-press menu.
     var onPinLink: ((URL) -> Void)?
+    /// Takes in a change of the proxies (see ProxyManager).
+    private var proxyObserver: AnyCancellable?
 
     /// The UserDefaults key of the "Clear Everything on Quit" switch.
     nonisolated static let clearOnQuitKey = "clearOnQuit"
@@ -57,9 +59,15 @@ final class BrowserModel: NSObject, ObservableObject {
         let clearOnQuit = UserDefaults.standard.bool(forKey: Self.clearOnQuitKey)
         let profile = Profiles.current
         self.profile = profile
-        dataStore = Profiles.dataStore(for: profile, inMemory: clearOnQuit)
+        let store = Profiles.dataStore(for: profile, inMemory: clearOnQuit)
+        // The profile's proxy before anything loads.
+        ProxyManager.shared.attach(store, to: profile.id)
+        dataStore = store
         history = HistoryStore(fileName: Profiles.historyFileName(for: profile))
         super.init()
+        proxyObserver = ProxyManager.shared.changed.sink { [weak self] _ in
+            self?.privacySettingsMayHaveChanged()
+        }
         CookieCollector.shared.model = self
         let screen = UIScreen.main.bounds.size
         FingerprintProtection.realScreen = (Int(min(screen.width, screen.height)), Int(max(screen.width, screen.height)))
@@ -272,6 +280,7 @@ final class BrowserModel: NSObject, ObservableObject {
         profile = newProfile
         httpOnlyHosts = []
         dataStore = Profiles.dataStore(for: newProfile, inMemory: UserDefaults.standard.bool(forKey: Self.clearOnQuitKey))
+        ProxyManager.shared.attach(dataStore, to: newProfile.id)
         history = HistoryStore(fileName: Profiles.historyFileName(for: newProfile))
         restoreTabs()
         tabs.forEach { ExtensionManager.shared.tabOpened($0) }
@@ -316,7 +325,12 @@ final class BrowserModel: NSObject, ObservableObject {
         guard !doomed.isDefault, profiles.contains(where: { $0.id == doomed.id }) else { return nil }
         // Its web view nobody sees goes first, so its data store is free.
         CookieCollector.shared.forget(doomed.id)
+        let oldProxy = ProxyManager.shared.forget(doomed.id)
         let replacement = UserDefaults.standard.bool(forKey: Self.replaceDeletedKey) ? Profiles.addReplacement(for: doomed) : nil
+        if let replacement {
+            // A new address too, with a proxy for each profile.
+            ProxyManager.shared.assignNew(replacement.id, avoiding: oldProxy)
+        }
         profiles = Profiles.all
         if doomed.id == profile.id {
             switchProfile(to: replacement ?? defaultProfile)
@@ -336,6 +350,7 @@ final class BrowserModel: NSObject, ObservableObject {
     func deleteAllProfiles() {
         for doomed in profiles where !doomed.isDefault {
             CookieCollector.shared.forget(doomed.id)
+            ProxyManager.shared.forget(doomed.id)
         }
         if !profile.isDefault {
             switchProfile(to: defaultProfile)
@@ -357,6 +372,10 @@ final class BrowserModel: NSObject, ObservableObject {
         }
         if isPrivate {
             let store = privateDataStore ?? .nonPersistent()
+            if privateDataStore == nil {
+                // Private tabs go through the profile's proxy too.
+                ProxyManager.shared.attach(store, to: profile.id)
+            }
             privateDataStore = store
             configuration.websiteDataStore = store
         } else {
@@ -428,7 +447,8 @@ final class BrowserModel: NSObject, ObservableObject {
 
     /// Changes whenever a setting a tab's pages depend on changes.
     var settingsSignature: String {
-        FingerprintProtection.signature + "|\(TrackerBlocker.isEnabled)|\(trackerRules != nil)|\(NightMode.isEnabled)"
+        FingerprintProtection.signature + "|\(TrackerBlocker.isEnabled)|\(trackerRules != nil)|\(NightMode.isEnabled)|"
+            + ProxyManager.shared.signature(for: profile.id)
     }
 
     /// Also changes with settings that only matter for the next navigation.

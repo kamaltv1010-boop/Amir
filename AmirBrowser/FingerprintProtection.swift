@@ -353,16 +353,20 @@ enum FingerprintProtection {
     /// The script protects the page's window, and from there the empty
     /// frames (about:blank) the page makes, where WebKit runs no user
     /// scripts (see `framesScript`), so `protect` takes the window to work on.
+    ///
+    /// With `proxied` (the profile's pages go through a proxy), WebRTC finds
+    /// no address, so it can't show the page the phone's own (see
+    /// `webRTCScript`), whether shields are up or down.
     @MainActor
-    static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false, profile: Profile? = nil) -> WKUserScript? {
+    static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false, profile: Profile? = nil, proxied: Bool = false) -> WKUserScript? {
         // With `profile`, its seeds: a profile collecting cookies in the
         // background shows its own fingerprints, not the profile in use's.
-        let source = reading(profile) { scriptSource(desktopMode: desktopMode, protections: protections, realDevice: realDevice) }
+        let source = reading(profile) { scriptSource(desktopMode: desktopMode, protections: protections, realDevice: realDevice, proxied: proxied) }
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }
 
     /// The source of `userScript`, with the seeds of the profile `reading` names.
-    private static func scriptSource(desktopMode: Bool, protections: Bool, realDevice: Bool) -> String {
+    private static func scriptSource(desktopMode: Bool, protections: Bool, realDevice: Bool, proxied: Bool) -> String {
         var parts: [String] = [browserScript]
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
@@ -377,6 +381,7 @@ enum FingerprintProtection {
             if isEnabled(.screen) && !realDevice { parts.append(screenScript(screenSize)) }
         }
         if isIPadMode && !desktopMode { parts.append(iPadScript) }
+        if proxied { parts.append(webRTCScript) }
         // Each part runs on its own, so a part that fails in some WebKit
         // version leaves the others working.
         let guarded = (parts + [framesScript]).map { "try {\n" + $0 + "} catch (e) {}\n" }.joined()
@@ -1866,6 +1871,58 @@ enum FingerprintProtection {
     private static let iPadScript = #"""
     // iPad mode: pages see the platform Safari reports on an iPad.
     defineGetter(window.Navigator.prototype, "platform", () => "iPad");
+
+    """#
+
+    /// With a proxy: pages go through it, but WebRTC would reach STUN and
+    /// TURN servers straight from the phone and tell the page the phone's
+    /// own address. Every connection is made with no server and relay
+    /// addresses only, so it finds no address at all (as Chrome with
+    /// "non-proxied UDP" off), and the page sees only the proxy's.
+    private static let webRTCScript = #"""
+    // WebRTC finds no address while a proxy is on.
+    const RTC = window.RTCPeerConnection;
+    if (typeof RTC === "function") {
+      const construct = Reflect.construct;
+      // The page's configuration with no server and relay addresses only;
+      // the rest of it read as the browser reads it, from the page's object.
+      const relayOnly = (configuration) => {
+        if (configuration !== undefined && configuration !== null && typeof configuration !== "object" && typeof configuration !== "function") {
+          return configuration;
+        }
+        const forced = {};
+        if (configuration !== undefined && configuration !== null) setPrototypeOf(forced, configuration);
+        defineProperty(forced, "iceServers", { value: [], writable: true, enumerable: true, configurable: true });
+        defineProperty(forced, "iceTransportPolicy", { value: "relay", writable: true, enumerable: true, configurable: true });
+        return forced;
+      };
+      // The constructor itself, its name, length, prototype and statics, as
+      // a proxy of it, which a page constructs as the real one.
+      const guarded = new Proxy(RTC, {
+        construct(target, args, newTarget) {
+          const list = arraySlice.call(args);
+          list[0] = relayOnly(list[0]);
+          return construct(target, list, newTarget);
+        },
+      });
+      originals.set(guarded, RTC);
+      const slot = getOwnPropertyDescriptor(window, "RTCPeerConnection");
+      if (slot && "value" in slot) {
+        slot.value = guarded;
+        defineProperty(window, "RTCPeerConnection", slot);
+      }
+      const proto = RTC.prototype;
+      const constructorSlot = getOwnPropertyDescriptor(proto, "constructor");
+      if (constructorSlot && constructorSlot.value === RTC) {
+        constructorSlot.value = guarded;
+        defineProperty(proto, "constructor", constructorSlot);
+      }
+      define(proto, "setConfiguration", (original) => function () {
+        const list = arraySlice.call(arguments);
+        if (list.length) list[0] = relayOnly(list[0]);
+        return original.apply(this, list);
+      });
+    }
 
     """#
 }

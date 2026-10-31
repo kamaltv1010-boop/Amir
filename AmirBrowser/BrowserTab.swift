@@ -267,7 +267,8 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
         let controller = webView.configuration.userContentController
         controller.removeAllUserScripts()
         controller.removeAllContentRuleLists()
-        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode, protections: shieldsUp, realDevice: isSignInSite) {
+        let proxied = ProxyManager.shared.isProxied(model.profile.id)
+        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode, protections: shieldsUp, realDevice: isSignInSite, proxied: proxied) {
             controller.addUserScript(script)
         }
         if NightMode.isEnabled {
