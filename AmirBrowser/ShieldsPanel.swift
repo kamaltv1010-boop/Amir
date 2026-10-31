@@ -20,7 +20,7 @@ struct ShieldsPanel: View {
 
                 if Shields.site(of: tab.webView.url) != nil {
                     Section {
-                        NavigationLink(destination: CookiesForm(tab: tab)) {
+                        NavigationLink(destination: CookiesForm(browser: browser, tab: tab)) {
                             SettingsLabel("Cookies", systemName: "birthday.cake", color: .brown)
                         }
                     } footer: {

@@ -3,13 +3,14 @@ import UniformTypeIdentifiers
 
 /// The cookies screen as a sheet of its own, from the ⋯ menu.
 struct CookiesView: View {
+    @ObservedObject var browser: BrowserModel
     @ObservedObject var tab: BrowserTab
 
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationView {
-            CookiesForm(tab: tab)
+            CookiesForm(browser: browser, tab: tab)
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") { dismiss() }
@@ -21,8 +22,10 @@ struct CookiesView: View {
 }
 
 /// Export the current site's cookies as a header string, and import cookies
-/// back from pasted text or a file.
+/// back from pasted text or a file; collect cookies in the profile, and see
+/// every cookie it keeps.
 struct CookiesForm: View {
+    @ObservedObject var browser: BrowserModel
     @ObservedObject var tab: BrowserTab
 
     @State private var exported = ""
@@ -42,60 +45,21 @@ struct CookiesForm: View {
     var body: some View {
         Form {
             Section {
-                Text(verbatim: site)
-                    .font(.headline)
-            } footer: {
-                Text("Cookies are the small files that keep you signed in to a site. These are the cookies for this site only.")
-            }
-
-            Section {
-                if exported.isEmpty {
-                    Text("No cookies for this site.")
-                        .foregroundColor(.secondary)
-                } else {
-                    Text(verbatim: exported)
-                        .font(.footnote.monospaced())
-                        .textSelection(.enabled)
-                        .lineLimit(6)
-                    Button {
-                        UIPasteboard.general.string = exported
-                        show("Copied")
-                    } label: {
-                        Label("Copy", systemImage: "doc.on.doc")
-                    }
-                    Button {
-                        share(exported)
-                    } label: {
-                        Label("Save or Share…", systemImage: "square.and.arrow.up")
-                    }
+                CookieCollectRow(profile: browser.profile)
+                NavigationLink(destination: CookieCollectView(browser: browser)) {
+                    Label("Collect Cookies", systemImage: "sparkles")
+                }
+                NavigationLink(destination: ProfileCookiesView(browser: browser)) {
+                    Label("Every Cookie of This Profile", systemImage: "list.bullet.rectangle")
                 }
             } header: {
-                Text("Export")
+                Text(verbatim: browser.profile.name)
             } footer: {
-                Text("The cookies in header string format: name=value; name2=value2.")
+                Text("Noor visits sites in this profile in the background, so a site that checks finds a profile in daily use, not an empty one.")
             }
 
-            Section {
-                TextEditor(text: $importText)
-                    .font(.footnote.monospaced())
-                    .frame(minHeight: 90)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                Button {
-                    isImporting = true
-                } label: {
-                    Label("Choose a File…", systemImage: "folder")
-                }
-                Button {
-                    applyImport()
-                } label: {
-                    Label("Import Cookies", systemImage: "square.and.arrow.down")
-                }
-                .disabled(importText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            } header: {
-                Text("Import")
-            } footer: {
-                Text("Paste a header string, or choose a file, then import. The page reloads with the new cookies.")
+            if !site.isEmpty {
+                siteSections
             }
         }
         .navigationTitle("Cookies")
@@ -110,6 +74,67 @@ struct CookiesForm: View {
         }
         .alert(item: $message) { message in
             Alert(title: Text(message.text))
+        }
+    }
+
+    /// The page's site: its cookies to copy, share or import.
+    @ViewBuilder
+    private var siteSections: some View {
+        Section {
+            Text(verbatim: site)
+                .font(.headline)
+        } footer: {
+            Text("Cookies are the small files that keep you signed in to a site. These are the cookies for this site only.")
+        }
+
+        Section {
+            if exported.isEmpty {
+                Text("No cookies for this site.")
+                    .foregroundColor(.secondary)
+            } else {
+                Text(verbatim: exported)
+                    .font(.footnote.monospaced())
+                    .textSelection(.enabled)
+                    .lineLimit(6)
+                Button {
+                    UIPasteboard.general.string = exported
+                    show("Copied")
+                } label: {
+                    Label("Copy", systemImage: "doc.on.doc")
+                }
+                Button {
+                    share(exported)
+                } label: {
+                    Label("Save or Share…", systemImage: "square.and.arrow.up")
+                }
+            }
+        } header: {
+            Text("Export")
+        } footer: {
+            Text("The cookies in header string format: name=value; name2=value2.")
+        }
+
+        Section {
+            TextEditor(text: $importText)
+                .font(.footnote.monospaced())
+                .frame(minHeight: 90)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+            Button {
+                isImporting = true
+            } label: {
+                Label("Choose a File…", systemImage: "folder")
+            }
+            Button {
+                applyImport()
+            } label: {
+                Label("Import Cookies", systemImage: "square.and.arrow.down")
+            }
+            .disabled(importText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        } header: {
+            Text("Import")
+        } footer: {
+            Text("Paste a header string, or choose a file, then import. The page reloads with the new cookies.")
         }
     }
 

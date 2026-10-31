@@ -22,9 +22,10 @@ enum FingerprintProtection {
             self == .canvas ? "canvasProtection" : "protection.\(rawValue)"
         }
 
-        /// The key of this kind's seed, in the profile in use.
+        /// The key of this kind's seed, in the profile in use (or the one a
+        /// page's script is made for, see `reading`).
         fileprivate var seedKey: String {
-            Profiles.key(self == .canvas ? "canvasSeed" : "seed.\(rawValue)")
+            Profiles.key(self == .canvas ? "canvasSeed" : "seed.\(rawValue)", for: FingerprintProtection.boundProfile)
         }
 
         var title: LocalizedStringKey {
@@ -70,6 +71,20 @@ enum FingerprintProtection {
             case .userAgent: return "globe"
             }
         }
+    }
+
+    /// The profile whose seeds are read while a page's script or user agent
+    /// is made for it: another profile than the one in use, collecting its
+    /// cookies in the background (see CookieCollector).
+    fileprivate static var boundProfile: Profile?
+
+    /// Runs `body` with the seeds of `profile` (nil: the profile in use).
+    private static func reading<T>(_ profile: Profile?, _ body: () -> T) -> T {
+        guard let profile else { return body() }
+        let previous = boundProfile
+        boundProfile = profile
+        defer { boundProfile = previous }
+        return body()
     }
 
     static func isEnabled(_ kind: Kind) -> Bool {
@@ -252,14 +267,15 @@ enum FingerprintProtection {
 
     /// The user agent for a page: another device's with the user agent
     /// protection on (unless `protections` is off for the site) and in iPad
-    /// mode, or this device's own. Desktop mode keeps WebKit's own.
+    /// mode, or this device's own. Desktop mode keeps WebKit's own. With
+    /// `profile`, that profile's device (the profile in use's otherwise).
     @MainActor
-    static func userAgent(protections: Bool, desktopMode: Bool) -> String? {
+    static func userAgent(protections: Bool, desktopMode: Bool, profile: Profile? = nil) -> String? {
         if desktopMode {
             return nil
         }
         if isIPadMode || (protections && isEnabled(.userAgent)) {
-            return userAgent
+            return reading(profile) { () -> String in userAgentDevice.userAgent }
         }
         return safariUserAgent
     }
@@ -338,7 +354,15 @@ enum FingerprintProtection {
     /// frames (about:blank) the page makes, where WebKit runs no user
     /// scripts (see `framesScript`), so `protect` takes the window to work on.
     @MainActor
-    static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false) -> WKUserScript? {
+    static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false, profile: Profile? = nil) -> WKUserScript? {
+        // With `profile`, its seeds: a profile collecting cookies in the
+        // background shows its own fingerprints, not the profile in use's.
+        let source = reading(profile) { scriptSource(desktopMode: desktopMode, protections: protections, realDevice: realDevice) }
+        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }
+
+    /// The source of `userScript`, with the seeds of the profile `reading` names.
+    private static func scriptSource(desktopMode: Bool, protections: Bool, realDevice: Bool) -> String {
         var parts: [String] = [browserScript]
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
@@ -361,7 +385,7 @@ enum FingerprintProtection {
             // A window another copy of this script protected (its page's,
             // when the frame started empty) is left as it is.
             + "if (!isProtected(window)) protect(window);\n})();"
-        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return source
     }
 
     /// What the protection of every window this script reaches shares.

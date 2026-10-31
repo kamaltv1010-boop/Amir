@@ -58,6 +58,7 @@ final class BrowserModel: NSObject, ObservableObject {
         dataStore = Profiles.dataStore(for: profile, inMemory: clearOnQuit)
         history = HistoryStore(fileName: Profiles.historyFileName(for: profile))
         super.init()
+        CookieCollector.shared.model = self
         let screen = UIScreen.main.bounds.size
         FingerprintProtection.realScreen = (Int(min(screen.width, screen.height)), Int(max(screen.width, screen.height)))
         ExtensionManager.shared.start(dataStore: dataStore)
@@ -277,11 +278,24 @@ final class BrowserModel: NSObject, ObservableObject {
         selectedTab.loadIfNeeded()
     }
 
-    /// Makes a profile and shows it.
+    /// Makes a profile and shows it. It collects its cookies by itself where
+    /// the settings say so (see CookieCollector).
     func createProfile(named name: String) {
         let newProfile = Profiles.add(named: name)
         profiles = Profiles.all
         switchProfile(to: newProfile)
+        CookieCollector.shared.collectInNew([newProfile])
+    }
+
+    /// Makes `count` profiles at once, named after `name` (see
+    /// Profiles.addMany); the profile in use stays. They collect their
+    /// cookies all at once where the settings say so. The new ones.
+    @discardableResult
+    func createProfiles(count: Int, named name: String) -> [Profile] {
+        let made = Profiles.addMany(count, named: name)
+        profiles = Profiles.all
+        CookieCollector.shared.collectInNew(made)
+        return made
     }
 
     /// The profile that can't be deleted.
@@ -293,6 +307,8 @@ final class BrowserModel: NSObject, ObservableObject {
     /// use shows the default profile instead.
     func deleteProfile(_ doomed: Profile) {
         guard !doomed.isDefault else { return }
+        // Its web view nobody sees goes first, so its data store is free.
+        CookieCollector.shared.forget(doomed.id)
         if doomed.id == profile.id {
             switchProfile(to: defaultProfile)
         }
@@ -305,6 +321,9 @@ final class BrowserModel: NSObject, ObservableObject {
     /// Deletes every profile but the default one, with everything each
     /// kept, and shows the default profile.
     func deleteAllProfiles() {
+        for doomed in profiles where !doomed.isDefault {
+            CookieCollector.shared.forget(doomed.id)
+        }
         if !profile.isDefault {
             switchProfile(to: defaultProfile)
         }
@@ -354,6 +373,8 @@ final class BrowserModel: NSObject, ObservableObject {
     /// in that profile and opens an empty tab. Other profiles, bookmarks and
     /// pinned links are kept.
     func startNewSession() {
+        // Its cookies being collected stop first.
+        CookieCollector.shared.stop(profile.id)
         // Nothing loads until the old data is gone.
         isClearingData = true
         for tab in privateTabs {

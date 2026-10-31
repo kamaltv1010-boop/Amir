@@ -1,6 +1,138 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld من ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cookies"
+          }
+        }
+      }
+    },
+    "%lld cookies from %lld sites. Tap a site to see its cookies, and a value to copy it." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld من ملفات تعريف الارتباط من %lld موقعاً. اضغط على موقع لرؤية ملفاته، وعلى قيمة لنسخها."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cookies from %lld sites. Tap a site to see its cookies, and a value to copy it."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cookies de %lld sites. Touchez un site pour voir ses cookies, et une valeur pour la copier."
+          }
+        }
+      }
+    },
+    "%lld profiles done: %lld new cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتهت %lld ملفات شخصية: %lld من ملفات تعريف الارتباط الجديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld profiles done: %lld new cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld profils terminés : %lld nouveaux cookies"
+          }
+        }
+      }
+    },
+    "%lld profiles made" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم إنشاء %lld ملفات شخصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld profiles made"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld profils créés"
+          }
+        }
+      }
+    },
+    "A new profile starts collecting as soon as it is made, in the background; profiles made together collect together. “At Once” is how many profiles collect at the same time; the others wait their turn." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كل ملف شخصي جديد يبدأ الجمع بمجرد إنشائه، في الخلفية؛ والملفات التي تُنشأ معاً تجمع معاً. «في نفس الوقت» هو عدد الملفات الشخصية التي تجمع في آن واحد؛ والباقي ينتظر دوره."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A new profile starts collecting as soon as it is made, in the background; profiles made together collect together. “At Once” is how many profiles collect at the same time; the others wait their turn."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un nouveau profil commence à collecter dès sa création, en arrière-plan ; les profils créés ensemble collectent ensemble. « En même temps » indique combien de profils collectent à la fois ; les autres attendent leur tour."
+          }
+        }
+      }
+    },
+    "A new random mix each time: the world's, and those of the country of your time zone. Each site takes about 20 seconds." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مزيج عشوائي جديد في كل مرة: مواقع من العالم، ومواقع بلد منطقتك الزمنية. كل موقع يأخذ حوالي 20 ثانية."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A new random mix each time: the world's, and those of the country of your time zone. Each site takes about 20 seconds."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un nouveau mélange au hasard à chaque fois : les sites du monde, et ceux du pays de votre fuseau horaire. Chaque site prend environ 20 secondes."
+          }
+        }
+      }
+    },
     "A problem repeatedly occurred on this page." : {
       "localizations" : {
         "ar" : {
@@ -265,6 +397,50 @@
         }
       }
     },
+    "All (up to %lld)" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الكل (حتى %lld)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All (up to %lld)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous (jusqu’à %lld)"
+          }
+        }
+      }
+    },
+    "All Profiles" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كل الملفات الشخصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Profiles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les profils"
+          }
+        }
+      }
+    },
     "All Sites" : {
       "localizations" : {
         "ar" : {
@@ -393,6 +569,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apparence"
+          }
+        }
+      }
+    },
+    "At Once" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في نفس الوقت"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At Once"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En même temps"
           }
         }
       }
@@ -1101,6 +1299,160 @@
         }
       }
     },
+    "Collect" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جمع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collect"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecter"
+          }
+        }
+      }
+    },
+    "Collect Cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جمع ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collect Cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecter des cookies"
+          }
+        }
+      }
+    },
+    "Collect in All" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الجمع في الكل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collect in All"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecter dans tous"
+          }
+        }
+      }
+    },
+    "Collect in Every New Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الجمع في كل ملف شخصي جديد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collect in Every New Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecter dans chaque nouveau profil"
+          }
+        }
+      }
+    },
+    "Collecting cookies in %lld profiles at once…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جمع ملفات تعريف الارتباط في %lld ملفات شخصية في نفس الوقت…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecting cookies in %lld profiles at once…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecte des cookies dans %lld profils en même temps…"
+          }
+        }
+      }
+    },
+    "Collecting cookies in “%@”…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جمع ملفات تعريف الارتباط في «%@»…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecting cookies in “%@”…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecte des cookies dans « %@ »…"
+          }
+        }
+      }
+    },
+    "Collecting in %lld profiles at once: %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الجمع في %lld ملفات شخصية في نفس الوقت: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecting in %lld profiles at once: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecte dans %lld profils en même temps : %@"
+          }
+        }
+      }
+    },
     "Connection" : {
       "localizations" : {
         "ar" : {
@@ -1321,6 +1673,28 @@
         }
       }
     },
+    "Create Multiple Profiles" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إنشاء ملفات شخصية متعددة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Multiple Profiles"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer plusieurs profils"
+          }
+        }
+      }
+    },
     "Current Values" : {
       "localizations" : {
         "ar" : {
@@ -1431,6 +1805,28 @@
         }
       }
     },
+    "Delete Cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer les cookies"
+          }
+        }
+      }
+    },
     "Delete Profile" : {
       "localizations" : {
         "ar" : {
@@ -1449,6 +1845,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer le profil"
+          }
+        }
+      }
+    },
+    "Delete the Site's Cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف ملفات تعريف الارتباط لهذا الموقع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete the Site's Cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer les cookies du site"
+          }
+        }
+      }
+    },
+    "Delete the cookies of %@?" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف ملفات تعريف الارتباط لـ %@؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete the cookies of %@?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer les cookies de %@ ?"
           }
         }
       }
@@ -1493,6 +1933,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "Done: %lld of %lld sites visited. This profile has %lld cookies from %lld sites now (+%lld)." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتهى: تمت زيارة %lld من %lld موقعاً. لدى هذا الملف الشخصي الآن %lld من ملفات تعريف الارتباط من %lld موقعاً (+%lld)."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done: %lld of %lld sites visited. This profile has %lld cookies from %lld sites now (+%lld)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé : %lld sites visités sur %lld. Ce profil a maintenant %lld cookies de %lld sites (+%lld)."
           }
         }
       }
@@ -1559,6 +2021,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chiffrée (HTTPS)"
+          }
+        }
+      }
+    },
+    "Every Cookie of This Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كل ملفات تعريف الارتباط لهذا الملف الشخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every Cookie of This Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les cookies de ce profil"
+          }
+        }
+      }
+    },
+    "Every Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جميع الملفات الشخصية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque profil"
+          }
+        }
+      }
+    },
+    "Every profile collects its cookies at the same time (%lld at most, see “At Once”), each in the background with its own fingerprints." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كل ملف شخصي يجمع ملفات تعريف الارتباط في نفس الوقت (%lld على الأكثر، انظر «في نفس الوقت»)، كل واحد في الخلفية ببصماته الخاصة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every profile collects its cookies at the same time (%lld at most, see “At Once”), each in the background with its own fingerprints."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque profil collecte ses cookies en même temps (%lld au plus, voir « En même temps »), chacun en arrière-plan avec ses propres empreintes."
           }
         }
       }
@@ -1805,6 +2333,50 @@
         }
       }
     },
+    "France" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرنسا"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "France"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "France"
+          }
+        }
+      }
+    },
+    "Germany" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ألمانيا"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Germany"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allemagne"
+          }
+        }
+      }
+    },
     "HTTPS upgrades" : {
       "localizations" : {
         "ar" : {
@@ -1867,6 +2439,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Historique"
+          }
+        }
+      }
+    },
+    "How many" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "العدد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How many"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combien"
+          }
+        }
+      }
+    },
+    "How many sites: %lld" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عدد المواقع: %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How many sites: %lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de sites : %lld"
           }
         }
       }
@@ -2047,6 +2663,50 @@
         }
       }
     },
+    "Italy" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إيطاليا"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Italy"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Italie"
+          }
+        }
+      }
+    },
+    "JSON" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON"
+          }
+        }
+      }
+    },
     "Leave Page" : {
       "localizations" : {
         "ar" : {
@@ -2153,6 +2813,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
+          }
+        }
+      }
+    },
+    "Morocco" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المغرب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Morocco"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maroc"
+          }
+        }
+      }
+    },
+    "My Sites" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مواقعي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Sites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mes sites"
           }
         }
       }
@@ -2509,6 +3213,28 @@
         }
       }
     },
+    "No cookies in this profile yet: tap Collect above, or browse a little." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا توجد ملفات تعريف ارتباط في هذا الملف الشخصي بعد: اضغط «جمع» في الأعلى، أو تصفّح قليلاً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No cookies in this profile yet: tap Collect above, or browse a little."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas encore de cookies dans ce profil : touchez Collecter ci-dessus, ou naviguez un peu."
+          }
+        }
+      }
+    },
     "No history yet" : {
       "localizations" : {
         "ar" : {
@@ -2575,6 +3301,28 @@
         }
       }
     },
+    "Noor visits sites in this profile in the background, so a site that checks finds a profile in daily use, not an empty one." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يزور Noor مواقع في هذا الملف الشخصي في الخلفية، حتى يجد الموقع الذي يتحقق ملفاً شخصياً مستعملاً يومياً وليس فارغاً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noor visits sites in this profile in the background, so a site that checks finds a profile in daily use, not an empty one."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noor visite des sites dans ce profil en arrière-plan, pour qu’un site qui vérifie trouve un profil utilisé au quotidien, et non vide."
+          }
+        }
+      }
+    },
     "Not encrypted" : {
       "localizations" : {
         "ar" : {
@@ -2637,6 +3385,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sur iOS 16 et antérieur, seul le premier profil conserve ses données de sites sur le téléphone ; les autres les gardent tant que l’app est ouverte."
+          }
+        }
+      }
+    },
+    "One per line: an address (hespress.com) or a page (https://www.youtube.com/). They are visited in a new order each time." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "موقع في كل سطر: عنوان (hespress.com) أو صفحة (https://www.youtube.com/). تتم زيارتها بترتيب جديد في كل مرة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One per line: an address (hespress.com) or a page (https://www.youtube.com/). They are visited in a new order each time."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un par ligne : une adresse (hespress.com) ou une page (https://www.youtube.com/). Ils sont visités dans un nouvel ordre à chaque fois."
           }
         }
       }
@@ -2949,6 +3719,28 @@
         }
       }
     },
+    "Popular Sites" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مواقع مشهورة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Popular Sites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites populaires"
+          }
+        }
+      }
+    },
     "Privacy Stats" : {
       "localizations" : {
         "ar" : {
@@ -3033,6 +3825,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onglets privés"
+          }
+        }
+      }
+    },
+    "Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملف شخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
           }
         }
       }
@@ -3143,6 +3957,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lire et modifier les cookies"
+          }
+        }
+      }
+    },
+    "Reading the cookies…" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ قراءة ملفات تعريف الارتباط…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading the cookies…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lecture des cookies…"
           }
         }
       }
@@ -3389,6 +4225,28 @@
         }
       }
     },
+    "Save as File" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حفظ كملف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save as File"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer dans un fichier"
+          }
+        }
+      }
+    },
     "Save or Share…" : {
       "localizations" : {
         "ar" : {
@@ -3517,6 +4375,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rechercher ou saisir une adresse"
+          }
+        }
+      }
+    },
+    "Search sites and cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البحث في المواقع وملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search sites and cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher des sites et des cookies"
+          }
+        }
+      }
+    },
+    "See Cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عرض ملفات تعريف الارتباط"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See Cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir les cookies"
           }
         }
       }
@@ -3741,6 +4643,28 @@
         }
       }
     },
+    "Sites" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المواقع"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites"
+          }
+        }
+      }
+    },
     "Sites With Shields Down" : {
       "localizations" : {
         "ar" : {
@@ -3759,6 +4683,116 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sites aux boucliers baissés"
+          }
+        }
+      }
+    },
+    "Sites of the world and of %@." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مواقع من العالم ومن %@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites of the world and of %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites du monde et de la région : %@."
+          }
+        }
+      }
+    },
+    "Sites to Visit" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المواقع التي تتم زيارتها"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites to Visit"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sites à visiter"
+          }
+        }
+      }
+    },
+    "So that a site that checks finds a profile in daily use, not an empty one, Noor visits sites in it in the background: popular ones or yours, in one profile, every profile at once, or every new profile. See every cookie a profile keeps, and save them as a cookies.txt file." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حتى يجد الموقع الذي يتحقق ملفاً شخصياً مستعملاً يومياً وليس فارغاً، يزور Noor مواقع فيه في الخلفية: مواقع مشهورة أو مواقعك، في ملف شخصي واحد، أو في كل الملفات في نفس الوقت، أو في كل ملف شخصي جديد. اعرض كل ملفات تعريف الارتباط التي يحتفظ بها ملف شخصي، واحفظها في ملف cookies.txt."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So that a site that checks finds a profile in daily use, not an empty one, Noor visits sites in it in the background: popular ones or yours, in one profile, every profile at once, or every new profile. See every cookie a profile keeps, and save them as a cookies.txt file."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour qu’un site qui vérifie trouve un profil utilisé au quotidien, et non vide, Noor y visite des sites en arrière-plan : des sites populaires ou les vôtres, dans un profil, dans tous à la fois, ou dans chaque nouveau profil. Voyez chaque cookie d’un profil, et enregistrez-les dans un fichier cookies.txt."
+          }
+        }
+      }
+    },
+    "So that a site that checks finds a profile in daily use, not an empty one: Noor visits sites in a web view you don't see, in the profile's own cookies, with its own fingerprints and shields, while you use this profile or any other. It reads each page a little, scrolls, accepts the cookie banner, and sometimes opens another page of the site, as a person would. It never signs in or out, buys or downloads anything, and nothing goes into the history. Keep Noor open while it collects: iOS pauses pages in the background." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حتى يجد الموقع الذي يتحقق ملفاً شخصياً مستعملاً يومياً وليس فارغاً: يزور Noor مواقع في صفحة لا تراها، بملفات تعريف الارتباط الخاصة بالملف الشخصي وبصماته ودروعه، بينما تستعمل هذا الملف الشخصي أو أي ملف آخر. يقرأ كل صفحة قليلاً، ويمرّرها، ويقبل شريط ملفات تعريف الارتباط، ويفتح أحياناً صفحة أخرى من نفس الموقع، كما يفعل الإنسان. لا يسجّل الدخول أو الخروج أبداً، ولا يشتري أو ينزّل أي شيء، ولا يُحفظ شيء في السجل. اترك Noor مفتوحاً أثناء الجمع: iOS يوقف الصفحات في الخلفية."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So that a site that checks finds a profile in daily use, not an empty one: Noor visits sites in a web view you don't see, in the profile's own cookies, with its own fingerprints and shields, while you use this profile or any other. It reads each page a little, scrolls, accepts the cookie banner, and sometimes opens another page of the site, as a person would. It never signs in or out, buys or downloads anything, and nothing goes into the history. Keep Noor open while it collects: iOS pauses pages in the background."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour qu’un site qui vérifie trouve un profil utilisé au quotidien, et non un profil vide : Noor visite des sites dans une vue web que vous ne voyez pas, avec les cookies du profil, ses propres empreintes et ses boucliers, pendant que vous utilisez ce profil ou un autre. Il lit un peu chaque page, la fait défiler, accepte la bannière de cookies et ouvre parfois une autre page du site, comme le ferait une personne. Il ne se connecte ni ne se déconnecte jamais, n’achète et ne télécharge rien, et rien n’entre dans l’historique. Gardez Noor ouvert pendant la collecte : iOS met les pages en pause en arrière-plan."
+          }
+        }
+      }
+    },
+    "Spain" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إسبانيا"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spain"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espagne"
           }
         }
       }
@@ -3807,6 +4841,28 @@
         }
       }
     },
+    "Starting… %lld cookies." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ البدء… %lld من ملفات تعريف الارتباط."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting… %lld cookies."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Démarrage… %lld cookies."
+          }
+        }
+      }
+    },
     "Stop" : {
       "localizations" : {
         "ar" : {
@@ -3825,6 +4881,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arrêter"
+          }
+        }
+      }
+    },
+    "Stop All" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إيقاف الكل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop All"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout arrêter"
+          }
+        }
+      }
+    },
+    "Stopped: %lld of %lld sites visited. This profile has %lld cookies from %lld sites now (+%lld)." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "توقف: تمت زيارة %lld من %lld موقعاً. لدى هذا الملف الشخصي الآن %lld من ملفات تعريف الارتباط من %lld موقعاً (+%lld)."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stopped: %lld of %lld sites visited. This profile has %lld cookies from %lld sites now (+%lld)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêté : %lld sites visités sur %lld. Ce profil a maintenant %lld cookies de %lld sites (+%lld)."
           }
         }
       }
@@ -4049,6 +5149,50 @@
         }
       }
     },
+    "The profiles are also in the ⋯ menu and on the start page, to switch quickly. Many at once: up to 100, each with its own cookies and fingerprints; with “Collect in Every New Profile” on (Collect Cookies), they all collect their cookies at once." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملفات الشخصية موجودة أيضاً في القائمة ⋯ وفي صفحة البداية، للتبديل بسرعة. عدة ملفات دفعة واحدة: حتى 100، لكل واحد ملفات تعريف الارتباط والبصمات الخاصة به؛ ومع تشغيل «الجمع في كل ملف شخصي جديد» (جمع ملفات تعريف الارتباط)، تجمع كلها ملفات تعريف الارتباط في نفس الوقت."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The profiles are also in the ⋯ menu and on the start page, to switch quickly. Many at once: up to 100, each with its own cookies and fingerprints; with “Collect in Every New Profile” on (Collect Cookies), they all collect their cookies at once."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les profils sont aussi dans le menu ⋯ et sur la page d’accueil, pour changer rapidement. Plusieurs à la fois : jusqu’à 100, chacun avec ses propres cookies et empreintes ; avec « Collecter dans chaque nouveau profil » activé (Collecter des cookies), ils collectent tous leurs cookies en même temps."
+          }
+        }
+      }
+    },
+    "The site forgets this profile: you may have to sign in to it again." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سينسى الموقع هذا الملف الشخصي: قد تحتاج إلى تسجيل الدخول إليه من جديد."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The site forgets this profile: you may have to sign in to it again."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le site oublie ce profil : vous devrez peut-être vous y reconnecter."
+          }
+        }
+      }
+    },
     "This Page" : {
       "localizations" : {
         "ar" : {
@@ -4067,6 +5211,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette page"
+          }
+        }
+      }
+    },
+    "This Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هذا الملف الشخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce profil"
           }
         }
       }
@@ -4181,6 +5347,28 @@
         }
       }
     },
+    "This profile has %lld cookies from %lld sites." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لدى هذا الملف الشخصي %lld من ملفات تعريف الارتباط من %lld موقعاً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This profile has %lld cookies from %lld sites."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce profil a %lld cookies de %lld sites."
+          }
+        }
+      }
+    },
     "This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked." : {
       "localizations" : {
         "ar" : {
@@ -4291,6 +5479,28 @@
         }
       }
     },
+    "Türkiye" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تركيا"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Türkiye"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turquie"
+          }
+        }
+      }
+    },
     "Unpin" : {
       "localizations" : {
         "ar" : {
@@ -4331,6 +5541,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Désépingler cette page"
+          }
+        }
+      }
+    },
+    "Until Noor closes" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حتى إغلاق Noor"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Until Noor closes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jusqu’à la fermeture de Noor"
+          }
+        }
+      }
+    },
+    "Up to 100 at once, each with its own cookies and fingerprints, named “Profile 3”, “Profile 4”… or after the name you give, numbered." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حتى 100 دفعة واحدة، لكل واحد ملفات تعريف الارتباط والبصمات الخاصة به، بأسماء «ملف شخصي 3»، «ملف شخصي 4»… أو بالاسم الذي تختاره مع رقم."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to 100 at once, each with its own cookies and fingerprints, named “Profile 3”, “Profile 4”… or after the name you give, numbered."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jusqu’à 100 à la fois, chacun avec ses propres cookies et empreintes, nommés « Profil 3 », « Profil 4 »… ou d’après le nom que vous donnez, numéroté."
           }
         }
       }
@@ -4441,6 +5695,94 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Version"
+          }
+        }
+      }
+    },
+    "Visiting %lld of %lld: %@. %lld cookies (+%lld)." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زيارة %lld من %lld: %@. %lld من ملفات تعريف الارتباط (+%lld)."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visiting %lld of %lld: %@. %lld cookies (+%lld)."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visite %lld sur %lld : %@. %lld cookies (+%lld)."
+          }
+        }
+      }
+    },
+    "Visits sites in this profile in the background, with its own fingerprints." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يزور مواقع في هذا الملف الشخصي في الخلفية، ببصماته الخاصة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visits sites in this profile in the background, with its own fingerprints."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visite des sites dans ce profil en arrière-plan, avec ses propres empreintes."
+          }
+        }
+      }
+    },
+    "Waiting its turn (%lld in line): %lld profiles collect at a time." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ينتظر دوره (رقم %lld في الصف): %lld ملفات شخصية تجمع في نفس الوقت."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting its turn (%lld in line): %lld profiles collect at a time."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente de son tour (%lld dans la file) : %lld profils collectent à la fois."
+          }
+        }
+      }
+    },
+    "Waiting their turn (%lld at a time): %@" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تنتظر دورها (%lld في كل مرة): %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting their turn (%lld at a time): %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente de leur tour (%lld à la fois) : %@"
           }
         }
       }
@@ -4599,6 +5941,28 @@
         }
       }
     },
+    "cookies.txt" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cookies.txt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cookies.txt"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cookies.txt"
+          }
+        }
+      }
+    },
     "iPad Mode" : {
       "localizations" : {
         "ar" : {
@@ -4661,6 +6025,138 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mode iPad activé"
+          }
+        }
+      }
+    },
+    "the Arab world" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "العالم العربي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the Arab world"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "monde arabe"
+          }
+        }
+      }
+    },
+    "the Netherlands" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هولندا"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the Netherlands"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pays-Bas"
+          }
+        }
+      }
+    },
+    "the United Kingdom" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المملكة المتحدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the United Kingdom"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Royaume-Uni"
+          }
+        }
+      }
+    },
+    "the United States" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الولايات المتحدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "the United States"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "États-Unis"
+          }
+        }
+      }
+    },
+    "“%@”: %lld new cookies from %lld sites" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@»: %lld من ملفات تعريف الارتباط الجديدة من %lld موقعاً"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”: %lld new cookies from %lld sites"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » : %lld nouveaux cookies de %lld sites"
+          }
+        }
+      }
+    },
+    "“%@”: stopped, %lld new cookies" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«%@»: توقف، %lld من ملفات تعريف الارتباط الجديدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@”: stopped, %lld new cookies"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » : arrêté, %lld nouveaux cookies"
           }
         }
       }

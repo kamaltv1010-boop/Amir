@@ -74,6 +74,19 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink(destination: CookieCollectView(browser: browser)) {
+                        SettingsLabel("Collect Cookies", systemName: "sparkles", color: .orange)
+                    }
+                    NavigationLink(destination: ProfileCookiesView(browser: browser)) {
+                        SettingsLabel("See Cookies", systemName: "list.bullet.rectangle.fill", color: .brown)
+                    }
+                } header: {
+                    Text("Cookies")
+                } footer: {
+                    Text("So that a site that checks finds a profile in daily use, not an empty one, Noor visits sites in it in the background: popular ones or yours, in one profile, every profile at once, or every new profile. See every cookie a profile keeps, and save them as a cookies.txt file.")
+                }
+
+                Section {
                     Toggle(isOn: $nightMode) {
                         SettingsLabel("Night Mode", systemName: "moon.fill", color: .indigo)
                     }
@@ -236,6 +249,11 @@ private struct ProfilesView: View {
                 } label: {
                     Label("New Profile", systemImage: "plus")
                 }
+                Button {
+                    ProfilePrompts.newProfiles(in: browser)
+                } label: {
+                    Label("Create Multiple Profiles", systemImage: "plus.square.on.square")
+                }
                 if browser.profiles.count > 1 {
                     Button(role: .destructive) {
                         ProfilePrompts.confirmDeleteAll(in: browser)
@@ -244,7 +262,7 @@ private struct ProfilesView: View {
                     }
                 }
             } footer: {
-                Text("The profiles are also in the ⋯ menu and on the start page, to switch quickly.")
+                Text("The profiles are also in the ⋯ menu and on the start page, to switch quickly. Many at once: up to 100, each with its own cookies and fingerprints; with “Collect in Every New Profile” on (Collect Cookies), they all collect their cookies at once.")
             }
         }
         .navigationTitle("Profiles")

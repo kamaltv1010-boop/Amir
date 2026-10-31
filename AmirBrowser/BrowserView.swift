@@ -74,6 +74,13 @@ struct BrowserView: View {
         .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
             browser.privacySettingsMayHaveChanged()
         }
+        // Profiles that start or end collecting cookies, one line for those
+        // together (see CookieCollector).
+        .onReceive(CookieCollector.shared.$news) { news in
+            if let news, let text = Self.text(of: news) {
+                showToast(text)
+            }
+        }
         .confirmationDialog("Start a New Session?", isPresented: $isConfirmingNewSession, titleVisibility: .visible) {
             Button("New Session", role: .destructive) {
                 browser.startNewSession()
@@ -103,7 +110,7 @@ struct BrowserView: View {
                 }
                 .navigationViewStyle(.stack)
             case .cookies:
-                CookiesView(tab: browser.selectedTab)
+                CookiesView(browser: browser, tab: browser.selectedTab)
             }
         }
     }
@@ -114,6 +121,34 @@ struct BrowserView: View {
             try? await Task.sleep(nanoseconds: 2_000_000_000)
             withAnimation { toast = nil }
         }
+    }
+
+    /// What the browser says of collections that started or ended.
+    private static func text(of news: CookieCollectNews) -> LocalizedStringKey? {
+        if news.started.count == 1 {
+            let name = news.started[0]
+            return "Collecting cookies in “\(name)”…"
+        }
+        if news.started.count > 1 {
+            let count = news.started.count
+            return "Collecting cookies in \(count) profiles at once…"
+        }
+        if news.ended.count == 1 {
+            let status = news.ended[0]
+            let name = status.profileName
+            let added = status.added
+            if status.stopped {
+                return "“\(name)”: stopped, \(added) new cookies"
+            }
+            let opened = status.opened
+            return "“\(name)”: \(added) new cookies from \(opened) sites"
+        }
+        if news.ended.count > 1 {
+            let count = news.ended.count
+            let added = news.ended.reduce(0) { $0 + $1.added }
+            return "\(count) profiles done: \(added) new cookies"
+        }
+        return nil
     }
 }
 
@@ -408,9 +443,12 @@ private struct BrowserScreen: View {
                     Label("Settings", systemImage: "gearshape")
                 }
                 Menu {
-                    ProfileMenuItems(browser: browser) { profile in
+                    ProfileMenuItems(browser: browser, didSwitch: { profile in
                         showToast("Switched to “\(profile.name)”")
-                    }
+                    }, didMake: { made in
+                        let count = made.count
+                        showToast("\(count) profiles made")
+                    })
                 } label: {
                     Label {
                         Text("Profile: \(browser.profile.name)")
@@ -448,7 +486,6 @@ private struct BrowserScreen: View {
                 } label: {
                     Label("Cookies", systemImage: "birthday.cake")
                 }
-                .disabled(tab.webView.url?.host == nil)
                 Button {
                     toggle(bookmarks)
                 } label: {

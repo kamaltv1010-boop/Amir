@@ -62,6 +62,46 @@ enum Profiles {
         return profile
     }
 
+    /// The most profiles made at once.
+    static let maxAtOnce = 100
+
+    /// `count` new profiles at once (100 at most), named `name 1`, `name 2`…
+    /// ("Profile 3", "Profile 4"… after the profiles there are), with
+    /// numbers no profile has yet; the profile in use stays. The new ones.
+    @discardableResult
+    static func addMany(_ count: Int, named name: String) -> [Profile] {
+        let wanted = max(0, min(maxAtOnce, count))
+        guard wanted > 0 else { return [] }
+        let defaultBase = String(localized: "Profile")
+        var base = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let number = base.range(of: #"\s+\d+$"#, options: .regularExpression) {
+            base.removeSubrange(number)
+        }
+        base = String(base.prefix(40))
+        if base.isEmpty {
+            base = defaultBase
+        }
+        let list = all
+        var taken = Set(list.map(\.name))
+        var highest = 0
+        for profile in list where profile.name.hasPrefix(base + " ") {
+            if let number = Int(profile.name.dropFirst(base.count + 1)) {
+                highest = max(highest, number)
+            }
+        }
+        var number = max(highest + 1, base == defaultBase ? list.count + 1 : 1)
+        var made: [Profile] = []
+        while made.count < wanted {
+            let candidate = "\(base) \(number)"
+            number += 1
+            if taken.insert(candidate).inserted {
+                made.append(Profile(id: UUID(), name: candidate))
+            }
+        }
+        all = list + made
+        return made
+    }
+
     /// The UserDefaults key of a value kept per profile: `base` itself for
     /// the default profile, as earlier versions stored it, and a prefixed
     /// key for any other.
