@@ -119,6 +119,25 @@ enum ProfilePrompts {
         return Int(western.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
+    /// Asks, then deletes `profile` with everything it kept; with "Replace a
+    /// Profile When Deleted" on, a new one takes its place, and says which
+    /// (see BrowserModel.deleteProfile). Calls `didDelete` with the new one.
+    static func confirmDelete(_ profile: Profile, in browser: BrowserModel, didDelete: @escaping (Profile?) -> Void = { _ in }) {
+        guard !profile.isDefault else { return }
+        let name = profile.name
+        var message = String(localized: "This deletes the profile’s cookies, website data, history and tabs. Bookmarks and pinned links are kept.")
+        if UserDefaults.standard.bool(forKey: BrowserModel.replaceDeletedKey) {
+            let next = Profiles.nextInSeries(name)
+            message += "\n\n" + String(localized: "“\(next)” takes its place, with new fingerprints and no cookies.")
+        }
+        let alert = UIAlertController(title: String(localized: "Delete “\(name)”?"), message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: String(localized: "Delete Profile"), style: .destructive) { _ in
+            didDelete(browser.deleteProfile(profile))
+        })
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
+        Presenter.presentSoon(alert)
+    }
+
     /// Asks, then deletes every profile but the first with everything each
     /// kept, and shows the first profile.
     static func confirmDeleteAll(in browser: BrowserModel) {

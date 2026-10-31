@@ -461,6 +461,18 @@ private struct BrowserScreen: View {
                 } label: {
                     Label("New Session", systemImage: "flame")
                 }
+                // The first profile is never deleted.
+                if !browser.profile.isDefault {
+                    Button(role: .destructive) {
+                        let deleted = browser.profile.name
+                        ProfilePrompts.confirmDelete(browser.profile, in: browser) { _ in
+                            let shown = browser.profile.name
+                            showToast("“\(deleted)” deleted, now in “\(shown)”")
+                        }
+                    } label: {
+                        Label("Delete This Profile", systemImage: "person.crop.circle.badge.minus")
+                    }
+                }
                 Button {
                     browser.newTab(isPrivate: true)
                     isEditingAddress = true

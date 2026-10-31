@@ -12,6 +12,7 @@ struct SettingsView: View {
     @AppStorage(LinkCleaner.enabledKey) private var cleanLinks = true
     @AppStorage(PrivacyScreen.enabledKey) private var hideInSwitcher = true
     @AppStorage(NightMode.enabledKey) private var nightMode = false
+    @AppStorage(BrowserModel.replaceDeletedKey) private var replaceDeleted = false
     @Environment(\.dismiss) private var dismiss
     @State private var confirmation: Confirmation?
     @State private var didClear = false
@@ -69,8 +70,14 @@ struct SettingsView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                    Toggle(isOn: $replaceDeleted) {
+                        SettingsLabel("Replace a Profile When Deleted", systemName: "arrow.triangle.2.circlepath", color: .teal)
+                    }
                 } footer: {
-                    Text("Each profile has its own cookies, website data, history, tabs and fingerprints, so accounts stay apart. Bookmarks, pinned links, extensions and settings are shared.")
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Each profile has its own cookies, website data, history, tabs and fingerprints, so accounts stay apart. Bookmarks, pinned links, extensions and settings are shared.")
+                        Text("With “Replace a Profile When Deleted” on, a profile you delete (“Delete This Profile” in the ⋯ menu, or in Profiles) makes way for a new one with the next number: “Profile 12” when the highest is “Profile 11”, then “Profile 13”… New fingerprints, no cookies; it collects new ones if “Collect in Every New Profile” is on. The first profile is never deleted.")
+                    }
                 }
 
                 Section {
@@ -203,6 +210,7 @@ struct SettingsView: View {
 /// The profiles: the one in use, a new one, and deleting one.
 private struct ProfilesView: View {
     @ObservedObject var browser: BrowserModel
+    @AppStorage(BrowserModel.replaceDeletedKey) private var replaceDeleted = false
     @State private var deleting: Profile?
 
     var body: some View {
@@ -275,8 +283,17 @@ private struct ProfilesView: View {
                 deleting = nil
             }
         } message: {
-            Text("This deletes the profile’s cookies, website data, history and tabs. Bookmarks and pinned links are kept.")
+            deleteMessage
         }
+    }
+
+    /// What deleting a profile does, and with "Replace a Profile When
+    /// Deleted" on, which profile takes its place.
+    private var deleteMessage: Text {
+        let message = Text("This deletes the profile’s cookies, website data, history and tabs. Bookmarks and pinned links are kept.")
+        guard replaceDeleted, let name = deleting?.name else { return message }
+        let next = Profiles.nextInSeries(name)
+        return message + Text(verbatim: "\n\n") + Text("“\(next)” takes its place, with new fingerprints and no cookies.")
     }
 
     private var isDeleting: Binding<Bool> {

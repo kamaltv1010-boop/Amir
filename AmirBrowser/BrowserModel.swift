@@ -46,6 +46,8 @@ final class BrowserModel: NSObject, ObservableObject {
 
     /// The UserDefaults key of the "Clear Everything on Quit" switch.
     nonisolated static let clearOnQuitKey = "clearOnQuit"
+    /// The UserDefaults key of the "Replace a Profile When Deleted" switch.
+    nonisolated static let replaceDeletedKey = "replaceDeletedProfiles"
     private static let savedTabsKey = "openTabs"
     private static let selectedTabKey = "selectedTab"
     /// Where the first version kept the one page it remembered.
@@ -303,19 +305,30 @@ final class BrowserModel: NSObject, ObservableObject {
         profiles.first { $0.isDefault } ?? profiles[0]
     }
 
-    /// Deletes a profile with everything it kept. Deleting the profile in
-    /// use shows the default profile instead.
-    func deleteProfile(_ doomed: Profile) {
-        guard !doomed.isDefault else { return }
+    /// Deletes a profile with everything it kept. With "Replace a Profile
+    /// When Deleted" on, a new profile takes its place: the next number of
+    /// its series ("Profile 12" when the highest is "Profile 11"), last in
+    /// the list, with new fingerprints and no cookies, collecting its
+    /// cookies where the settings say so. Deleting the profile in use shows
+    /// the new one, or else the default profile. The new profile, if any.
+    @discardableResult
+    func deleteProfile(_ doomed: Profile) -> Profile? {
+        guard !doomed.isDefault, profiles.contains(where: { $0.id == doomed.id }) else { return nil }
         // Its web view nobody sees goes first, so its data store is free.
         CookieCollector.shared.forget(doomed.id)
+        let replacement = UserDefaults.standard.bool(forKey: Self.replaceDeletedKey) ? Profiles.addReplacement(for: doomed) : nil
+        profiles = Profiles.all
         if doomed.id == profile.id {
-            switchProfile(to: defaultProfile)
+            switchProfile(to: replacement ?? defaultProfile)
         }
         Profiles.delete(doomed) { [weak self] in
             self?.profiles = Profiles.all
         }
         profiles = Profiles.all
+        if let replacement {
+            CookieCollector.shared.collectInNew([replacement])
+        }
+        return replacement
     }
 
     /// Deletes every profile but the default one, with everything each

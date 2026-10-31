@@ -1849,6 +1849,28 @@
         }
       }
     },
+    "Delete This Profile" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف هذا الملف الشخصي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete This Profile"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer ce profil"
+          }
+        }
+      }
+    },
     "Delete the Site's Cookies" : {
       "localizations" : {
         "ar" : {
@@ -4115,6 +4137,28 @@
         }
       }
     },
+    "Replace a Profile When Deleted" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استبدال الملف الشخصي المحذوف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace a Profile When Deleted"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplacer un profil supprimé"
+          }
+        }
+      }
+    },
     "Request Desktop Website" : {
       "localizations" : {
         "ar" : {
@@ -5897,6 +5941,28 @@
         }
       }
     },
+    "With “Replace a Profile When Deleted” on, a profile you delete (“Delete This Profile” in the ⋯ menu, or in Profiles) makes way for a new one with the next number: “Profile 12” when the highest is “Profile 11”, then “Profile 13”… New fingerprints, no cookies; it collects new ones if “Collect in Every New Profile” is on. The first profile is never deleted." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عند تفعيل «استبدال الملف الشخصي المحذوف»، يحل محل الملف الشخصي الذي تحذفه («حذف هذا الملف الشخصي» في القائمة ⋯، أو في الملفات الشخصية) ملف جديد بالرقم التالي: «ملف شخصي 12» إذا كان الأعلى «ملف شخصي 11»، ثم «ملف شخصي 13»… ببصمات جديدة ودون ملفات تعريف الارتباط، ويجمع ملفات جديدة إذا كان «الجمع في كل ملف شخصي جديد» مفعّلاً. الملف الشخصي الأول لا يُحذف أبداً."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "With “Replace a Profile When Deleted” on, a profile you delete (“Delete This Profile” in the ⋯ menu, or in Profiles) makes way for a new one with the next number: “Profile 12” when the highest is “Profile 11”, then “Profile 13”… New fingerprints, no cookies; it collects new ones if “Collect in Every New Profile” is on. The first profile is never deleted."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avec « Remplacer un profil supprimé » activé, un profil que vous supprimez (« Supprimer ce profil » dans le menu ⋯, ou dans Profils) laisse sa place à un nouveau avec le numéro suivant : « Profil 12 » si le plus élevé est « Profil 11 », puis « Profil 13 »… Nouvelles empreintes, aucun cookie ; il en collecte de nouveaux si « Collecter dans chaque nouveau profil » est activé. Le premier profil n’est jamais supprimé."
+          }
+        }
+      }
+    },
     "Your bookmarks appear here. Add one from the ⋯ menu." : {
       "localizations" : {
         "ar" : {
@@ -6113,6 +6179,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "États-Unis"
+          }
+        }
+      }
+    },
+    "“%@” deleted, now in “%@”" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم حذف «%@»، أنت الآن في «%@»"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” deleted, now in “%@”"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » supprimé, vous êtes dans « %@ »"
+          }
+        }
+      }
+    },
+    "“%@” takes its place, with new fingerprints and no cookies." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيحل «%@» محله، ببصمات جديدة ودون ملفات تعريف الارتباط."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” takes its place, with new fingerprints and no cookies."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "« %@ » le remplace, avec de nouvelles empreintes et sans cookies."
           }
         }
       }

@@ -73,14 +73,7 @@ enum Profiles {
         let wanted = max(0, min(maxAtOnce, count))
         guard wanted > 0 else { return [] }
         let defaultBase = String(localized: "Profile")
-        var base = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let number = base.range(of: #"\s+\d+$"#, options: .regularExpression) {
-            base.removeSubrange(number)
-        }
-        base = String(base.prefix(40))
-        if base.isEmpty {
-            base = defaultBase
-        }
+        let base = series(of: name)
         let list = all
         var taken = Set(list.map(\.name))
         var highest = 0
@@ -100,6 +93,56 @@ enum Profiles {
         }
         all = list + made
         return made
+    }
+
+    /// The series a profile's name belongs to: the name without its last
+    /// number ("Profile" for "Profile 11"), its first 40 letters.
+    static func series(of name: String) -> String {
+        var base = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let number = base.range(of: #"\s+\d+$"#, options: .regularExpression) {
+            base.removeSubrange(number)
+        }
+        base = String(base.prefix(40))
+        return base.isEmpty ? String(localized: "Profile") : base
+    }
+
+    /// The next name of `name`'s series: "Profile 12" when the highest of
+    /// the profiles is "Profile 11", then "Profile 13"… (a name without a
+    /// number counts as 1), as Noor for Windows names them.
+    static func nextInSeries(_ name: String) -> String {
+        let base = series(of: name)
+        var highest = 0
+        for profile in all {
+            if profile.name == base {
+                highest = max(highest, 1)
+            } else if profile.name.hasPrefix(base + " "), let found = numberValue(of: profile.name.dropFirst(base.count + 1)) {
+                highest = max(highest, found)
+            }
+        }
+        return "\(base) \(highest + 1)"
+    }
+
+    /// The number `digits` writes, in Western or Arabic digits, if that is
+    /// all it is (at most 9 digits).
+    private static func numberValue(of digits: Substring) -> Int? {
+        guard (1...9).contains(digits.count) else { return nil }
+        var value = 0
+        for character in digits {
+            guard character.unicodeScalars.count == 1,
+                  character.unicodeScalars.first?.properties.numericType == .decimal,
+                  let digit = character.wholeNumberValue else { return nil }
+            value = value * 10 + digit
+        }
+        return value
+    }
+
+    /// A new profile to take the place of `old`, which is being deleted:
+    /// the next name of its series (see nextInSeries), last in the list,
+    /// with nothing of the old one (new website data and fingerprints). Nil
+    /// for the default profile, which is never deleted.
+    static func addReplacement(for old: Profile) -> Profile? {
+        guard !old.isDefault else { return nil }
+        return add(named: nextInSeries(old.name))
     }
 
     /// The UserDefaults key of a value kept per profile: `base` itself for
