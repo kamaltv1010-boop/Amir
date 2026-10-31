@@ -364,9 +364,9 @@ final class ProxyManager: ObservableObject {
 
     private func apply(_ entry: AttachedStore) {
         guard #available(iOS 17.0, *), let store = entry.store else { return }
-        let route = signature(for: entry.profile)
-        guard route != entry.applied else { return }
-        entry.applied = route
+        let applying = signature(for: entry.profile)
+        guard applying != entry.applied else { return }
+        entry.applied = applying
         switch route(for: entry.profile) {
         case .direct:
             store.proxyConfigurations = []
