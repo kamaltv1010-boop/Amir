@@ -77,6 +77,9 @@ struct ProxyView: View {
 
     private var finding: some View {
         Section {
+            Toggle(isOn: Binding(get: { manager.requiresInstagram }, set: { manager.setRequiresInstagram($0) })) {
+                SettingsLabel("Only Proxies That Open Instagram", systemName: "camera", color: .pink)
+            }
             if let search = progress.search, search.isRunning {
                 VStack(alignment: .leading, spacing: 8) {
                     ProgressView(value: Double(search.found), total: Double(ProxyManager.freeCount))
@@ -118,7 +121,7 @@ struct ProxyView: View {
             }
             .disabled(manager.proxies.isEmpty || !progress.checking.isEmpty)
         } footer: {
-            Text("Free proxies come from public lists and are checked from this phone: only those that open pages are kept, each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow, stop working after a while (find new ones then), and Instagram, X or Google often block them. For accounts, use proxies of your own.")
+            Text("Free proxies come from public lists and are checked from this phone: only those that open pages are kept (with the switch on, only those Instagram’s page opens through), each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow and stop working after a while (find new ones then). Instagram, X and Google know most of them: even when the page opens, they may show an error or refuse to sign in. For accounts, use a mobile or residential proxy of your own (Add My Proxies).")
         }
     }
 
@@ -197,14 +200,21 @@ struct ProxyRow: View {
         }
     }
 
-    /// "HTTP · 1.2.3.4:8080", with the user if there is one, and "Free".
+    /// "HTTP · 1.2.3.4:8080", with the user if there is one, "Free", and
+    /// whether Instagram's page opened through it.
     private var details: Text {
         var parts = [proxy.kind.title, proxy.address]
         if let username = proxy.username, !username.isEmpty {
             parts.append(username)
         }
-        let text = Text(verbatim: parts.joined(separator: " · "))
-        return proxy.isFree ? text + Text(verbatim: " · ") + Text("Free") : text
+        var text = Text(verbatim: parts.joined(separator: " · "))
+        if proxy.isFree {
+            text = text + Text(verbatim: " · ") + Text("Free")
+        }
+        if proxy.works != false, let instagram = proxy.opensInstagram {
+            text = text + Text(verbatim: instagram ? " · Instagram ✓" : " · Instagram ✗")
+        }
+        return text
     }
 }
 

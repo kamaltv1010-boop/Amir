@@ -2641,24 +2641,24 @@
         }
       }
     },
-    "Free proxies come from public lists and are checked from this phone: only those that open pages are kept, each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow, stop working after a while (find new ones then), and Instagram, X or Google often block them. For accounts, use proxies of your own." : {
+    "Free proxies come from public lists and are checked from this phone: only those that open pages are kept (with the switch on, only those Instagram’s page opens through), each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow and stop working after a while (find new ones then). Instagram, X and Google know most of them: even when the page opens, they may show an error or refuse to sign in. For accounts, use a mobile or residential proxy of your own (Add My Proxies)." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تأتي البروكسيات المجانية من قوائم عامة وتُفحص من هذا الهاتف: لا يُحتفظ إلا بالتي تفتح الصفحات، لكل منها عنوانه الخاص، والأسرع أولاً. يديرها أشخاص مجهولون: يرون المواقع التي تفتحها (لا ما ترسله إلى مواقع https://)، وغالباً ما تكون بطيئة، وتتوقف عن العمل بعد مدة (ابحث عن غيرها حينها)، وكثيراً ما تحظرها Instagram وX وGoogle. لحساباتك، استخدم بروكسيات خاصة بك."
+            "value" : "تأتي البروكسيات المجانية من قوائم عامة وتُفحص من هذا الهاتف: لا يُحتفظ إلا بالتي تفتح الصفحات (ومع تفعيل المفتاح، فقط التي تُفتح عبرها صفحة Instagram)، لكل منها عنوانه الخاص، والأسرع أولاً. يديرها أشخاص مجهولون: يرون المواقع التي تفتحها (لا ما ترسله إلى مواقع https://)، وغالباً ما تكون بطيئة وتتوقف عن العمل بعد مدة (ابحث عن غيرها حينها). تعرف Instagram وX وGoogle معظمها: حتى عندما تُفتح الصفحة، قد تعرض خطأ أو ترفض تسجيل الدخول. لحساباتك، استخدم بروكسي خاصاً بك من نوع mobile أو residential (إضافة بروكسياتي)."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free proxies come from public lists and are checked from this phone: only those that open pages are kept, each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow, stop working after a while (find new ones then), and Instagram, X or Google often block them. For accounts, use proxies of your own."
+            "value" : "Free proxies come from public lists and are checked from this phone: only those that open pages are kept (with the switch on, only those Instagram’s page opens through), each with an address of its own, the fastest first. Strangers run them: they see which sites you open (not what you send to https:// sites), are often slow and stop working after a while (find new ones then). Instagram, X and Google know most of them: even when the page opens, they may show an error or refuse to sign in. For accounts, use a mobile or residential proxy of your own (Add My Proxies)."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les proxys gratuits viennent de listes publiques et sont vérifiés depuis ce téléphone : seuls ceux qui ouvrent des pages sont gardés, chacun avec sa propre adresse, les plus rapides d’abord. Des inconnus les gèrent : ils voient quels sites vous ouvrez (pas ce que vous envoyez aux sites https://), sont souvent lents, cessent de fonctionner au bout d’un moment (cherchez-en alors de nouveaux), et Instagram, X ou Google les bloquent souvent. Pour vos comptes, utilisez vos propres proxys."
+            "value" : "Les proxys gratuits viennent de listes publiques et sont vérifiés depuis ce téléphone : seuls ceux qui ouvrent des pages sont gardés (avec l’interrupteur activé, seulement ceux par lesquels la page d’Instagram s’ouvre), chacun avec sa propre adresse, les plus rapides d’abord. Des inconnus les gèrent : ils voient quels sites vous ouvrez (pas ce que vous envoyez aux sites https://), sont souvent lents et cessent de fonctionner au bout d’un moment (cherchez-en alors de nouveaux). Instagram, X et Google connaissent la plupart d’entre eux : même quand la page s’ouvre, ils peuvent afficher une erreur ou refuser la connexion. Pour vos comptes, utilisez votre propre proxy mobile ou résidentiel (Ajouter mes proxys)."
           }
         }
       }
@@ -3891,6 +3891,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un proxy par ligne, tels que votre fournisseur les donne : hôte:port, hôte:port:utilisateur:mot de passe ou utilisateur:mot de passe@hôte:port. « socks5:// » ou « http:// » au début d’une ligne en fixe le type."
+          }
+        }
+      }
+    },
+    "Only Proxies That Open Instagram" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فقط البروكسيات التي تفتح Instagram"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only Proxies That Open Instagram"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seulement les proxys qui ouvrent Instagram"
           }
         }
       }

@@ -35,6 +35,9 @@ struct ProxyServer: Identifiable, Codable, Equatable {
     var country: String?
     var latency: Int?
     var checked: Date?
+    /// Whether Instagram's page opened through the proxy at the last check
+    /// (Instagram refuses many free proxies, and some proxies refuse it).
+    var opensInstagram: Bool?
 
     /// "host:port", with an IPv6 address in brackets.
     var address: String {
@@ -142,6 +145,13 @@ struct ProxyTrace: Equatable {
     var latency: Int
 }
 
+/// A check of a proxy: the trace page through it (nil if it didn't open),
+/// and whether Instagram's page opened through it.
+struct ProxyCheck {
+    var trace: ProxyTrace?
+    var opensInstagram: Bool
+}
+
 /// How far a search for free proxies is.
 struct ProxySearch: Equatable {
     enum Phase: Equatable {
@@ -177,6 +187,7 @@ final class ProxyProgress: ObservableObject {
 private struct ProxyState: Codable {
     var isEnabled = false
     var perProfile = true
+    var requiresInstagram = true
     var shared: UUID?
     var assigned: [String: UUID] = [:]
     var proxies: [ProxyServer] = []
@@ -187,6 +198,7 @@ private struct ProxyState: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         isEnabled = try container.decodeIfPresent(Bool.self, forKey: .isEnabled) ?? false
         perProfile = try container.decodeIfPresent(Bool.self, forKey: .perProfile) ?? true
+        requiresInstagram = try container.decodeIfPresent(Bool.self, forKey: .requiresInstagram) ?? true
         shared = try container.decodeIfPresent(UUID.self, forKey: .shared)
         assigned = try container.decodeIfPresent([String: UUID].self, forKey: .assigned) ?? [:]
         proxies = try container.decodeIfPresent([ProxyServer].self, forKey: .proxies) ?? []
@@ -233,6 +245,8 @@ final class ProxyManager: ObservableObject {
     @Published private(set) var isEnabled: Bool
     /// A proxy for each profile (or one for every profile).
     @Published private(set) var perProfile: Bool
+    /// A search keeps only the free proxies Instagram's page opens through.
+    @Published private(set) var requiresInstagram: Bool
     let progress = ProxyProgress()
     /// Sent after the route of any profile may have changed; the browser
     /// loads the page again if its own did.
@@ -252,6 +266,7 @@ final class ProxyManager: ObservableObject {
         proxies = state.proxies
         isEnabled = state.isEnabled
         perProfile = state.perProfile
+        requiresInstagram = state.requiresInstagram
         shared = state.shared
         var assigned: [UUID: UUID] = [:]
         for (profile, proxy) in state.assigned {
@@ -321,6 +336,9 @@ final class ProxyManager: ObservableObject {
             let aFails = a.works == false
             let bFails = b.works == false
             if aFails != bFails { return !aFails }
+            let aInstagram = a.opensInstagram == true
+            let bInstagram = b.opensInstagram == true
+            if aInstagram != bInstagram { return aInstagram }
             if a.isFree != b.isFree { return !a.isFree }
             let aUses = uses[a.id] ?? 0
             let bUses = uses[b.id] ?? 0
@@ -416,6 +434,11 @@ final class ProxyManager: ObservableObject {
         commit()
     }
 
+    func setRequiresInstagram(_ isOn: Bool) {
+        requiresInstagram = isOn
+        save()
+    }
+
     /// Makes `proxy` the one `profile` goes through (every profile's, with
     /// one proxy for all), and turns proxies on.
     func use(_ proxy: ProxyServer, for profile: UUID) {
@@ -446,7 +469,12 @@ final class ProxyManager: ObservableObject {
         let count = proxies.count
         let ordered = (1...count).map { proxies[(start + $0 + count) % count] }.filter { $0.id != current?.id }
         let working = ordered.filter { $0.works != false }
-        guard let next = working.first(where: { (uses[$0.id] ?? 0) == 0 }) ?? working.first ?? ordered.first else { return nil }
+        // Those Instagram's page opens through before the others.
+        let preferred = working.filter { $0.opensInstagram != false }
+        let unused = { (proxy: ProxyServer) in (uses[proxy.id] ?? 0) == 0 }
+        guard let next = preferred.first(where: unused) ?? preferred.first ?? working.first(where: unused) ?? working.first ?? ordered.first else {
+            return nil
+        }
         if perProfile {
             assigned[profile] = next.id
         } else {
@@ -521,29 +549,30 @@ final class ProxyManager: ObservableObject {
         guard !targets.isEmpty else { return }
         progress.checking.formUnion(targets.map(\.id))
         Task { [weak self] in
-            await withTaskGroup(of: (UUID, ProxyTrace?).self) { group in
+            await withTaskGroup(of: (ProxyServer, ProxyCheck).self) { group in
                 for proxy in targets {
                     group.addTask {
-                        (proxy.id, await ProxyManager.trace(through: proxy))
+                        (proxy, await ProxyManager.check(proxy))
                     }
                 }
                 for await result in group {
-                    self?.record(result.0, trace: result.1)
+                    self?.record(result.0.id, result.1)
                 }
             }
             self?.commit()
         }
     }
 
-    private func record(_ id: UUID, trace: ProxyTrace?) {
+    private func record(_ id: UUID, _ check: ProxyCheck) {
         progress.checking.remove(id)
         guard let index = proxies.firstIndex(where: { $0.id == id }) else { return }
         proxies[index].checked = Date()
-        if let trace {
+        if let trace = check.trace {
             proxies[index].works = true
             proxies[index].exitIP = trace.ip
             proxies[index].country = trace.country
             proxies[index].latency = trace.latency
+            proxies[index].opensInstagram = check.opensInstagram
         } else {
             proxies[index].works = false
         }
@@ -593,13 +622,14 @@ final class ProxyManager: ObservableObject {
         progress.search?.total = candidates.count
         var found: [ProxyServer] = []
         var addresses: Set<String> = [home.ip]
-        await withTaskGroup(of: (ProxyServer, ProxyTrace?).self) { group in
+        let instagramOnly = requiresInstagram
+        await withTaskGroup(of: (ProxyServer, ProxyCheck).self) { group in
             var next = 0
             while next < min(Self.atOnce, candidates.count) {
                 let candidate = candidates[next]
                 next += 1
                 group.addTask {
-                    (candidate, await ProxyManager.trace(through: candidate))
+                    (candidate, await ProxyManager.check(candidate))
                 }
             }
             while let result = await group.next() {
@@ -607,13 +637,15 @@ final class ProxyManager: ObservableObject {
                     break
                 }
                 progress.search?.checked += 1
-                if let trace = result.1, addresses.insert(trace.ip).inserted {
+                let check = result.1
+                if let trace = check.trace, check.opensInstagram || !instagramOnly, addresses.insert(trace.ip).inserted {
                     var proxy = result.0
                     proxy.isFree = true
                     proxy.works = true
                     proxy.exitIP = trace.ip
                     proxy.country = trace.country
                     proxy.latency = trace.latency
+                    proxy.opensInstagram = check.opensInstagram
                     proxy.checked = Date()
                     found.append(proxy)
                     progress.search?.found = found.count
@@ -625,7 +657,7 @@ final class ProxyManager: ObservableObject {
                     let candidate = candidates[next]
                     next += 1
                     group.addTask {
-                        (candidate, await ProxyManager.trace(through: candidate))
+                        (candidate, await ProxyManager.check(candidate))
                     }
                 }
             }
@@ -684,14 +716,45 @@ final class ProxyManager: ObservableObject {
         }
     }
 
-    /// Cloudflare's trace page, which says the address a visit came from and
-    /// its country.
-    private nonisolated static let traceURL = URL(string: "https://www.cloudflare.com/cdn-cgi/trace")!
-
-    /// What the trace page says through `proxy` (or straight, with nil), or
-    /// nil if it didn't open within `timeout` seconds.
+    /// What a check of a proxy finds: the trace page through it (nil if it
+    /// didn't open), then whether Instagram's page opened too.
     @available(iOS 17.0, *)
-    nonisolated static func trace(through proxy: ProxyServer?, timeout: TimeInterval = 7) async -> ProxyTrace? {
+    nonisolated static func check(_ proxy: ProxyServer) async -> ProxyCheck {
+        guard let seen = await trace(through: proxy) else {
+            return ProxyCheck(trace: nil, opensInstagram: false)
+        }
+        let instagram = await opensInstagram(through: proxy)
+        return ProxyCheck(trace: seen, opensInstagram: instagram)
+    }
+
+    private nonisolated static let instagramURL = URL(string: "https://www.instagram.com/")!
+
+    /// Whether Instagram's page, asked for as Safari on an iPhone asks for
+    /// it, comes back through `proxy` within `timeout` seconds: the page
+    /// itself, not an error of Instagram's (an address it refuses gets one)
+    /// or a proxy's refusal (some proxies keep their users off Instagram).
+    @available(iOS 17.0, *)
+    nonisolated static func opensInstagram(through proxy: ProxyServer, timeout: TimeInterval = 10) async -> Bool {
+        guard let session = checkingSession(through: proxy, timeout: timeout) else { return false }
+        defer { session.invalidateAndCancel() }
+        var request = URLRequest(url: instagramURL, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: timeout)
+        request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1", forHTTPHeaderField: "User-Agent")
+        request.setValue("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", forHTTPHeaderField: "Accept")
+        request.setValue(Locale.preferredLanguages.first ?? "en-US", forHTTPHeaderField: "Accept-Language")
+        do {
+            let (data, response) = try await session.data(for: request)
+            guard let http = response as? HTTPURLResponse, http.statusCode == 200, data.count > 20_000,
+                  let host = http.url?.host, host.hasSuffix("instagram.com") else { return false }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    /// A session of its own for one check: through `proxy` (or straight,
+    /// with nil), nothing kept, given up after `timeout` seconds.
+    @available(iOS 17.0, *)
+    private nonisolated static func checkingSession(through proxy: ProxyServer?, timeout: TimeInterval) -> URLSession? {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = timeout
         configuration.timeoutIntervalForResource = timeout + 3
@@ -703,7 +766,18 @@ final class ProxyManager: ObservableObject {
             guard let proxyConfiguration = proxy.configuration else { return nil }
             configuration.proxyConfigurations = [proxyConfiguration]
         }
-        let session = URLSession(configuration: configuration)
+        return URLSession(configuration: configuration)
+    }
+
+    /// Cloudflare's trace page, which says the address a visit came from and
+    /// its country.
+    private nonisolated static let traceURL = URL(string: "https://www.cloudflare.com/cdn-cgi/trace")!
+
+    /// What the trace page says through `proxy` (or straight, with nil), or
+    /// nil if it didn't open within `timeout` seconds.
+    @available(iOS 17.0, *)
+    nonisolated static func trace(through proxy: ProxyServer?, timeout: TimeInterval = 7) async -> ProxyTrace? {
+        guard let session = checkingSession(through: proxy, timeout: timeout) else { return nil }
         defer { session.invalidateAndCancel() }
         let started = Date()
         do {
@@ -744,6 +818,7 @@ final class ProxyManager: ObservableObject {
         var state = ProxyState()
         state.isEnabled = isEnabled
         state.perProfile = perProfile
+        state.requiresInstagram = requiresInstagram
         state.shared = shared
         state.assigned = Dictionary(uniqueKeysWithValues: assigned.map { ($0.key.uuidString, $0.value) })
         state.proxies = proxies
