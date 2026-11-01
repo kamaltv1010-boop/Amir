@@ -1701,24 +1701,27 @@ enum FingerprintProtection {
     private static func clientRectsScript(seed: UInt32) -> String {
         #"""
         // ClientRects: of the boxes getBoundingClientRect() and
-        // getClientRects() report, the positions and sizes with a fraction
-        // of a pixel (what the fonts and their rendering decide, where a
-        // device shows itself) move by one step of the layout's own
-        // 1/64-pixel grid, up or down as the value's hash says: far below
-        // anything visible, but it changes the hashes fingerprinting
-        // scripts take of these sizes. A whole number (a size a page set
-        // itself) stays as it is, so a page measures back exactly what it
-        // laid out, as a site checks against offsetWidth and the styles;
-        // zero stays zero, so hidden elements still measure 0; a value off
-        // the grid (a rotated or zoomed box) is left as it is, since such
-        // boxes are checked against known sizes. A value always moves the
-        // same way, so measuring twice, or two equal boxes, still agree,
-        // and the move keeps the value's rounding, so offsetWidth and the
-        // like still agree too. A box's right is its left plus its width
-        // to the last bit, as a site checks. The boxes IntersectionObserver
-        // and ResizeObserver report move the same way. The browser returns
-        // new rects on every call, so they are changed in place and keep
-        // their types.
+        // getClientRects() report, the sizes of text, which the fonts and
+        // their rendering decide (where a device shows itself), move by one
+        // step of the layout's own 1/64-pixel grid, up or down as the
+        // value's hash says: far below anything visible, but it changes the
+        // hashes fingerprinting scripts take of these sizes. Only what a page
+        // can't know beforehand moves: the width and height of an inline box
+        // holding something (a span of text: its size comes from its text,
+        // never from a width or height a style gives it), and of a range
+        // within one text. A box a page laid out itself (a block, an image, an
+        // empty or padded inline box), a range holding elements (whose boxes
+        // it reports), and every position stay exactly as laid out, so a page
+        // that sets a size, even 100.5px, measures back that size, as a site
+        // checks. A whole number stays as it is; zero stays zero, so hidden
+        // elements still measure 0; a value off the grid (a rotated or zoomed
+        // box) is left as it is, since such boxes are checked against known
+        // sizes. A value always moves the same way, so measuring twice, or
+        // two equal boxes, or a span and the range over its text, still
+        // agree, and the move keeps the value's rounding, so offsetWidth and
+        // the like still agree too. IntersectionObserver reports a target's
+        // box as getBoundingClientRect does. The browser returns new rects on
+        // every call, so they are changed in place and keep their types.
         {
           const rectsSeed = forSite(\#(seed));
           const bits = new Float64Array(1);
@@ -1735,51 +1738,87 @@ enum FingerprintProtection {
             }
             return value;
           };
-          const shiftRect = (rect) => {
-            const left = shift(rect.left);
-            const top = shift(rect.top);
+          const shiftSize = (rect) => {
             const width = shift(rect.width);
             const height = shift(rect.height);
-            rect.x = left;
-            rect.y = top;
             rect.width = width;
             rect.height = height;
             return rect;
           };
-          for (const proto of [window.Element.prototype, window.Range.prototype]) {
+          // A getter as the browser has it, wherever on the prototype chain it
+          // keeps it (a range's, on Range or on AbstractRange, differs).
+          const getterOf = (proto, name) => {
+            for (let p = proto; p; p = getPrototypeOf(p)) {
+              const descriptor = getOwnPropertyDescriptor(p, name);
+              if (descriptor && descriptor.get) return descriptor;
+            }
+            return null;
+          };
+          // Whether an element's box is a box of text: an inline box (not a
+          // block, an inline-block or a replaced element such as an image)
+          // holding something. Read with the browser's own functions as they
+          // were before the page ran.
+          const getComputed = window.getComputedStyle;
+          const styleProto = window.CSSStyleDeclaration && window.CSSStyleDeclaration.prototype;
+          const propertyOf = styleProto && styleProto.getPropertyValue;
+          const hasChildren = window.Node && window.Node.prototype.hasChildNodes;
+          const ownerOf = window.Node && getterOf(window.Node.prototype, "ownerDocument");
+          const viewOf = window.Document && getterOf(window.Document.prototype, "defaultView");
+          const isTextBox = (element) => {
+            try {
+              if (!getComputed || !propertyOf || !hasChildren || !hasChildren.call(element)) return false;
+              const view = (ownerOf && viewOf && viewOf.get.call(ownerOf.get.call(element))) || window;
+              return propertyOf.call(getComputed.call(view, element), "display") === "inline";
+            } catch (e) {
+              return false;
+            }
+          };
+          // Whether a range lies within one text node.
+          const rangeProto = window.Range && window.Range.prototype;
+          const startOf = rangeProto && getterOf(rangeProto, "startContainer");
+          const endOf = rangeProto && getterOf(rangeProto, "endContainer");
+          const nodeTypeOf = window.Node && getterOf(window.Node.prototype, "nodeType");
+          const isTextRange = (range) => {
+            try {
+              const start = startOf.get.call(range);
+              return start === endOf.get.call(range) && nodeTypeOf.get.call(start) === 3;
+            } catch (e) {
+              return false;
+            }
+          };
+          const patch = (proto, holdsText) => {
+            if (!proto) return;
             define(proto, "getBoundingClientRect", (original) => function () {
               const rect = original.apply(this, arguments);
-              try { shiftRect(rect); } catch (e) {}
+              try { if (holdsText(this)) shiftSize(rect); } catch (e) {}
               return rect;
             });
             define(proto, "getClientRects", (original) => function () {
               const rects = original.apply(this, arguments);
-              try { for (let i = 0; i < rects.length; i++) shiftRect(rects[i]); } catch (e) {}
+              try { if (holdsText(this)) for (let i = 0; i < rects.length; i++) shiftSize(rects[i]); } catch (e) {}
               return rects;
             });
-          }
-          // The read-only boxes the observers report are replaced by moved
-          // copies, one per entry and box, so an entry gives the same box
-          // each time, as the browser does.
+          };
+          patch(window.Element.prototype, isTextBox);
+          patch(rangeProto, isTextRange);
+          // The read-only boxes IntersectionObserver reports for a box of
+          // text are replaced by moved copies, one per entry and box, so an
+          // entry gives the same box each time, as the browser does; the
+          // root's box stays as it is.
           const copies = new WeakMap();
+          const intersection = window.IntersectionObserverEntry && window.IntersectionObserverEntry.prototype;
+          const targetOf = intersection && getterOf(intersection, "target");
           const movedCopy = (entry, name, rect) => {
-            if (!rect || !window.DOMRectReadOnly) return rect;
+            if (!rect || !window.DOMRectReadOnly || !targetOf || !isTextBox(targetOf.get.call(entry))) return rect;
             let own = copies.get(entry);
             if (!own) { own = {}; copies.set(entry, own); }
             if (!(name in own)) {
-              own[name] = new window.DOMRectReadOnly(shift(rect.x), shift(rect.y), shift(rect.width), shift(rect.height));
+              own[name] = new window.DOMRectReadOnly(rect.x, rect.y, shift(rect.width), shift(rect.height));
             }
             return own[name];
           };
-          const intersection = window.IntersectionObserverEntry && window.IntersectionObserverEntry.prototype;
-          for (const name of ["boundingClientRect", "intersectionRect", "rootBounds"]) {
+          for (const name of ["boundingClientRect", "intersectionRect"]) {
             if (intersection) defineGetter(intersection, name, function (rect) { return movedCopy(this, name, rect); });
-          }
-          const resize = window.ResizeObserverEntry && window.ResizeObserverEntry.prototype;
-          if (resize) defineGetter(resize, "contentRect", function (rect) { return movedCopy(this, "contentRect", rect); });
-          const size = window.ResizeObserverSize && window.ResizeObserverSize.prototype;
-          for (const name of ["inlineSize", "blockSize"]) {
-            if (size) defineGetter(size, name, (value) => shift(value));
           }
         }
 
