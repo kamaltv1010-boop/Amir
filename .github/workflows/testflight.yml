@@ -12,6 +12,11 @@
 # and a signed archive would fail. The archive is built unsigned instead, and
 # the export step signs it with Apple's cloud-managed distribution certificate.
 # No certificate or private signing key ever exists on the runner.
+#
+# Each build carries what was fixed and changed in it, in Arabic: the
+# "Unreleased" section of CHANGELOG.md, shown on this run's page and set as
+# the build's "What to Test" in TestFlight once Apple has processed it. No
+# build goes up without it.
 name: TestFlight
 
 on:
@@ -27,13 +32,28 @@ concurrency:
 jobs:
   upload:
     runs-on: macos-26
-    timeout-minutes: 45
+    timeout-minutes: 100
     env:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
     steps:
       - uses: actions/checkout@v6
+
+      # What was fixed and changed, in Arabic (CHANGELOG.md's "Unreleased").
+      - name: What to Test (Arabic, from CHANGELOG.md)
+        run: |
+          set -euo pipefail
+          awk '$0 == "## Unreleased" { on = 1; next } on && /^## / { exit } on' CHANGELOG.md > "$RUNNER_TEMP/whats-new.txt"
+          if [ -z "$(tr -d '[:space:]' < "$RUNNER_TEMP/whats-new.txt")" ]; then
+            echo "::error::CHANGELOG.md has no \"## Unreleased\" section with what this build fixes and changes (in Arabic)."
+            exit 1
+          fi
+          {
+            echo "## ما الذي أُصلح وتغيّر في هذه النسخة"
+            echo
+            cat "$RUNNER_TEMP/whats-new.txt"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Show Xcode version
         run: xcodebuild -version
@@ -130,6 +150,13 @@ jobs:
             -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             2>&1 | tee "$RUNNER_TEMP/export.log"
           echo "::notice::Uploaded build $BUILD_NUMBER. Apple processes it for 10-30 minutes, then it shows up in TestFlight."
+
+      # TestFlight's "What to Test" for this build: set once Apple has
+      # processed it (10-30 minutes), as a build can't be given one before.
+      - name: Set What to Test
+        env:
+          BUNDLE_ID: io.github.kamaltv1010-boop.AmirBrowser
+        run: python3 .github/scripts/asc_check.py --whats-new "$RUNNER_TEMP/whats-new.txt"
 
       # Turn the usual Apple errors into plain explanations.
       - name: Explain failure

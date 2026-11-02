@@ -85,7 +85,8 @@ Apple ما كتخليش تزيد تطبيق فـ iPhone إلا من App Store و
 > 🔒 هاد الـ repo **public**. حط المفاتيح غير فـ Secrets، وعمّرك ما تكتبهم فشي ملف ولا فشي رسالة.
 
 **كل مرة بغيتي نسخة جديدة:**
-1. فـ GitHub حل `Actions > TestFlight > Run workflow`. كياخد بين 5 و10 دقايق.
+0. فـ `CHANGELOG.md`، تحت `## Unreleased`، كتب بالعربية شنو تصلح وتبدّل فهاد النسخة. الـ workflow كيحطو فـ «What to Test» ديال TestFlight، وما كيرفعش النسخة بلا بيه.
+1. فـ GitHub حل `Actions > TestFlight > Run workflow`. الرفع كياخد بين 5 و10 دقايق، ومن بعد كيتسنا Apple حتى تعالج النسخة باش يكتب ليها الوصف.
 2. Apple كتعالج النسخة بين 10 و30 دقيقة.
 3. فـ App Store Connect حل `TestFlight > Internal Testing`، وجّد مجموعة وزيد فيها راسك (مرة وحدة برك).
 4. نزّل **TestFlight** من App Store، وركّب منو التطبيق. كل نسخة كتخدم 90 يوم.

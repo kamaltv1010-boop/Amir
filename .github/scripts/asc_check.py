@@ -8,6 +8,10 @@ lists the latest builds, creates an internal tester group with access to all
 builds if there is none, and adds every App Store Connect user of the team
 to it as a tester.
 
+With --whats-new FILE it waits for the build BUILD_NUMBER (just uploaded) to
+finish processing, then sets its "What to Test" text, which TestFlight shows
+the testers, to the contents of FILE (the Arabic notes of CHANGELOG.md).
+
 Reads ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH and BUNDLE_ID from the
 environment. Uses only the standard library and the openssl tool, and
 prints nothing secret.
@@ -74,7 +78,7 @@ def make_token():
     return signing_input + "." + b64url(der_to_raw(der))
 
 
-def call(path, token, params=None, body=None):
+def call(path, token, params=None, body=None, method=None):
     url = f"{API}/{path}"
     if params:
         url += "?" + urllib.parse.urlencode(params)
@@ -83,7 +87,7 @@ def call(path, token, params=None, body=None):
     if body is not None:
         headers["Content-Type"] = "application/json"
         data = json.dumps(body).encode()
-    request = urllib.request.Request(url, data=data, headers=headers)
+    request = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.status, json.load(response)
@@ -183,6 +187,59 @@ def setup_testing(app_id, token):
             print(f"::warning::Could not add {mask(email)} as a tester ({status} {describe(body)}).")
 
 
+def set_whats_new(app_id, version, text):
+    """Sets the "What to Test" of the build `version` once Apple has
+    processed it (a build can't be given one before). A token lasts ten
+    minutes, so each round makes a new one."""
+    deadline = time.time() + 45 * 60
+    build = None
+    while True:
+        status, body = call("builds", make_token(), params={
+            "filter[app]": app_id, "filter[version]": version, "limit": 1,
+        })
+        found = body["data"][0] if status == 200 and body and body.get("data") else None
+        state = found["attributes"].get("processingState") if found else None
+        if state == "VALID":
+            build = found
+            break
+        if state in ("FAILED", "INVALID"):
+            fail(f"Apple could not process build {version} ({state}).")
+        if time.time() > deadline:
+            fail(f"Build {version} was not processed in 45 minutes ({state or 'not listed yet'}): "
+                 "set its What to Test in App Store Connect by hand.")
+        print(f"Build {version}: {state or 'not listed yet'}; waiting.", flush=True)
+        time.sleep(30)
+
+    for attempt in range(5):
+        token = make_token()
+        status, body = call(f"builds/{build['id']}/betaBuildLocalizations", token)
+        localizations = body.get("data", []) if status == 200 and body else []
+        results = []
+        if localizations:
+            for loc in localizations:
+                status, answer = call(f"betaBuildLocalizations/{loc['id']}", token, method="PATCH", body={"data": {
+                    "type": "betaBuildLocalizations", "id": loc["id"], "attributes": {"whatsNew": text},
+                }})
+                results.append((loc["attributes"].get("locale"), status, answer))
+        else:
+            status, app = call(f"apps/{app_id}", token)
+            locale = (app or {}).get("data", {}).get("attributes", {}).get("primaryLocale") or "en-US"
+            status, answer = call("betaBuildLocalizations", token, body={"data": {
+                "type": "betaBuildLocalizations",
+                "attributes": {"locale": locale, "whatsNew": text},
+                "relationships": {"build": {"data": {"type": "builds", "id": build["id"]}}},
+            }})
+            results.append((locale, status, answer))
+        if all(status in (200, 201) for _, status, _ in results):
+            for locale, _, _ in results:
+                print(f"What to Test of build {version} set ({locale}).")
+            return
+        for locale, status, answer in results:
+            print(f"::warning::What to Test ({locale}): {status} {describe(answer)}; trying again.")
+        time.sleep(20)
+    fail(f"Could not set the What to Test of build {version}: set it in App Store Connect by hand.")
+
+
 def fail(message):
     print(f"::error::{message}")
     sys.exit(1)
@@ -224,6 +281,15 @@ def main():
 
     if "--testers" in sys.argv:
         setup_testing(apps[0]["id"], token)
+
+    if "--whats-new" in sys.argv:
+        path = sys.argv[sys.argv.index("--whats-new") + 1]
+        with open(path, encoding="utf-8") as f:
+            text = f.read().strip()
+        if not text:
+            fail("The What to Test text is empty.")
+        # TestFlight takes up to 4000 characters.
+        set_whats_new(apps[0]["id"], os.environ["BUILD_NUMBER"], text[:4000])
 
 
 if __name__ == "__main__":
