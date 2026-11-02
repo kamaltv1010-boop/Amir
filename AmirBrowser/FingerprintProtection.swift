@@ -510,6 +510,9 @@ enum FingerprintProtection {
     };
     // The windows protected from this script, each once.
     const protectedWindows = new WeakSet();
+    // For a window protected while empty, what brings it up to the document
+    // it has now (see eachDocument in protect).
+    const documentSyncs = new WeakMap();
     // The audio buffers the browser rendered or decoded, from any window, and
     // the channels of them already changed.
     const rendered = new WeakSet();
@@ -653,6 +656,44 @@ enum FingerprintProtection {
     // that fails is tried again.
     const document = window.document;
 
+    // A window protected while empty (about:blank) keeps its place, and all
+    // that was put in it, for a page of the same site it loads next: the
+    // browser keeps such a window for that page and gives it only a
+    // document of its own (Chromium then runs nothing there before the
+    // page's own scripts; a copy of this script run there again finds the
+    // window protected, and leaves it). What this script makes for a document (faces
+    // in its font list, a listener, an observer) is made through
+    // eachDocument: for the window's document now, and again for each one
+    // the window gets later, as soon as this script finds it there, which
+    // is when the page (or the page around the frame) reaches anything
+    // replaced here.
+    const documentTasks = [];
+    let documentNow = document;
+    // Only a window empty now gets another document. (A worker has none,
+    // and its location isn't read: see host.)
+    const mayChangeDocument = Boolean(document) && (() => {
+      try { return window.location.href === "about:blank"; } catch (e) { return false; }
+    })();
+    const documentOf = (() => {
+      try { return (getOwnPropertyDescriptor(window, "document") || {}).get || null; } catch (e) { return null; }
+    })();
+    const syncDocument = () => {
+      let found;
+      try { found = documentOf ? documentOf.call(window) : window.document; } catch (e) { return; }
+      if (!found || found === documentNow) return;
+      documentNow = found;
+      for (const task of documentTasks) {
+        try { task(found); } catch (e) {}
+      }
+    };
+    const eachDocument = (task) => {
+      documentTasks.push(task);
+      if (documentNow) {
+        try { task(documentNow); } catch (e) {}
+      }
+    };
+    if (mayChangeDocument) documentSyncs.set(window, syncDocument);
+
     // Keeps every built-in we replace indistinguishable from the original, so
     // a site that checks for a tampered browser sees nothing changed and works
     // as it would in Safari. A site reads a function's toString() to tell a
@@ -725,6 +766,7 @@ enum FingerprintProtection {
     const Err = window.Error;
     const OWN_FRAMES = 3;
     const run = (impl, self, args) => {
+      if (mayChangeDocument) syncDocument();
       if (hosted.framesHidden) {
         try {
           return impl.apply(self, args);
@@ -904,11 +946,19 @@ enum FingerprintProtection {
     // contentWindow or contentDocument, as a frame is added to the document
     // (and soon after, for the ways not caught), and when window.open
     // returns one. Windows that load a page get the script from WebKit, and
-    // one protected before is left as it is.
+    // one protected before is left as it is, but for the document it has
+    // now: one it was protected in while empty may have loaded a page of
+    // the same site since, keeping the window (see eachDocument).
     {
       const protectWindow = (other) => {
         try {
-          if (!other || protectedWindows.has(other) || other.location.href !== "about:blank") return;
+          if (!other) return;
+          if (protectedWindows.has(other)) {
+            const sync = documentSyncs.get(other);
+            if (sync) sync();
+            return;
+          }
+          if (other.location.href !== "about:blank") return;
           // Protected by another copy of this script already.
           if (isProtected(other)) return;
         } catch (e) {
@@ -1037,7 +1087,7 @@ enum FingerprintProtection {
           const observer = outside
             ? outside.construct(window.MutationObserver, [outside.callback(added)])
             : new window.MutationObserver(added);
-          observer.observe(document, { childList: true, subtree: true });
+          eachDocument((each) => observer.observe(each, { childList: true, subtree: true }));
         } catch (e) {}
       }
     }
@@ -1501,7 +1551,7 @@ enum FingerprintProtection {
             if (!painted.has(canvas) && !(made && made.kind === "webgl")) return null;
             try {
               const [getContext, drawImage, getImageData, putImageData] = tools;
-              const copy = makeCanvas(width, height);
+              const copy = makeCanvas(width, height, canvas);
               // The copy keeps the canvas's color space, so colors don't shift.
               const context = getContext.call(copy, "2d", made && made.settings);
               drawImage.call(context, canvas, 0, 0);
@@ -1517,8 +1567,14 @@ enum FingerprintProtection {
 
           if (canvasProto && typeof document !== "undefined") {
             const createElement = document.createElement;
-            const makeCanvas = (width, height) => {
-              const canvas = createElement.call(document, "canvas");
+            // The copy is made in the canvas's own document: the window's
+            // first may be gone (see eachDocument), and a canvas of a
+            // document that is gone never calls toBlob's callback.
+            const ownerOf = window.Node && (getOwnPropertyDescriptor(window.Node.prototype, "ownerDocument") || {}).get;
+            const makeCanvas = (width, height, source) => {
+              let home = null;
+              try { home = ownerOf ? ownerOf.call(source) : null; } catch (e) {}
+              const canvas = createElement.call(home || documentNow || document, "canvas");
               canvas.width = width;
               canvas.height = height;
               return canvas;
