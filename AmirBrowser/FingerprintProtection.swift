@@ -1605,6 +1605,62 @@ enum FingerprintProtection {
               return convertToBlob.apply(copy || this, arguments);
             });
           }
+          // A video frame (WebCodecs' VideoFrame) made of a canvas hands over
+          // its pixels as an export does (copyTo, an encoder): it is made of
+          // the same noisy copy. One made of an image bitmap (which may hold
+          // a canvas's drawing, as drawn) is made of a noisy copy of it, as
+          // the bitmap reads once drawn on a canvas. A video's, an image's or
+          // raw pixels' frame is left as it is.
+          if (typeof window.VideoFrame === "function" && typeof window.OffscreenCanvas === "function" && offscreenTools) {
+            const RealVideoFrame = window.VideoFrame;
+            const RealOffscreen = window.OffscreenCanvas;
+            const getterOf = (type, name) => type && type.prototype && (getOwnPropertyDescriptor(type.prototype, name) || {}).get;
+            const canvasWidthOf = getterOf(window.HTMLCanvasElement, "width");
+            const offscreenWidthOf = getterOf(window.OffscreenCanvas, "width");
+            const bitmapWidthOf = getterOf(window.ImageBitmap, "width");
+            const bitmapHeightOf = getterOf(window.ImageBitmap, "height");
+            const offscreenCopy = (width, height) => new RealOffscreen(width, height);
+            const bitmapCopy = (bitmap) => {
+              const seed = seeds.canvas !== null ? seeds.canvas : seeds.webgl;
+              if (seed === null || !bitmapHeightOf) return null;
+              const width = bitmapWidthOf.call(bitmap);
+              const height = bitmapHeightOf.call(bitmap);
+              if (!width || !height) return null;
+              const [getContext, drawImage, getImageData, putImageData] = offscreenTools;
+              const copy = offscreenCopy(width, height);
+              const context = getContext.call(copy, "2d");
+              drawImage.call(context, bitmap, 0, 0);
+              const image = getImageData.call(context, 0, 0, width, height);
+              const bits = candidatesFor(null, image.data, width, height, 0, 0, width, height, () => null);
+              addPixelNoise(seed, image.data, width, height, 0, 0, width, height, false, bits);
+              putImageData.call(context, image, 0, 0);
+              return copy;
+            };
+            const copyOf = (source) => {
+              if (!source || typeof source !== "object") return null;
+              if (canvasWidthOf && canvasSize && isA(canvasWidthOf, source)) return noisyCopy(source, offscreenCopy, offscreenTools, canvasSize);
+              if (offscreenWidthOf && isA(offscreenWidthOf, source)) return noisyCopy(source, offscreenCopy, offscreenTools, offscreenSize);
+              if (bitmapWidthOf && isA(bitmapWidthOf, source)) return bitmapCopy(source);
+              return null;
+            };
+            const VideoFrame = {
+              VideoFrame: function (source) {
+                "use strict"; /* noor lookalike */
+                if (new.target === undefined) return RealVideoFrame.apply(this, arguments);
+                const args = arraySlice.call(arguments);
+                let copy = null;
+                try { copy = copyOf(args[0]); } catch (e) { copy = null; }
+                if (copy) args[0] = copy;
+                return Reflect.construct(RealVideoFrame, args, new.target === VideoFrame ? RealVideoFrame : new.target);
+              },
+            }.VideoFrame;
+            setPrototypeOf(VideoFrame, getPrototypeOf(RealVideoFrame));
+            defineProperty(VideoFrame, "length", { value: RealVideoFrame.length, configurable: true });
+            defineProperty(VideoFrame, "prototype", { value: RealVideoFrame.prototype, writable: false, enumerable: false, configurable: false });
+            originals.set(VideoFrame, RealVideoFrame);
+            try { defineProperty(RealVideoFrame.prototype, "constructor", { value: VideoFrame, writable: true, enumerable: false, configurable: true }); } catch (e) {}
+            defineProperty(window, "VideoFrame", { value: VideoFrame, writable: true, enumerable: false, configurable: true });
+          }
         }
 
         """#
