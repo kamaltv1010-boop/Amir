@@ -1,6 +1,6 @@
-seq 34
-tap 822 855
+seq 35
+tap 445 855
 wait 1
-tap 822 1436
+tap 822 855
 wait 2
 shot a_state
