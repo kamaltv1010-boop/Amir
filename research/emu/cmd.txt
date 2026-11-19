@@ -1,4 +1,4 @@
-seq 39
-tap 539 1801
-wait 5
+seq 40
+tap 954 258
+wait 3
 shot a_level10
