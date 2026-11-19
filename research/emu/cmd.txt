@@ -1,10 +1,10 @@
-seq 32
-tap 445 1436
-wait 1
-tap 635 1436
-wait 2
+seq 33
 tap 256 855
 wait 1
-tap 445 855
+tap 822 1436
+wait 2
+tap 822 855
+wait 1
+tap 256 855
 wait 2
 shot a_state
