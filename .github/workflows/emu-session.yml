@@ -1,4 +1,4 @@
-# جلسة محاكي Android مؤقتة لدراسة لعبة Magic Sort (بحث فقط، تُحذف بعد الانتهاء). المحاولة 3: صورة فيها Google Play أحدث، وسجلات اللعبة كاملة.
+# جلسة محاكي Android مؤقتة لدراسة لعبة Magic Sort (بحث فقط، تُحذف بعد الانتهاء). المحاولة 4: تعطيل Vulkan في المحاكي لتستعمل اللعبة OpenGL ES.
 # تشتغل فقط عند تعديل هذا الملف على فرع claude/quirky-ride-r4oor0.
 # التحكم: research/emu/cmd.txt (أوامر نقر) ← والنتائج: research/emu/out (لقطات شاشة).
 name: emu-session (بحث مؤقت)
@@ -49,6 +49,6 @@ jobs:
           cores: 4
           ram-size: 4096M
           disk-size: 8G
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
           disable-animations: true
           script: bash research/emu/loop.sh

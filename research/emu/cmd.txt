@@ -1,9 +1,1 @@
-seq 1
-tap 847 552
-wait 20
-shot a
-eshot a_console
-wait 30
-shot b
-eshot b_console
-logcat 120
+seq 0
