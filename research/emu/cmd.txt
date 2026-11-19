@@ -1,54 +1,7 @@
-seq 11
-tap 279 1163
-wait 1
-tap 799 1163
-wait 2
-tap 103 1163
-wait 1
-tap 279 1163
-wait 2
-tap 103 1163
-wait 1
-tap 799 1163
-wait 2
-tap 103 1163
-wait 1
-tap 975 1163
-wait 2
-tap 279 1163
-wait 1
-tap 103 1163
-wait 2
-tap 279 1163
-wait 1
-tap 799 1163
-wait 2
-tap 103 1163
-wait 1
-tap 279 1163
-wait 2
-tap 452 1163
-wait 1
-tap 975 1163
-wait 2
-tap 626 1163
-wait 1
-tap 975 1163
-wait 2
-tap 452 1163
-wait 1
-tap 626 1163
-wait 2
-tap 452 1163
-wait 1
-tap 799 1163
-wait 2
-tap 452 1163
-wait 1
-tap 626 1163
-wait 2
-shot a_solved_1s
-wait 3
-shot b_4s
+seq 12
+tap 539 1498
 wait 4
-shot c_8s
+shot a_home
+tap 539 1801
+wait 4
+shot b_level6
