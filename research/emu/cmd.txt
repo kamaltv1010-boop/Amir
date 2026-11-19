@@ -1,8 +1,11 @@
-seq 1
-tap 845 552
-wait 2
-tap 539 1505
-wait 20
-shot after_continue_20s
-wait 25
-shot after_continue_45s
+seq 2
+tap 409 1163
+wait 1
+shot picked
+tap 669 1163
+wait 1
+shot pouring
+wait 3
+shot after3s
+wait 4
+shot after7s
