@@ -1,11 +1,7 @@
-seq 28
-tap 256 855
-wait 1
-tap 822 1436
-wait 2
+seq 29
 tap 822 855
 wait 1
-tap 445 1436
+tap 635 1436
 wait 2
 tap 635 855
 wait 1
