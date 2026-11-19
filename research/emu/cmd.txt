@@ -1,7 +1,8 @@
-seq 9
-tap 915 194
+seq 10
+tap 918 198
 wait 2
-shot a_closed
-tap 130 164
+tap 539 1801
+wait 4
+shot a_level5
 wait 3
-shot b_profile
+shot b_level5_7s
