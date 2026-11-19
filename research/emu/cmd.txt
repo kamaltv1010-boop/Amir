@@ -1,54 +1,7 @@
-seq 17
-tap 822 866
-wait 1
-tap 256 866
-wait 2
-tap 822 866
-wait 1
-tap 539 1448
-wait 2
-tap 256 866
-wait 1
-tap 822 866
-wait 2
-tap 445 866
-wait 1
-tap 256 866
-wait 2
-tap 445 866
-wait 1
-tap 822 866
-wait 2
-tap 445 866
-wait 1
-tap 539 1448
-wait 2
-tap 256 866
-wait 1
-tap 445 866
-wait 2
-tap 256 866
-wait 1
-tap 632 866
-wait 2
-tap 331 1448
-wait 1
-tap 445 866
-wait 2
-tap 331 1448
-wait 1
-tap 632 866
-wait 2
-tap 331 1448
-wait 1
-tap 747 1448
-wait 2
-tap 632 866
-wait 1
-tap 331 1448
-wait 2
-shot a_solved
+seq 18
+tap 539 1498
 wait 4
-shot b_4s
-wait 4
-shot c_8s
+shot a_home
+tap 539 1801
+wait 5
+shot b_level7
