@@ -47,7 +47,9 @@ for t in 10 20 30 45 60 90 120; do
   shot "000_launch_${t}s"
   [ "$t" = 30 ] && publish "لقطات التحميل الأولى"
 done
-grep -iE "unity|magicsort|FATAL|AndroidRuntime|DEBUG|libc|crash|egl|gles|vulkan|ActivityTaskManager" /tmp/logcat.txt | tail -n 300 > "$OUT/000_logcat.txt"
+GPID=$(grep -oE 'Start proc [0-9]+:com.grandgames.magicsort' /tmp/logcat.txt | head -1 | grep -oE '[0-9]+')
+log "PID اللعبة: ${GPID:-?}"
+grep -E "\( *${GPID:-NONE}\)|ActivityTaskManager|ActivityManager|AndroidRuntime|DEBUG" /tmp/logcat.txt | head -n 600 > "$OUT/000_logcat_game.txt"
 adb emu screenrecord screenshot /tmp/e.png >/dev/null 2>&1 && cp /tmp/e.png /tmp/s.png && python3 -c "from PIL import Image; im=Image.open('/tmp/s.png').convert('RGB'); w,h=im.size; im.resize((int(w*1000/h),1000)).save('$OUT/000_emu_console_shot.jpg',quality=82)" || true
 echo "done 0" > "$OUT/state.txt"
 publish "لقطات التحميل"
