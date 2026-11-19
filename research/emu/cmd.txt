@@ -1,7 +1,18 @@
-seq 44
-tap 539 1498
-wait 5
-shot a_home
-tap 539 1801
-wait 5
-shot b_level12
+seq 45
+tap 984 1448
+wait 1
+tap 94 1186
+wait 2
+tap 272 855
+wait 1
+tap 628 1448
+wait 2
+tap 272 855
+wait 1
+tap 94 1186
+wait 2
+tap 272 1448
+wait 1
+tap 628 1448
+wait 2
+shot a_state
