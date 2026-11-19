@@ -1,24 +1,4 @@
-seq 38
-tap 635 855
-wait 1
-tap 256 855
-wait 2
-tap 635 855
-wait 1
-tap 822 1436
-wait 2
-tap 256 1436
-wait 1
-tap 445 855
-wait 2
-tap 256 1436
-wait 1
-tap 445 1436
-wait 7
-shot a_win
-tap 539 1498
-wait 5
-shot b_home
+seq 39
 tap 539 1801
 wait 5
-shot c_level10
+shot a_level10
