@@ -1,0 +1,4 @@
+[03:38:04] GL: Sync configuration: [using: EGL_ANDROID_native_fence_sync] EGL implementation : 1.4 
+[03:38:04] الشاشة: Physical size: 1080x2280 كثافة: Physical density: 440 ABI: x86,armeabi-v7a,armeabi
+Success
+[03:38:22] شُغّلت اللعبة
