@@ -1,4 +1,108 @@
-seq 40
-tap 954 258
-wait 3
-shot a_level10
+seq 41
+tap 358 855
+wait 1
+tap 539 1186
+wait 2
+tap 183 1459
+wait 1
+tap 539 1186
+wait 2
+tap 183 855
+wait 1
+tap 183 1459
+wait 2
+tap 183 855
+wait 1
+tap 358 855
+wait 2
+tap 719 1459
+wait 1
+tap 539 1186
+wait 2
+tap 719 855
+wait 1
+tap 719 1459
+wait 2
+tap 719 855
+wait 1
+tap 539 1186
+wait 2
+tap 719 1459
+wait 1
+tap 719 855
+wait 2
+tap 895 855
+wait 1
+tap 719 1459
+wait 2
+tap 358 1459
+wait 1
+tap 719 1459
+wait 2
+tap 895 1459
+wait 1
+tap 358 1459
+wait 2
+tap 183 855
+wait 1
+tap 895 1459
+wait 2
+tap 358 855
+wait 1
+tap 183 855
+wait 2
+tap 358 1459
+wait 1
+tap 358 855
+wait 2
+tap 358 1459
+wait 1
+tap 539 1186
+wait 2
+tap 895 855
+wait 1
+tap 358 1459
+wait 2
+tap 895 855
+wait 1
+tap 539 1186
+wait 2
+tap 358 855
+wait 1
+tap 895 855
+wait 2
+tap 358 855
+wait 1
+tap 358 1459
+wait 2
+tap 183 1459
+wait 1
+tap 358 855
+wait 2
+tap 895 1459
+wait 1
+tap 358 855
+wait 2
+tap 895 1459
+wait 1
+tap 539 1186
+wait 2
+tap 719 1459
+wait 1
+tap 895 1459
+wait 2
+tap 183 1459
+wait 1
+tap 183 855
+wait 2
+tap 183 1459
+wait 1
+tap 358 1459
+wait 2
+tap 719 1459
+wait 1
+tap 539 1186
+wait 2
+shot a_after
+wait 5
+shot b_win
