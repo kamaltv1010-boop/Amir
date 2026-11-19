@@ -1,46 +1,8 @@
-seq 5
-tap 181 1159
-wait 1
-tap 719 1159
+seq 6
+tap 540 1498
 wait 2
-tap 540 1159
-wait 1
-tap 719 1159
-wait 2
-tap 181 1159
-wait 1
-tap 897 1159
-wait 2
-tap 540 1159
-wait 1
-tap 897 1159
-wait 2
-shot a_4moves
-tap 361 1159
-wait 1
-tap 897 1159
-wait 2
-tap 181 1159
-wait 1
-tap 719 1159
-wait 2
-tap 540 1159
-wait 1
-tap 719 1159
-wait 2
-tap 181 1159
-wait 1
-tap 361 1159
-wait 2
-shot b_8moves
-tap 540 1159
-wait 1
-tap 361 1159
-wait 1
-shot c_lastpour
+shot a_2s
 wait 3
-shot d_3s
-wait 4
-shot e_7s
+shot b_5s
 wait 5
-shot f_12s
+shot c_10s
