@@ -2,3 +2,4 @@
 [03:38:04] الشاشة: Physical size: 1080x2280 كثافة: Physical density: 440 ABI: x86,armeabi-v7a,armeabi
 Success
 [03:38:22] شُغّلت اللعبة
+[03:39:40] PID اللعبة: 4897
