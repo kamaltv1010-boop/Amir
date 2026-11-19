@@ -1,1 +1,8 @@
-seq 0
+seq 1
+launch
+wait 15
+shot a15s
+wait 20
+shot b35s
+wait 30
+shot c65s
