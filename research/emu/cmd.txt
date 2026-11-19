@@ -1,15 +1,7 @@
-seq 8
-tap 970 173
-wait 3
-shot a_settings
-back
+seq 9
+tap 915 194
 wait 2
+shot a_closed
 tap 130 164
 wait 3
 shot b_profile
-back
-wait 2
-shot c_after_back
-tap 539 1801
-wait 4
-shot d_level5
