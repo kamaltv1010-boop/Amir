@@ -1,5 +1,0 @@
-[03:25:12] الشاشة: Physical size: 1080x2280 كثافة: Physical density: 440 ABI: x86,armeabi-v7a,armeabi
-Success
-[03:25:40] شُغّلت اللعبة
-[03:27:35] تنفيذ الدفعة 1
-[03:29:18] تنفيذ الدفعة 2

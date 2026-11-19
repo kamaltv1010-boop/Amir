@@ -1,8 +1,1 @@
-seq 2
-wait 50
-shot w50
-wait 60
-shot w110
-tap 540 1140
-wait 5
-shot tapcenter
+seq 0

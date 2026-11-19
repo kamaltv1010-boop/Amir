@@ -33,6 +33,8 @@ publish() {
   log "فشل الرفع"
 }
 
+adb logcat -c 2>/dev/null; (adb logcat -v time > /tmp/logcat.txt 2>/dev/null &)
+log "GL: $(adb shell dumpsys SurfaceFlinger 2>/dev/null | grep -m2 -iE 'GLES|EGL' | tr -d '\r' | tr '\n' ' ')"
 log "الشاشة: $(adb shell wm size | tr -d '\r') كثافة: $(adb shell wm density | tr -d '\r') ABI: $(adb shell getprop ro.product.cpu.abilist | tr -d '\r')"
 cd /tmp/game && adb install-multiple -r -g com.grandgames.magicsort.apk config.armeabi_v7a.apk 2>&1 | tail -2 | tee -a "$GITHUB_WORKSPACE/$OUT/log.txt"
 cd "$GITHUB_WORKSPACE"
@@ -45,6 +47,8 @@ for t in 10 20 30 45 60 90 120; do
   shot "000_launch_${t}s"
   [ "$t" = 30 ] && publish "لقطات التحميل الأولى"
 done
+grep -iE "unity|magicsort|FATAL|AndroidRuntime|DEBUG|libc|crash|egl|gles|vulkan|ActivityTaskManager" /tmp/logcat.txt | tail -n 300 > "$OUT/000_logcat.txt"
+adb emu screenrecord screenshot /tmp/e.png >/dev/null 2>&1 && cp /tmp/e.png /tmp/s.png && python3 -c "from PIL import Image; im=Image.open('/tmp/s.png').convert('RGB'); w,h=im.size; im.resize((int(w*1000/h),1000)).save('$OUT/000_emu_console_shot.jpg',quality=82)" || true
 echo "done 0" > "$OUT/state.txt"
 publish "لقطات التحميل"
 
@@ -66,6 +70,18 @@ while true; do
         back)   adb shell input keyevent 4 ;;
         launch) adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1 ;;
         stop)   stop=1 ;;
+        logcat) grep -iE "unity|magicsort|FATAL|AndroidRuntime|DEBUG|libc|crash|egl|gles|vulkan|ActivityManager|ActivityTaskManager" /tmp/logcat.txt | tail -n "${b:-250}" > "$OUT/$(printf '%03d' "$seq")_logcat.txt" ;;
+        top)    adb shell dumpsys activity activities </dev/null 2>/dev/null | grep -E "mResumedActivity|topResumedActivity|mFocusedApp" > "$OUT/$(printf '%03d' "$seq")_top.txt" ;;
+        key)    adb shell input keyevent "$b" ;;
+        eshot)  adb emu screenrecord screenshot /tmp/e.png >/dev/null 2>&1 && cp /tmp/e.png /tmp/s.png && python3 - "$OUT/$(printf '%03d' "$seq")_$b.jpg" <<'PY' || true
+import sys
+from PIL import Image
+im = Image.open('/tmp/s.png').convert('RGB')
+w, h = im.size
+s = 1000 / h
+im.resize((int(w * s), 1000), Image.LANCZOS).save(sys.argv[1], quality=82)
+PY
+        ;;
       esac
     done 3< <(echo "$cmds" | tail -n +2)
     shot "$(printf '%03d' "$seq")_end"
