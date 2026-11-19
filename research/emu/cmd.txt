@@ -1,1 +1,8 @@
-seq 0
+seq 1
+tap 845 552
+wait 2
+tap 539 1505
+wait 20
+shot after_continue_20s
+wait 25
+shot after_continue_45s
