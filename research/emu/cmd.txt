@@ -1,73 +1,12 @@
-seq 56
-tap 272 855
+seq 57
+tap 747 1957
+wait 3
+shot a_add_bottle
+tap 539 1957
 wait 1
-tap 450 1186
+shot b_shuffle_1s
+wait 3
+shot c_shuffle_4s
+tap 331 1957
 wait 2
-tap 984 1448
-wait 1
-tap 272 855
-wait 2
-tap 984 1448
-wait 1
-tap 628 1186
-wait 2
-tap 94 1448
-wait 1
-tap 984 1448
-wait 2
-tap 806 855
-wait 1
-tap 94 1448
-wait 2
-tap 272 1448
-wait 1
-tap 94 855
-wait 2
-tap 272 1448
-wait 1
-tap 628 1186
-wait 2
-tap 806 1448
-wait 1
-tap 272 1448
-wait 2
-tap 806 855
-wait 1
-tap 628 1186
-wait 2
-tap 806 1448
-wait 1
-tap 806 855
-wait 2
-tap 272 855
-wait 1
-tap 806 1448
-wait 2
-tap 94 855
-wait 1
-tap 272 855
-wait 2
-tap 984 1448
-wait 1
-tap 806 855
-wait 2
-tap 94 1448
-wait 1
-tap 984 1448
-wait 2
-tap 94 855
-wait 1
-tap 806 1448
-wait 2
-tap 94 1448
-wait 1
-tap 272 1448
-wait 2
-wait 6
-shot a_win
-tap 539 1498
-wait 5
-shot b_home
-tap 539 1801
-wait 5
-shot c_level14
+shot d_undo
