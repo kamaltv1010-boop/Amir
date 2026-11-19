@@ -1,19 +1,15 @@
-seq 7
-tap 114 2143
+seq 8
+tap 970 173
 wait 3
-shot a_shop
-swipe 540 1600 540 700 400
+shot a_settings
+back
 wait 2
-shot b_shop_scrolled
-tap 301 2143
+tap 130 164
 wait 3
-shot c_trophy
-tap 772 2143
-wait 3
-shot d_team
-tap 959 2143
-wait 3
-shot e_collection
-tap 539 2143
-wait 3
-shot f_home
+shot b_profile
+back
+wait 2
+shot c_after_back
+tap 539 1801
+wait 4
+shot d_level5
