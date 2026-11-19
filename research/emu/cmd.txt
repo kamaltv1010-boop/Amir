@@ -1,6 +1,6 @@
-seq 53
+seq 54
 tap 984 855
 wait 1
-tap 806 855
+tap 806 1448
 wait 2
 shot a_state
