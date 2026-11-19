@@ -1,0 +1,600 @@
+11-19 03:43:44.541 D/AndroidRuntime( 2543): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-19 03:43:44.543 I/AndroidRuntime( 2543): Using default boot image
+11-19 03:43:44.543 I/AndroidRuntime( 2543): Leaving lock profiling enabled
+11-19 03:43:44.667 I/ActivityManager(  506): Start proc 2582:com.android.managedprovisioning/u0a75 for broadcast {com.android.managedprovisioning/com.android.managedprovisioning.ota.PreBootListener}
+11-19 03:43:44.792 W/ActivityManager(  506): Slow operation: 84ms so far, now at getContentProviderImpl: after updateLruProcess
+11-19 03:43:44.792 W/ActivityManager(  506): Slow operation: 84ms so far, now at getContentProviderImpl: before updateOomAdj
+11-19 03:43:44.792 W/ActivityManager(  506): Slow operation: 84ms so far, now at getContentProviderImpl: after updateOomAdj
+11-19 03:43:44.792 W/ActivityManager(  506): Slow operation: 84ms so far, now at getContentProviderImpl: done!
+11-19 03:43:44.792 W/ActivityManager(  506): Unable to start service Intent { act=android.service.contentsuggestions.ContentSuggestionsService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiContentSuggestionsService } U=0: not found
+11-19 03:43:45.160 W/Looper  (  506): Slow dispatch took 135ms android.ui h=com.android.server.am.ActivityManagerService$UiHandler c=null m=31
+11-19 03:43:45.299 D/AndroidRuntime( 2543): Calling main entry com.android.commands.input.Input
+11-19 03:43:45.319 W/ActivityManager(  506): Foreground service started from background can not have location/camera/microphone access: service com.google.android.inputmethod.latin/com.google.android.apps.inputmethod.libs.dataservice.superpacks.SuperpacksForegroundTaskService
+11-19 03:43:45.320 I/ActivityTaskManager(  506): Displayed com.google.android.apps.nexuslauncher/.NexusLauncherActivity: +3s708ms
+11-19 03:43:45.352 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.352 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.353 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.353 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.353 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.353 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.353 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:45.532 D/AndroidRuntime( 2543): Shutting down VM
+11-19 03:43:46.142 W/ActivityManager(  506): Slow operation: 85ms so far, now at startProcess: returned from zygote!
+11-19 03:43:46.142 W/ActivityManager(  506): Slow operation: 85ms so far, now at startProcess: done updating battery stats
+11-19 03:43:46.142 W/ActivityManager(  506): Slow operation: 85ms so far, now at startProcess: building log message
+11-19 03:43:46.142 I/ActivityManager(  506): Start proc 2680:com.google.android.gms.unstable/u0a108 for service {com.google.android.gms/com.google.android.gms.droidguard.DroidGuardService}
+11-19 03:43:46.142 W/ActivityManager(  506): Slow operation: 85ms so far, now at startProcess: starting to update pids map
+11-19 03:43:46.142 W/ActivityManager(  506): Slow operation: 86ms so far, now at startProcess: done updating pids map
+11-19 03:43:47.603 I/ActivityManager(  506): Start proc 2808:com.android.vending:instant_app_installer/u0a101 for service {com.android.vending/com.google.android.finsky.instantapps.PhenotypeUpdateService}
+11-19 03:43:48.785 I/ActivityManager(  506): Start proc 2952:com.google.android.webview:webview_service/u0a113 for service {com.google.android.webview/org.chromium.android_webview.services.VariationsSeedServer}
+11-19 03:43:49.014 I/ActivityManager(  506): Killing 1066:com.android.settings:CryptKeeper/1000 (adj 985): empty #17
+11-19 03:43:49.397 I/ActivityManager(  506): Start proc 3001:com.google.android.apps.tachyon/u0a115 for broadcast {com.google.android.apps.tachyon/com.google.android.apps.tachyon.simdetection.SimStateBroadcastReceiver}
+11-19 03:43:50.637 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:50.638 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:50.639 W/ActivityManager(  506): Unable to start service Intent { act=android.service.appprediction.AppPredictionService cmp=com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiPredictionService } U=0: not found
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: before checkContentProviderPermission
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: after checkContentProviderPermission
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: incProviderCountLocked
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: before updateLruProcess
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: after updateLruProcess
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: before updateOomAdj
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: after updateOomAdj
+11-19 03:43:51.687 W/ActivityManager(  506): Slow operation: 93ms so far, now at getContentProviderImpl: done!
+11-19 03:43:52.217 I/ActivityManager(  506): Start proc 3191:com.android.externalstorage/u0a65 for broadcast {com.android.externalstorage/com.android.externalstorage.MountReceiver}
+11-19 03:43:52.301 I/ActivityManager(  506): Start proc 3212:com.google.android.ims/u0a102 for service {com.google.android.ims/com.google.android.ims.services.MessagingService}
+11-19 03:43:52.320 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+11-19 03:43:52.324 W/ActivityManager(  506): Unbind failed: could not find connection for android.os.BinderProxy@8411b4d
+11-19 03:43:52.384 I/ActivityManager(  506): Start proc 3235:com.google.android.apps.photos/u0a117 for broadcast {com.google.android.apps.photos/com.google.android.apps.photos.sdcard.envcache.ExternalStorageStateChangeBroadcastReceiver}
+11-19 03:43:52.569 I/ActivityManager(  506): Killing 1485:com.android.carrierconfig/u0a140 (adj 985): empty #17
+11-19 03:43:52.670 I/ActivityManager(  506): Start proc 3286:com.android.providers.calendar/u0a71 for broadcast {com.android.providers.calendar/com.android.providers.calendar.CalendarUpgradeReceiver}
+11-19 03:43:52.871 I/ActivityManager(  506): Killing 1693:com.google.android.apps.messaging:rcs/u0a118 (adj 985): empty #17
+11-19 03:43:52.973 I/ActivityManager(  506): Start proc 3329:com.google.android.apps.messaging/u0a118 for service {com.google.android.apps.messaging/com.google.android.apps.messaging.rcsmigration.RcsMigrationService}
+11-19 03:43:53.249 I/ActivityManager(  506): Start proc 3393:com.google.android.documentsui/u0a63 for broadcast {com.google.android.documentsui/com.android.documentsui.PreBootReceiver}
+11-19 03:43:53.348 I/ActivityManager(  506): Killing 1595:com.android.cellbroadcastreceiver/u0a73 (adj 975): empty #17
+11-19 03:43:53.419 I/ActivityManager(  506): Killing 2025:com.google.android.syncadapters.contacts/u0a129 (adj 985): empty #17
+11-19 03:43:53.508 I/ActivityManager(  506): Posting BOOT_COMPLETED user #0
+11-19 03:43:53.508 I/SystemServerTimingAsync(  506): ssm.onUnlockedUser-0_com.android.server.wm.ActivityTaskManagerService$Lifecycle
+11-19 03:43:53.508 I/SystemServerTimingAsync(  506): ssm.onUnlockedUser-0_com.android.server.am.ActivityManagerService$Lifecycle
+11-19 03:43:53.509 W/ActivityManager(  506): UserLifecycleEvent 6 received without an active userJourneySession.
+11-19 03:43:53.979 I/ActivityManager(  506): Start proc 3501:com.google.android.apps.docs/u0a114 for content provider {com.google.android.apps.docs/com.google.android.apps.docs.storagebackend.StorageBackendContentProvider}
+11-19 03:43:54.091 I/ActivityManager(  506): Killing 1780:com.android.keychain/1000 (adj 985): empty #17
+11-19 03:43:55.057 I/GAv4    ( 3501):   adb shell setprop log.tag.GAv4 DEBUG
+11-19 03:43:55.110 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.ims.SIM_LOADED cmp=com.google.android.ims/eew (has extras) } U=0: not found
+11-19 03:43:55.133 W/ActivityManager(  506): Receiver with filter android.content.IntentFilter@ebcfa37 already registered for pid 3212, callerPackage is com.google.android.ims
+11-19 03:43:55.778 I/ActivityManager(  506): Start proc 3691:com.google.android.calendar/u0a124 for broadcast {com.google.android.calendar/com.google.android.calendar.SyncUpgradeReceiver}
+11-19 03:43:56.719 I/ActivityManager(  506): Start proc 3780:com.android.camera2/u0a133 for broadcast {com.android.camera2/com.android.camera.SetActivitiesCameraReceiver}
+11-19 03:43:56.774 W/ActivityManager(  506): Slow operation: 86ms so far, now at startProcess: done updating pids map
+11-19 03:43:56.886 I/ActivityManager(  506): Start proc 3811:com.android.contacts/u0a103 for broadcast {com.android.contacts/com.android.contacts.interactions.OnBootOrUpgradeReceiver}
+11-19 03:43:56.958 I/ActivityManager(  506): Killing 1115:com.google.android.setupwizard/u0a99 (adj 985): empty #17
+11-19 03:43:56.995 I/ActivityManager(  506): Start proc 3834:com.android.dynsystem/1000 for broadcast {com.android.dynsystem/com.android.dynsystem.BootCompletedReceiver}
+11-19 03:43:57.110 I/ActivityManager(  506): Killing 1902:com.android.printspooler/u0a94 (adj 985): empty #17
+11-19 03:43:57.122 I/ActivityManager(  506): Start proc 3853:com.android.nfc/1027 for broadcast {com.android.nfc/com.android.nfc.NfcBootCompletedReceiver}
+11-19 03:43:57.212 I/ActivityManager(  506): Killing 2301:com.android.localtransport/1000 (adj 975): empty #17
+11-19 03:43:57.287 I/ActivityManager(  506): Killing 1343:com.google.android.deskclock/u0a134 (adj 985): empty #17
+11-19 03:43:57.633 W/ActivityManager(  506): Slow operation: 54ms so far, now at startProcess: returned from zygote!
+11-19 03:43:57.633 W/ActivityManager(  506): Slow operation: 54ms so far, now at startProcess: done updating battery stats
+11-19 03:43:57.633 W/ActivityManager(  506): Slow operation: 54ms so far, now at startProcess: building log message
+11-19 03:43:57.633 I/ActivityManager(  506): Start proc 3886:com.android.shell/2000 for broadcast {com.android.shell/com.android.shell.HeapDumpReceiver}
+11-19 03:43:57.633 W/ActivityManager(  506): Slow operation: 54ms so far, now at startProcess: starting to update pids map
+11-19 03:43:57.635 W/ActivityManager(  506): Slow operation: 55ms so far, now at startProcess: done updating pids map
+11-19 03:43:57.681 I/ActivityManager(  506): Killing 1792:com.google.android.apps.youtube.music/u0a111 (adj 985): empty #17
+11-19 03:43:57.910 W/ActivityManager(  506): Slow operation: 82ms so far, now at startProcess: returned from zygote!
+11-19 03:43:57.927 W/ActivityManager(  506): Slow operation: 99ms so far, now at startProcess: done updating battery stats
+11-19 03:43:57.927 W/ActivityManager(  506): Slow operation: 99ms so far, now at startProcess: building log message
+11-19 03:43:57.927 I/ActivityManager(  506): Start proc 3915:com.android.traceur/u0a95 for broadcast {com.android.traceur/com.android.traceur.Receiver}
+11-19 03:43:57.927 W/ActivityManager(  506): Slow operation: 99ms so far, now at startProcess: starting to update pids map
+11-19 03:43:57.927 W/ActivityManager(  506): Slow operation: 99ms so far, now at startProcess: done updating pids map
+11-19 03:43:58.088 I/ActivityManager(  506): Killing 1895:com.google.android.youtube/u0a123 (adj 985): empty #17
+11-19 03:43:58.100 I/ActivityManager(  506): Killing 2952:com.google.android.webview:webview_service/u0a113 (adj 975): empty #17
+11-19 03:44:00.906 I/ActivityManager(  506): Start proc 4079:com.android.vending:download_service/u0a101 for service {com.android.vending/com.google.android.finsky.downloadservice.DownloadService}
+11-19 03:44:01.903 I/ActivityManager(  506): Start proc 4110:com.google.android.apps.maps/u0a125 for broadcast {com.google.android.apps.maps/com.google.android.apps.gmm.navigation.service.detection.StartDetectionReceiver}
+11-19 03:44:02.655 I/ActivityManager(  506): Start proc 4169:com.google.android.gms.ui/u0a108 for service {com.google.android.gms/com.google.android.gms.chimera.UiIntentOperationService}
+11-19 03:44:03.241 I/ActivityManager(  506): Killing 3235:com.google.android.apps.photos/u0a117 (adj 925): empty #17
+11-19 03:44:03.488 W/ActivityManager(  506): Scheduling restart of crashed service com.google.android.apps.photos/.dbprocessor.impl.DatabaseProcessorJobService in 1000ms for connection
+11-19 03:44:03.699 I/ActivityManager(  506): Killing 3393:com.google.android.documentsui/u0a63 (adj 985): empty #17
+11-19 03:44:03.864 I/ActivityManager(  506): Killing 3191:com.android.externalstorage/u0a65 (adj 975): empty #17
+11-19 03:44:04.506 I/ActivityManager(  506): Start proc 4277:com.google.android.apps.photos/u0a117 for service {com.google.android.apps.photos/com.google.android.apps.photos.dbprocessor.impl.DatabaseProcessorJobService}
+11-19 03:44:04.711 I/ActivityManager(  506): Start proc 4302:com.google.android.apps.messaging:rcs/u0a118 for broadcast {com.google.android.apps.messaging/com.google.android.ims.receiver.AutoStartReceiver}
+11-19 03:44:04.715 I/ActivityManager(  506): Killing 1535:com.google.android.cellbroadcastreceiver/u0a147 (adj 975): empty #17
+11-19 03:44:07.015 I/ActivityManager(  506): Killing 3691:com.google.android.calendar/u0a124 (adj 985): empty #17
+11-19 03:44:07.028 I/ActivityManager(  506): Start proc 4391:com.google.android.apps.wallpaper/u0a136 for broadcast {com.google.android.apps.wallpaper/com.android.wallpaper.module.RotationWallpaperUpdateReceiver}
+11-19 03:44:07.147 I/ActivityManager(  506): Killing 3780:com.android.camera2/u0a133 (adj 975): empty #17
+11-19 03:44:07.412 I/ActivityManager(  506): Start proc 4418:com.google.android.apps.youtube.music/u0a111 for broadcast {com.google.android.apps.youtube.music/com.google.android.libraries.youtube.mdx.background.MdxBackgroundScanBootReceiver}
+11-19 03:44:07.518 I/ActivityManager(  506): Killing 3811:com.android.contacts/u0a103 (adj 975): empty #17
+11-19 03:44:07.613 E/GEL_DELAYED_EVENT_DEBUG( 4418): Failed delayed event dispatch, no dispatchers.
+11-19 03:44:07.951 I/ActivityManager(  506): Start proc 4511:com.google.android.calendar/u0a124 for broadcast {com.google.android.calendar/com.google.android.apps.calendar.sync.SyncOnUnlockReceiver}
+11-19 03:44:08.018 I/ActivityManager(  506): Killing 3834:com.android.dynsystem/1000 (adj 975): empty #17
+11-19 03:44:08.150 I/ActivityManager(  506): Killing 2582:com.android.managedprovisioning/u0a75 (adj 985): empty #17
+11-19 03:44:08.154 I/ActivityManager(  506): Start proc 4559:com.google.android.configupdater/u0a105 for broadcast {com.google.android.configupdater/com.google.android.configupdater.MainReceiver}
+11-19 03:44:08.266 I/ActivityManager(  506): Killing 3853:com.android.nfc/1027 (adj 985): empty #17
+11-19 03:44:08.280 I/ActivityManager(  506): Start proc 4613:com.google.android.deskclock/u0a134 for broadcast {com.google.android.deskclock/com.android.deskclock.AlarmInitReceiver}
+11-19 03:44:08.328 I/GAv4    ( 4613):   adb shell setprop log.tag.GAv4 DEBUG
+11-19 03:44:08.546 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+11-19 03:44:08.555 W/ActivityManager(  506): Unbind failed: could not find connection for android.os.BinderProxy@679cd12
+11-19 03:44:08.570 I/ActivityManager(  506): Killing 1216:com.android.settings/1000 (adj 975): empty #17
+11-19 03:44:08.581 I/ActivityManager(  506): Start proc 4663:com.android.chrome/u0a116 for service {com.android.chrome/org.chromium.chrome.browser.customtabs.CustomTabsConnectionService}
+11-19 03:44:08.616 W/ActivityManager(  506): setHasOverlayUi called on unknown pid: 1216
+11-19 03:44:08.640 I/ActivityManager(  506): Start proc 4683:com.google.android.onetimeinitializer/u0a137 for broadcast {com.google.android.onetimeinitializer/com.google.android.onetimeinitializer.OneTimeInitializerReceiver}
+11-19 03:44:08.703 I/ActivityManager(  506): Killing 3886:com.android.shell/2000 (adj 975): empty #17
+11-19 03:44:08.721 I/ActivityManager(  506): Killing 3915:com.android.traceur/u0a95 (adj 985): empty #17
+11-19 03:44:08.725 I/ActivityManager(  506): Start proc 4756:com.google.android.packageinstaller/u0a76 for broadcast {com.google.android.packageinstaller/com.android.packageinstaller.TemporaryFileManager}
+11-19 03:44:08.770 I/ActivityManager(  506): Killing 4079:com.android.vending:download_service/u0a101 (adj 985): empty #17
+11-19 03:44:09.007 I/ActivityManager(  506): Start proc 4790:com.google.android.projection.gearhead:shared/u0a107 for broadcast {com.google.android.projection.gearhead/com.google.android.apps.auto.components.app.fzero.FzeroReceiver}
+11-19 03:44:09.085 I/ActivityManager(  506): Killing 4110:com.google.android.apps.maps/u0a125 (adj 955): empty #17
+11-19 03:44:09.165 I/GAv4    ( 4790):   adb shell setprop log.tag.GAv4 DEBUG
+11-19 03:44:09.217 I/ActivityManager(  506): Killing 4302:com.google.android.apps.messaging:rcs/u0a118 (adj 985): empty #17
+11-19 03:44:09.230 I/ActivityManager(  506): Start proc 4827:com.google.android.projection.gearhead:car/u0a107 for broadcast {com.google.android.projection.gearhead/com.google.android.apps.auto.carservice.frx.FrxReceiver}
+11-19 03:44:09.374 I/ActivityManager(  506): Killing 3501:com.google.android.apps.docs/u0a114 (adj 985): empty #17
+11-19 03:44:09.382 I/ActivityManager(  506): Start proc 4856:com.google.android.setupwizard/u0a99 for broadcast {com.google.android.setupwizard/com.google.android.setupwizard.deferred.ComponentStateMitigationReceiver}
+11-19 03:44:09.743 I/ActivityManager(  506): Start proc 4908:com.google.android.syncadapters.contacts/u0a129 for broadcast {com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ContactsSyncAdapterBroadcastReceiver}
+11-19 03:44:09.820 I/ActivityManager(  506): Start proc 4935:com.google.android.videos/u0a119 for broadcast {com.google.android.videos/com.google.android.apps.play.movies.common.service.pinning.TransferService$Receiver}
+11-19 03:44:09.904 I/ActivityManager(  506): Killing 2808:com.android.vending:instant_app_installer/u0a101 (adj 975): empty #17
+11-19 03:44:10.399 W/ActivityManager(  506): Foreground service started from background can not have location/camera/microphone access: service com.google.android.videos/com.google.android.apps.play.movies.common.service.pinning.TransferService
+11-19 03:44:10.528 I/ActivityManager(  506): Start proc 5024:com.google.android.youtube/u0a123 for broadcast {com.google.android.youtube/com.google.android.libraries.youtube.mdx.background.MdxBackgroundScanBootReceiver}
+11-19 03:44:10.778 I/ActivityManager(  506): Killing 4277:com.google.android.apps.photos/u0a117 (adj 945): empty #17
+11-19 03:44:10.904 E/GEL_DELAYED_EVENT_DEBUG( 5024): Failed delayed event dispatch, no dispatchers.
+11-19 03:44:11.622 I/ActivityManager(  506): Finished processing BOOT_COMPLETED for u0
+11-19 03:44:11.692 I/ActivityManager(  506): Start proc 5164:com.google.android.apps.messaging:rcs/u0a118 for broadcast {com.google.android.apps.messaging/com.google.android.ims.receiver.ProvisioningEventReceiver}
+11-19 03:44:11.823 I/ActivityManager(  506): Killing 4391:com.google.android.apps.wallpaper/u0a136 (adj 975): empty #17
+11-19 03:44:11.827 I/ActivityManager(  506): Killing 3001:com.google.android.apps.tachyon/u0a115 (adj 985): empty #17
+11-19 03:44:12.079 I/ActivityManager(  506): Start proc 5224:com.google.android.cellbroadcastreceiver/u0a147 for broadcast {com.google.android.cellbroadcastreceiver/com.android.cellbroadcastreceiver.CellBroadcastReceiver}
+11-19 03:44:12.146 I/ActivityManager(  506): Killing 4418:com.google.android.apps.youtube.music/u0a111 (adj 985): empty #17
+11-19 03:44:12.151 I/ActivityManager(  506): Killing 4559:com.google.android.configupdater/u0a105 (adj 975): empty #17
+11-19 03:44:12.196 I/ActivityManager(  506): Start proc 5245:com.android.vending:instant_app_installer/u0a101 for broadcast {com.android.vending/com.google.android.finsky.instantapps.PhenotypeUpdateReceiver}
+11-19 03:44:12.419 I/ActivityManager(  506): Start proc 5278:com.google.android.apps.docs/u0a114 for broadcast {com.google.android.apps.docs/com.google.firebase.iid.FirebaseInstanceIdReceiver}
+11-19 03:44:12.578 I/GAv4    ( 5278):   adb shell setprop log.tag.GAv4 DEBUG
+11-19 03:44:12.770 I/ActivityManager(  506): Start proc 5357:com.google.android.apps.youtube.music/u0a111 for broadcast {com.google.android.apps.youtube.music/com.google.firebase.iid.FirebaseInstanceIdReceiver}
+11-19 03:44:13.003 E/GEL_DELAYED_EVENT_DEBUG( 5357): Failed delayed event dispatch, no dispatchers.
+11-19 03:44:13.388 I/ActivityManager(  506): Killing 4613:com.google.android.deskclock/u0a134 (adj 975): empty #17
+11-19 03:44:13.400 I/ActivityManager(  506): Killing 4663:com.android.chrome/u0a116 (adj 985): empty #17
+11-19 03:44:13.457 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+11-19 03:44:13.461 W/ActivityManager(  506): Unbind failed: could not find connection for android.os.BinderProxy@41483b6
+11-19 03:44:13.796 I/ActivityManager(  506): Start proc 5475:com.google.android.gms:car/u0a108 for service {com.google.android.gms/com.google.android.gms.chimera.CarBoundBrokerService}
+11-19 03:44:14.244 I/ActivityManager(  506): Start proc 5524:com.google.android.apps.tachyon/u0a115 for broadcast {com.google.android.apps.tachyon/com.google.android.apps.tachyon.common.applifecycle.AppInstallReceiver}
+11-19 03:44:15.013 I/ActivityManager(  506): Killing 4683:com.google.android.onetimeinitializer/u0a137 (adj 975): empty #17
+11-19 03:44:15.717 I/ActivityManager(  506): Killing 4756:com.google.android.packageinstaller/u0a76 (adj 985): empty #17
+11-18 22:44:16.097 I/ActivityManager(  506): Start proc 5641:com.google.android.apps.maps/u0a125 for broadcast {com.google.android.apps.maps/com.google.android.apps.gmm.ugc.ataplace.AtAPlaceService}
+11-18 22:44:17.831 I/ActivityManager(  506): Killing 1297:com.google.android.apps.wellbeing/u0a106 (adj 985): empty #17
+11-18 22:44:18.236 I/ActivityManager(  506): Killing 4827:com.google.android.projection.gearhead:car/u0a107 (adj 975): empty #17
+11-18 22:44:18.310 I/ActivityManager(  506): Start proc 5765:com.google.android.apps.wellbeing/u0a106 for broadcast {com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.experiments.listener.impl.PhenotypeConfigurationChangedBroadcastReceiver_Receiver}
+11-18 22:44:19.497 I/ActivityManager(  506): Start proc 5808:com.google.android.apps.photos/u0a117 for broadcast {com.google.android.apps.photos/com.google.android.apps.photos.experiments.phenotype.full.PhenotypeUpdateBroadcastReceiver}
+11-18 22:44:19.741 I/ActivityManager(  506): Start proc 5839:com.google.android.apps.pixelmigrate/u0a97 for broadcast {com.google.android.apps.pixelmigrate/com.google.android.apps.pixelmigrate.component.PhenotypeUpdateReceiver}
+11-18 22:44:20.121 I/ActivityManager(  506): Killing 4908:com.google.android.syncadapters.contacts/u0a129 (adj 985): empty #17
+11-18 22:44:20.132 I/ActivityManager(  506): Start proc 5884:com.google.android.apps.restore/u0a96 for broadcast {com.google.android.apps.restore/com.google.android.apps.pixelmigrate.component.PhenotypeUpdateReceiver}
+11-18 22:44:20.176 I/ActivityManager(  506): Start proc 5905:com.google.android.projection.gearhead:car/u0a107 for service {com.google.android.projection.gearhead/com.google.android.apps.auto.carservice.service.impl.GearheadCarStartupService}
+11-18 22:44:20.224 I/ActivityManager(  506): Killing 753:com.google.android.permissioncontroller/u0a146 (adj 985): empty #17
+11-18 22:44:20.252 I/ActivityManager(  506): Start proc 5939:com.google.android.configupdater/u0a105 for broadcast {com.google.android.configupdater/com.google.android.configupdater.PhenotypeBroadcastReceiver}
+11-18 22:44:20.384 I/ActivityManager(  506): Killing 5164:com.google.android.apps.messaging:rcs/u0a118 (adj 975): empty #17
+11-18 22:44:20.447 I/ActivityManager(  506): Killing 5224:com.google.android.cellbroadcastreceiver/u0a147 (adj 985): empty #17
+11-18 22:44:20.542 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+11-18 22:44:20.543 W/ActivityManager(  506): Unbind failed: could not find connection for android.os.BinderProxy@a840ac5
+11-18 22:44:21.229 I/ActivityManager(  506): Start proc 6000:com.google.android.deskclock/u0a134 for broadcast {com.google.android.deskclock/com.android.deskclock.AlarmInitReceiver}
+11-18 22:44:21.325 I/ActivityManager(  506): Killing 2168:com.google.android.gm/u0a126 (adj 955): change com.google.android.gm
+11-18 22:44:21.367 I/ActivityManager(  506): Start proc 6026:com.google.android.permissioncontroller/u0a146 for service {com.google.android.permissioncontroller/com.android.permissioncontroller.role.service.RoleControllerServiceImpl}
+11-18 22:44:21.390 I/ActivityManager(  506): Start proc 6047:com.google.android.gm/u0a126 for content provider {com.google.android.gm/com.android.exchange.provider.ExchangeDirectoryProvider}
+11-18 22:44:21.415 I/GAv4    ( 6000):   adb shell setprop log.tag.GAv4 DEBUG
+11-18 22:44:21.816 D/AndroidRuntime( 6084): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-18 22:44:21.824 I/AndroidRuntime( 6084): Using default boot image
+11-18 22:44:21.824 I/AndroidRuntime( 6084): Leaving lock profiling enabled
+11-18 22:44:22.117 D/AndroidRuntime( 6084): Calling main entry com.android.commands.monkey.Monkey
+11-18 22:44:22.232 I/ActivityTaskManager(  506): START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.grandgames.magicsort/com.unity3d.player.UnityPlayerActivity} from uid 2000
+11-18 22:44:22.234 W/ActivityManager(  506): Unable to start service Intent { cmp=com.google.android.gm/com.android.email.service.AttachmentService } U=0: not found
+11-18 22:44:22.272 I/AndroidRuntime( 6084): VM exiting with result code 0.
+11-18 22:44:22.326 W/ActivityManager(  506): Slow operation: 81ms so far, now at startProcess: done updating battery stats
+11-18 22:44:22.326 W/ActivityManager(  506): Slow operation: 81ms so far, now at startProcess: building log message
+11-18 22:44:22.326 I/ActivityManager(  506): Start proc 6146:com.grandgames.magicsort/u0a154 for pre-top-activity {com.grandgames.magicsort/com.unity3d.player.UnityPlayerActivity}
+11-18 22:44:22.326 W/ActivityManager(  506): Slow operation: 81ms so far, now at startProcess: starting to update pids map
+11-18 22:44:22.326 W/ActivityManager(  506): Slow operation: 81ms so far, now at startProcess: done updating pids map
+11-18 22:44:22.360 W/games.magicsor( 6146): Unexpected CPU variant for X86 using defaults: x86
+11-18 22:44:22.381 I/ndk_translation( 6146): Initialized NDK translation (armv7l), version 0.2.2
+11-18 22:44:22.846 E/games.magicsor( 6146): Not starting debugger since process cannot load the jdwp agent.
+11-18 22:44:22.870 I/games.magicsor( 6146): The ClassLoaderContext is a special shared library.
+11-18 22:44:22.985 W/games.magicsor( 6146): JIT profile information will not be recorded: profile file does not exist.
+11-18 22:44:23.040 D/NetworkSecurityConfig( 6146): No Network Security Config specified, using platform default
+11-18 22:44:23.040 D/NetworkSecurityConfig( 6146): No Network Security Config specified, using platform default
+11-18 22:44:23.045 D/AdvertisingIdClient( 6146): Creating AdvertisingIdClient
+11-18 22:44:23.045 D/AdvertisingIdClient( 6146): AdvertisingIdClient already created.
+11-18 22:44:23.051 D/SessionsDependencies( 6146): Dependency to CRASHLYTICS added.
+11-18 22:44:23.060 I/FirebaseApp( 6146): Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+11-18 22:44:23.062 I/FirebaseCrashlytics( 6146): Initializing Firebase Crashlytics 19.4.2 for com.grandgames.magicsort
+11-18 22:44:23.080 D/AdvertisingIdClient( 6146): AdvertisingIdClient is not bounded. Starting to bind it...
+11-18 22:44:23.184 D/SessionsDependencies( 6146): Subscriber CRASHLYTICS registered.
+11-18 22:44:23.191 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817022
+11-18 22:44:23.191 W/GoogleApiManager( 6146): The service for com.google.android.gms.common.internal.service.zap is not available: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:23.399 I/DynamiteModule( 6146): Considering local module com.google.android.gms.measurement.dynamite:141 and remote module com.google.android.gms.measurement.dynamite:13
+11-18 22:44:23.399 I/DynamiteModule( 6146): Selected local version of com.google.android.gms.measurement.dynamite
+11-18 22:44:23.446 D/FirebaseSessions( 6146): Initializing Firebase Sessions SDK.
+11-18 22:44:23.447 I/FirebaseInitProvider( 6146): FirebaseApp initialization successful
+11-18 22:44:23.480 D/WM-WrkMgrInitializer( 6146): Initializing WorkManager with default configuration.
+11-18 22:44:23.487 I/TetheringManager( 6146): registerTetheringEventCallback:com.grandgames.magicsort
+11-18 22:44:23.562 I/FirebaseCrashlytics( 6146): Saved version control info
+11-18 22:44:23.688 D/AdvertisingIdClient( 6146): AdvertisingIdClient already created.
+11-18 22:44:23.730 W/com.facebook.internal.NativeProtocol( 6146): Apps that target Android API 30+ (Android 11+) cannot call Facebook native apps unless the package visibility needs are declared. Please follow https://developers.facebook.com/docs/android/troubleshooting/#faq_267321845055988 to make the declaration.
+11-18 22:44:23.732 I/DynamiteModule( 6146): Considering local module com.google.android.gms.cronet_dynamite:0 and remote module com.google.android.gms.cronet_dynamite:1311
+11-18 22:44:23.732 I/DynamiteModule( 6146): Selected remote version of com.google.android.gms.cronet_dynamite, version >= 1311
+11-18 22:44:23.732 V/DynamiteModule( 6146): Dynamite loader version >= 2, using loadModule2NoCrashUtils
+11-18 22:44:23.792 I/FA      ( 6146): App measurement initialized, version: 119002
+11-18 22:44:23.792 I/FA      ( 6146): To enable debug logging run: adb shell setprop log.tag.FA VERBOSE
+11-18 22:44:23.792 I/FA      ( 6146): To enable faster debug mode event logging run:
+11-18 22:44:23.792 I/FA      ( 6146):   adb shell setprop debug.firebase.analytics.app com.grandgames.magicsort
+11-18 22:44:23.849 W/games.magicsor( 6146): Unsupported class loader
+11-18 22:44:23.869 W/games.magicsor( 6146): Unsupported class loader
+11-18 22:44:24.089 D/AdvertisingIdClient( 6146): AdvertisingIdClient already created.
+11-18 22:44:24.208 D/FBAudienceNetwork( 6146): SDK dex loading time: 708
+11-18 22:44:24.232 I/FA      ( 6146): Tag Manager is not found and thus will not be used
+11-18 22:44:24.317 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.c2dm.intent.REGISTRATION pkg=com.google.android.apps.maps } U=0: not found
+11-18 22:44:24.322 D/SessionConfigFetcher( 6146): Fetching settings from server.
+11-18 22:44:24.348 D/SessionConfigFetcher( 6146): Fetched settings: {"settings_version":3,"cache_duration":159408,"features":{"collect_logged_exceptions":true,"collect_reports":true,"collect_analytics":false,"prompt_enabled":false,"push_enabled":false,"firebase_crashlytics_enabled":false,"collect_anrs":true,"collect_metric_kit":false,"collect_build_ids":true},"app":{"status":"activated","update_required":false,"report_upload_variant":2,"native_report_upload_variant":2},"fabric":{"org_id":"65fabf87a4dfcb9bda998147","bundle_id":"com.grandgames.magicsort"},"on_demand_upload_rate_per_minute":10,"on_demand_backoff_base":1.2,"on_demand_backoff_step_duration_seconds":60,"app_quality":{"sessions_enabled":true,"sampling_rate":1,"session_timeout_seconds":1800},"on_demand_thread_recording_suspension_enabled":true}
+11-18 22:44:24.460 D/LifecycleServiceBinder( 6146): Binding service to application.
+11-18 22:44:24.743 W/ActivityManager(  506): Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+11-18 22:44:24.745 W/ActivityManager(  506): Unbind failed: could not find connection for android.os.BinderProxy@d1ff58d
+11-18 22:44:24.828 I/IL2CPP  ( 6146): JNI_OnLoad
+11-18 22:44:24.878 D/SessionLifecycleClient( 6146): Queued message 1. Queue size 1
+11-18 22:44:24.900 I/Choreographer( 6146): Skipped 84 frames!  The application may be doing too much work on its main thread.
+11-18 22:44:24.901 D/AdvertisingIdClient( 6146): AdvertisingIdClient is bounded
+11-18 22:44:24.905 I/AdvertisingIdClient( 6146): shouldSendLog -1
+11-18 22:44:24.907 I/AdvertisingIdClient( 6146): GetInfoInternal elapse 1825ms
+11-18 22:44:24.910 I/AdvertisingIdClient( 6146): shouldSendLog -1
+11-18 22:44:24.910 I/AdvertisingIdClient( 6146): GetInfoInternal elapse 1222ms
+11-18 22:44:24.910 I/AdvertisingIdClient( 6146): shouldSendLog -1
+11-18 22:44:24.910 I/AdvertisingIdClient( 6146): GetInfoInternal elapse 822ms
+11-18 22:44:24.939 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817022
+11-18 22:44:24.960 W/GoogleApiManager( 6146): The service for com.google.android.gms.common.internal.service.zap is not available: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:24.969 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817022
+11-18 22:44:24.990 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817022
+11-18 22:44:24.990 W/GoogleApiManager( 6146): The service for com.google.android.gms.internal.appset.zzd is not available: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:24.991 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817022
+11-18 22:44:24.991 W/GoogleApiManager( 6146): The service for com.google.android.gms.common.internal.service.zap is not available: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:24.992 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817022
+11-18 22:44:24.992 W/GoogleApiManager( 6146): The service for com.google.android.gms.common.internal.service.zap is not available: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:25.034 I/Gralloc4( 6146): mapper 4.x is not supported
+11-18 22:44:25.035 D/HostConnection( 6146): createUnique: call
+11-18 22:44:25.038 D/HostConnection( 6146): HostConnection::get() New Host Connection established 0xf50ac2a0, tid 6146
+11-18 22:44:25.039 D/goldfish-address-space( 6146): allocate: Ask for block of size 0x100
+11-18 22:44:25.039 D/goldfish-address-space( 6146): allocate: ioctl allocate returned offset 0x3f7ffe000 size 0x2000
+11-18 22:44:25.062 D/HostConnection( 6146): HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_YUV_Cache ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_sync_buffer_data ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-18 22:44:25.240 I/ActivityTaskManager(  506): Displayed com.grandgames.magicsort/com.unity3d.player.UnityPlayerActivity: +3s9ms
+11-18 22:44:25.248 D/SessionLifecycleService( 6146): Service bound to new client on process 6146
+11-18 22:44:25.251 D/SessionLifecycleService( 6146): App has not yet foregrounded. Using previously stored session.
+11-18 22:44:25.251 D/SessionLifecycleService( 6146): Client android.os.Messenger@e2398af bound at 72734. Clients: 1
+11-18 22:44:25.271 I/AdvertisingIdClient( 6146): getting error as 17: API: ClientTelemetry.API is not available on this device. Connection failed with: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:25.277 I/AdvertisingIdClient( 6146): getting error as 17: API: ClientTelemetry.API is not available on this device. Connection failed with: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:25.280 I/AdvertisingIdClient( 6146): getting error as 17: API: ClientTelemetry.API is not available on this device. Connection failed with: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:25.491 D/SessionLifecycleClient( 6146): Connected to SessionLifecycleService. Queue size 1
+11-18 22:44:25.491 D/SessionLifecycleClient( 6146): Sending lifecycle 1 to service
+11-18 22:44:25.492 D/SessionLifecycleService( 6146): Activity foregrounding at 72978.
+11-18 22:44:25.492 D/SessionLifecycleService( 6146): Cold start detected.
+11-18 22:44:25.492 D/SessionLifecycleService( 6146): Generated new session.
+11-18 22:44:25.492 D/SessionLifecycleService( 6146): Broadcasting new session
+11-18 22:44:25.494 D/SessionFirelogPublisher( 6146): Data Collection is enabled for at least one Subscriber
+11-18 22:44:25.495 D/AdvertisingIdClient( 6146): AdvertisingIdClient already created.
+11-18 22:44:25.508 I/AdvertisingIdClient( 6146): shouldSendLog -1
+11-18 22:44:25.508 I/AdvertisingIdClient( 6146): GetInfoInternal elapse 14ms
+11-18 22:44:25.515 W/com.facebook.appevents.iap.InAppPurchaseBillingClientWrapperV5V7( 6146): Failed to create Google Play billing library wrapper for in-app purchase auto-logging
+11-18 22:44:25.530 W/GooglePlayServicesUtil( 6146): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817022
+11-18 22:44:25.530 W/GoogleApiManager( 6146): The service for com.google.android.gms.common.internal.service.zap is not available: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:25.532 D/EventGDTLogger( 6146): Session Event Type: SESSION_START
+11-18 22:44:25.532 D/CompatibilityChangeReporter( 6146): Compat change id reported: 150939131; UID 10154; state: ENABLED
+11-18 22:44:25.532 D/SessionFirelogPublisher( 6146): Successfully logged Session Start event.
+11-18 22:44:25.532 D/SessionLifecycleClient( 6146): Session update received.
+11-18 22:44:25.532 I/AdvertisingIdClient( 6146): getting error as 17: API: ClientTelemetry.API is not available on this device. Connection failed with: ConnectionResult{statusCode=SERVICE_VERSION_UPDATE_REQUIRED, resolution=null, message=null, clientMethodKey=null}
+11-18 22:44:25.534 D/SessionLifecycleClient( 6146): Notified CRASHLYTICS of new session b6c7e6f07aaa48b3b555dd9aa2849500
+11-18 22:44:25.653 I/Unity   ( 6146): MemoryManager: Using 'Dynamic Heap' Allocator.
+11-18 22:44:25.944 I/Unity   ( 6146): SystemInfo CPU = x86 SSE3 SSE4.1 SSE4.2 AVX AVX2, Cores = 0, Memory = 3929mb
+11-18 22:44:25.945 I/Unity   ( 6146): SystemInfo ARM big.LITTLE configuration: 0 big (mask: 0x0), 0 little (mask: 0x0)
+11-18 22:44:25.951 I/Unity   ( 6146): ApplicationInfo com.grandgames.magicsort version 0.0.3497
+11-18 22:44:25.953 I/Unity   ( 6146): Built from '2021.3/respin/2021.3.57f1-0329e0aded79' branch, Version '2021.3.57f2 (45bc4c630002)', Build type 'Release', Scripting Backend 'il2cpp', CPU 'armeabi-v7a', Stripping 'Enabled'
+11-18 22:44:26.300 I/ActivityManager(  506): Start proc 6353:com.google.android.packageinstaller/u0a76 for broadcast {com.google.android.packageinstaller/com.android.packageinstaller.PackageInstalledReceiver}
+11-18 22:44:26.356 I/ActivityManager(  506): Killing 5245:com.android.vending:instant_app_installer/u0a101 (adj 985): empty #17
+11-18 22:44:26.356 I/ActivityManager(  506): Killing 4169:com.google.android.gms.ui/u0a108 (adj 995): empty #18
+11-18 22:44:26.543 I/ActivityManager(  506): Killing 5839:com.google.android.apps.pixelmigrate/u0a97 (adj 975): empty #17
+11-18 22:44:28.062 E/libprocessgroup( 6146): set_timerslack_ns write failed: Operation not permitted
+11-18 22:44:28.062 E/libprocessgroup( 6146): set_timerslack_ns write failed: Operation not permitted
+11-18 22:44:28.063 E/libprocessgroup( 6146): set_timerslack_ns write failed: Operation not permitted
+11-18 22:44:28.063 I/chatty  ( 6146): uid=10154(com.grandgames.magicsort) UnityMain identical 12 lines
+11-18 22:44:28.063 E/libprocessgroup( 6146): set_timerslack_ns write failed: Operation not permitted
+11-18 22:44:28.402 I/Unity   ( 6146): Company Name: Grand Games
+11-18 22:44:28.403 I/Unity   ( 6146): Product Name: Magic Sort
+11-18 22:44:28.434 D/HostConnection( 6146): HostConnection::get() New Host Connection established 0xf50af4f0, tid 6270
+11-18 22:44:28.437 D/HostConnection( 6146): HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_YUV_Cache ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_sync_buffer_data ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0 
+11-18 22:44:28.438 D/vulkan  ( 6146): searching for layers in '/data/app/~~yFYYgIiVd0EH3v8E3uZGxA==/com.grandgames.magicsort--d5nmNY7ObhJmeOlf9yytg==/lib/arm'
+11-18 22:44:28.439 D/vulkan  ( 6146): searching for layers in '/data/app/~~yFYYgIiVd0EH3v8E3uZGxA==/com.grandgames.magicsort--d5nmNY7ObhJmeOlf9yytg==/base.apk!/lib/armeabi-v7a'
+11-18 22:44:28.440 D/vulkan  ( 6146): searching for layers in '/data/app/~~yFYYgIiVd0EH3v8E3uZGxA==/com.grandgames.magicsort--d5nmNY7ObhJmeOlf9yytg==/split_config.armeabi_v7a.apk!/lib/armeabi-v7a'
+11-18 22:44:28.443 D/libEGL  ( 6146): loaded /vendor/lib/egl/libEGL_emulation.so
+11-18 22:44:28.444 D/libEGL  ( 6146): loaded /vendor/lib/egl/libGLESv1_CM_emulation.so
+11-18 22:44:28.445 D/libEGL  ( 6146): loaded /vendor/lib/egl/libGLESv2_emulation.so
+11-18 22:44:28.461 E/EGL_emulation( 6146): eglCreateContext: EGL_BAD_CONFIG: no ES 3.2 support
+11-18 22:44:28.461 E/EGL_emulation( 6146): tid 6270: eglCreateContext(1696): error 0x3005 (EGL_BAD_CONFIG)
+11-18 22:44:28.462 E/EGL_emulation( 6146): eglCreateContext: EGL_BAD_CONFIG: no ES 3.1 support
+11-18 22:44:28.462 E/EGL_emulation( 6146): tid 6270: eglCreateContext(1690): error 0x3005 (EGL_BAD_CONFIG)
+11-18 22:44:28.464 E/EGL_emulation( 6146): [getAttribValue] Bad attribute idx
+11-18 22:44:28.464 D/EGL_emulation( 6146): eglGetConfigAttrib: bad attrib 0x1
+11-18 22:44:28.464 E/EGL_emulation( 6146): tid 6270: eglGetConfigAttrib(1140): error 0x3004 (EGL_BAD_ATTRIBUTE)
+11-18 22:44:28.465 D/EGL_emulation( 6146): eglCreateContext: 0xf5092b50: maj 3 min 0 rcv 3
+11-18 22:44:28.468 D/EGL_emulation( 6146): eglCreateContext: 0xf5092b50: maj 3 min 0 rcv 3
+11-18 22:44:28.481 D/EGL_emulation( 6146): eglCreateContext: 0xf50a5ee0: maj 3 min 0 rcv 3
+11-18 22:44:28.482 D/EGL_emulation( 6146): eglMakeCurrent: 0xf50a5ee0: ver 3 0 (tinfo 0xbd6c2910) (first time)
+11-18 22:44:28.505 D/Unity   ( 6146):  GL_EXT_debug_marker GL_EXT_robustness GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_YUV_Cache ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_sync_buffer_data ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_color_transform GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr AN
+11-18 22:44:28.505 D/Unity   ( 6146): DROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-18 22:44:28.677 W/AudioTrack( 6146): Use of stream types is deprecated for operations other than volume control
+11-18 22:44:28.677 W/AudioTrack( 6146): See the documentation of AudioTrack() for what to use instead with android.media.AudioAttributes to qualify your playback use case
+11-18 22:44:29.530 I/IL2CPP  ( 6146): Locale en-US
+11-18 22:44:29.680 V/MediaRouter( 6146): Selecting route: RouteInfo{ name=Phone, description=null, status=null, category=RouteCategory{ name=System types=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO  groupable=false }, supportedTypes=ROUTE_TYPE_LIVE_AUDIO ROUTE_TYPE_LIVE_VIDEO , presentationDisplay=null }
+11-18 22:44:29.989 D/ProfileInstaller( 6146): Installing profile for com.grandgames.magicsort
+11-18 22:44:30.912 I/ActivityManager(  506): Killing 5884:com.google.android.apps.restore/u0a96 (adj 965): empty #17
+11-18 22:44:31.564 I/ActivityManager(  506): Killing 1574:android.process.acore/u0a62 (adj 985): empty #17
+11-18 22:44:33.168 I/ActivityManager(  506): Killing 4790:com.google.android.projection.gearhead:shared/u0a107 (adj 985): empty #17
+11-18 22:44:39.639 I/ActivityManager(  506): Killing 5905:com.google.android.projection.gearhead:car/u0a107 (adj 985): empty #17
+11-18 22:44:43.592 I/Unity   ( 6146): [GrandSDK] Using stable serializer: GrandSDK.Models.Serialization.EventSerializer
+11-18 22:44:43.592 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:43.592 I/Unity   ( 6146): GrandSDK.GrandSDK:CreateEventSerializerForGame(String, String, String&)
+11-18 22:44:43.592 I/Unity   ( 6146): GrandSDK.GrandSDK:EnsureAnalyticsSerializerBeforeFirstSceneAwake()
+11-18 22:44:43.592 I/Unity   ( 6146): 
+11-18 22:44:43.652 I/ActivityManager(  506): Killing 2406:com.google.android.partnersetup/u0a98 (adj 985): empty #17
+11-18 22:44:44.895 I/Unity   ( 6146): [GrandSDK] No manual instance found, creating automatic fallback
+11-18 22:44:44.895 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:44.895 I/Unity   ( 6146): GrandSDK.GrandSDK:AutoInitialize()
+11-18 22:44:44.895 I/Unity   ( 6146): 
+11-18 22:44:44.904 I/Unity   ( 6146): [GrandSDK] Instance initialized in Awake
+11-18 22:44:44.904 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:44.904 I/Unity   ( 6146): GrandSDK.GrandSDK:Awake()
+11-18 22:44:44.904 I/Unity   ( 6146): UnityEngine.GameObject:AddComponent()
+11-18 22:44:44.904 I/Unity   ( 6146): 
+11-18 22:44:44.992 I/Unity   ( 6146): [GrandSDK] BestHTTP setup complete.
+11-18 22:44:44.992 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:44.992 I/Unity   ( 6146): GrandSDK.Core.Networking.BestHttpTransport:EnsureSetupInUnityEvent()
+11-18 22:44:44.992 I/Unity   ( 6146): GrandSDK.GrandSDK:Awake()
+11-18 22:44:44.992 I/Unity   ( 6146): UnityEngine.GameObject:AddComponent()
+11-18 22:44:44.992 I/Unity   ( 6146): 
+11-18 22:44:44.997 I/Unity   ( 6146): [GrandSDK] Resolved game_id from serializer metadata: magic-sort (was <empty>)
+11-18 22:44:44.997 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:44.997 I/Unity   ( 6146): GrandSDK.GrandSDK:ApplySerializerMetadata(IEventSerializer)
+11-18 22:44:44.997 I/Unity   ( 6146): GrandSDK.GrandSDK:Awake()
+11-18 22:44:44.997 I/Unity   ( 6146): UnityEngine.GameObject:AddComponent()
+11-18 22:44:44.997 I/Unity   ( 6146): 
+11-18 22:44:45.000 I/Unity   ( 6146): [GrandSDK] Serializer configured in Awake
+11-18 22:44:45.000 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:45.000 I/Unity   ( 6146): GrandSDK.GrandSDK:Awake()
+11-18 22:44:45.000 I/Unity   ( 6146): UnityEngine.GameObject:AddComponent()
+11-18 22:44:45.000 I/Unity   ( 6146): 
+11-18 22:44:45.015 W/Unity   ( 6146): 'Runtime File Browser' not found! We recommend to install it from the Unity AssetStore: https://assetstore.unity.com/packages/slug/113006?aid=1011lNGT
+11-18 22:44:45.015 W/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:45.015 W/Unity   ( 6146): Crosstales.Common.Util.FileHelper:initialize()
+11-18 22:44:45.015 W/Unity   ( 6146): 
+11-18 22:44:45.074 I/Unity   ( 6146): [GrandSDK] Application resumed
+11-18 22:44:45.074 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:45.074 I/Unity   ( 6146): GrandSDK.GrandSDK:OnApplicationPause(Boolean)
+11-18 22:44:45.074 I/Unity   ( 6146): 
+11-18 22:44:45.180 D/CompatibilityChangeReporter( 6146): Compat change id reported: 147600208; UID 10154; state: ENABLED
+11-18 22:44:46.441 I/Unity   ( 6146): [GrandSDK] Initializing SDK (non-blocking)
+11-18 22:44:46.441 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:46.441 I/Unity   ( 6146): GrandSDK.GrandSDK:InitializeSDK()
+11-18 22:44:46.441 I/Unity   ( 6146): 
+11-18 22:44:46.490 I/Unity   ( 6146): [GrandSDK] RemoteConfig context pre-cached on main thread
+11-18 22:44:46.490 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:46.490 I/Unity   ( 6146): GrandSDK.GrandSDK:InitializeSDK()
+11-18 22:44:46.490 I/Unity   ( 6146): 
+11-18 22:44:46.528 I/Unity   ( 6146): [GrandSDK] CloudLogger context pre-cached: userId=5d3ccff4483448614ebbb96733155fa0, platform=Android
+11-18 22:44:46.528 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:46.528 I/Unity   ( 6146): GrandSDK.GrandSDK:InitializeSDK()
+11-18 22:44:46.528 I/Unity   ( 6146): 
+11-18 22:44:46.548 I/Unity   ( 6146): [GrandSDK] SDK initialization complete (AppInstance loading in background)
+11-18 22:44:46.548 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:46.548 I/Unity   ( 6146): GrandSDK.GrandSDK:InitializeSDK()
+11-18 22:44:46.548 I/Unity   ( 6146): 
+11-18 22:44:46.669 I/Unity   ( 6146): [GrandSDK] AppInstance initialized: app_1795059886581_bdb83126cde8
+11-18 22:44:46.669 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:46.669 I/Unity   ( 6146): GrandSDK.<<InitializeSDK>b__9>d:MoveNext()
+11-18 22:44:46.669 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start(TStateMachine&)
+11-18 22:44:46.669 I/Unity   ( 6146): GrandSDK.<>c__DisplayClass22_0:<InitializeSDK>b__9()
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.Tasks.Task`1:InnerInvoke()
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:46.669 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:46.669 I/Unity   ( 6146): 
+11-18 22:44:47.835 I/Unity   ( 6146): [GrandSDK] SDK environment: Production
+11-18 22:44:47.835 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:47.835 I/Unity   ( 6146): GrandSDK.<<InitializeSDK>b__9>d:MoveNext()
+11-18 22:44:47.835 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start(TStateMachine&)
+11-18 22:44:47.835 I/Unity   ( 6146): GrandSDK.<>c__DisplayClass22_0:<InitializeSDK>b__9()
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.Tasks.Task`1:InnerInvoke()
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:47.835 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:47.835 I/Unity   ( 6146): 
+11-18 22:44:47.838 I/Unity   ( 6146): [GrandSDK] ServerClock initialized; scheduling time sync: https://mercury-v2-prod.grandgames.services/v1/time
+11-18 22:44:47.838 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:47.838 I/Unity   ( 6146): GrandSDK.<<InitializeSDK>b__9>d:MoveNext()
+11-18 22:44:47.838 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start(TStateMachine&)
+11-18 22:44:47.838 I/Unity   ( 6146): GrandSDK.<>c__DisplayClass22_0:<InitializeSDK>b__9()
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.Tasks.Task`1:InnerInvoke()
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:47.838 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:47.838 I/Unity   ( 6146): 
+11-18 22:44:47.854 I/IL2CPP  ( 6146): [GrandSDK] [Info] [ServerClock] Fetching server time from https://mercury-v2-prod.grandgames.services/v1/time
+11-18 22:44:47.913 I/Unity   ( 6146): [GrandSDK] CloudLogger configured for game: magic-sort
+11-18 22:44:47.913 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:47.913 I/Unity   ( 6146): GrandSDK.<<InitializeSDK>b__9>d:MoveNext()
+11-18 22:44:47.913 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start(TStateMachine&)
+11-18 22:44:47.913 I/Unity   ( 6146): GrandSDK.<>c__DisplayClass22_0:<InitializeSDK>b__9()
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.Tasks.Task`1:InnerInvoke()
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:47.913 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:47.913 I/Unity   ( 6146): 
+11-18 22:44:47.949 I/Unity   ( 6146): [GrandSDK] RemoteConfig initialization started
+11-18 22:44:47.949 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:47.949 I/Unity   ( 6146): GrandSDK.<<InitializeSDK>b__9>d:MoveNext()
+11-18 22:44:47.949 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start(TStateMachine&)
+11-18 22:44:47.949 I/Unity   ( 6146): GrandSDK.<>c__DisplayClass22_0:<InitializeSDK>b__9()
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.Tasks.Task`1:InnerInvoke()
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:47.949 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:47.949 I/Unity   ( 6146): 
+11-18 22:44:47.975 I/Unity   ( 6146): [GrandSDK] RemoteConfig status changed: Loading
+11-18 22:44:47.975 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:47.975 I/Unity   ( 6146): GrandSDK.<>c:<InitializeSDK>b__22_7(ConfigStatus)
+11-18 22:44:47.975 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeOnStatusChanged(ConfigStatus)
+11-18 22:44:47.975 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:InitializeCore()
+11-18 22:44:47.975 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:47.975 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.975 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.975 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:47.975 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:47.975 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:47.975 I/Unity   ( 6146): 
+11-18 22:44:47.977 I/Unity   ( 6146): [GrandSDK] Analytics initialization started
+11-18 22:44:47.977 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:47.977 I/Unity   ( 6146): GrandSDK.<<InitializeSDK>b__9>d:MoveNext()
+11-18 22:44:47.977 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder:Start(TStateMachine&)
+11-18 22:44:47.977 I/Unity   ( 6146): GrandSDK.<>c__DisplayClass22_0:<InitializeSDK>b__9()
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.Tasks.Task`1:InnerInvoke()
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:47.977 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:47.977 I/Unity   ( 6146): 
+11-18 22:44:48.018 I/Unity   ( 6146): [GrandSDK] RemoteConfig status changed: Loading
+11-18 22:44:48.018 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:48.018 I/Unity   ( 6146): GrandSDK.<>c:<InitializeSDK>b__22_7(ConfigStatus)
+11-18 22:44:48.018 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeOnStatusChanged(ConfigStatus)
+11-18 22:44:48.018 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:48.018 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1:Start(TStateMachine&)
+11-18 22:44:48.018 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:FetchFromServerAsync()
+11-18 22:44:48.018 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:InitializeCore()
+11-18 22:44:48.018 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:48.018 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.018 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.018 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:48.018 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:48.018 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:48.018 I/Unity   ( 6146): 
+11-18 22:44:48.021 I/Unity   ( 6146): [GrandSDK] [RemoteConfig] Fetching config for game: com.grandgames.magicsort
+11-18 22:44:48.021 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:48.021 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeDebugLog(String)
+11-18 22:44:48.021 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:48.021 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1:Start(TStateMachine&)
+11-18 22:44:48.021 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:FetchFromServerAsync()
+11-18 22:44:48.021 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:InitializeCore()
+11-18 22:44:48.021 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:48.021 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.021 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.021 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:48.021 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:48.021 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:48.021 I/Unity   ( 6146): 
+11-18 22:44:48.040 I/Unity   ( 6146): [GrandSDK] [RemoteConfig] Normalized context: os=android os_version=11 app_version=0.0.3497
+11-18 22:44:48.040 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:48.040 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeDebugLog(String)
+11-18 22:44:48.040 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:48.040 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1:Start(TStateMachine&)
+11-18 22:44:48.040 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:FetchFromServerAsync()
+11-18 22:44:48.040 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:InitializeCore()
+11-18 22:44:48.040 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:48.040 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.040 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.040 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:48.040 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:48.040 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:48.040 I/Unity   ( 6146): 
+11-18 22:44:48.118 I/Unity   ( 6146): [GrandSDK] [RemoteConfig] Sending request to https://magic-sort-mercury-v2-prod.grandgames.services/v2/config (format: protobuf)
+11-18 22:44:48.118 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:48.118 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeDebugLog(String)
+11-18 22:44:48.118 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:48.118 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1:Start(TStateMachine&)
+11-18 22:44:48.118 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:FetchFromServerAsync()
+11-18 22:44:48.118 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfig:InitializeCore()
+11-18 22:44:48.118 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:48.118 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.118 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.118 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:48.118 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:48.118 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:48.118 I/Unity   ( 6146): 
+11-18 22:44:48.711 I/Unity   ( 6146): [GrandSDK] Analytics fully initialized
+11-18 22:44:48.711 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:48.711 I/Unity   ( 6146): GrandSDK.<>c:<InitializeSDK>b__22_13()
+11-18 22:44:48.711 I/Unity   ( 6146): GrandSDK.Analytics.AnalyticsCallbacks:InvokeOnInitialized()
+11-18 22:44:48.711 I/Unity   ( 6146): GrandSDK.Analytics.<>c__DisplayClass27_0:<Initialize>b__0()
+11-18 22:44:48.711 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:48.711 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.711 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.711 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:48.711 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:48.711 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:48.711 I/Unity   ( 6146): 
+11-18 22:44:48.712 I/Unity   ( 6146): [GrandSDK] App Instance ID: app_1795059886581_bdb83126cde8
+11-18 22:44:48.712 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:48.712 I/Unity   ( 6146): GrandSDK.Analytics.AnalyticsCallbacks:InvokeOnInitialized()
+11-18 22:44:48.712 I/Unity   ( 6146): GrandSDK.Analytics.<>c__DisplayClass27_0:<Initialize>b__0()
+11-18 22:44:48.712 I/Unity   ( 6146): System.Threading.Tasks.Task:Execute()
+11-18 22:44:48.712 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.712 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:48.712 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteWithThreadLocal(Task&)
+11-18 22:44:48.712 I/Unity   ( 6146): System.Threading.Tasks.Task:ExecuteEntry(Boolean)
+11-18 22:44:48.712 I/Unity   ( 6146): System.Threading.ThreadPoolWorkQueue:Dispatch()
+11-18 22:44:48.712 I/Unity   ( 6146): 
+11-18 22:44:48.868 I/ActivityManager(  506): Killing 5278:com.google.android.apps.docs/u0a114 (adj 985): empty #17
+11-18 22:44:49.597 I/ActivityManager(  506): Killing 5765:com.google.android.apps.wellbeing/u0a106 (adj 985): empty #17
+11-18 22:44:49.597 I/ActivityManager(  506): Killing 5524:com.google.android.apps.tachyon/u0a115 (adj 985): empty #18
+11-18 22:44:51.151 I/ActivityTaskManager(  506): Fully drawn com.grandgames.magicsort/com.unity3d.player.UnityPlayerActivity: +28s920ms
+11-18 22:44:54.920 I/IL2CPP  ( 6146): [GrandSDK] [Info] [ServerClock] Fetched server time OK: server_unix_ms=1795059895067, offset_ms=3702, rtt_ms=7020
+11-18 22:44:55.256 I/Unity   ( 6146): [GrandSDK] [RemoteConfig] HTTP response received: 92 bytes
+11-18 22:44:55.256 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:55.256 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeDebugLog(String)
+11-18 22:44:55.256 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.256 I/Unity   ( 6146): System.Runtime.CompilerServices.MoveNextRunner:Run()
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.Tasks.AwaitTaskContinuation:RunOrScheduleAction(Action, Boolean, Task&)
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.Tasks.Task:FinishContinuations()
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.Tasks.Task`1:TrySetResult(TResult)
+11-18 22:44:55.256 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1:SetResult(TResult)
+11-18 22:44:55.256 I/Unity   ( 6146): GrandSDK.Core.Networking.<PostAsync>d__7:MoveNext()
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.256 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.256 I/Unity   ( 6146): System.Runtime.CompilerServices.MoveNextRunner:R
+11-18 22:44:55.295 I/Unity   ( 6146): [GrandSDK] [RemoteConfig] Entry: GrandSDKTestConfigModel = {"Value":"controlsdk"}
+11-18 22:44:55.295 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:55.295 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeDebugLog(String)
+11-18 22:44:55.295 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.295 I/Unity   ( 6146): System.Runtime.CompilerServices.MoveNextRunner:Run()
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.Tasks.AwaitTaskContinuation:RunOrScheduleAction(Action, Boolean, Task&)
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.Tasks.Task:FinishContinuations()
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.Tasks.Task`1:TrySetResult(TResult)
+11-18 22:44:55.295 I/Unity   ( 6146): System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1:SetResult(TResult)
+11-18 22:44:55.295 I/Unity   ( 6146): GrandSDK.Core.Networking.<PostAsync>d__7:MoveNext()
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.295 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.295 I/Unity   ( 6146): System.Runtime.CompilerSe
+11-18 22:44:55.297 I/Unity   ( 6146): [GrandSDK] [RemoteConfig] Config response: 1 entries, 0 assignments
+11-18 22:44:55.297 I/Unity   ( 6146): UnityEngine.Logger:Log(LogType, Object)
+11-18 22:44:55.297 I/Unity   ( 6146): GrandSDK.RemoteConfig.RemoteConfigCallbacks:InvokeDebugLog(String)
+11-18 22:44:55.297 I/Unity   ( 6146): GrandSDK.RemoteConfig.<FetchFromServerAsync>d__50:MoveNext()
+11-18 22:44:55.297 I/Unity   ( 6146): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.297 I/Unity   ( 6146): System.Threading.ExecutionContext:Run(ExecutionContext, ContextCallback, Object, Boolean)
+11-18 22:44:55.297 I/Unity   ( 6146): System.Runtime.CompilerServices.MoveNextRunner:Run()
+11-18 22:44:55.297 I/Unity   ( 6146): System.Threading.Tasks.AwaitTaskContinuation:RunOrScheduleAction(Action, Boolean, Task&)
+11-18 22:44:55.297 I/Unity   ( 6146): System.Threading.Tasks.Task:FinishContinuations()
+11-18 22:44:55.297 I/Unity   ( 6146): System.Threading.Tasks.Task`1:TrySetResult(TResult)
