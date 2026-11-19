@@ -1,4 +1,0 @@
-seq 58
-tap 331 1957
-wait 1
-stop
