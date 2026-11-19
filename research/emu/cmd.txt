@@ -1,7 +1,5 @@
-seq 14
-logcat 80
-launch
-wait 25
-shot a_relaunch_25s
-wait 10
-shot b_35s
+seq 15
+wait 20
+shot a_wait20
+wait 20
+shot b_wait40
