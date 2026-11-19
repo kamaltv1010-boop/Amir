@@ -1,11 +1,16 @@
-seq 2
-tap 409 1163
+seq 3
+tap 539 1158
 wait 1
-shot picked
-tap 669 1163
+shot a_pick
+tap 745 1158
+wait 2
+shot b_pour1
+tap 539 1158
 wait 1
-shot pouring
+tap 329 1158
+wait 1
+shot c_pour2
 wait 3
-shot after3s
+shot d_3s
 wait 4
-shot after7s
+shot e_7s
