@@ -1,9 +1,9 @@
 done 35
 الحالة: يلعب
 مراحل مكتملة: 14
-الوقت: 5 دقيقة من 102
+الوقت: 10 دقيقة من 102
 آخر شاشة: level
-الشاشات: {'unknown': 17, 'button': 2, 'level': 66, 'close': 1}
-صور محفوظة: 4/900، شاشات جديدة: 53
-المرحلة الحالية: 74 (حركات 10، مخفي 4، إخفاقات 0، أدوات -، 0.9 دقيقة)
-الحالة المقروءة: [red,cyan,purple,purple]/4 [orange]/4 [?,red,red,red]/4 [?,purple,?,lavender]/4 [?,purple,cyan,cyan]/4 [brown,yellow,lavender,lavender]/4 [cyan,orange,brown,blue]/4 [brown,yellow,yellow,yellow]/4 [plum,plum,plum,plum,plum,plum,plum,plum,plum]/10 [green,green,green,green,green,green,green,green]/10 [blue,darkgreen,pink,green]/4 [blue,blue]/4
+الشاشات: {'unknown': 34, 'button': 5, 'level': 126, 'close': 3}
+صور محفوظة: 11/900، شاشات جديدة: 55
+المرحلة الحالية: 74 (حركات 7، مخفي 3، إخفاقات 0، أدوات -، 0.7 دقيقة)
+الحالة المقروءة: [orange,blue]/4 [?,cyan,plum,plum]/4 [?,orange,?,blue]/4 [darkgreen,red,red,lavender]/4 [orange,darkgreen,purple,purple]/4 [pink,pink,pink,pink,pink,pink,pink,pink]/10 [green,green,green,green,green,green,green,green]/10 [yellow,brown,cyan,cyan]/4 [yellow,brown]/4 [plum,pink,blue,blue]/4

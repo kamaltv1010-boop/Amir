@@ -971,3 +971,44 @@
 [14:16:48] خطة المرحلة 74: 2 حركة (reveal، 47.2 ms)
 [14:16:57] خطة المرحلة 74: 2 حركة (reveal، 236.4 ms)
 [14:17:06] خطة المرحلة 74: 2 حركة (progress، 2.8 ms)
+[14:17:15] شاشة جديدة لم تُرَ من قبل: new_054_unknown.jpg
+[14:17:20] شاشة جديدة لم تُرَ من قبل: new_055_unknown.jpg
+[14:17:20] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[14:17:38] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:18:05] شاشة التحميل: انتظار بلا نقر
+[14:19:01] المرحلة 74 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[14:19:01] بداية المرحلة 74: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[14:19:01] حالة المرحلة 74: [{"x": 64, "y": 538, "cap": 4, "layers": ["purple", "orange", "brown", "darkgreen"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "brown", "plum", "brown"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["blue", "pink", "plum", "darkgreen"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "darkgreen"], "keys": [0]}]
+[14:19:01] خطة المرحلة 74: 9 حركة (key، 0.6 ms)
+[14:19:23] الحالة بعد (4, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[14:19:23] خطة المرحلة 74: 4 حركة (key، 0.2 ms)
+[14:19:32] الحالة بعد (1, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[14:19:32] خطة المرحلة 74: 3 حركة (key، 0.2 ms)
+[14:19:51] الحركة (5, 1) تحرّر مفتاحاً؛ انتظار الباب
+[14:20:06] المرحلة 74: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[14:20:06] حالة المرحلة 74 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["purple", "pink", "green", "blue"], "keys": [0]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "lavender"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "orange", "?", "yellow"], "keys": [1]}, {"x": 64, "y": 538, "cap": 4, "layers": ["purple", "orange", "orange"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 642, "cap": 10, "layers": ["darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["blue", "pink", "plum", "plum"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow"]}]
+[14:20:06] خطة المرحلة 74: 1 حركة (key، 0.2 ms)
+[14:20:15] خطة المرحلة 74: 1 حركة (key، 0.2 ms)
+[14:20:17] الحركة (2, 5) تحرّر مفتاحاً؛ انتظار الباب
+[14:20:31] المرحلة 74: قوارير جديدة (باب انفتح؟ 9 → 12 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[14:20:31] حالة المرحلة 74 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["purple", "pink", "green", "blue"], "keys": [0]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "lavender"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "orange"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["?", "blue", "?", "orange"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["?", "lavender", "?", "plum"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["yellow", "green", "red", "yellow"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["purple", "orange", "orange"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 202, "y": 642, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 642, "cap": 10, "layers": ["darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen", "darkgreen"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["blue", "pink", "plum", "plum"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "yellow"]}]
+[14:20:32] خطة المرحلة 74: 1 حركة (reveal، 108.4 ms)
+[14:20:40] خطة المرحلة 74: 3 حركة (reveal، 158.0 ms)
+[14:21:04] خطة المرحلة 74: 1 حركة (reveal، 11.0 ms)
+[14:21:12] خطة المرحلة 74: 1 حركة (progress، 4.3 ms)
+[14:21:19] انتهى التحميل بعد 194 ثانية
+[14:21:19] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[14:21:35] المرحلة 74 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[14:21:35] بداية المرحلة 74: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[14:21:35] حالة المرحلة 74: [{"x": 64, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red", "lavender"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "darkgreen", "purple", "cyan"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "brown", "cyan", "green"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "brown", "green", "pink"], "keys": [1]}]
+[14:21:35] خطة المرحلة 74: 2 حركة (key، 0.1 ms)
+[14:21:41] الحركة (5, 3) تحرّر مفتاحاً؛ انتظار الباب
+[14:21:51] المرحلة 74: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[14:21:51] حالة المرحلة 74 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["orange", "blue", "plum", "purple"], "keys": [1]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "pink"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "orange", "?", "blue"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red", "lavender"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "darkgreen", "purple", "cyan"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "brown", "cyan", "green"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "brown"]}]
+[14:21:51] خطة المرحلة 74: 1 حركة (reveal، 7.8 ms)
+[14:21:55] خطة المرحلة 74: 4 حركة (key، 0.2 ms)
+[14:22:10] الحركة (0, 1) تحرّر مفتاحاً؛ انتظار الباب
+[14:22:16] المرحلة 74: قوارير جديدة (باب انفتح؟ 9 → 10 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[14:22:16] حالة المرحلة 74 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["orange", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "cyan", "plum", "plum"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "orange", "?", "blue"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red", "lavender"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "darkgreen", "purple", "purple"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "brown", "cyan", "cyan"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "brown"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["plum", "pink", "blue", "blue"], "keys": [1]}]
+[14:22:16] خطة المرحلة 74: 1 حركة (key، 0.2 ms)
+[14:22:18] الحركة (9, 0) تحرّر مفتاحاً؛ انتظار الباب
