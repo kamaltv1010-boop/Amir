@@ -89,8 +89,16 @@ class _Enc:
         self.idx = idx
 
 
+# قوارير «الطين» في الحالة الجارية (من المرحلة 40): يُصبّ فيها ولا يُصبّ منها حتى تكتمل؛
+# يضبطها plan() طوال البحث فقط (البوت خيط واحد)
+_NOSRC = frozenset()
+
+
 def _key(s, caps):
-    """مفتاح قانوني: مجموعة (السعة، المحتوى) بلا ترتيب القوارير (تماثل)."""
+    """مفتاح قانوني: مجموعة (السعة، المحتوى) بلا ترتيب القوارير (تماثل). قارورة الطين
+    لا تماثل قارورة عادية بالمحتوى نفسه (لا يُصبّ منها)."""
+    if _NOSRC:
+        return tuple(sorted((caps[k], k in _NOSRC, s[k]) for k in range(len(s))))
     return tuple(sorted(zip(caps, s)))
 
 
@@ -111,6 +119,8 @@ def _gen_moves(s, caps, exclude=None):
     for i in range(n):
         t = s[i]
         if not t:
+            continue
+        if i in _NOSRC:                   # الطين: لا يُصبّ منها
             continue
         top = t[-1]
         if top < 0:                       # قمّة مخفية: مجمّدة
@@ -137,7 +147,7 @@ def _gen_moves(s, caps, exclude=None):
             else:
                 if mono:                  # نقل قارورة أحادية إلى فارغة: عبث
                     continue
-                cj = caps[j]
+                cj = (caps[j], j in _NOSRC)  # فارغة الطين لا تماثل الفارغة العادية
                 if empty_caps is None:
                     empty_caps = {cj}
                 elif cj in empty_caps:    # الفارغات المتماثلة: واحدة تكفي
@@ -628,6 +638,18 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
 def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
          info=None, seed=None):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
+    قوارير الطين ("clay": True) لا يُصبّ منها. انظر _plan."""
+    global _NOSRC
+    _NOSRC = frozenset(k for k, t in enumerate((state or {}).get("tubes") or []) if t.get("clay"))
+    try:
+        return _plan(state, max_nodes, time_limit, bad_moves, avoid, info, seed)
+    finally:
+        _NOSRC = frozenset()
+
+
+def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
+          info=None, seed=None):
+    """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
 
     bad_moves: حركات (i, j) تُستبعد من الخطوة الأولى (فشلت في هذه الحالة).
     avoid: مفاتيح حالات (state_key) مرّ بها البوت في هذه المرحلة لتجنّب الدوران.
@@ -711,8 +733,9 @@ def legal_moves(state):
     enc = _Enc(state)
     s, caps = enc.start, enc.caps
     out = []
+    tubes = (state or {}).get("tubes") or []
     for i, t in enumerate(s):
-        if not t or t[-1] < 0:
+        if not t or t[-1] < 0 or tubes[i].get("clay"):
             continue
         for j, u in enumerate(s):
             if i == j or len(u) >= caps[j]:
@@ -731,7 +754,7 @@ def apply_move(state, i, j):
         return None
     src = list(tubes[i].get("layers") or [])
     dst = list(tubes[j].get("layers") or [])
-    if not src or _is_hidden(src[-1]):
+    if not src or _is_hidden(src[-1]) or tubes[i].get("clay"):
         return None
     try:
         capj = max(int(tubes[j].get("cap") or 4), len(dst))

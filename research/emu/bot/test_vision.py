@@ -20,6 +20,21 @@ TOL = 8  # سماحية نقطة النقر بالبكسل (ارتفاع 1000)
 
 # (x, y, cap, "طبقات من الأسفل", {خيارات})
 LEVELS = {
+    "L040_clay": [  # «الطين» (المرحلة 40): أربع قوارير فارغة بشظايا طين في قاعها تخفي حافة القاع
+        (66, 392, 4, 'pink blue lavender blue'),
+        (134, 392, 4, 'orange green green green'),
+        (202, 392, 4, '', {"clay": True}),
+        (270, 392, 4, '', {"clay": True}),
+        (338, 392, 4, 'orange pink purple'),
+        (406, 392, 4, 'lavender yellow blue orange'),
+        (32, 618, 4, 'blue pink lavender'),
+        (100, 618, 4, 'yellow lavender purple purple'),
+        (168, 618, 4, '', {"clay": True}),
+        (236, 618, 4, '', {"clay": True}),
+        (304, 618, 4, 'red purple pink'),
+        (372, 618, 4, 'green yellow orange yellow'),
+        (440, 618, 4, 'red red red'),
+    ],
     "L017_cyan": [  # لون سماوي جديد يشبه الزجاج، وقارورتان عملاقتان (سعة 17) على طرفي ثلاثة صفوف
         (65, 521, 17, 'yellow', {"tall": True, "free": 1}),
         (134, 336, 4, '? yellow blue blue'),
@@ -353,6 +368,9 @@ def check_level(name):
             good = False
         if bool(t.get("lifted")) != bool(opt.get("lifted")):
             errs.append("tube %d lifted=%s" % (i, t.get("lifted")))
+            good = False
+        if bool(t.get("clay")) != bool(opt.get("clay")):
+            errs.append("tube %d clay=%s" % (i, t.get("clay")))
             good = False
         if opt.get("tall"):
             free = t["cap"] - len(t["layers"])

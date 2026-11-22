@@ -266,6 +266,47 @@ class TestPlainPuzzles(unittest.TestCase):
         STATS["one_empty"] = found
 
 
+class TestClay(unittest.TestCase):
+    """«الطين» (Magic Sort من المرحلة 40): يُصبّ في القارورة ولا يُصبّ منها حتى تكتمل."""
+
+    def _clay_state(self):
+        # حالة المرحلة 40 كما قرأها البوت: ثماني ألوان، والقوارير الفارغة الأربع كلها طين
+        rows = ['pink blue lavender blue', 'orange green green green', None, None,
+                'orange pink purple', 'lavender yellow blue orange', 'blue pink lavender',
+                'yellow lavender purple purple', None, None, 'red purple pink',
+                'green yellow orange yellow', 'red red red']
+        st = mk([(4, r.split() if r else []) for r in rows])
+        for k, r in enumerate(rows):
+            if r is None:
+                st["tubes"][k]["clay"] = True
+        return st
+
+    def test_no_pour_from_clay(self):
+        st = self._clay_state()
+        clay = {k for k, t in enumerate(st["tubes"]) if t.get("clay")}
+        mv, _ = timed_plan(st)
+        self.assertTrue(mv)
+        cur = st
+        for (i, j) in mv:
+            self.assertNotIn(i, clay)
+            cur = solver.apply_move(cur, i, j)
+            self.assertIsNotNone(cur)
+        self.assertTrue(solver.is_solved(cur))
+        for k in clay:                      # ما صُبّ في الطين لون واحد كامل
+            lay = cur["tubes"][k]["layers"]
+            self.assertTrue(not lay or (len(lay) == 4 and len(set(lay)) == 1), lay)
+
+    def test_clay_rules(self):
+        st = mk([(4, ['red', 'red']), (4, ['red', 'blue']), (4, [])])
+        st["tubes"][0]["clay"] = True
+        self.assertIsNone(solver.apply_move(st, 0, 2))      # لا صبّ من الطين
+        self.assertIsNotNone(solver.apply_move(st, 1, 2))
+        self.assertNotIn((0, 2), solver.legal_moves(st))
+        self.assertEqual(solver._NOSRC, frozenset())        # لا يبقى أثر بعد plan
+        timed_plan(st)
+        self.assertEqual(solver._NOSRC, frozenset())
+
+
 class TestTallTube(unittest.TestCase):
     def _giant_puzzle(self, seed, gcap=8, ginit=4):
         rnd = random.Random(seed)

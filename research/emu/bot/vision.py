@@ -479,7 +479,22 @@ def detect_tubes(a, diag=None):
             stand = sm[ys0:ys1, max(0, xs0):min(W, xs1)].mean() if ys1 > ys0 else 0.0
             t["stand"] = float(stand)
             t["tall"] = bool(tall)
+            # «الطين» (من المرحلة 40): شظايا بيج تغطي قاع القارورة فتخفي حافة القاع قرب المحور؛
+            # فينتهي الزجاج قرب المحور عند العنق بينما يمتدّ الجداران حتى الطين
+            t["clay"] = False
+            if not tall and t["ywall"] - t["y1"] > 0.5 * w:
+                ya, yb = int(t["ywall"] - 0.2 * w), min(H, int(t["ywall"] + 0.7 * w))
+                xa, xb = max(0, int(t["cx"] - 0.35 * w)), min(W, int(t["cx"] + 0.35 * w))
+                if yb > ya and sm[ya:yb, xa:xb].mean() > 0.12:
+                    t["clay"] = True
             out.append(t)
+        # قاع قارورة الطين: من ارتفاع القوارير العادية (وسيطها) لا من الحافة المخفية
+        hs = [t["y1"] - t["y0"] for t in out if not t["tall"] and not t["clay"]]
+        for t in out:
+            if t["clay"]:
+                hn = float(np.median(hs)) if hs else K_HEIGHT * t["w"]
+                t["y1"] = int(round(t["y0"] + hn))
+                t["ratio"] = (t["y1"] - t["y0"]) / t["w"]
     if diag is not None:
         diag["odd"] = odd
     return out
@@ -593,6 +608,18 @@ def _fill_occluded(layers, warnings, cx):
         layers[i] = cand or HIDDEN
 
 
+def _clay_top(a, cx, w, ya, yb):
+    """أعلى سطر فيه شظايا طين (بيج) في وسط القارورة بين ya و yb، أو None."""
+    H, W = a.shape[:2]
+    ya, yb = max(0, int(ya)), min(H, int(yb))
+    xa, xb = max(0, int(cx - 0.3 * w)), min(W, int(cx + 0.3 * w))
+    if yb <= ya or xb <= xa:
+        return None
+    rows = stand_mask(a[ya:yb, xa:xb]).mean(axis=1)
+    idx = np.flatnonzero(rows > 0.25)
+    return float(ya + idx[0]) if idx.size else None
+
+
 def _read_tube(a, t, h, e, warnings, bg=None):
     w = t["w"]
     cx = t["cx"]
@@ -607,7 +634,13 @@ def _read_tube(a, t, h, e, warnings, bg=None):
         if abs(capf - cap) > 0.3:
             warnings.append("cap %.2f at x=%d" % (capf, cx))
         cap = max(1, cap)
-        prof = _profile(a, cx, w, top + 0.40 * w, B + 0.05 * w)
+        yend = B + 0.05 * w
+        if t.get("clay"):
+            # الطين ليس سائلاً: يُقرأ المحتوى فوق أعلى شظاياه فقط (القارورة الفارغة تبقى فارغة)
+            yc0 = _clay_top(a, cx, w, B - 2.2 * h, t["y1"])
+            if yc0 is not None:
+                yend = min(yend, yc0 - 2)
+        prof = _profile(a, cx, w, top + 0.40 * w, yend)
         ytop = _first_content(prof, top + 0.40 * w, bg_lab=bg)
         if ytop is None:
             n = 0
@@ -626,10 +659,13 @@ def _read_tube(a, t, h, e, warnings, bg=None):
         if layers and layers[-1] == HIDDEN:
             warnings.append("hidden top at x=%d" % cx)
         ytap = (top + t["y1"]) / 2
-        return {"x": int(round(cx)), "y": int(round(ytap)), "cap": cap, "layers": layers,
-                "tall": bool(t["tall"]), "lifted": bool(t.get("lifted")),
-                "box": [int(x0), int(round(top)), int(x1), int(t["y1"])],
-                "_ytop": ytop, "_B": B, "_h": h, "_e": e}
+        out = {"x": int(round(cx)), "y": int(round(ytap)), "cap": cap, "layers": layers,
+               "tall": bool(t["tall"]), "lifted": bool(t.get("lifted")),
+               "box": [int(x0), int(round(top)), int(x1), int(t["y1"])],
+               "_ytop": ytop, "_B": B, "_h": h, "_e": e}
+        if t.get("clay"):
+            out["clay"] = True                  # يُصبّ فيها ولا يُصبّ منها حتى تكتمل
+        return out
     # ---- القارورة الطويلة على حامل: القاع مخفيّ خلف الحامل
     T = top + K_TOP * w
     ystand = t["y1"]
