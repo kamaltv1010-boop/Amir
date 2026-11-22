@@ -5,3 +5,7 @@
 [04:33:35] تثبيت (com.grandgames.magicsort.apk config.arm64_v8a.apk): Success
 [04:33:36] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
 [04:43:40] لم تظهر شاشة تفاعلية خلال 10 دقائق؛ يكمل المحرّك على أي حال
+[04:43:42] اللعبة ليست في الواجهة (mCurrentFocus=Window{bde163d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[04:44:05] شاشة جديدة لم تُرَ من قبل: new_001_unknown.jpg
+[04:44:29] شاشة التحميل: انتظار بلا نقر
+[04:44:34] تنفيذ أوامر الدفعة 5: shot s1 ; top
