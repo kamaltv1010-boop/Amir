@@ -208,3 +208,35 @@
 [06:38:42] خطة المرحلة 20: 5 حركة (astar، 0.3 ms)
 [06:39:03] فوز بالمرحلة 20 (unknown): 5 حركة في 21 ث، أدوات -
 [06:39:08] شاشة جديدة لم تُرَ من قبل: new_038_unknown.jpg
+[06:39:20] بداية المرحلة 21: 4 قارورة، سعات [(4, 4)]، مخفي 0
+[06:39:20] حالة المرحلة 21: [{"x": 118, "y": 636, "cap": 4, "layers": ["orange", "orange", "red", "purple"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["orange", "red", "purple", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": []}, {"x": 352, "y": 636, "cap": 4, "layers": []}]
+[06:39:20] خطة المرحلة 21: 6 حركة (astar، 0.2 ms)
+[06:39:52] المرحلة 21 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:39:52] بداية المرحلة 21: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[06:39:52] حالة المرحلة 21: [{"x": 275, "y": 375, "cap": 4, "layers": ["blue", "red", "green", "purple"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "purple", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": []}, {"x": 197, "y": 638, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["purple", "purple"]}, {"x": 352, "y": 636, "cap": 4, "layers": ["red", "red"]}]
+[06:39:52] خطة المرحلة 21: 5 حركة (progress، 1.0 ms)
+[06:40:14] خطة المرحلة 21: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[06:40:14] المرحلة 21 عالقة (لا خطة): [blue,red,red,red]/4 [blue]/4 [green]/4 [orange,orange,orange,orange]/4 [purple,purple,purple,purple]/4 [yellow,yellow]/4
+[06:40:14] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[06:40:18] المرحلة 21 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:40:18] بداية المرحلة 21: 8 قارورة، سعات [(4, 8)]، مخفي 0
+[06:40:18] حالة المرحلة 21: [{"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["green", "green", "blue", "yellow"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["blue", "red", "red", "red"]}, {"x": 352, "y": 375, "cap": 4, "layers": ["blue"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green"]}, {"x": 197, "y": 638, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 275, "y": 638, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["yellow", "yellow"]}]
+[06:40:18] خطة المرحلة 21: 8 حركة (astar، 0.5 ms)
+[06:40:58] فوز بالمرحلة 21 (unknown): 7 حركة في 40 ث، أدوات -
+[06:41:02] شاشة جديدة لم تُرَ من قبل: new_039_unknown.jpg
+[06:41:15] بداية المرحلة 22: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[06:41:15] حالة المرحلة 22: [{"x": 157, "y": 375, "cap": 4, "layers": ["green", "purple", "green", "orange"]}, {"x": 236, "y": 375, "cap": 4, "layers": ["green", "pink", "orange", "orange"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["blue", "purple", "orange", "red"]}, {"x": 392, "y": 502, "cap": 10, "layers": ["orange", "orange"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["pink", "orange", "orange", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["purple", "yellow", "yellow", "blue"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["purple", "red", "orange", "orange"]}]
+[06:41:15] خطة المرحلة 22: 8 حركة (progress، 17.2 ms)
+[06:41:51] خطة المرحلة 22: 6 حركة (progress، 1.3 ms)
+[06:42:10] المرحلة 22 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:42:10] بداية المرحلة 22: 9 قارورة، سعات [(4, 8), (11, 1)]، مخفي 0
+[06:42:10] حالة المرحلة 22: [{"x": 80, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 157, "y": 375, "cap": 4, "layers": ["green"]}, {"x": 236, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["blue", "purple", "purple"]}, {"x": 392, "y": 521, "cap": 11, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "c_03_6_7"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["yellow", "blue", "pink", "red"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["purple", "yellow", "yellow", "blue"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["purple", "red", "red"]}]
+[06:42:10] خطة المرحلة 22: 13 حركة (astar، 1.0 ms)
+[06:42:42] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:42:42] خطة المرحلة 22: 11 حركة (astar، 0.8 ms)
+[06:43:05] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:43:05] خطة المرحلة 22: 10 حركة (astar، 0.8 ms)
+[06:43:37] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:43:37] خطة المرحلة 22: 8 حركة (astar، 0.7 ms)
+[06:44:08] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:44:08] خطة المرحلة 22: 6 حركة (astar، 0.6 ms)
