@@ -346,3 +346,36 @@
 [17:17:39] الحركة (12, 3) تحرّر مفتاحاً؛ انتظار الباب
 [17:17:47] الحالة بعد (12, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
 [17:18:37] خطة المرحلة 98: 5 حركة (astar، 0.8 ms)
+[17:19:21] شاشة جديدة لم تُرَ من قبل: new_034_unknown.jpg
+[17:19:21] فوز بالمرحلة 98 (unknown): 17 حركة في 129 ث، أدوات -
+[17:19:25] شاشة جديدة لم تُرَ من قبل: new_035_unknown.jpg
+[17:19:25] سهم تعليم: لمس الهدف (85, 476)
+[17:19:41] شاشة جديدة لم تُرَ من قبل: new_036_close.jpg
+[17:20:14] إعلان بملء الشاشة: رجوع (1)
+[17:20:21] سهم تعليم: لمس الهدف (427, 490)
+[17:20:25] شاشة جديدة لم تُرَ من قبل: new_037_button.jpg
+[17:20:29] شاشة جديدة لم تُرَ من قبل: new_038_close.jpg
+[17:20:51] بداية المرحلة 21: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[17:20:51] حالة المرحلة 21: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "pink"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "lavender", "pink"], "keys": [1]}]
+[17:20:51] خطة المرحلة 21: 3 حركة (key، 0.4 ms)
+[17:21:11] الحركة (5, 4) تحرّر مفتاحاً؛ انتظار الباب
+[17:21:25] المرحلة 21: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[17:21:25] حالة المرحلة 21 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "yellow", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "?", "blue", "red"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["orange", "?", "blue", "yellow"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "purple", "plum", "pink"]}]
+[17:21:25] خطة المرحلة 21: 1 حركة (key، 0.3 ms)
+[17:21:27] الحركة (7, 5) تحرّر مفتاحاً؛ انتظار الباب
+[17:21:41] المرحلة 21: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[17:21:41] حالة المرحلة 21 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["?", "plum", "?", "darkgreen"], "keys": [1]}, {"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "yellow", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["orange", "?", "blue", "yellow"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "purple", "plum", "pink"]}]
+[17:21:41] خطة المرحلة 21: 1 حركة (key، 0.9 ms)
+[17:21:49] خطة المرحلة 21: 1 حركة (key، 0.3 ms)
+[17:21:51] الحركة (0, 6) تحرّر مفتاحاً؛ انتظار الباب
+[17:22:05] المرحلة 21: قوارير جديدة (باب انفتح؟ 11 → 12 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[17:22:05] حالة المرحلة 21 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["plum", "green", "green", "pink"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["darkgreen"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red", "red"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "yellow", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["orange", "?", "blue", "yellow"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "purple", "plum", "pink"]}]
+[17:22:06] خطة المرحلة 21: 2 حركة (reveal، 169.2 ms)
+[17:22:22] خطة المرحلة 21: 3 حركة (reveal، 151.4 ms)
+[17:22:46] خطة المرحلة 21: 2 حركة (reveal، 91.7 ms)
+[17:23:02] خطة المرحلة 21: 8 حركة (reveal، 14.3 ms)
+[17:23:16] المرحلة 21: قوارير جديدة (باب انفتح؟ 12 → 13 قارورة، ذاكرة 4 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[17:23:16] حالة المرحلة 21 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["plum", "green", "green"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "c_16_7_6", "?", "orange"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red", "red"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "yellow", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "yellow", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["orange", "lavender"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "purple", "plum", "plum"]}]
+[17:23:16] خطة المرحلة 21: 4 حركة (reveal، 64.0 ms)
+[17:23:46] المرحلة 21: قوارير جديدة (باب انفتح؟ 13 → 14 قارورة، ذاكرة 4 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[17:23:46] حالة المرحلة 21 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["plum", "green", "green", "green"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "c_16_7_6", "?", "orange"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red", "red"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "yellow", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "yellow", "yellow"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["c_16_7_6", "purple", "?", "purple"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["orange"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "purple", "plum", "plum"]}]
