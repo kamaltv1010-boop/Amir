@@ -65,7 +65,7 @@ class FakeGame:
 
     # ---- المرحلة
     def load(self, k):
-        caps, truth, hidden = self.levels[k]
+        caps, truth, hidden = self.levels[k][:3]
         self.caps = list(caps)
         self.truth = [list(t) for t in truth]
         self.hidden = [list(h) for h in hidden]
@@ -210,6 +210,57 @@ class FakeGame:
             extra = len(self.truth) - len(t)      # قوارير أضيفت بعد الحركة تبقى
             self.truth = t + [[] for _ in range(max(0, extra))]
             self.hidden = h + [[] for _ in range(max(0, extra))]
+
+
+class DoorGame(FakeGame):
+    """مرحلة بمفاتيح وأبواب (المرحلتان 63 و74): قوارير خلف باب لا تظهر حتى تنكشف طبقة مفتاحه (لا شيء بلون آخر
+    فوقها)، فتُدرج بين القوارير الظاهرة وتتغيّر المواضع. levels[k][3] = [{"key": (قارورة، موضع)، "tubes": [...]}]."""
+
+    def load(self, k):
+        super().load(k)
+        lvl = self.levels[k]
+        self.doors = [dict(d, open=False) for d in (lvl[3] if len(lvl) > 3 else [])]
+
+    def closed(self):
+        return {t for d in getattr(self, "doors", []) if not d["open"] for t in d["tubes"]}
+
+    def layout(self):
+        shut = self.closed()
+        vis = [k for k in range(len(self.truth)) if k not in shut]
+        n = len(vis)
+        per = n if n <= 5 else (n + 1) // 2
+        pos = [(-1000, -1000)] * len(self.truth)
+        for r_i, k in enumerate(vis):
+            r, c = divmod(r_i, per)
+            m = per if r == 0 else n - per
+            pos[k] = (int(473 * (c + 0.5) / m), 506 if n <= 5 else (375 if r == 0 else 636))
+        return pos
+
+    def visible(self):
+        st = super().visible()
+        shut = self.closed()
+        keys = {}
+        for d in self.doors:
+            if not d["open"]:
+                keys.setdefault(d["key"][0], []).append(d["key"][1])
+        tubes = []
+        for k, t in enumerate(st["tubes"]):
+            if k in shut:
+                continue
+            if k in keys:
+                t["keys"] = sorted(keys[k])
+            tubes.append(t)
+        return {"tubes": tubes, "warnings": []}
+
+    def pour(self, i, j):
+        ok = super().pour(i, j)
+        for d in self.doors:
+            k, p = d["key"]
+            t = self.truth[k]
+            if not d["open"] and p < len(t) and not self.hidden[k][p] and all(c == t[p] for c in t[p:]):
+                d["open"] = True
+                self.opened = getattr(self, "opened", 0) + 1
+        return ok
 
 
 class FakeDevice:
@@ -365,6 +416,41 @@ class TestDriverSim(unittest.TestCase):
                     (Path(self.tmp.name) / "levels.jsonl").read_text(encoding="utf-8").splitlines())
         print("\n[driver sim] levels=%d moves=%d taps=%d boosters=%s virtual_min=%.1f"
               % (game.wins, moves, game.taps_at_last_win, game.boosters_used, bot.elapsed_min()))
+
+    def test_door_opens_without_restart(self):
+        """كشف طبقة المفتاح يفتح باباً تظهر خلفه قارورتان بين القوارير: يكمل البوت المحاولة نفسها (بلا «أُعيدت من
+        البداية») ويفوز. الأحمر والأخضر والأزرق والأصفر 4 من كل لون، والمفتاح على الأخضر تحت أزرقين."""
+        lvl = ([4] * 6,
+               [["red", "green", "blue", "blue"], ["blue", "yellow", "yellow", "red"], [],
+                ["green", "green", "green", "yellow"], ["red", "red", "blue", "yellow"], []],
+               [[False] * 4, [False] * 4, [], [False] * 4, [False] * 4, []],
+               [{"key": (0, 1), "tubes": [3, 4]}])
+        rng = random.Random(3)
+        game = DoorGame([lvl], rng)
+        dev = FakeDevice(game)
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(dev, driver.Vision(FakeVisionModule(game), out), out, 600, git=False)
+        for _ in range(20):
+            bot.run(max_iters=100)
+            if game.wins >= 1:
+                break
+        log = (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+        self.assertEqual(game.wins, 1, log[-3000:])
+        self.assertEqual(getattr(game, "opened", 0), 1, log[-3000:])
+        self.assertIn("استمرار بلا إعادة", log)
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertIn("(key،", log)                          # أول خطة: تحرير المفتاح
+        self.assertIn("تحرّر مفتاحاً", log)
+
+    def test_door_map_keeps_memory(self):
+        """door_map: القوارير القديمة تُطابق داخل الجديدة بالترتيب (مخفي انكشف مقبول)، وغير ذلك None."""
+        old = {"tubes": [{"layers": ["red", "?", "blue"]}, {"layers": []}, {"layers": ["green"]}]}
+        new = {"tubes": [{"layers": ["pink", "pink"]}, {"layers": ["red", "yellow", "blue"]}, {"layers": []},
+                         {"layers": ["?", "?"]}, {"layers": ["green"]}]}
+        self.assertEqual(driver.door_map(old, new), {0: 1, 1: 2, 2: 4})
+        self.assertIsNone(driver.door_map(new, old))
+        moved = {"tubes": [{"layers": ["red", "?"]}, {"layers": ["blue"]}, {"layers": ["green"]}, {"layers": []}]}
+        self.assertIsNone(driver.door_map(old, moved))
 
     def test_stuck_uses_boosters(self):
         # لغز مستحيل بلا قارورة إضافية: يجب أن يضغط أداة «قارورة»
@@ -630,6 +716,20 @@ class TestClayPassThrough(unittest.TestCase):
         mv = solver.plan(st)
         self.assertTrue(mv)
         self.assertNotIn(mv[0][0], clay)
+
+    def test_keys_reach_plan(self):
+        """طبقة المفتاح من الرؤية الحقيقية تصل إلى الحلّال (Vision.parse لا يحذفها) فتبدأ الخطة بالحفر نحوه."""
+        import vision as real_vision
+        td = Path(driver.HERE) / "testdata"
+        out = driver.Out(Path(tempfile.mkdtemp()), 10, quiet=True)
+        vis = driver.Vision(real_vision, out)
+        st = vis.parse(driver.Frame(Image.open(td / "L074_keys.jpg")))
+        self.assertEqual([(k, t["keys"]) for k, t in enumerate(st["tubes"]) if t.get("keys")], [(3, [1])])
+        self.assertEqual(len(st["doors"]), 2)
+        info = {}
+        mv = solver.plan(st, info=info)
+        self.assertEqual(info["mode"], "key")
+        self.assertEqual(mv[0][0], 3)
 
 
 if __name__ == "__main__":

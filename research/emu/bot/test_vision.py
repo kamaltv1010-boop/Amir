@@ -520,6 +520,71 @@ def test_is_home():
         assert not vision.is_home(_path(n)), n
 
 
+# المرحلة 74 (مفاتيح وأبواب خشبية بأقفال ملوّنة): (x, y, "طبقات من الأسفل", مواضع المفاتيح، ألوانها)؛ القارورة الطويلة
+# بلونها وفراغها فقط. رُوجعت بالعين: طبقة المفتاح تُقرأ بلون سائلها (كانت c_05_6_4 وc_03_6_6)، والأخضر الداكن والبرقوقي
+# لونان من اللوحة (كانا c_10_7_1/c_11_7_1 وc_31_7_3)، والأبواب ليست قوارير. L074_door_key وL074_buried_key لقطتان أثناء
+# انزلاق الشاشة (يصنّفها classify «unknown») لكن القوارير في مواضعها.
+KEY_LEVELS = {
+    "L074_keys": ([
+        (64, 332, 'purple lavender pink cyan'), (133, 332, '? brown yellow yellow'), (201, 332, '? cyan'),
+        (270, 332, '? red ? blue', [1], ["green"]), (339, 332, '? pink ? pink'), (407, 332, 'red cyan yellow purple'),
+        (64, 538, 'darkgreen red red'), (133, 538, 'blue brown brown brown'),
+        (202, 621, 'orange', None, None, 1), (270, 643, 'plum', None, None, 0),
+        (338, 537, 'orange blue'), (407, 538, 'green green'),
+    ], [(101, 646, 67, 198, "green"), (306, 646, 67, 198, "gold")]),
+    "L074_door_key": ([   # باب مزدوج كبير بقفل أزرق يغطي ثلاث خانات أعلى اليمين، ومفتاح ذهبي على طبقة زرقاء
+        (64, 331, 'orange blue plum plum', [1], ["gold"]), (134, 332, '? cyan cyan cyan'), (201, 332, '? orange ? blue'),
+        (64, 537, 'darkgreen red red lavender'), (133, 537, 'orange darkgreen purple purple'),
+        (202, 622, 'pink', None, None, 2), (270, 621, 'green', None, None, 2),
+        (338, 537, 'yellow'), (407, 537, 'yellow brown brown'),
+    ], [(236, 235, 206, 197, "blue"), (101, 647, 67, 185, "green"), (306, 647, 67, 185, "gold")]),
+    "L074_buried_key": ([  # البوت صبّ الأخضر الداكن فوق طبقة المفتاح (دفنه): ما يجب أن يتجنّبه الحلّال
+        (64, 331, 'purple lavender'), (133, 332, '? brown yellow yellow'), (201, 332, '? cyan cyan'),
+        (270, 332, '? red darkgreen darkgreen', [1], ["green"]), (338, 332, '? pink pink pink'),
+        (407, 332, 'red cyan yellow purple'), (64, 537, 'darkgreen red red'), (133, 537, 'blue brown brown brown'),
+        (202, 622, 'orange', None, None, 1), (270, 641, 'plum', None, None, 0),
+        (339, 537, 'orange blue blue'), (407, 537, 'green green'),
+    ], [(101, 647, 67, 185, "green"), (306, 647, 67, 185, "gold")]),
+}
+
+
+def test_keys_and_doors():
+    """طبقات المفاتيح بلونها الحقيقي ومواضعها، وأبواب الخشب بألوان أقفالها، ولا قوارير وهمية على الأبواب."""
+    bad = {}
+    for name, (tubes, doors) in KEY_LEVELS.items():
+        st = vision.parse_level(_path(name))
+        got, errs = st["tubes"], []
+        if len(got) != len(tubes):
+            errs.append("tube count %d != %d" % (len(got), len(tubes)))
+        for i, (e, t) in enumerate(zip(tubes, got)):
+            x, y, layers = e[0], e[1], e[2].split()
+            keys = e[3] if len(e) > 3 and e[3] is not None else []
+            kcol = e[4] if len(e) > 4 and e[4] is not None else []
+            if not _near((t["x"], t["y"]), (x, y)):
+                errs.append("tube %d tap %s != %s" % (i, (t["x"], t["y"]), (x, y)))
+            if len(e) > 5:                      # طويلة: اللون والفراغ
+                if not t.get("tall") or set(t["layers"]) != set(layers) or t["cap"] - len(t["layers"]) != e[5]:
+                    errs.append("tall %d %s/%d" % (i, t["layers"], t["cap"]))
+            elif t["layers"] != layers:
+                errs.append("tube %d layers %s != %s" % (i, t["layers"], layers))
+            if t.get("keys", []) != keys or t.get("key_colors", []) != kcol:
+                errs.append("tube %d keys %s %s != %s %s" % (i, t.get("keys"), t.get("key_colors"), keys, kcol))
+        gd = [(d["x"], d["y"], d["w"], d["h"], d["color"]) for d in st.get("doors", [])]
+        if len(gd) != len(doors) or any(abs(a[k] - b[k]) > 8 for a, b in zip(gd, doors) for k in range(4)) \
+                or [d[4] for d in gd] != [d[4] for d in doors]:
+            errs.append("doors %s != %s" % (gd, doors))
+        if any(w.startswith("unknown color") for w in st.get("warnings", [])):
+            errs.append("unknown colors: %s" % st["warnings"])
+        if errs:
+            bad[name] = errs
+    assert not bad, bad
+    # ولا مفاتيح ولا أبواب في لقطات المراحل القديمة (لا إيجابيات كاذبة)
+    for name in LEVELS:
+        st = vision.parse_level(_path(name))
+        assert not st.get("doors"), (name, st.get("doors"))
+        assert not any(t.get("keys") for t in st["tubes"]), name
+
+
 def test_device_mapping():
     assert vision.to_device(236, 500) == (538, 1140)
 

@@ -26,6 +26,9 @@
     الترتيب: الصف الأعلى من اليسار إلى اليمين ثم الصف التالي (القارورة الطويلة في صف قمّتها).
     مفاتيح إضافية اختيارية (لا يحتاجها الحلّال): في كل قارورة "tall" و"lifted" (مرفوعة/مختارة)
     و"box"؛ وفي الحالة "warnings" (غير فارغة = لقطة أثناء حركة أو شيء غير مألوف: أعد التصوير).
+    المفاتيح والأبواب (من المرحلة 63): "keys" = مواضع الطبقات التي عليها ملصق مفتاح (من الأسفل) و"key_colors"
+    ألوانها، والطبقة نفسها تُقرأ بلون سائلها الحقيقي؛ وفي الحالة "doors" = [{x,y,w,h,color}] أبواب خشبية بقفل
+    ملوّن تخفي قوارير (لا تُعدّ قوارير). يحرّر المفتاحَ كشفُ طبقته (لا شيء بلون آخر فوقها) فيُفتح بابه.
 
 القارورة الطويلة على حامل: قاعها مخفيّ، فيُقاس «الفراغ» (cap - عدد الطبقات) من قمة السائل
 بدقة (هذا ما يحتاجه الحلّال)، والطبقات المرئية تقدير حتى الحامل. في المراحل 10..14 قيس
@@ -55,6 +58,8 @@ PALETTE = {
     "lavender": (92, 100, 165),
     "brown":    (114, 49, 42),      # لون جديد من المرحلة 15
     "cyan":     (0, 152, 215),      # لون جديد من المرحلة 17 (يشبه الزجاج: انظر glass_mask)
+    "darkgreen": (12, 58, 2),       # من المرحلة 74 (كان يُسمّى c_10_7_1 أو c_11_7_1 فيبدو لونين)
+    "plum":     (99, 0, 77),        # من المرحلة 74 (كان c_31_7_3)
 }
 # لون خارج اللوحة (مرحلة لاحقة بلون جديد) يُسمّى آلياً بتقريب HSV دقيق: c_<hue>_<sat>_<val>
 # (التصيير مسطّح، فاللون نفسه يعطي الاسم نفسه دائماً). أضِفه إلى PALETTE بعد رؤيته.
@@ -568,11 +573,60 @@ def parse_level(img, debug: bool = False) -> dict:
             tubes_out.append(_read_tube(a, t, h, e, warnings, bg))
     _check_counts(tubes_out, warnings)
     state = {"tubes": tubes_out}
+    doors = find_doors(a, raw)
+    if doors:
+        state["doors"] = doors
     if warnings:
         state["warnings"] = warnings
     if debug:
         state["_geom"] = {"w": w, "h": h, "e": e}
     return state
+
+
+def wood_mask(a):
+    """خشب الأبواب (من المرحلة 63): بني برتقالي وبيج دافئ (السائل البرتقالي والأصفر يشبهانه: تُستثنى القوارير)."""
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return (R > 130) & (R - B > 60) & (R - G > 25) & (G - B > 15) & (G > 40)
+
+
+def find_doors(img, tubes=None):
+    """أبواب خشبية بقفل ملوّن تغطي خانات قوارير: [{x, y, w, h, color}] (x,y الزاوية العليا اليسرى).
+    tubes: القوارير الخام (detect_tubes) لاستبعاد صناديقها (سائل برتقالي/أصفر يشبه الخشب)."""
+    a = load(img)
+    H, W = a.shape[:2]
+    m = wood_mask(a)
+    keep = np.zeros_like(m)
+    keep[int(0.13 * H):play_bottom(a)] = True
+    m &= keep
+    for t in (tubes if tubes is not None else detect_tubes(a)):
+        m[max(0, int(t["y0"]) - 3):int(t["y1"]) + 4, max(0, int(t["x0"]) - 3):int(t["x1"]) + 4] = False
+    out = []
+    for c in _components(_shift_or(m, 2)):
+        bw, bh = c["x1"] - c["x0"] + 1, c["y1"] - c["y0"] + 1
+        if bw < 0.1 * W or bh < 0.12 * H or c["n"] < 0.45 * bw * bh:
+            continue
+        # ألواح الباب بيج فاتح (السائل البرتقالي/الأصفر في قارورة مائلة أثناء الصبّ ليس فيه هذا اللون)
+        box = _i16(a[c["y0"]:c["y1"] + 1, c["x0"]:c["x1"] + 1])
+        R, G, B = box[..., 0], box[..., 1], box[..., 2]
+        if float(((R > 200) & (G > 140) & (B > 90) & (R - B > 50)).mean()) < 0.1:
+            continue
+        # القفل في وسط الباب: بكسلات زاهية مشبّعة بصبغة غير صبغة الخشب
+        xa, xb = c["x0"] + int(0.2 * bw), c["x1"] - int(0.2 * bw)
+        ya, yb = c["y0"] + int(0.25 * bh), c["y1"] - int(0.25 * bh)
+        reg = a[ya:yb, xa:xb].reshape(-1, 3).astype(np.float64)
+        color = None
+        if reg.size:
+            mx, mn = reg.max(axis=1), reg.min(axis=1)
+            sat = (mx - mn) / np.maximum(mx, 1)
+            r, g, b = reg[:, 0], reg[:, 1], reg[:, 2]
+            woodish = (r > g) & (g > b) & ((g - b) < 0.75 * (r - b)) & ((g - b) > 0.12 * (r - b))
+            sel = (mx > 140) & (sat > 0.5) & ~woodish
+            if sel.sum() >= 0.03 * len(reg):
+                color = _hue_name(np.median(reg[sel], axis=0))
+        out.append({"x": int(c["x0"]), "y": int(c["y0"]), "w": int(bw), "h": int(bh), "color": color})
+    out.sort(key=lambda d: (d["y"], d["x"]))
+    return out
 
 
 def _check_counts(tubes, warnings):
@@ -620,6 +674,62 @@ def _clay_top(a, cx, w, ya, yb):
     return float(ya + idx[0]) if idx.size else None
 
 
+# ألوان المفاتيح والأقفال بمدى الصبغة (درجات): الحدّ الأعلى لكل اسم
+KEY_HUES = ((12, "red"), (32, "orange"), (58, "gold"), (165, "green"), (250, "blue"), (292, "purple"),
+            (345, "pink"), (361, "red"))
+
+
+def _hue_name(rgb) -> str:
+    r, g, b = (float(v) / 255 for v in rgb)
+    mx, mn = max(r, g, b), min(r, g, b)
+    if mx == mn:
+        return "gray"
+    if mx == r:
+        hue = (60 * ((g - b) / (mx - mn)) + 360) % 360
+    elif mx == g:
+        hue = 60 * ((b - r) / (mx - mn)) + 120
+    else:
+        hue = 60 * ((r - g) / (mx - mn)) + 240
+    for lim, name in KEY_HUES:
+        if hue < lim:
+            return name
+    return "red"
+
+
+def _key_layer(a, cx, w, yc, h):
+    """طبقة عليها ملصق مفتاح (من المرحلة 63: مفتاح زاهٍ بحدّ داكن في وسط الطبقة، فيضلّل الوسيط فتُقرأ c_*).
+    في نافذة الطبقة كلها: اللون الغالب من اللوحة يغطي الربع على الأقل، وبكسلات بعيدة عنه (ΔE>35) تغطي 18% فأكثر
+    موزّعة في «صفوف مختلطة» (سائل على الجانبين والملصق في الوسط: نافذة تقطع حدّ طبقتين صفوفها كاملة اللون)،
+    وفيها بكسلات زاهية مشبّعة (الملصق). يعيد (لون السائل، لون المفتاح) أو None."""
+    H, W = a.shape[:2]
+    xa, xb = max(0, int(round(cx - 0.36 * w))), min(W, int(round(cx + 0.36 * w)) + 1)
+    ya, yb = max(0, int(round(yc - 0.40 * h))), min(H, int(round(yc + 0.40 * h)) + 1)
+    if yb - ya < 6 or xb - xa < 6:
+        return None
+    win = a[ya:yb, xa:xb].astype(np.float64)
+    hh, ww = win.shape[:2]
+    px = win.reshape(-1, 3)
+    lab = _srgb_to_lab(px)
+    d = np.sqrt(((lab[:, None, :] - _PAL_LAB[None, :, :]) ** 2).sum(-1))
+    nn, dm = d.argmin(axis=1), d.min(axis=1)
+    cnt = np.bincount(nn[dm < 20], minlength=len(_PAL_NAMES))
+    k0 = int(np.argmax(cnt))
+    if cnt[k0] < 0.25 * len(px):
+        return None
+    farv = np.sqrt(((lab - _PAL_LAB[k0]) ** 2).sum(-1)) > 35
+    if farv.mean() < 0.18:
+        return None
+    rowf = farv.reshape(hh, ww).mean(axis=1)
+    if float(((rowf > 0.15) & (rowf < 0.85)).mean()) < 0.3:
+        return None
+    fp = px[farv]
+    mx, mn = fp.max(axis=1), fp.min(axis=1)
+    glyph = (mx > 120) & ((mx - mn) / np.maximum(mx, 1) > 0.45)
+    if glyph.sum() < 0.08 * len(px):
+        return None
+    return _PAL_NAMES[k0], _hue_name(np.median(fp[glyph], axis=0))
+
+
 def _read_tube(a, t, h, e, warnings, bg=None):
     w = t["w"]
     cx = t["cx"]
@@ -651,10 +761,18 @@ def _read_tube(a, t, h, e, warnings, bg=None):
                 warnings.append("fill %.2f at x=%d" % (nf, cx))
             n = max(0, min(cap, n))
         layers = []
+        keys, key_colors = [], []
         for k in range(n):
             yc = B - (k + 0.5) * h
             rgb = _sample(a, cx, w, yc, h)
-            layers.append(color_name(rgb) if rgb is not None else None)
+            c = color_name(rgb) if rgb is not None else None
+            if c is not None and c != HIDDEN and not t["tall"]:   # الطويلة بلا حامل: شظايا الاحتفال تشبه الملصق
+                kl = _key_layer(a, cx, w, yc, h)
+                if kl is not None:
+                    c = kl[0]
+                    keys.append(k)
+                    key_colors.append(kl[1])
+            layers.append(c)
         _fill_occluded(layers, warnings, cx)
         if layers and layers[-1] == HIDDEN:
             warnings.append("hidden top at x=%d" % cx)
@@ -665,6 +783,9 @@ def _read_tube(a, t, h, e, warnings, bg=None):
                "_ytop": ytop, "_B": B, "_h": h, "_e": e}
         if t.get("clay"):
             out["clay"] = True                  # يُصبّ فيها ولا يُصبّ منها حتى تكتمل
+        if keys:
+            out["keys"] = keys                  # مواضع طبقات المفاتيح (من الأسفل)
+            out["key_colors"] = key_colors
         return out
     # ---- القارورة الطويلة على حامل: القاع مخفيّ خلف الحامل
     T = top + K_TOP * w

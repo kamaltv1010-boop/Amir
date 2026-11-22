@@ -409,6 +409,78 @@ class TestHidden(unittest.TestCase):
 
 
 class TestSpeed(unittest.TestCase):
+    # ---- المفاتيح والأبواب (المرحلتان 63 و74): كشف طبقة المفتاح يفتح باباً يخفي قوارير
+    def _mkk(self, tubes, keys):
+        st = mk(tubes)
+        for k, ps in keys.items():
+            st["tubes"][k]["keys"] = ps
+        return st
+
+    def test_key_priority_over_progress(self):
+        """مفتاح تحت كتلة وردية يمكن نقلها: الحركة الأولى تكشفه (لا حركات «تقدّم» أخرى)."""
+        st = self._mkk([(4, ["green", "red", "pink", "pink"]), (4, ["blue", "blue", "yellow"]),
+                        (4, ["yellow", "yellow"]), (4, ["red", "pink"]), (4, ["blue", "green"]), (4, [])], {0: [1]})
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "key")
+        self.assertEqual(mv[0][0], 0)
+        after = st
+        for (i, j) in mv:
+            after = solver.apply_move(after, i, j)
+        self.assertEqual(after["tubes"][0]["layers"], ["green", "red"])     # طبقة المفتاح في القمة
+        self.assertTrue(solver.key_freed(st, *mv[-1]) or len(mv) > 1)
+
+    def test_key_dig_through_hidden(self):
+        """المرحلة 74: [?، أحمر بمفتاح، ?، أزرق] — يُصبّ الأزرق أولاً لينكشف المخفي فوق المفتاح."""
+        st = self._mkk([(4, ["?", "red", "?", "blue"]), (4, ["orange", "blue"]), (4, ["red", "red", "red"]),
+                        (4, ["yellow", "yellow", "orange"]), (4, [])], {0: [1]})
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "key")
+        self.assertEqual(mv[0], (0, 1))           # فوق أزرق مثله، لا في الفارغة
+        self.assertFalse(solver.key_freed(st, 0, 1))
+        st2 = self._mkk([(4, ["?", "red", "blue"]), (4, ["orange", "blue"])], {0: [1]})
+        self.assertTrue(solver.key_freed(st2, 0, 1))
+
+    def test_key_not_buried(self):
+        """لا يمكن كشف المفتاح الآن: لا تُدفن طبقته تحت أحمر آخر ما دامت حركة غيرها."""
+        st = self._mkk([(4, ["orange", "blue", "red"]), (4, ["green", "yellow", "yellow", "red"]),
+                        (4, ["green", "green", "purple"]), (4, ["orange", "orange", "purple"])], {0: [1]})
+        self.assertIn((1, 0), solver.legal_moves(st))
+        mv, _ = timed_plan(st)
+        self.assertTrue(mv)
+        self.assertNotEqual(mv[0], (1, 0))
+
+    def test_exposed_key_poured_out(self):
+        """مفتاح مكشوف لم يطر (لو كانت القاعدة «صبّ طبقته خارجها»): يُصبّ لونه من قارورته."""
+        st = self._mkk([(4, ["orange", "blue"]), (4, ["blue", "blue"]), (4, ["orange", "orange", "orange"]),
+                        (4, ["yellow"] * 4)], {0: [1]})
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "key")
+        self.assertEqual(mv[0], (0, 1))
+        self.assertTrue(solver.key_freed(st, 0, 1))
+
+    def test_level74_board_from_image(self):
+        """لوحة L074_keys كما تقرؤها الرؤية: أول حركة تحفر نحو المفتاح الأخضر (القارورة 3)."""
+        st = {"tubes": [
+            {"x": 64, "y": 332, "cap": 4, "layers": ["purple", "lavender", "pink", "cyan"]},
+            {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "yellow", "yellow"]},
+            {"x": 201, "y": 332, "cap": 4, "layers": ["?", "cyan"]},
+            {"x": 270, "y": 332, "cap": 4, "layers": ["?", "red", "?", "blue"], "keys": [1]},
+            {"x": 339, "y": 332, "cap": 4, "layers": ["?", "pink", "?", "pink"]},
+            {"x": 407, "y": 332, "cap": 4, "layers": ["red", "cyan", "yellow", "purple"]},
+            {"x": 64, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "red"]},
+            {"x": 133, "y": 538, "cap": 4, "layers": ["blue", "brown", "brown", "brown"]},
+            {"x": 202, "y": 621, "cap": 10, "layers": ["orange"] * 9, "tall": True},
+            {"x": 270, "y": 643, "cap": 10, "layers": ["plum"] * 10, "tall": True},
+            {"x": 338, "y": 537, "cap": 4, "layers": ["orange", "blue"]},
+            {"x": 407, "y": 538, "cap": 4, "layers": ["green", "green"]}]}
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "key")
+        self.assertEqual(mv[0], (3, 10))
+
     def test_worst_case_speed(self):
         # ألغاز كبيرة عشوائية (قد تكون مستحيلة): يجب أن يعود خلال الحد دائماً
         for seed in range(6):

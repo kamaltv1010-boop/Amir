@@ -81,6 +81,7 @@ CFG = {
     "tap_gap": _env("BOT_TAP_GAP", 0.3, float),
     "level_max_min": _env("BOT_LEVEL_MAX_MIN", 30.0, float),
     "plan_sec": _env("BOT_PLAN_SEC", 1.6, float),
+    "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
 }
 BOOSTER_DEFAULT = {"undo": (144, 854), "shuffle": (236, 854), "add": (328, 854)}
 NOVEL_DIST = 28        # بصمة 256 بت: نوافذ الفوز بينها ≤32، والشاشات المختلفة ≥73
@@ -319,13 +320,22 @@ class Vision:
         tubes = []
         for t in st["tubes"]:
             try:
-                tubes.append({"x": int(t["x"]), "y": int(t["y"]), "cap": int(t.get("cap") or 4),
-                              "layers": [c if isinstance(c, str) else "?" for c in (t.get("layers") or [])],
-                              "tall": bool(t.get("tall", False)), "lifted": bool(t.get("lifted", False)),
-                              "clay": bool(t.get("clay", False))})
+                d = {"x": int(t["x"]), "y": int(t["y"]), "cap": int(t.get("cap") or 4),
+                     "layers": [c if isinstance(c, str) else "?" for c in (t.get("layers") or [])],
+                     "tall": bool(t.get("tall", False)), "lifted": bool(t.get("lifted", False)),
+                     "clay": bool(t.get("clay", False))}
+                ks = [int(p) for p in (t.get("keys") or []) if 0 <= int(p) < len(d["layers"])]
+                if ks:                                   # طبقات المفاتيح (من المرحلة 63) تصل إلى الحلّال
+                    d["keys"] = ks
+                    if t.get("key_colors"):
+                        d["key_colors"] = [str(c) for c in t["key_colors"]]
+                tubes.append(d)
             except (KeyError, TypeError, ValueError):
                 return None
-        return {"tubes": tubes, "warnings": list(st.get("warnings") or [])}
+        out = {"tubes": tubes, "warnings": list(st.get("warnings") or [])}
+        if st.get("doors"):
+            out["doors"] = list(st["doors"])
+        return out
 
     @staticmethod
     def _pt(p):
@@ -505,7 +515,51 @@ def lifted_index(st):
 
 
 def compact_state(st):
-    return [{"x": t["x"], "y": t["y"], "cap": t["cap"], "layers": t["layers"]} for t in st["tubes"]]
+    out = []
+    for t in st["tubes"]:
+        d = {"x": t["x"], "y": t["y"], "cap": t["cap"], "layers": t["layers"]}
+        if t.get("keys"):
+            d["keys"] = t["keys"]
+        out.append(d)
+    return out
+
+
+def _same_tube(a, b) -> bool:
+    """القارورة نفسها قبل انفتاح باب وبعده: الطبقات نفسها (مخفية انكشفت أو لون من الذاكرة بقي "?" مقبول)."""
+    la, lb = a["layers"], b["layers"]
+    if len(la) != len(lb):
+        return False
+    return all(x == y or x == "?" or y == "?" for x, y in zip(la, lb))
+
+
+def door_map(old, new):
+    """انفتح باب (من المرحلة 63): قوارير جديدة ظهرت وبقيت القديمة كما هي. تعيد {فهرس قديم: فهرس جديد} بمطابقة
+    تحفظ ترتيب القراءة (الأبواب تُدرج قوارير بين القديمة وقد تتغيّر المسافات)، أو None إن لم تكن هذه الحالة."""
+    to, tn = old["tubes"], new["tubes"]
+    no, nn = len(to), len(tn)
+    if nn <= no or no == 0:
+        return None
+    # أطول تطابق محافظ على الترتيب (LCS)
+    L = [[0] * (nn + 1) for _ in range(no + 1)]
+    for a in range(no - 1, -1, -1):
+        for b in range(nn - 1, -1, -1):
+            if _same_tube(to[a], tn[b]):
+                L[a][b] = 1 + L[a + 1][b + 1]
+            else:
+                L[a][b] = max(L[a + 1][b], L[a][b + 1])
+    if L[0][0] < no:
+        return None
+    mp, a, b = {}, 0, 0
+    while a < no and b < nn:
+        if _same_tube(to[a], tn[b]) and L[a][b] == 1 + L[a + 1][b + 1]:
+            mp[a] = b
+            a += 1
+            b += 1
+        elif L[a + 1][b] >= L[a][b + 1]:
+            a += 1
+        else:
+            b += 1
+    return mp if len(mp) == no else None
 
 
 class LevelCtx:
@@ -540,6 +594,8 @@ class LevelCtx:
         self.result = None
         self.start_sig = solver.state_key(st)
         self.memory = {}               # (قارورة، موضع) -> لون طبقة مخفية انكشفت
+        self.doors_opened = 0          # أبواب انفتحت في هذه المحاولة (قوارير ظهرت بلا إعادة)
+        self.door_wait = 0
 
     def bad_for(self, key):
         return set(self.bad.get(key, set())) | self.ban
@@ -1338,7 +1394,17 @@ class Bot:
             self.start_probe, self.start_probe_tries, self.start_same = None, 0, 0
             self.new_level(fr, st)
             lv = self.lv
+        elif self.door_ref(st) is not None:
+            # باب انفتح (مفتاح طار إلى قفله) أو قارورة إضافية: قوارير جديدة والقديمة كما هي (بعد الحركة الأخيرة) —
+            # استمرار للمحاولة نفسها لا «إعادة من البداية» (كانت تمحو الذاكرة والأدوات وعدّاد الحركات)
+            if lv.door_wait < 1:
+                lv.door_wait += 1                # حركة الباب والقوارير الداخلة: لقطة أخرى بعد قليل
+                time.sleep(1.2)
+                return self.grab()
+            lv.door_wait = 0
+            self.door_opened(st, *self.door_ref(st))
         elif not compatible(lv.last_state, st, lv.extra_tubes):
+            lv.door_wait = 0
             lv.incompat += 1
             if lv.incompat < 2:
                 time.sleep(0.8)
@@ -1442,6 +1508,43 @@ class Bot:
         i, j = lv.plan.pop(0)
         return self.do_move(stp, i, j)
 
+    def door_ref(self, st):
+        """(الحالة المرجعية، المطابقة) إن كانت `st` هي الحالة السابقة (أو المتوقَّعة بعد الحركة المعلّقة) وقد ظهرت
+        بينها قوارير جديدة؛ وإلا None."""
+        lv = self.lv
+        if lv is None or len(st["tubes"]) <= len(lv.last_state["tubes"]):
+            return None
+        refs = []
+        if lv.pending is not None and lv.pending[2] is not None:
+            refs.append(with_memory(lv.pending[2], lv.memory))
+        refs.append(with_memory(lv.last_state, lv.memory))
+        for ref in refs:
+            mp = door_map(ref, st)
+            if mp is not None:
+                return ref, mp
+        return None
+
+    def door_opened(self, st, ref, mp):
+        """باب انفتح أثناء المحاولة: تُنقل ذاكرة الطبقات المكشوفة إلى الفهارس الجديدة (القوارير الجديدة تُدرج بين
+        القديمة)، وتبقى المحاولة (الحركات والأدوات والوقت) بلا «إعادة من البداية»."""
+        lv = self.lv
+        old_n = len(ref["tubes"])
+        mem = {(mp[k], p): c for (k, p), c in lv.memory.items() if k in mp}
+        lv.memory = mem                        # قاموس جديد: ذاكرة بداية المرحلة (بفهارسها القديمة) تبقى لإعادتها
+        lv.doors_opened += 1
+        if lv.pending is not None:             # الحركة التي حرّرت المفتاح نجحت
+            lv.moves += 1
+            lv.fails = 0
+            lv.pending = None
+        lv.plan = None
+        lv.ban.clear()                         # حركات بفهارس قديمة
+        lv.bad.clear()
+        lv.last_state = st
+        nk = sum(len(t.get("keys") or ()) for t in st["tubes"])
+        self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة"
+                 % (lv.n, old_n, len(st["tubes"]), len(mem), nk))
+        self.log("حالة المرحلة %d بعد الباب: %s" % (lv.n, json.dumps(compact_state(st), ensure_ascii=False)))
+
     def do_move(self, st, i, j):
         lv = self.lv
         k = (solver.state_key(st), (i, j))
@@ -1461,7 +1564,14 @@ class Bot:
             lv.plan_key = solver.state_key(expected)
             if solver.is_solved(expected):
                 lv.maybe_won = True
-        time.sleep(CFG["pour_wait"])
+        wait = CFG["pour_wait"]
+        try:
+            if solver.key_freed(st, i, j):
+                wait += CFG["key_wait"]        # المفتاح يطير إلى قفله ثم ينفتح الباب: لا تُقرأ اللوحة أثناء ذلك
+                self.log("الحركة %s تحرّر مفتاحاً؛ انتظار الباب" % ((i, j),))
+        except Exception:
+            pass
+        time.sleep(wait)
         return self.grab()
 
     def save_stuck(self, fr, tag):

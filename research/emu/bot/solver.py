@@ -23,6 +23,11 @@
   * لا يُصبّ من قارورة منتهية، ولا تُنقل قارورة أحادية اللون إلى قارورة فارغة،
     ولا يُصبّ جزء من قارورة أحادية اللون، ولا تُكرَّر حالة سبق المرور بها (avoid).
   * سعة القارورة الطويلة تُرفع إلى عدد طبقات لونها الظاهرة إن قرأتها الرؤية أقل.
+  * المفاتيح (من المرحلة 63؛ "keys" في القارورة = مواضع طبقات عليها مفتاح): كل مفتاح يفتح باباً
+    خشبياً يخفي قوارير، فاللغز الظاهر ناقص حتى تُفتح. ما دام مفتاح عالقاً يُبحث أولاً عن أقصر تسلسل
+    آمن (عقوبة لاستهلاك الفارغات) يكشف طبقته (لا شيء بلون آخر فوقها: هكذا انفتح الباب في المرحلتين
+    63 و74)، أو يكشف الطبقة المخفية التي فوقها؛ ومفتاح مكشوف من البداية (لم يطر) يُصبّ لونه خارجها.
+    إن لم يوجد تسلسل: لا تُدفن طبقة مفتاح تحت سائل آخر في الحركة الأولى ما دام بديل.
 """
 from __future__ import annotations
 
@@ -35,7 +40,7 @@ INF = float("inf")
 
 __all__ = [
     "plan", "apply_move", "is_solved", "legal_moves", "state_key",
-    "describe", "HIDDEN",
+    "describe", "key_freed", "HIDDEN",
 ]
 
 
@@ -87,6 +92,17 @@ class _Enc:
         self.caps = tuple(caps)
         self.start = tuple(enc)
         self.idx = idx
+        # المفاتيح العالقة: (قارورة، موضع) لطبقات معروفة اللون عليها مفتاح
+        keys = []
+        for k, t in enumerate(tubes):
+            for p in (t.get("keys") or ()):
+                try:
+                    p = int(p)
+                except (TypeError, ValueError):
+                    continue
+                if 0 <= p < len(enc[k]) and enc[k][p] >= 0 and (k, p) not in keys:
+                    keys.append((k, p))
+        self.keys = tuple(keys)
 
 
 # قوارير «الطين» في الحالة الجارية (من المرحلة 40): يُصبّ فيها ولا يُصبّ منها حتى تكتمل؛
@@ -252,6 +268,150 @@ def _misplaced(s) -> int:
     return n
 
 
+# ---------------------------------------------------------------- المفاتيح
+_KEYS = ()          # المفاتيح العالقة في الحالة الجارية [(قارورة، موضع)]؛ يضبطها plan() طوال البحث فقط
+
+
+def _key_block(t, p):
+    """كم كتلة تحجب طبقة المفتاح في الموضع p من القارورة t: 0 = مكشوفة (كل ما فوقها بلونها)، None = خرجت منها.
+    كل طبقة مخفية فوقها كتلة وحدها."""
+    if p >= len(t):
+        return None
+    c = t[p]
+    i = p + 1
+    while i < len(t) and t[i] == c:
+        i += 1
+    runs, prev = 0, None
+    for x in t[i:]:
+        if x != prev or x < 0:
+            runs += 1
+        prev = x
+    return runs
+
+
+def _key_depth(s, keys=None) -> float:
+    """ما يحجب المفاتيح العالقة: الكتل فوق كل مفتاح + 0.3 لكل طبقة منها (الدفن يزيده، والحفر نحوها ينقصه)."""
+    n = 0.0
+    for k, p in (_KEYS if keys is None else keys):
+        t = s[k]
+        b = _key_block(t, p)
+        if b:
+            i = p + 1
+            while i < len(t) and t[i] == t[p]:
+                i += 1
+            n += b + 0.3 * (len(t) - i)
+    return n
+
+
+def _key_targets(s, keys):
+    """أهداف الحفر: لكل مفتاح (قارورة، الموضع الذي يجب أن يصير القمّة أو يُكشف، النوع).
+    النوع "hid": أعلى طبقة مخفية فوق المفتاح تصير القمّة (فتنكشف)؛ "exp": طبقة المفتاح تنكشف؛
+    "out": مفتاح مكشوف من البداية لم يطر (قاعدة «الصبّ خارجها») فيُصبّ لونه من قارورته."""
+    out = []
+    for k, p in keys:
+        t = s[k]
+        hid = [q for q in range(p + 1, len(t)) if t[q] < 0]
+        if hid:
+            out.append((k, hid[-1], "hid"))
+        elif _key_block(t, p) == 0:
+            out.append((k, p, "out"))
+        else:
+            out.append((k, p, "exp"))
+    return out
+
+
+def _target_hit(t, q, kind) -> bool:
+    if kind == "hid":
+        return len(t) == q + 1
+    if kind == "exp":
+        return _key_block(t, q) == 0
+    return len(t) <= q
+
+
+def _target_h(t, q, kind) -> float:
+    """حدّ أدنى لعدد الحركات حتى يتحقق الهدف (الكتل فوقه)."""
+    if _target_hit(t, q, kind):
+        return 0
+    if kind == "out":
+        return 1
+    if kind == "exp":
+        return _key_block(t, q) or 0
+    runs, prev = 0, None
+    for x in t[q + 1:]:
+        if x != prev or x < 0:
+            runs += 1
+        prev = x
+    return runs
+
+
+def _key_search(start, caps, budget, avoid, exclude, max_len=10):
+    """أقصر تسلسل آمن يحرّر مفتاحاً (أو يكشف المخفي فوقه)، بعقوبة لاستهلاك الفارغات ولزيادة الفوضى.
+    الحالات بلا تماثل (أيّ قارورة فيها المفتاح يهمّ). يعيد (حركات [(i, j)]، الدرجة) أو (None, None)."""
+    targets = _key_targets(start, _KEYS)
+    if not targets:
+        return None, None
+    tk = {k for k, _, _ in targets}
+
+    def hval(s):
+        return min(_target_h(s[k], q, kind) for k, q, kind in targets)
+
+    e0 = _empties(start)
+    h0 = _h(start)
+    m0 = _misplaced(start)
+    cnt = itertools.count()
+    gbest = {start: 0}
+    parent = {start: None}
+    heap = [(hval(start), 0, next(cnt), start)]
+    best = None   # (score, state)
+    while heap:
+        f, g, _, s = heapq.heappop(heap)
+        if best is not None and f >= best[0]:
+            break
+        if g > gbest.get(s, INF):
+            continue
+        if not budget.tick():
+            break
+        if g >= max_len:
+            continue
+        g1 = g + 1
+        for (i, j, amt) in _gen_moves(s, caps, exclude if g == 0 else None):
+            c = _apply(s, i, j, amt)
+            if c in gbest and g1 >= gbest[c]:
+                continue
+            if i in tk and any(k == i and _target_hit(c[k], q, kind) for k, q, kind in targets):
+                e = _empties(c)
+                sc = float(g1)
+                if e < e0:
+                    sc += 1.0 * (e0 - e)
+                if e == 0 and e0 > 0:
+                    sc += 2.0
+                sc += 0.04 * (_h(c) - h0) + 0.03 * (_misplaced(c) - m0)
+                if best is None or sc < best[0]:
+                    gbest[c] = g1
+                    parent[c] = (s, (i, j))
+                    best = (sc, c)
+                continue
+            if _key(c, caps) in avoid:
+                continue
+            gbest[c] = g1
+            parent[c] = (s, (i, j))
+            heapq.heappush(heap, (g1 + hval(c), g1, next(cnt), c))
+    if best is None:
+        return None, None
+    moves, x = [], best[1]
+    while parent.get(x) is not None:
+        x, mv = parent[x]
+        moves.append(mv)
+    moves.reverse()
+    return moves, best[0]
+
+
+def _bury_moves(s, caps, exclude):
+    """حركات أولى تدفن مفتاحاً عالقاً (تزيد الكتل فوقه)."""
+    d0 = _key_depth(s)
+    return {(i, j) for (i, j, amt) in _gen_moves(s, caps, exclude) if _key_depth(_apply(s, i, j, amt)) > d0}
+
+
 # ---------------------------------------------------------------- إعادة بناء المسار
 def _derive_moves(start, caps, key_chain, exclude_first=None):
     """يحوّل سلسلة مفاتيح قانونية إلى حركات فعلية على الترتيب الحقيقي للقوارير."""
@@ -406,6 +566,7 @@ def _reveal_search(start, caps, budget, avoid, exclude):
     e0 = _empties(start)
     h0 = _h(start)
     m0 = _misplaced(start)
+    kd0 = _key_depth(start) if _KEYS else 0
     cnt = itertools.count()
     k0 = _key(start, caps)
     gbest = {k0: 0}
@@ -433,6 +594,8 @@ def _reveal_search(start, caps, budget, avoid, exclude):
                     sc += 2.0
                 sc += 0.04 * (_h(c) - h0) + 0.03 * (_misplaced(c) - m0)
                 sc -= 0.01 * sum(1 for x in src if x == HIDDEN)   # الأعمق أولاً
+                if _KEYS:
+                    sc += 0.5 * (_key_depth(c) - kd0)              # لا تدفن المفاتيح
                 if best is None or sc < best[0]:
                     kc = _key(c, caps)
                     best = (sc, _chain(parent, k) + [kc])
@@ -465,6 +628,8 @@ def _progress_search(start, caps, budget, avoid, exclude, max_len=8):
         hr = _h_reveal(s)
         if hr != INF:
             v += 0.5 * hr
+        if _KEYS:
+            v += 0.8 * _key_depth(s)            # الحفر نحو المفاتيح، لا دفنها
         return v
 
     v0 = value(start)
@@ -624,7 +789,8 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
         src_after = _apply(s, i, j, amt)[i]
         reveal = 1 if (src_after and src_after[-1] == HIDDEN) else 0
         e_loss = max(0, _empties(s) - _empties(_apply(s, i, j, amt)))
-        score = (ok / tested, reveal, -e_loss, votes.get(km, 0))
+        kp = (_key_depth(s) - _key_depth(_apply(s, i, j, amt))) if _KEYS else 0
+        score = (ok / tested, kp, reveal, -e_loss, votes.get(km, 0))
         if best is None or score > best[0]:
             best = (score, (i, j))
         if time.perf_counter() > deadline:
@@ -639,12 +805,14 @@ def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
          info=None, seed=None):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
     قوارير الطين ("clay": True) لا يُصبّ منها. انظر _plan."""
-    global _NOSRC
+    global _NOSRC, _KEYS
     _NOSRC = frozenset(k for k, t in enumerate((state or {}).get("tubes") or []) if t.get("clay"))
+    _KEYS = ()
     try:
         return _plan(state, max_nodes, time_limit, bad_moves, avoid, info, seed)
     finally:
         _NOSRC = frozenset()
+        _KEYS = ()
 
 
 def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
@@ -674,6 +842,25 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         except (KeyError, TypeError, ValueError):
             continue                  # لون غير موجود الآن: حالة لا يمكن بلوغها
     av.discard(_key(s, caps))
+
+    # ---- المفاتيح أولاً: الأبواب تخفي قوارير، فلا يكتمل اللغز الظاهر قبل فتحها
+    global _KEYS
+    _KEYS = enc.keys
+    if _KEYS:
+        info["keys"] = len(_KEYS)
+        kb = _Budget(int(max_nodes * 0.5), t0 + time_limit * 0.45)
+        mv, _ = _key_search(s, caps, kb, av, exclude)
+        if mv is None and av:
+            mv, _ = _key_search(s, caps, kb, set(), exclude)
+        if mv:
+            info["mode"] = "key"
+            info["nodes"] = kb.nodes
+            info["ms"] = round((time.perf_counter() - t0) * 1000, 1)
+            return mv
+        bury = _bury_moves(s, caps, exclude)
+        allm = {(i, j) for (i, j, _a) in _gen_moves(s, caps, exclude)}
+        if bury and allm - bury:
+            exclude = exclude | bury
 
     hidden = any(c < 0 for t in s for c in t)
     chain = None
@@ -781,6 +968,26 @@ def apply_move(state, i, j):
         nt.append(d)
     new["tubes"] = nt
     return new
+
+
+def key_freed(state, i, j) -> bool:
+    """هل تحرّر الحركة (i, j) مفتاحاً؟ تكشف طبقته (لا شيء بلون آخر فوقها) أو تصبّها خارج قارورتها.
+    (السائق ينتظر بعدها طيران المفتاح وانفتاح الباب قبل اللقطة.)"""
+    tubes = (state or {}).get("tubes") or []
+    if not (0 <= i < len(tubes)) or not tubes[i].get("keys"):
+        return False
+    after = apply_move(state, i, j)
+    if after is None:
+        return False
+    enc = _Enc(state)
+    src = _Enc(after).start[i]
+    for k, p in enc.keys:
+        if k != i:
+            continue
+        b = _key_block(src, p)
+        if b is None or b == 0:
+            return True
+    return False
 
 
 def is_solved(state) -> bool:
