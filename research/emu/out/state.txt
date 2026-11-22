@@ -1,7 +1,9 @@
 done 21
 الحالة: يلعب
 مراحل مكتملة: 37
-الوقت: 9 دقيقة من 128
-آخر شاشة: unknown
-الشاشات: {'close': 18, 'unknown': 107}
-صور محفوظة: 11/900، شاشات جديدة: 100
+الوقت: 5 دقيقة من 120
+آخر شاشة: level
+الشاشات: {'button': 1, 'close': 1, 'level': 123}
+صور محفوظة: 11/900، شاشات جديدة: 101
+المرحلة الحالية: 40 (حركات 0، مخفي 0، إخفاقات 0، أدوات -، 0.2 دقيقة)
+الحالة المقروءة: [c_23_7_1,c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,green]/4 [orange,pink,purple]/4 [lavender,yellow,blue,orange]/4 []/4 [c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1]/4 [blue,pink,lavender]/4 [yellow,lavender,purple,purple]/4 [red,purple,pink]/4 [green,yellow,orange,yellow]/4 [red,red,red]/4
