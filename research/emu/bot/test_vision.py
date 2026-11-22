@@ -449,6 +449,9 @@ def test_tutorial_arrow():
     """سهم التعليم الأصفر الصاعد يشير إلى صورة اللاعب (نحو 55، 74): الهدف فوق قمته على الصورة."""
     pt = vision.find_tutorial_arrow(_path("tutorial_arrow_up"))
     assert pt is not None and abs(pt[0] - 57) <= 12 and 50 <= pt[1] <= 110, pt
+    # صفحات التبويب المضيئة (الفرق، المتجر، الواجهة) ليست تعليماً: أزرارها البرتقالية لا تُعدّ أسهماً
+    for n in ("teams_page", "007_a_shop", "home_events"):
+        assert vision.find_tutorial_arrow(_path(n)) is None, n
 
 
 def test_is_home():

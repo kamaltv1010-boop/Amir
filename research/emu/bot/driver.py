@@ -591,6 +591,7 @@ class Bot:
         self.pause_home = False        # أمر pause_home: يتوقف عند الواجهة الرئيسية التالية بدل ضغط «Level N»
         self.last_arrow_tap = 0.0      # آخر لمس لهدف سهم تعليم
         self.arrow_taps = 0            # محاولات السهم في الشاشة المجهولة الحالية
+        self.last_tab_home = 0.0       # آخر ضغط على تبويب «Home» من صفحة تبويب أخرى
         self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_daily_log = 0.0
@@ -1575,6 +1576,14 @@ class Bot:
                 self.log("نافذة «لا يستجيب»: انتظار")
                 self.dev.key(4)
         # تعليم بسهم أصفر يشير إلى ما يجب لمسه (صورة اللاعب قبل «الفرق» مثلاً): يُلمس الهدف بعد ثانيتين من ثبات الشاشة
+        # صفحة تبويب غير الرئيسية (الفرق، المتصدّرون، المجموعة، المتجر): شريط التبويبات مضيء بلا زرّ «Level N»؛
+        # العودة بزرّ «Home» في وسط الشريط
+        if dur >= 3 and now - self.last_tab_home > 6 and self.vis._safe("tabbar_fraction", fr.arr, default=0.0) > 0.5:
+            self.last_tab_home = now
+            self.log("صفحة تبويب: العودة إلى الرئيسية")
+            self.tap((236, 955))
+            time.sleep(2)
+            return None
         if self.unknown_streak == 1:
             self.arrow_taps = 0                # شاشة مجهولة جديدة: محاولات السهم من جديد
         if dur >= 2 and now - self.last_arrow_tap > 4 and self.arrow_taps < 3:
