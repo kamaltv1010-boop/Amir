@@ -539,5 +539,47 @@ class TestGitPublish(unittest.TestCase):
                 driver.CFG.update(saved[2])
 
 
+class TestInstallAbi(unittest.TestCase):
+    """التثبيت يختار ملف المعمارية بحسب abilist الجهاز (الحزمة الحديثة فيها arm64_v8a وحده)."""
+
+    class Dev:
+        def __init__(self, abilist):
+            self.abilist = abilist
+            self.calls = []
+
+        def sh(self, cmd, timeout=30):
+            return self.abilist if "abilist" in cmd else ""
+
+        def run(self, args, timeout=30, binary=False):
+            self.calls.append([Path(a).name for a in args[3:]])
+            return 0, "Success"
+
+    def _install(self, names, abilist):
+        with tempfile.TemporaryDirectory() as d:
+            for n in names:
+                Path(d, n).write_bytes(b"x")
+            dev = self.Dev(abilist)
+            bot = driver.Bot.__new__(driver.Bot)
+            bot.dev = dev
+            bot.log = lambda m: None
+            old = driver.CFG["game_dir"]
+            driver.CFG["game_dir"] = d
+            try:
+                self.assertTrue(bot.install_game())
+            finally:
+                driver.CFG["game_dir"] = old
+            return dev.calls[0]
+
+    def test_arm64_only_on_x86_64(self):
+        files = self._install(["com.grandgames.magicsort.apk", "config.arm64_v8a.apk", "config.xxhdpi.apk"],
+                              "x86_64,x86,arm64-v8a,armeabi-v7a,armeabi")
+        self.assertEqual(files, ["com.grandgames.magicsort.apk", "config.arm64_v8a.apk", "config.xxhdpi.apk"])
+
+    def test_prefers_first_supported_abi(self):
+        files = self._install(["com.grandgames.magicsort.apk", "config.arm64_v8a.apk", "config.armeabi_v7a.apk"],
+                              "x86,armeabi-v7a,armeabi")
+        self.assertEqual(files, ["com.grandgames.magicsort.apk", "config.armeabi_v7a.apk"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

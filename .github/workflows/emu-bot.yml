@@ -66,7 +66,7 @@ jobs:
           BOT_AIRPLANE: after_load
         with:
           api-level: 30
-          arch: x86
+          arch: x86_64
           target: playstore
           profile: pixel_4
           cores: 4

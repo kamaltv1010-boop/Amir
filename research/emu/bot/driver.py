@@ -951,10 +951,16 @@ class Bot:
             base = max([p for p in apks if not p.name.startswith("config.")] or apks,
                        key=lambda p: p.stat().st_size)
         splits = [p for p in apks if p.name.startswith("config.")]
-        abi = [p for p in splits if "armeabi_v7a" in p.name or "x86" in p.name]
-        rest = [p for p in splits if not any(k in p.name for k in ("arm64", "armeabi", "x86", "mips"))]
-        tries = [[base] + abi + rest, [base] + abi, [base] + [p for p in splits if "armeabi_v7a" in p.name],
-                 apks, [base]]
+        abi_keys = ("arm64_v8a", "armeabi_v7a", "armeabi", "x86_64", "x86", "mips64", "mips")
+        abi_splits = {k: p for p in splits for k in abi_keys if p.name == "config.%s.apk" % k}
+        # ملف المعمارية: أول معمارية يدعمها الجهاز (بترتيب abilist) ولها ملف في الحزمة. النسخ الحديثة من اللعبة فيها
+        # arm64_v8a وحده، فتحتاج محاكي x86_64 (يترجم arm64 من Android 11)؛ محاكي x86 لا يشغّلها («libmain.so not found»).
+        dev_abis = [a.strip().replace("-", "_") for a in self.dev.sh("getprop ro.product.cpu.abilist").split(",") if a.strip()]
+        abi = [abi_splits[a] for a in dev_abis if a in abi_splits][:1]
+        if not abi:
+            self.log("تحذير: لا ملف معمارية يناسب الجهاز (%s) بين %s" % (",".join(dev_abis), sorted(abi_splits)))
+        rest = [p for p in splits if p not in abi_splits.values()]
+        tries = [[base] + abi + rest, [base] + abi, apks, [base]]
         seen = set()
         for files in tries:
             key = tuple(str(p) for p in files)
