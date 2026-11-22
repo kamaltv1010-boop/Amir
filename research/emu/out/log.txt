@@ -1128,3 +1128,23 @@
 [10:24:36] شاشة جديدة لم تُرَ من قبل: new_144_button.jpg
 [10:24:52] شاشة جديدة لم تُرَ من قبل: new_145_unknown.jpg
 [10:24:57] شاشة جديدة لم تُرَ من قبل: new_146_unknown.jpg
+[10:25:24] شاشة جديدة لم تُرَ من قبل: new_147_button.jpg
+[10:25:28] شاشة جديدة لم تُرَ من قبل: new_148_close.jpg
+[10:25:43] نافذة قبل المرحلة 60 (ميزة جديدة؟): feat_L060.jpg
+[10:25:43] بداية المرحلة 60: 5 قارورة، سعات [(4, 5)]، مخفي 0
+[10:25:43] حالة المرحلة 60: [{"x": 80, "y": 636, "cap": 4, "layers": ["c_03_7_7", "yellow", "lavender"]}, {"x": 157, "y": 636, "cap": 4, "layers": []}, {"x": 236, "y": 636, "cap": 4, "layers": ["green", "orange", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": []}, {"x": 392, "y": 636, "cap": 4, "layers": ["orange", "yellow", "lavender"]}]
+[10:25:43] خطة المرحلة 60: 6 حركة (astar، 0.4 ms)
+[10:26:07] المرحلة 60 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:26:07] بداية المرحلة 60: 8 قارورة، سعات [(4, 8)]، مخفي 0
+[10:26:07] حالة المرحلة 60: [{"x": 40, "y": 375, "cap": 4, "layers": ["blue", "green", "lavender", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["blue", "pink", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["blue", "lavender", "orange", "red"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["purple"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["lavender"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["green", "orange", "yellow", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": []}, {"x": 392, "y": 636, "cap": 4, "layers": ["orange", "yellow", "lavender"]}]
+[10:26:07] خطة المرحلة 60: 8 حركة (progress، 31.0 ms)
+[10:26:26] المرحلة 60 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:26:26] بداية المرحلة 60: 11 قارورة، سعات [(4, 11)]، مخفي 0
+[10:26:26] حالة المرحلة 60: [{"x": 40, "y": 375, "cap": 4, "layers": ["blue", "green", "purple"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["blue", "pink", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["blue", "lavender", "orange", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "red", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["green", "pink", "red", "purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["orange", "blue", "lavender", "purple"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["purple"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["green", "orange", "yellow", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": []}, {"x": 392, "y": 636, "cap": 4, "layers": ["orange", "yellow", "yellow"]}]
+[10:26:26] خطة المرحلة 60: 21 حركة (astar، 2.4 ms)
+[10:27:57] فوز بالمرحلة 60 (unknown): 21 حركة في 91 ث، أدوات -
+[10:28:05] شاشة جديدة لم تُرَ من قبل: new_149_unknown.jpg
+[10:28:16] شاشة جديدة لم تُرَ من قبل: new_150_unknown.jpg
+[10:28:27] شاشة جديدة لم تُرَ من قبل: new_151_unknown.jpg
+[10:29:06] اللعبة ليست في الواجهة (mCurrentFocus=Window{d485c9c u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:29:51] اللعبة ليست في الواجهة (mCurrentFocus=Window{d485c9c u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
