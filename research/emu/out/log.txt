@@ -1278,3 +1278,34 @@
 [15:24:25] حالة المرحلة 84 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["green", "pink", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["orange", "lavender", "red"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["cyan", "green", "cyan", "cyan"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red"]}, {"x": 353, "y": 376, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["orange", "lavender", "?", "red"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "?", "blue", "pink"]}]
 [15:24:25] خطة المرحلة 84: 1 حركة (reveal، 37.0 ms)
 [15:24:29] خطة المرحلة 84: 3 حركة (reveal، 40.5 ms)
+[15:24:40] خطة المرحلة 84: 1 حركة (progress، 0.3 ms)
+[15:24:43] شاشة جديدة لم تُرَ من قبل: new_077_unknown.jpg
+[15:24:43] انتهى التحميل بعد 97 ثانية
+[15:24:44] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[15:24:55] شاشة جديدة لم تُرَ من قبل: new_078_close.jpg
+[15:25:04] المرحلة 84 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[15:25:04] بداية المرحلة 84: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[15:25:04] حالة المرحلة 84: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange", "brown", "red", "green"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["purple", "blue", "red", "blue"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["orange", "green", "red", "blue"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["blue", "brown", "purple", "purple"]}, {"x": 352, "y": 375, "cap": 4, "layers": []}, {"x": 432, "y": 375, "cap": 4, "layers": []}]
+[15:25:04] خطة المرحلة 84: 7 حركة (progress، 5.8 ms)
+[15:25:29] خطة المرحلة 84: 4 حركة (progress، 0.7 ms)
+[15:25:43] خطة المرحلة 84: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[15:25:43] المرحلة 84 عالقة (لا خطة): [orange,brown,brown]/4 [purple,purple,purple]/4 [orange,green,green]/4 []/4 [red,red,red]/4 [blue,blue,blue,blue]/4
+[15:25:43] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[15:25:49] المرحلة 84: قوارير جديدة (باب انفتح؟ 6 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[15:25:49] حالة المرحلة 84 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange", "brown", "brown"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["orange", "green", "green"]}, {"x": 275, "y": 375, "cap": 4, "layers": []}, {"x": 352, "y": 375, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "orange", "?", "purple"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["yellow", "?", "cyan", "brown"]}]
+[15:25:49] خطة المرحلة 84: 1 حركة (reveal، 12.9 ms)
+[15:25:52] خطة المرحلة 84: 2 حركة (reveal، 3.1 ms)
+[15:25:59] المرحلة 84: قوارير جديدة (باب انفتح؟ 8 → 10 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[15:25:59] حالة المرحلة 84 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange", "brown", "brown", "brown"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["orange", "green", "green"]}, {"x": 275, "y": 375, "cap": 4, "layers": []}, {"x": 352, "y": 375, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "?", "orange", "yellow"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["yellow", "?", "pink", "yellow"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "orange", "lavender"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["yellow", "?", "cyan"]}]
+[15:25:59] خطة المرحلة 84: 1 حركة (reveal، 4.7 ms)
+[15:26:02] خطة المرحلة 84: 3 حركة (progress، 2.8 ms)
+[15:26:12] المرحلة 84: قوارير جديدة (باب انفتح؟ 10 → 12 قارورة، ذاكرة 2 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[15:26:12] حالة المرحلة 84 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange", "brown", "brown", "brown"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 196, "y": 372, "cap": 4, "layers": ["orange", "green", "green"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["cyan"]}, {"x": 352, "y": 376, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["cyan", "pink", "?", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "?", "orange"]}, {"x": 196, "y": 636, "cap": 4, "layers": ["cyan", "green", "?", "cyan"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["yellow", "?", "pink", "yellow"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "orange", "lavender"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["yellow", "yellow"]}]
+[15:26:51] خطة المرحلة 84: 9 حركة (astar، 0.8 ms)
+[15:27:30] شاشة جديدة لم تُرَ من قبل: new_079_unknown.jpg
+[15:27:30] فوز بالمرحلة 84 (unknown): 34 حركة في 145 ث، أدوات -
+[15:27:50] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[15:28:17] شاشة التحميل: انتظار بلا نقر
+[15:29:14] بداية المرحلة 85: 12 قارورة، سعات [(4, 12)]، مخفي 12
+[15:29:14] حالة المرحلة 85: [{"x": 133, "y": 332, "cap": 4, "layers": ["blue", "?", "orange"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["blue", "?", "green"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["orange", "?", "brown"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["red", "?", "red"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["lavender", "?", "yellow"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["pink", "?", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "?", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "?", "purple"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["purple", "?", "yellow"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple", "?", "green"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["blue", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "lavender"]}]
+[15:29:14] خطة المرحلة 85: 1 حركة (pimc، 214.4 ms)
