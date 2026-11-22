@@ -239,3 +239,24 @@
 [16:47:06] بداية المرحلة 13: 14 قارورة، سعات [(4, 12), (16, 2)]، مخفي 0
 [16:47:06] حالة المرحلة 13: [{"x": 65, "y": 335, "cap": 4, "layers": ["green"]}, {"x": 133, "y": 335, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 201, "y": 524, "cap": 16, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 524, "cap": 16, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 65, "y": 539, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 134, "y": 539, "cap": 4, "layers": ["green", "blue", "lavender", "lavender"]}, {"x": 338, "y": 539, "cap": 4, "layers": ["lavender", "cyan", "yellow", "brown"]}, {"x": 406, "y": 539, "cap": 4, "layers": ["brown", "red"]}, {"x": 65, "y": 744, "cap": 4, "layers": ["cyan", "blue", "red", "brown"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["lavender", "brown", "cyan", "purple"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["red", "red", "brown", "blue"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["cyan"]}]
 [16:47:06] خطة المرحلة 13: 20 حركة (astar، 4.0 ms)
+[16:47:45] الحالة بعد (7, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:47:45] خطة المرحلة 13: 12 حركة (astar، 1.9 ms)
+[16:48:33] فوز بالمرحلة 13 (لغز جديد على الشاشة): 12 حركة في 86 ث، أدوات -
+[16:48:33] بداية المرحلة 14: 13 قارورة، سعات [(4, 10), (10, 1), (16, 1), (17, 1)]، مخفي 0
+[16:48:33] حالة المرحلة 14: [{"x": 65, "y": 335, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 133, "y": 335, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 201, "y": 524, "cap": 16, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 542, "cap": 17, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 66, "y": 642, "cap": 10, "layers": ["cyan", "blue", "red", "red", "c_22_6_1", "c_23_7_1", "blue", "blue"]}, {"x": 134, "y": 539, "cap": 4, "layers": []}, {"x": 338, "y": 539, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 406, "y": 539, "cap": 4, "layers": []}, {"x": 134, "y": 744, "cap": 4, "layers": ["lavender", "brown"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["red", "red", "brown", "blue"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}]
+[16:48:33] خطة المرحلة 14: 10 حركة (astar، 1.0 ms)
+[16:48:47] فوز بالمرحلة 14 (لغز جديد على الشاشة): 0 حركة في 15 ث، أدوات -
+[16:48:47] بداية المرحلة 15: 13 قارورة، سعات [(4, 10), (10, 1), (16, 1), (17, 1)]، مخفي 0
+[16:48:47] حالة المرحلة 15: [{"x": 65, "y": 335, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 133, "y": 335, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 201, "y": 524, "cap": 16, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 542, "cap": 17, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 66, "y": 642, "cap": 10, "layers": ["cyan", "blue", "red", "red"]}, {"x": 134, "y": 539, "cap": 4, "layers": ["blue", "blue"]}, {"x": 338, "y": 539, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 406, "y": 539, "cap": 4, "layers": []}, {"x": 134, "y": 744, "cap": 4, "layers": ["lavender", "brown"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["red", "red", "brown", "blue"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}]
+[16:48:47] خطة المرحلة 15: 7 حركة (astar، 0.9 ms)
+[16:49:28] الحالة بعد (8, 10) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:49:28] خطة المرحلة 15: 5 حركة (astar، 0.7 ms)
+[16:49:45] الحالة بعد (12, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:49:45] خطة المرحلة 15: 4 حركة (astar، 0.6 ms)
+[16:50:00] لا تقدّم بعد الحركة (2, 6) (إخفاق 1)
+[16:50:00] خطة المرحلة 15: 4 حركة (astar، 0.6 ms)
+[16:50:22] لا تقدّم بعد الحركة (2, 6) (إخفاق 1)
+[16:50:22] خطة المرحلة 15: 3 حركة (astar، 0.5 ms)
+[16:50:44] لا تقدّم بعد الحركة (2, 6) (إخفاق 1)
+[16:50:44] خطة المرحلة 15: 2 حركة (astar، 0.4 ms)
+[16:50:54] فوز بالمرحلة 15 (unknown): 7 حركة في 127 ث، أدوات -
