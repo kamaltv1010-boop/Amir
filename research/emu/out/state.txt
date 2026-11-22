@@ -1,9 +1,9 @@
 done 35
 الحالة: يلعب
-مراحل مكتملة: 14
-الوقت: 10 دقيقة من 102
-آخر شاشة: level
-الشاشات: {'unknown': 34, 'button': 5, 'level': 126, 'close': 3}
-صور محفوظة: 11/900، شاشات جديدة: 55
-المرحلة الحالية: 74 (حركات 7، مخفي 3، إخفاقات 0، أدوات -، 0.7 دقيقة)
-الحالة المقروءة: [orange,blue]/4 [?,cyan,plum,plum]/4 [?,orange,?,blue]/4 [darkgreen,red,red,lavender]/4 [orange,darkgreen,purple,purple]/4 [pink,pink,pink,pink,pink,pink,pink,pink]/10 [green,green,green,green,green,green,green,green]/10 [yellow,brown,cyan,cyan]/4 [yellow,brown]/4 [plum,pink,blue,blue]/4
+مراحل مكتملة: 15
+الوقت: 16 دقيقة من 102
+آخر شاشة: unknown
+الشاشات: {'unknown': 55, 'button': 5, 'level': 216, 'close': 3}
+صور محفوظة: 13/900، شاشات جديدة: 56
+المرحلة الحالية: 74 (حركات 37، مخفي 0، إخفاقات 0، أدوات -، 5.9 دقيقة)
+الحالة المقروءة: [cyan,cyan,cyan,cyan]/4 [purple,purple,purple,purple]/4 []/4 [orange,orange,orange]/4 [lavender,lavender,lavender,lavender]/4 [red,red,red,red]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange]/4 [pink,pink,pink,pink,pink,pink,pink,pink,pink,pink]/10 [green,green,green,green,green,green,green,green,green,green]/10 [blue,blue,blue,blue]/4 [yellow,yellow,yellow,yellow]/4 [brown,brown,brown,brown]/4 [plum,plum,plum,plum]/4
