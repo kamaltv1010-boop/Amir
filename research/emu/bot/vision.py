@@ -761,7 +761,8 @@ def green_buttons(img):
 
 
 def _is_main(b, W, H):
-    return b["w"] >= 0.38 * W and b["h"] >= 0.05 * H and abs(b["x"] - W / 2) < 0.12 * W
+    # أعرض زرّ رئيسي نحو 0.6 من العرض؛ صفّ اللاعب الأخضر في لوحة Strike Show يمتدّ بعرض الشاشة تقريباً فليس زرّاً
+    return 0.38 * W <= b["w"] <= 0.72 * W and b["h"] >= 0.05 * H and abs(b["x"] - W / 2) < 0.12 * W
 
 
 def _paid(a, b):

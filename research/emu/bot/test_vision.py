@@ -313,6 +313,7 @@ SCREENS = {
     "home_portal40": ("button", (236, 786), None),      # واجهة الحلقة 40: بوّابة خضراء متوهّجة فوق زرّ «Level 40»
     "nomoves_popup": ("unknown", None, None),           # «No Available Moves»: Play On (900) وGive Up (find_give_up)
     "continue_paid": ("close", None, (428, 215)),       # «Continue?» بعد Give Up: «Play On 900» يصرف العملات، فيُغلق بـ X
+    "strike_board_row": ("close", None, None),          # لوحة Strike Show: صفّ اللاعب الأخضر بعرض الشاشة ليس زرّاً
     "tos_3536": ("button", (236, 660), None),           # شروط الخدمة في النسخة 0.0.3536 (لوحة 36 وزرّ 73)
     "L016_3rows": ("level", None, None),                # شريط الأدوات عند 0.92 (ثلاثة صفوف)
     "nonet_popup": ("button", (236, 630), None),        # «No internet connection» وزرّ Retry
