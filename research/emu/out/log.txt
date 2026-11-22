@@ -6,3 +6,42 @@
 [10:44:44] استعادة بيانات اللعبة من save/game_backup.ab (34396 ك.ب): تمت
 [10:44:44] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
 [10:46:04] أول شاشة: close
+[10:46:07] شاشة جديدة لم تُرَ من قبل: new_001_close.jpg
+[10:46:11] شاشة جديدة لم تُرَ من قبل: new_002_button.jpg
+[10:46:20] بداية المرحلة 61: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[10:46:20] حالة المرحلة 61: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "green", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "orange"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["pink", "purple", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "red", "orange"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["purple", "purple", "green"]}]
+[10:46:20] خطة المرحلة 61: 8 حركة (progress، 49.7 ms)
+[10:46:58] خطة المرحلة 61: 1 حركة (progress، 0.2 ms)
+[10:47:02] خطة المرحلة 61: 0 حركة (progress-none، 0.1 ms) — لا حركة مفيدة
+[10:47:02] المرحلة 61 عالقة (لا خطة): [yellow]/4 [green,green,green,green]/4 [pink]/4 [lavender,red]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4
+[10:47:02] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[10:47:09] المرحلة 61 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:47:09] بداية المرحلة 61: 9 قارورة، سعات [(4, 9)]، مخفي 2
+[10:47:09] حالة المرحلة 61: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["pink"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "red"]}, {"x": 352, "y": 376, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["red", "?", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["pink", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "?", "red"]}]
+[10:47:09] خطة المرحلة 61: 1 حركة (pimc، 30.7 ms)
+[10:47:17] خطة المرحلة 61: 6 حركة (astar، 0.3 ms)
+[10:47:35] المرحلة 61 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[10:47:35] بداية المرحلة 61: 11 قارورة، سعات [(4, 11)]، مخفي 6
+[10:47:35] حالة المرحلة 61: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": []}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "red", "red"]}, {"x": 352, "y": 376, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 157, "y": 638, "cap": 4, "layers": ["red"]}, {"x": 236, "y": 637, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}]
+[10:47:35] خطة المرحلة 61: 1 حركة (pimc، 34.0 ms)
+[10:47:59] خطة المرحلة 61: 3 حركة (astar، 0.3 ms)
+[10:48:15] شاشة جديدة لم تُرَ من قبل: new_003_unknown.jpg
+[10:48:15] فوز بالمرحلة 61 (unknown): 9 حركة في 40 ث، أدوات -
+[10:48:19] شاشة جديدة لم تُرَ من قبل: new_004_button.jpg
+[10:48:27] شاشة جديدة لم تُرَ من قبل: new_005_unknown.jpg
+[10:49:02] شاشة جديدة لم تُرَ من قبل: new_006_button.jpg
+[10:49:29] بداية المرحلة 62: 5 قارورة، سعات [(4, 4), (11, 1)]، مخفي 0
+[10:49:29] حالة المرحلة 62: [{"x": 275, "y": 380, "cap": 4, "layers": ["green", "yellow", "purple"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "yellow", "yellow", "green"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["blue", "pink", "blue"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["c_25_3_6", "blue", "blue", "purple"]}]
+[10:49:29] خطة المرحلة 62: 3 حركة (progress، 0.3 ms)
+[10:49:50] الحالة بعد (4, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:49:50] خطة المرحلة 62: 3 حركة (progress، 0.3 ms)
+[10:49:58] المرحلة 62 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:49:58] بداية المرحلة 62: 8 قارورة، سعات [(4, 7), (11, 1)]، مخفي 0
+[10:49:58] حالة المرحلة 62: [{"x": 275, "y": 380, "cap": 4, "layers": ["green", "yellow", "purple", "purple"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "yellow", "yellow", "green"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "lavender", "green", "purple"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["red", "orange", "blue", "pink"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["yellow", "purple", "lavender", "red"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["blue"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["pink", "pink"]}]
+[10:49:58] خطة المرحلة 62: 8 حركة (progress، 3.0 ms)
+[10:50:28] الحالة بعد (0, 1) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:50:28] خطة المرحلة 62: 3 حركة (progress، 0.8 ms)
+[10:50:35] المرحلة 62 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:50:35] بداية المرحلة 62: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 0
+[10:50:35] حالة المرحلة 62: [{"x": 40, "y": 380, "cap": 4, "layers": ["red", "orange", "blue", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["orange", "orange"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["lavender", "pink", "lavender", "green"]}, {"x": 275, "y": 380, "cap": 4, "layers": []}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "yellow", "yellow", "yellow"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "lavender", "green", "green"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["red", "orange"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["yellow", "purple", "lavender", "red"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["pink", "pink", "pink"]}]
+[10:50:35] خطة المرحلة 62: 16 حركة (astar، 1.0 ms)
