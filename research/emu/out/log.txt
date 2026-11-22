@@ -520,3 +520,53 @@
 [12:28:40] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [cyan,cyan,cyan]/4 [purple,purple]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 []/4 [green]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
 [12:28:40] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
 [12:28:40] حركة عشوائية (10, 6) (38)
+[12:28:53] لا تقدّم بعد الحركة (10, 6) (إخفاق 1)
+[12:29:09] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [cyan,cyan,cyan]/4 [purple,purple]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 []/4 [green]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:29:09] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:29:09] حركة عشوائية (2, 6) (39)
+[12:29:27] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 []/4 [purple,purple]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [cyan,cyan,cyan]/4 [green]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:29:27] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:29:27] حركة عشوائية (7, 2) (40)
+[12:29:46] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 [purple,purple]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [cyan,cyan,cyan]/4 []/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:29:46] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:29:46] حركة عشوائية (3, 7) (41)
+[12:30:04] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 []/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [cyan,cyan,cyan]/4 [purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:30:04] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:30:04] حركة عشوائية (11, 3) (42)
+[12:30:16] لا تقدّم بعد الحركة (11, 3) (إخفاق 1)
+[12:30:27] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 []/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [cyan,cyan,cyan]/4 [purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:30:27] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:30:27] حركة عشوائية (6, 3) (43)
+[12:30:45] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 []/4 [purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:30:45] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:30:45] حركة عشوائية (9, 6) (44)
+[12:30:58] لا تقدّم بعد الحركة (9, 6) (إخفاق 1)
+[12:31:09] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 []/4 [purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:31:09] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:31:09] حركة عشوائية (2, 6) (45)
+[12:31:27] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 []/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [green]/4 [purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:31:27] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:31:27] حركة عشوائية (6, 2) (46)
+[12:31:45] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 []/4 [purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:31:45] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:31:45] حركة عشوائية (7, 6) (47)
+[12:32:04] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [green]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [purple,purple]/4 []/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:32:04] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:32:04] حركة عشوائية (2, 7) (48)
+[12:32:23] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 []/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [purple,purple]/4 [green]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:32:23] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:32:23] حركة عشوائية (0, 2) (49)
+[12:32:35] لا تقدّم بعد الحركة (0, 2) (إخفاق 1)
+[12:32:46] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 []/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [purple,purple]/4 [green]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:32:46] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:32:46] حركة عشوائية (6, 2) (50)
+[12:33:05] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [purple,purple]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 []/4 [green]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:33:05] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:33:05] حركة عشوائية (7, 6) (51)
+[12:33:23] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [purple,purple]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [green]/4 []/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:33:23] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:33:23] حركة عشوائية (5, 7) (52)
+[12:33:36] لا تقدّم بعد الحركة (5, 7) (إخفاق 1)
+[12:33:47] المرحلة 69 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow]/4 [red,red,red,red]/4 [purple,purple]/4 [cyan,cyan,cyan]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender,lavender,lavender]/4 [green]/4 []/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [c_10_7_1,c_10_7_1,c_10_7_1,c_10_7_1]/4
+[12:33:47] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, undo
+[12:33:47] حركة عشوائية (2, 7) (53)
