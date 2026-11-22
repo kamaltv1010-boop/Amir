@@ -592,6 +592,7 @@ class Bot:
         self.last_arrow_tap = 0.0      # آخر لمس لهدف سهم تعليم
         self.arrow_taps = 0            # محاولات السهم في الشاشة المجهولة الحالية
         self.last_tab_home = 0.0       # آخر ضغط على تبويب «Home» من صفحة تبويب أخرى
+        self.tab_home_taps = 0         # ضغطات «Home» في الشاشة المجهولة الحالية (الثالثة تلمس موضع «Level N»)
         self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_daily_log = 0.0
@@ -1578,14 +1579,22 @@ class Bot:
         # تعليم بسهم أصفر يشير إلى ما يجب لمسه (صورة اللاعب قبل «الفرق» مثلاً): يُلمس الهدف بعد ثانيتين من ثبات الشاشة
         # صفحة تبويب غير الرئيسية (الفرق، المتصدّرون، المجموعة، المتجر): شريط التبويبات مضيء بلا زرّ «Level N»؛
         # العودة بزرّ «Home» في وسط الشريط
-        if dur >= 3 and now - self.last_tab_home > 6 and self.vis._safe("tabbar_fraction", fr.arr, default=0.0) > 0.5:
-            self.last_tab_home = now
-            self.log("صفحة تبويب: العودة إلى الرئيسية")
-            self.tap((236, 955))
-            time.sleep(2)
-            return None
         if self.unknown_streak == 1:
             self.arrow_taps = 0                # شاشة مجهولة جديدة: محاولات السهم من جديد
+            self.tab_home_taps = 0
+        if dur >= 3 and now - self.last_tab_home > 6 and self.vis._safe("tabbar_fraction", fr.arr, default=0.0) > 0.5:
+            self.last_tab_home = now
+            self.tab_home_taps += 1
+            if self.tab_home_taps <= 2:
+                self.log("صفحة تبويب: العودة إلى الرئيسية")
+                self.tap((236, 955))
+            else:
+                # «Home» لم يغيّر شيئاً: هي الواجهة الرئيسية نفسها بمشهد حلقة لم يُعرف زرّه؛ يُلمس موضع «Level N» المعتاد
+                self.tab_home_taps = 0
+                self.log("واجهة رئيسية لم يُعرف زرّها: لمس موضع «Level N»")
+                self.tap((236, 786))
+            time.sleep(2)
+            return None
         if dur >= 2 and now - self.last_arrow_tap > 4 and self.arrow_taps < 3:
             tgt = self.vis._pt(self.vis._safe("find_tutorial_arrow", fr.arr))
             if tgt:

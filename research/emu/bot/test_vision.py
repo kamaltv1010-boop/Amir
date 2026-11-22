@@ -281,6 +281,7 @@ ALLOW_WARN = {"001_end", "002_picked"}
 # (التصنيف، نقطة find_button أو None، نقطة find_close أو None) — None في النقطة = لا يُختبر
 SCREENS = {
     "home_superhard": ("button", (236, 786), None),     # الواجهة: «Super Hard Level 19» الأحمر (×5)
+    "home_portal40": ("button", (236, 786), None),      # واجهة الحلقة 40: بوّابة خضراء متوهّجة فوق زرّ «Level 40»
     "tos_3536": ("button", (236, 660), None),           # شروط الخدمة في النسخة 0.0.3536 (لوحة 36 وزرّ 73)
     "L016_3rows": ("level", None, None),                # شريط الأدوات عند 0.92 (ثلاثة صفوف)
     "nonet_popup": ("button", (236, 630), None),        # «No internet connection» وزرّ Retry
@@ -456,7 +457,7 @@ def test_tutorial_arrow():
 
 def test_is_home():
     """الواجهة الرئيسية (زرّ «Level N» وشريط التبويبات) لأمر pause_home؛ ونوافذ الأحداث واللعب والمتجر ليست هي."""
-    for n in ("home_superhard", "home_events", "056_b_home", "030_b_home"):
+    for n in ("home_superhard", "home_events", "056_b_home", "030_b_home", "home_portal40"):
         assert vision.is_home(_path(n)), n
     for n in ("popup_strikeshow", "popup_magicstreak", "L016_3rows", "030_a_win", "007_a_shop", "nonet_popup", "038_b_home"):
         assert not vision.is_home(_path(n)), n

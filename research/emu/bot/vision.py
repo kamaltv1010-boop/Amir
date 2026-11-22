@@ -735,7 +735,9 @@ def main_button(img):
     a = load(img)
     H, W = a.shape[:2]
     gb = green_buttons(a)
-    big = [b for b in gb if _is_main(b, W, H)]
+    # توهّج المشهد (بوّابة الحلقة 40 الخضراء) كتلة شبه مربّعة ممتلئة دون النصف: ليست زرّاً، ولا تُحسب «زرّاً آخر»
+    gb = [b for b in gb if b["fill"] >= 0.5]
+    big = [b for b in gb if _is_main(b, W, H) and b["w"] >= 1.6 * b["h"]]
     others = [b for b in gb if b not in big and b["n"] >= 0.004 * H * W]
     if len(big) == 1 and len(others) <= 1:
         return int(round(big[0]["x"])), int(round(big[0]["y"])), "green"
