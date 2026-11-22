@@ -1,9 +1,9 @@
 done 34
 الحالة: يلعب
 مراحل مكتملة: 14
-الوقت: 93 دقيقة من 237
-آخر شاشة: level
-الشاشات: {'level': 1722, 'unknown': 299, 'button': 25, 'close': 13}
-صور محفوظة: 93/900، شاشات جديدة: 47
-المرحلة الحالية: 74 (حركات 1، مخفي 0، إخفاقات 0، أدوات -، 0.2 دقيقة)
-الحالة المقروءة: [c_10_7_1,red,red,lavender]/4 [orange,c_10_7_1,purple,cyan]/4 [pink,pink,pink,pink,pink,pink]/10 [green,green,green,green,green,green,green]/10 [yellow,brown,cyan]/4 [yellow,c_33_5_6,green,pink]/4
+الوقت: 99 دقيقة من 237
+آخر شاشة: unknown
+الشاشات: {'level': 1800, 'unknown': 315, 'button': 27, 'close': 15}
+صور محفوظة: 104/900، شاشات جديدة: 51
+المرحلة الحالية: 74 (حركات 4، مخفي 4، إخفاقات 0، أدوات -، 2.1 دقيقة)
+الحالة المقروءة: [purple,lavender,pink,pink]/4 [?,brown,yellow,yellow]/4 [?,cyan,cyan]/4 [?,c_06_7_4,c_10_7_1,c_10_7_1]/4 [?,pink]/4 [red,cyan,yellow,purple]/4 [c_10_7_1,red,red]/4 [blue,brown,brown,brown]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange]/10 [c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3,c_31_7_3]/10 [orange,blue,blue]/4 [green,green]/4
