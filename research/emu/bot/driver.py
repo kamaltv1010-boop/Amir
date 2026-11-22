@@ -87,6 +87,7 @@ CFG = {
     "tap_gap": _env("BOT_TAP_GAP", 0.3, float),
     "level_max_min": _env("BOT_LEVEL_MAX_MIN", 30.0, float),
     "plan_sec": _env("BOT_PLAN_SEC", 1.6, float),
+    "superhard_plan_x": _env("BOT_SUPERHARD_PLAN_X", 3.0, float),  # مضاعف وقت التخطيط وعقده في المراحل الصعبة جداً
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
     # الثمنان حدّان أدنى: المقروء من الزرّ يُعتمد إن زاد عليهما فقط (قراءة «Play On 900» قد تُسقط صفراً فتصير 90)
     "refill_price": _env("BOT_REFILL_PRICE", 900, int),     # ثمن ملء الأرواح الأدنى (زرّ «Refill»)
@@ -1763,8 +1764,10 @@ class Bot:
         key = solver.state_key(stp)
         if not (lv.plan and lv.plan_key == key):
             info = {}
+            # الصعبة جداً: ثلاثة أضعاف الوقت والعقد (البوت ينتظر الأرواح أكثر مما يفكّر، والمرحلة 99 تنسدّ في آخر كل محاولة)
+            boost = CFG["superhard_plan_x"] if lv.badge == "superhard" else 1.0
             lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), avoid=lv.visited,
-                                  time_limit=CFG["plan_sec"], info=info)
+                                  time_limit=CFG["plan_sec"] * boost, max_nodes=int(40000 * boost), info=info)
             lv.plan_key = key
             if lv.moves == 0 or not lv.plan or info.get("mode") not in ("pimc",):
                 self.log("خطة المرحلة %d: %d حركة (%s، %s ms)%s"
