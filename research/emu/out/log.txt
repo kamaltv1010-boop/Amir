@@ -6,3 +6,7 @@
 [21:03:07] استعادة بيانات اللعبة من save/game_backup.ab (48083 ك.ب): تمت
 [21:03:08] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
 [21:04:57] أول شاشة: button
+[21:05:00] شاشة جديدة لم تُرَ من قبل: new_001_button.jpg
+[21:05:04] شاشة جديدة لم تُرَ من قبل: new_002_close.jpg
+[21:06:35] اللعبة ليست في الواجهة (mCurrentFocus=Window{d78dea4 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[21:07:05] شاشة التحميل: انتظار بلا نقر
