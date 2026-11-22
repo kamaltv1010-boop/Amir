@@ -618,3 +618,159 @@
 [17:39:31] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
 [17:39:31] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
 [17:39:31] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:39:40] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:39:40] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:39:40] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:39:40] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:39:48] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:39:48] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:39:48] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:39:48] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:39:56] خطة المرحلة 24: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[17:39:56] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:39:56] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:39:56] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:04] خطة المرحلة 24: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[17:40:04] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:04] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:04] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:12] خطة المرحلة 24: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[17:40:12] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:12] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:12] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:20] خطة المرحلة 24: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[17:40:20] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:20] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:20] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:28] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:40:28] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:28] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:28] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:36] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:40:36] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:36] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:36] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:45] خطة المرحلة 24: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[17:40:45] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:45] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:45] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:40:53] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:40:53] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:40:53] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:40:53] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:01] خطة المرحلة 24: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[17:41:01] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:01] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:01] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:09] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:41:09] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:09] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:09] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:16] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:41:16] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:16] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:16] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:24] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:41:24] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:24] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:24] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:32] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:41:32] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:32] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:32] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:40] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:41:40] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:40] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:40] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:48] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:41:48] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:48] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:48] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:41:57] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:41:57] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:41:57] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:41:57] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:05] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:42:05] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:05] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:05] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:13] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:42:13] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:13] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:13] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:21] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:42:21] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:21] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:21] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:30] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:42:30] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:30] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:30] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:38] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:42:38] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:38] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:38] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:46] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:42:46] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:46] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:46] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:42:55] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:42:55] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:42:55] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:42:55] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:03] خطة المرحلة 24: 0 حركة (progress-none، 2.6 ms) — لا حركة مفيدة
+[17:43:03] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:03] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:03] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:11] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:43:11] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:11] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:11] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:19] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:43:19] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:19] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:19] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:27] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:43:27] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:27] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:27] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:35] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:43:35] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:35] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:35] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:43] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:43:43] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:43] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:43] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:51] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:43:51] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:51] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:51] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:43:59] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:43:59] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:43:59] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:43:59] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:44:07] خطة المرحلة 24: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[17:44:07] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:44:07] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:44:07] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:44:15] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:44:15] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:44:15] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:44:15] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:44:23] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:44:23] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:44:23] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:44:23] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:44:31] خطة المرحلة 24: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[17:44:31] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:44:31] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:44:31] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:44:39] خطة المرحلة 24: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[17:44:39] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:44:39] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:44:39] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:44:47] خطة المرحلة 24: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[17:44:47] المرحلة 24 عالقة (لا خطة): [red,red,cyan,red]/4 [brown,brown,brown,brown]/4 [blue,lavender,green,darkgreen]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green]/4 [?,blue,darkgreen,darkgreen]/4 [blue]/4
+[17:44:47] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[17:44:47] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
