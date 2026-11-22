@@ -240,3 +240,34 @@
 [06:43:37] خطة المرحلة 22: 8 حركة (astar، 0.7 ms)
 [06:44:08] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
 [06:44:08] خطة المرحلة 22: 6 حركة (astar، 0.6 ms)
+[06:44:39] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:44:39] خطة المرحلة 22: 4 حركة (astar، 0.4 ms)
+[06:45:01] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:45:01] خطة المرحلة 22: 3 حركة (astar، 0.5 ms)
+[06:45:23] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:45:23] خطة المرحلة 22: 2 حركة (astar، 0.3 ms)
+[06:45:28] شاشة جديدة لم تُرَ من قبل: new_040_unknown.jpg
+[06:45:33] شاشة جديدة لم تُرَ من قبل: new_041_unknown.jpg
+[06:45:41] فوز بالمرحلة 22 (الواجهة تعرض المرحلة 23): 11 حركة في 211 ث، أدوات -
+[06:45:46] بداية المرحلة 23: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[06:45:46] حالة المرحلة 23: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "blue", "red", "red"]}, {"x": 197, "y": 500, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "orange", "blue", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "lavender", "blue", "green"]}]
+[06:45:46] خطة المرحلة 23: 6 حركة (progress، 3.0 ms)
+[06:46:18] المرحلة 23 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:46:18] بداية المرحلة 23: 9 قارورة، سعات [(4, 7), (10, 2)]، مخفي 6
+[06:46:18] حالة المرحلة 23: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "blue", "red", "red"]}, {"x": 197, "y": 521, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "orange"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "lavender", "blue"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "yellow", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "?", "purple"]}]
+[06:46:18] خطة المرحلة 23: 1 حركة (pimc، 13.7 ms)
+[06:47:38] المرحلة 23 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[06:47:38] بداية المرحلة 23: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 2
+[06:47:38] حالة المرحلة 23: [{"x": 40, "y": 375, "cap": 4, "layers": []}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 197, "y": 521, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "orange", "orange"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "lavender", "lavender", "lavender"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "pink"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["lavender", "blue", "pink", "pink"]}]
+[06:47:39] خطة المرحلة 23: 1 حركة (pimc، 47.1 ms)
+[06:47:47] خطة المرحلة 23: 6 حركة (astar، 0.6 ms)
+[06:48:32] شاشة جديدة لم تُرَ من قبل: new_042_unknown.jpg
+[06:48:32] فوز بالمرحلة 23 (unknown): 6 حركة في 54 ث، أدوات -
+[06:48:37] شاشة جديدة لم تُرَ من قبل: new_043_unknown.jpg
+[06:48:50] بداية المرحلة 24: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[06:48:50] حالة المرحلة 24: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red", "yellow", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "blue", "purple"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "lavender", "lavender", "blue"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender", "purple", "green", "lavender"]}, {"x": 157, "y": 636, "cap": 4, "layers": []}, {"x": 314, "y": 636, "cap": 4, "layers": []}]
+[06:48:50] خطة المرحلة 24: 10 حركة (astar، 0.5 ms)
+[06:49:32] المرحلة 24 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:49:32] بداية المرحلة 24: 11 قارورة، سعات [(4, 11)]، مخفي 8
+[06:49:32] حالة المرحلة 24: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["?", "green", "?", "yellow"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "orange", "?", "orange"]}, {"x": 352, "y": 375, "cap": 4, "layers": []}, {"x": 432, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["?", "orange", "?", "yellow"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["purple", "purple"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["brown", "brown", "pink", "purple"]}, {"x": 314, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["?", "brown", "?", "pink"]}]
+[06:49:32] خطة المرحلة 24: 1 حركة (pimc، 213.3 ms)
