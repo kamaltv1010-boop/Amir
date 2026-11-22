@@ -1,9 +1,9 @@
 done 36
 الحالة: يلعب
-مراحل مكتملة: 33
-الوقت: 10 دقيقة من 138
-آخر شاشة: close
-الشاشات: {'level': 166, 'unknown': 20, 'button': 4, 'close': 3}
-صور محفوظة: 16/900، شاشات جديدة: 48
-المرحلة الحالية: 34 (حركات 22، مخفي 3، إخفاقات 0، أدوات -، 3.9 دقيقة)
-الحالة المقروءة: [brown,brown]/4 [pink,pink,pink,pink]/4 [plum,green,green,green]/4 [?,c_16_7_6,green]/4 [brown,cyan,c_16_7_6,c_16_7_6]/4 [blue,cyan,darkgreen,darkgreen]/4 [blue,blue]/4 [lavender,lavender,lavender,lavender]/4 [darkgreen,red,red,red]/4 [yellow]/4 [cyan,yellow,yellow,yellow]/4 [c_16_7_6,purple,?,purple]/4 [orange,orange,orange,orange]/4 [?,purple,plum,plum]/4
+مراحل مكتملة: 35
+الوقت: 16 دقيقة من 138
+آخر شاشة: level
+الشاشات: {'level': 232, 'unknown': 41, 'button': 7, 'close': 3}
+صور محفوظة: 23/900، شاشات جديدة: 48
+المرحلة الحالية: 36 (حركات 11، مخفي 4، إخفاقات 0، أدوات ['shuffle']، 2.4 دقيقة)
+الحالة المقروءة: [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4

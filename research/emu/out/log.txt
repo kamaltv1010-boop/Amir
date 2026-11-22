@@ -1977,3 +1977,43 @@
 [18:49:44] خطة المرحلة 34: 1 حركة (progress، 5.4 ms)
 [18:49:49] شاشة جديدة لم تُرَ من قبل: new_048_unknown.jpg
 [18:49:53] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[18:50:08] سهم تعليم: لمس الهدف (338, 705)
+[18:50:11] اللعبة ليست في الواجهة (mCurrentFocus=Window{2ab4578 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[18:50:50] شاشة التحميل: انتظار بلا نقر
+[18:52:23] فوز بالمرحلة 34 (لغز جديد على الشاشة): 22 حركة في 376 ث، أدوات -
+[18:52:23] بداية المرحلة 35: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[18:52:23] حالة المرحلة 35: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["plum", "c_16_7_6", "plum", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["pink", "plum", "brown", "c_16_7_6"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "brown"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["plum", "c_16_7_6", "brown", "brown"]}]
+[18:52:23] خطة المرحلة 35: 5 حركة (key، 2.1 ms)
+[18:52:47] فوز بالمرحلة 35 (لغز جديد على الشاشة): 1 حركة في 24 ث، أدوات -
+[18:52:47] بداية المرحلة 36: 5 قارورة، سعات [(4, 5)]، مخفي 0
+[18:52:47] حالة المرحلة 36: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["plum", "c_16_7_6", "plum", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["pink", "plum", "brown"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "brown"]}]
+[18:52:47] خطة المرحلة 36: 2 حركة (key، 0.5 ms)
+[18:52:59] الحركة (2, 3) تحرّر مفتاحاً؛ انتظار الباب
+[18:53:14] المرحلة 36: قوارير جديدة (باب انفتح؟ 5 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[18:53:14] حالة المرحلة 36 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["plum", "c_16_7_6", "plum", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["plum"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "brown"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "purple", "red", "lavender"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["blue", "?", "lavender", "darkgreen"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "green", "blue"], "keys": [2]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "blue", "darkgreen", "yellow"], "keys": [2]}]
+[18:53:14] خطة المرحلة 36: 3 حركة (key، 0.3 ms)
+[18:53:36] المرحلة 36: قوارير جديدة (باب انفتح؟ 9 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[18:53:36] حالة المرحلة 36 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["plum", "c_16_7_6", "plum", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": []}, {"x": 236, "y": 538, "cap": 4, "layers": ["plum"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "purple", "red", "lavender"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["blue", "?", "lavender", "darkgreen"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["purple", "cyan", "?", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "green", "blue"], "keys": [2]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "blue", "darkgreen", "yellow"], "keys": [2]}]
+[18:53:36] خطة المرحلة 36: 1 حركة (key، 0.4 ms)
+[18:53:38] الحركة (9, 2) تحرّر مفتاحاً؛ انتظار الباب
+[18:53:53] المرحلة 36: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[18:53:53] حالة المرحلة 36 بعد الباب: [{"x": 168, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "purple"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["plum", "c_16_7_6", "plum", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["plum"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "purple", "red", "lavender"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["blue", "?", "lavender", "darkgreen"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["purple", "cyan", "?", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "green", "blue"], "keys": [2]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "blue", "darkgreen"]}]
+[18:53:53] خطة المرحلة 36: 1 حركة (reveal، 12.5 ms)
+[18:54:01] خطة المرحلة 36: 1 حركة (reveal، 17.5 ms)
+[18:54:10] خطة المرحلة 36: 4 حركة (progress، 6.7 ms)
+[18:54:43] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:54:43] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [cyan,?,green,blue]/4 [?,blue,darkgreen,darkgreen]/4
+[18:54:43] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:54:43] أداة: خلط ثم اختيار القارورة 9
+[18:54:54] خطة المرحلة 36: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[18:54:54] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:54:54] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:54:54] أداة: تراجع (1)
+[18:55:01] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:55:01] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:01] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:01] أداة: تراجع (2)
+[18:55:08] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:55:08] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:08] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:08] أداة: تراجع (3)
