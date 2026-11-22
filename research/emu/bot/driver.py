@@ -957,8 +957,17 @@ class Bot:
         self.log("شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية")
         t_end = time.time() + 600
         tos_taps = 0
+        last_focus = time.time()
         while time.time() < t_end:
             time.sleep(5)
+            if time.time() - last_focus > 30:
+                # اللعبة قد تُغلق أثناء أول تحميل (رأيناها مرة): تُشغَّل من جديد بدل انتظار المهلة كلها
+                last_focus = time.time()
+                f = d.focus()
+                if f and PKG not in f:
+                    self.log("اللعبة ليست في الواجهة أثناء الإقلاع؛ تشغيلها من جديد")
+                    d.launch()
+                    continue
             fr = self.grab()
             if fr is None:
                 continue
