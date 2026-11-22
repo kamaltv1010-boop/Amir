@@ -828,3 +828,20 @@
 [09:16:23] بداية المرحلة 43: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 12
 [09:16:23] حالة المرحلة 43: [{"x": 40, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["purple", "yellow", "yellow", "lavender"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["pink", "red", "orange", "pink"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "brown", "green", "orange"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "pink", "purple", "yellow"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["green", "green", "green"]}]
 [09:16:23] خطة المرحلة 43: 1 حركة (pimc، 59.9 ms)
+[09:17:47] خطة المرحلة 43: 6 حركة (astar، 0.8 ms)
+[09:18:32] فوز بالمرحلة 43 (unknown): 23 حركة في 129 ث، أدوات -
+[09:18:36] شاشة جديدة لم تُرَ من قبل: new_105_unknown.jpg
+[09:18:36] سهم تعليم: لمس الهدف (85, 476)
+[09:18:48] بداية المرحلة 44: 8 قارورة، سعات [(4, 8)]، مخفي 2
+[09:18:48] حالة المرحلة 44: [{"x": 40, "y": 375, "cap": 4, "layers": ["lavender", "lavender", "yellow", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["cyan", "pink", "yellow", "brown"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["orange", "blue", "blue", "purple"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["cyan", "lavender", "purple", "red"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "?", "pink"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["green", "?", "brown"]}]
+[09:18:48] خطة المرحلة 44: 1 حركة (reveal، 105.6 ms)
+[09:18:53] خطة المرحلة 44: 5 حركة (progress، 11.1 ms)
+[09:19:13] خطة المرحلة 44: 0 حركة (progress-none، 1.9 ms) — لا حركة مفيدة
+[09:19:13] المرحلة 44 عالقة (لا خطة): [lavender,lavender,yellow,yellow]/4 [cyan,pink,yellow]/4 [orange,blue,blue,blue]/4 [cyan,lavender]/4 [purple,purple,purple,purple]/4 [pink]/4 [red,red]/4 [green,?,brown,brown]/4
+[09:19:13] أداة: قارورة إضافية
+[09:19:20] المرحلة 44 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[09:19:20] بداية المرحلة 44: 12 قارورة، سعات [(4, 12)]، مخفي 5
+[09:19:20] حالة المرحلة 44: [{"x": 66, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "yellow", "yellow"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["cyan", "pink", "yellow"]}, {"x": 202, "y": 392, "cap": 4, "layers": ["orange", "blue", "blue", "blue"]}, {"x": 270, "y": 392, "cap": 4, "layers": ["cyan", "lavender"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["pink"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["?", "red", "?", "red"]}, {"x": 168, "y": 618, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 236, "y": 618, "cap": 4, "layers": ["?", "green", "?", "brown"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["red", "red"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["green", "?", "brown", "brown"]}, {"x": 440, "y": 618, "cap": 4, "layers": []}]
+[09:19:20] خطة المرحلة 44: 1 حركة (pimc، 315.2 ms)
+[09:19:29] تنفيذ أوامر الدفعة 27: update
+[09:19:29] تحديث كود البوت وإعادة تشغيله (81 دقيقة باقية، 41 مرحلة مكتملة)
