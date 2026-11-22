@@ -788,3 +788,7 @@
 [08:52:59] شاشة جديدة لم تُرَ من قبل: new_103_button.jpg
 [09:07:01] تنفيذ أوامر الدفعة 23: pause ; shot loop_a ; wait 1 ; shot loop_b ; wait 1 ; shot loop_c ; tap 236 786 ; wait 2 ; shot loop_d ; resume
 [09:08:04] تنفيذ أوامر الدفعة 24: pause ; tap 918 192 ; wait 2 ; shot p1 ; tap 941 174 ; wait 2 ; shot p2 ; wait 3 ; shot p3 ; resume
+[09:08:28] بداية المرحلة 41: 12 قارورة، سعات [(4, 12)]، مخفي 8
+[09:08:28] حالة المرحلة 41: [{"x": 40, "y": 375, "cap": 4, "layers": ["purple", "purple"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["?", "?", "pink"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "?", "yellow"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "orange", "pink", "red"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "brown", "lavender", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "blue"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["brown", "orange", "brown", "orange"]}]
+[09:08:28] خطة المرحلة 41: 1 حركة (pimc، 233.9 ms)
+[09:08:54] تنفيذ أوامر الدفعة 25: pause ; back ; wait 2 ; shot q0 ; tap 539 1815 ; wait 1 ; shot q1 ; wait 2 ; shot q2 ; wait 3 ; shot q3 ; swipe 540 1900 540 900 400 ; wait 2 ; shot q4
