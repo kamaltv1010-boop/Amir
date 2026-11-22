@@ -893,6 +893,41 @@ def find_boosters(img):
     return [(int(round(b["x"])), int(round(b["y"]))) for b in boxes]
 
 
+def find_tutorial_arrow(img):
+    """سهم التعليم الأصفر الكبير (اللعبة تعتّم الشاشة وتشير بسهم إلى ما يجب لمسه، مثل صورة اللاعب قبل «الفرق»).
+    يعيد نقطة الهدف أمام رأس السهم (x, y) أو None. السهم أصفر ساطع ممدود (نسبة طوله إلى عرضه 1.4 فأكثر)، ورأسه
+    الطرف الأعرض: السهم الصاعد هدفه فوق قمته بنحو 0.07 من الارتفاع، وكذلك النازل والأفقيان."""
+    a = load(img)
+    H, W = a.shape[:2]
+    ai = _i16(a)
+    R, G, B = ai[..., 0], ai[..., 1], ai[..., 2]
+    m = (R > 215) & (G > 140) & (B < 110) & (R - B > 130)
+    best = None
+    for b in _rect_blobs(m, W, H, 0.0015):
+        bw, bh = b["w"], b["h"]
+        if max(bw, bh) / float(max(1, min(bw, bh))) < 1.4 or not (0.35 <= b["fill"] <= 0.8):
+            continue
+        bx0, by0, bx1, by1 = b["box"]
+        if bx0 <= 2 or by0 <= 2 or bx1 >= W - 3 or by1 >= H - 3:   # أشرطة الواجهة عند الحواف ليست أسهماً
+            continue
+        if best is None or b["n"] > best["n"]:
+            best = b
+    if best is None:
+        return None
+    x0, y0, x1, y1 = best["box"]
+    sub = m[y0:y1 + 1, x0:x1 + 1]
+    d = int(round(0.07 * H))
+    if best["h"] >= best["w"]:
+        k = max(1, sub.shape[0] * 3 // 10)
+        top, bot = sub[:k].sum(axis=1).mean(), sub[-k:].sum(axis=1).mean()
+        cx = int(round((x0 + x1) / 2))
+        return (cx, max(0, y0 - d)) if top >= bot else (cx, min(H - 1, y1 + d))
+    k = max(1, sub.shape[1] * 3 // 10)
+    left, right = sub[:, :k].sum(axis=0).mean(), sub[:, -k:].sum(axis=0).mean()
+    cy = int(round((y0 + y1) / 2))
+    return (max(0, x0 - d), cy) if left >= right else (min(W - 1, x1 + d), cy)
+
+
 def tabbar_fraction(img) -> float:
     """نسبة البنفسجي في شريط التبويبات السفلي (0.935..0.99 من الارتفاع): نحو 0.68 في الواجهة الرئيسية والمتجر،
     وصفر تقريباً في اللعب والنوافذ المعتمة."""

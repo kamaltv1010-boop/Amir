@@ -589,6 +589,8 @@ class Bot:
         self.stuck_total = 0
         self.loading_since = None      # منذ متى تظهر شاشة التحميل (None: لا تظهر)
         self.pause_home = False        # أمر pause_home: يتوقف عند الواجهة الرئيسية التالية بدل ضغط «Level N»
+        self.last_arrow_tap = 0.0      # آخر لمس لهدف سهم تعليم
+        self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_daily_log = 0.0
         self.daily_hashes = []         # بصمات وسط نافذة «Daily Challenge» (تقويم ولغز بعدّاد): تُغلق ولا يلعبها البوت
@@ -1571,6 +1573,18 @@ class Bot:
             if "Not Responding" in f:
                 self.log("نافذة «لا يستجيب»: انتظار")
                 self.dev.key(4)
+        # تعليم بسهم أصفر يشير إلى ما يجب لمسه (صورة اللاعب قبل «الفرق» مثلاً): يُلمس الهدف بعد ثانيتين من ثبات الشاشة
+        if dur >= 2 and now - self.last_arrow_tap > 4:
+            tgt = self.vis._pt(self.vis._safe("find_tutorial_arrow", fr.arr))
+            if tgt:
+                self.last_arrow_tap = now
+                self.log("سهم تعليم: لمس الهدف %s" % (tgt,))
+                if self.arrow_shots < 10:
+                    self.arrow_shots += 1
+                    self.out.save_jpg("tutorial_%02d.jpg" % self.arrow_shots, fr.pil)
+                self.tap(tgt)
+                time.sleep(2)
+                return None
         # الأفعال بحسب مدة بقاء الشاشة مجهولة (كل فعل مرة واحدة في موعده)
         steps = [(25, "tap"), (35, "back"), (65, "tap"), (95, "back"), (125, "tap"), (155, "back")]
         if self.unknown_acts < len(steps) and dur >= steps[self.unknown_acts][0]:

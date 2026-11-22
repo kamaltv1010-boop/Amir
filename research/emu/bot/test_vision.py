@@ -445,6 +445,12 @@ def test_palette_consistency():
     assert dmin > 20, dmin
 
 
+def test_tutorial_arrow():
+    """سهم التعليم الأصفر الصاعد يشير إلى صورة اللاعب (نحو 55، 74): الهدف فوق قمته على الصورة."""
+    pt = vision.find_tutorial_arrow(_path("tutorial_arrow_up"))
+    assert pt is not None and abs(pt[0] - 57) <= 12 and 50 <= pt[1] <= 110, pt
+
+
 def test_is_home():
     """الواجهة الرئيسية (زرّ «Level N» وشريط التبويبات) لأمر pause_home؛ ونوافذ الأحداث واللعب والمتجر ليست هي."""
     for n in ("home_superhard", "home_events", "056_b_home", "030_b_home"):
