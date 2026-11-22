@@ -1,9 +1,9 @@
 done 4
 الحالة: يلعب
 مراحل مكتملة: 15
-الوقت: 57 دقيقة من 300
+الوقت: 62 دقيقة من 300
 آخر شاشة: unknown
-الشاشات: {'unknown': 205, 'level': 405, 'button': 98, 'close': 4}
-صور محفوظة: 67/600، شاشات جديدة: 25
-المرحلة الحالية: 15 (حركات 28، مخفي 0، إخفاقات 0، أدوات -، 17.8 دقيقة)
+الشاشات: {'unknown': 269, 'level': 405, 'button': 99, 'close': 4}
+صور محفوظة: 72/600، شاشات جديدة: 25
+المرحلة الحالية: 15 (حركات 28، مخفي 0، إخفاقات 0، أدوات -، 23.0 دقيقة)
 الحالة المقروءة: [red,red,red,red]/4 [green,green,green,green]/4 [blue,blue,blue,blue]/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender]/4 [purple,purple,purple,purple]/4 [yellow,yellow,yellow,yellow]/4 [c_00_4_3,c_00_4_3,c_00_4_3]/4 [pink,pink,pink,pink]/4 [c_00_4_3]/4
