@@ -1309,3 +1309,22 @@
 [15:29:14] بداية المرحلة 85: 12 قارورة، سعات [(4, 12)]، مخفي 12
 [15:29:14] حالة المرحلة 85: [{"x": 133, "y": 332, "cap": 4, "layers": ["blue", "?", "orange"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["blue", "?", "green"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["orange", "?", "brown"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["red", "?", "red"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["lavender", "?", "yellow"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["pink", "?", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "?", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "?", "purple"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["purple", "?", "yellow"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple", "?", "green"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["blue", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "lavender"]}]
 [15:29:14] خطة المرحلة 85: 1 حركة (pimc، 214.4 ms)
+[15:30:18] خطة المرحلة 85: 13 حركة (astar، 0.9 ms)
+[15:31:15] شاشة جديدة لم تُرَ من قبل: new_080_unknown.jpg
+[15:31:15] فوز بالمرحلة 85 (unknown): 27 حركة في 121 ث، أدوات -
+[15:31:15] انتهى التحميل بعد 178 ثانية
+[15:31:15] إعلان بملء الشاشة: رجوع (1)
+[15:31:29] شاشة جديدة لم تُرَ من قبل: new_081_button.jpg
+[15:31:42] بداية المرحلة 86: 8 قارورة، سعات [(4, 6), (10, 2)]، مخفي 0
+[15:31:42] حالة المرحلة 86: [{"x": 99, "y": 423, "cap": 10, "layers": ["red", "red", "red", "red"]}, {"x": 168, "y": 336, "cap": 4, "layers": ["lavender", "red", "blue", "pink"]}, {"x": 304, "y": 336, "cap": 4, "layers": ["red", "pink", "yellow", "lavender"]}, {"x": 372, "y": 423, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["yellow", "blue", "lavender", "blue"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["red", "red", "yellow", "orange"]}, {"x": 168, "y": 745, "cap": 4, "layers": ["orange", "blue", "red", "red"]}, {"x": 304, "y": 745, "cap": 4, "layers": ["lavender", "green", "pink", "blue"]}]
+[15:31:42] خطة المرحلة 86: 19 حركة (astar، 0.5 ms)
+[15:32:45] الحالة بعد (2, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[15:32:45] خطة المرحلة 86: 4 حركة (astar، 0.3 ms)
+[15:32:59] المرحلة 86 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[15:32:59] بداية المرحلة 86: 10 قارورة، سعات [(4, 8), (10, 1), (11, 1)]، مخفي 4
+[15:32:59] حالة المرحلة 86: [{"x": 99, "y": 440, "cap": 11, "layers": ["red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red"]}, {"x": 168, "y": 336, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 236, "y": 336, "cap": 4, "layers": ["?", "green", "?", "blue"]}, {"x": 304, "y": 336, "cap": 4, "layers": []}, {"x": 372, "y": 423, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["pink", "pink"]}, {"x": 168, "y": 745, "cap": 4, "layers": ["orange", "orange"]}, {"x": 236, "y": 745, "cap": 4, "layers": ["?", "yellow", "?", "green"]}, {"x": 304, "y": 745, "cap": 4, "layers": ["lavender", "green", "pink"]}]
+[15:32:59] خطة المرحلة 86: 1 حركة (pimc، 32.8 ms)
+[15:33:47] خطة المرحلة 86: 4 حركة (astar، 0.3 ms)
+[15:34:37] المرحلة 86: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 4 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[15:34:37] حالة المرحلة 86 بعد الباب: [{"x": 99, "y": 440, "cap": 11, "layers": ["red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red"]}, {"x": 168, "y": 336, "cap": 4, "layers": []}, {"x": 236, "y": 336, "cap": 4, "layers": []}, {"x": 304, "y": 336, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 372, "y": 440, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 168, "y": 542, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["?", "green", "?", "pink"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 168, "y": 745, "cap": 4, "layers": ["orange", "orange"]}, {"x": 236, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 304, "y": 746, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}]
+[15:35:00] خطة المرحلة 86: 1 حركة (astar، 0.3 ms)
