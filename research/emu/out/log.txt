@@ -305,3 +305,12 @@
 [17:02:42] سهم تعليم: لمس الهدف (338, 705)
 [17:02:49] سهم تعليم: لمس الهدف (338, 705)
 [17:02:55] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[17:03:33] شاشة التحميل: انتظار بلا نقر
+[17:04:58] بداية المرحلة 96: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 8
+[17:04:58] حالة المرحلة 96: [{"x": 40, "y": 380, "cap": 4, "layers": ["lavender", "?", "?", "red"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["green", "?", "?", "pink"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["purple", "pink", "brown", "blue"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["red", "blue", "orange", "yellow"]}, {"x": 354, "y": 493, "cap": 11, "layers": ["pink", "pink", "pink", "pink", "pink"]}, {"x": 432, "y": 380, "cap": 4, "layers": ["orange", "yellow", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["green", "?", "?", "purple"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["lavender", "?", "?", "brown"]}, {"x": 196, "y": 640, "cap": 4, "layers": ["orange", "yellow", "pink", "pink"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["blue", "green", "brown", "yellow"]}, {"x": 432, "y": 640, "cap": 4, "layers": ["red", "red", "pink"]}]
+[17:04:58] خطة المرحلة 96: 1 حركة (pimc، 214.9 ms)
+[17:05:55] خطة المرحلة 96: 17 حركة (astar، 1.7 ms)
+[17:08:06] شاشة جديدة لم تُرَ من قبل: new_031_unknown.jpg
+[17:08:06] فوز بالمرحلة 96 (unknown): 29 حركة في 188 ث، أدوات -
+[17:08:06] انتهى التحميل بعد 273 ثانية
+[17:08:25] شاشة جديدة لم تُرَ من قبل: new_032_button.jpg
