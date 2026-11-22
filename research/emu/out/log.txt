@@ -786,3 +786,4 @@
 [08:52:39] شاشة جديدة لم تُرَ من قبل: new_102_unknown.jpg
 [08:52:39] فوز بالمرحلة 40 (unknown): 1 حركة في 9 ث، أدوات -
 [08:52:59] شاشة جديدة لم تُرَ من قبل: new_103_button.jpg
+[09:07:01] تنفيذ أوامر الدفعة 23: pause ; shot loop_a ; wait 1 ; shot loop_b ; wait 1 ; shot loop_c ; tap 236 786 ; wait 2 ; shot loop_d ; resume
