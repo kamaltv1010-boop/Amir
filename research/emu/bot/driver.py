@@ -1814,11 +1814,20 @@ class Bot:
             self.last_focus_check = now
             f = self.dev.focus()
             if f and PKG not in f:
-                self.log("اللعبة ليست في الواجهة (%s)؛ تشغيلها" % f.replace("\n", " ")[:120])
+                self.fg_fails = getattr(self, "fg_fails", 0) + 1
+                if self.fg_fails >= 3:
+                    # الإطلاق وحده لم يُرجعها ثلاث مرات (إعلان تجريبي أبيض فتح المتجر وبقيت مهمّته فوق اللعبة): إيقاف ثم إطلاق
+                    self.fg_fails = 0
+                    self.log("اللعبة ليست في الواجهة للمرة الثالثة (%s)؛ إيقافها ثم تشغيلها" % f.replace("\n", " ")[:120])
+                    self.dev.force_stop()
+                    time.sleep(2)
+                else:
+                    self.log("اللعبة ليست في الواجهة (%s)؛ تشغيلها" % f.replace("\n", " ")[:120])
                 self.dev.launch()
                 self.unknown_streak = 0
                 time.sleep(15)
                 return None
+            self.fg_fails = 0
             if "Not Responding" in f:
                 self.log("نافذة «لا يستجيب»: انتظار")
                 self.dev.key(4)

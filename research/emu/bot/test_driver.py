@@ -452,6 +452,19 @@ class TestDriverSim(unittest.TestCase):
         moved = {"tubes": [{"layers": ["red", "?"]}, {"layers": ["blue"]}, {"layers": ["green"]}, {"layers": []}]}
         self.assertIsNone(driver.door_map(old, moved))
 
+    def test_foreground_lost_escalates_to_relaunch(self):
+        """المتجر (من إعلان تجريبي) بقي فوق اللعبة: بعد ثلاث محاولات إطلاق تُوقف اللعبة ثم تُطلق (لا حلقة إطلاق أبدية)."""
+        game, bot, out = self.make_bot([make_level(random.Random(1), 2, 1)])
+        game.screen = "loading"
+        game.loading_left = 10 ** 6                       # شاشة مجهولة دائماً
+        stops = []
+        bot.dev.focus = lambda: "mCurrentFocus=Window{2 u0 com.android.vending/UnauthenticatedMainActivity}"
+        bot.dev.force_stop = lambda: stops.append(1)
+        bot.run(max_iters=60)
+        log = (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+        self.assertTrue(stops, log[-2000:])
+        self.assertIn("إيقافها ثم تشغيلها", log)
+
     def test_stuck_uses_boosters(self):
         # لغز مستحيل بلا قارورة إضافية: يجب أن يضغط أداة «قارورة»
         caps = [4, 4, 4, 4]
