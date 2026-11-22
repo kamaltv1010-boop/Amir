@@ -314,6 +314,7 @@ SCREENS = {
     "nomoves_popup": ("unknown", None, None),           # «No Available Moves»: Play On (900) وGive Up (find_give_up)
     "continue_paid": ("close", None, (428, 215)),       # «Continue?» بعد Give Up: «Play On 900» يصرف العملات، فيُغلق بـ X
     "strike_board_row": ("close", None, None),          # لوحة Strike Show: صفّ اللاعب الأخضر بعرض الشاشة ليس زرّاً
+    "ad_install": ("unknown", None, None),              # إعلان بملء الشاشة بعد مرحلة (is_ad): رجوع ثم زاويتا الإغلاق
     "tos_3536": ("button", (236, 660), None),           # شروط الخدمة في النسخة 0.0.3536 (لوحة 36 وزرّ 73)
     "L016_3rows": ("level", None, None),                # شريط الأدوات عند 0.92 (ثلاثة صفوف)
     "nonet_popup": ("button", (236, 630), None),        # «No internet connection» وزرّ Retry
@@ -501,6 +502,14 @@ def test_give_up_and_booster_badges():
         assert vision.find_give_up(_path(n)) is None, n
     assert vision.booster_free(_path("L041_clay_full")) == [True, True, False]   # القارورة الإضافية: 900 عملة
     assert vision.booster_free(_path("L040_clay")) == [True, True, True]
+
+
+def test_is_ad():
+    """إعلان بملء الشاشة (أسود وزرّ «Install»)؛ لا شاشة لعب ولا تحميل ولا واجهة."""
+    assert vision.is_ad(_path("ad_install"))
+    for n in list(SCREENS) + list(LEVELS):
+        if n != "ad_install":
+            assert not vision.is_ad(_path(n)), n
 
 
 def test_is_home():

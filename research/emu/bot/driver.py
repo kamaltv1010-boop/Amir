@@ -594,6 +594,8 @@ class Bot:
         self.arrow_taps = 0            # محاولات السهم في الشاشة المجهولة الحالية
         self.last_tab_home = 0.0       # آخر ضغط على تبويب «Home» من صفحة تبويب أخرى
         self.tab_home_taps = 0         # ضغطات «Home» في الشاشة المجهولة الحالية (الثالثة تلمس موضع «Level N»)
+        self.last_ad_act = 0.0          # آخر محاولة لإغلاق إعلان بملء الشاشة
+        self.ad_acts = 0
         self.last_backup = time.time()  # آخر نسخة احتياطية لبيانات اللعبة (backup_app)
         self.final_backup_done = False
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
@@ -1664,6 +1666,22 @@ class Bot:
         if self.loading_since is not None:
             self.log("انتهى التحميل بعد %.0f ثانية" % (now - self.loading_since))
             self.loading_since = None
+        # إعلان بملء الشاشة بعد مرحلة (أسود وزرّ «Install»): الرجوع يغلقه عادة بعد عدّه التنازلي، وإلا زرّ الإغلاق الصغير في
+        # زاوية علوية (لا يُلمس «Install» أبداً)
+        if self.vis._safe("is_ad", fr.arr, default=False):
+            if now - self.last_ad_act > 5:
+                self.last_ad_act = now
+                self.ad_acts += 1
+                k = self.ad_acts % 3
+                if self.ad_acts == 1 or k == 1:
+                    self.log("إعلان بملء الشاشة: رجوع (%d)" % self.ad_acts)
+                    self.dev.key(4)
+                else:
+                    self.tap((455, 18) if k == 2 else (18, 18))
+            self.unknown_streak = 0
+            time.sleep(1.5)
+            return None
+        self.ad_acts = 0
         # «No Available Moves» (الزرّ الأخضر «Play On» يصرف 900 عملة على قارورة): «Give Up» ثم تُعاد المرحلة
         gu = self.vis._pt(self.vis._safe("find_give_up", fr.arr))
         if gu:

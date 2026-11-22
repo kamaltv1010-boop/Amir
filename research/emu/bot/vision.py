@@ -850,6 +850,17 @@ def booster_free(img):
     return out
 
 
+def is_ad(img) -> bool:
+    """إعلان بملء الشاشة بين المراحل: الشاشة شبه سوداء كلها وزرّ فاتح («Install»، أخضر نعناعي) في أسفلها. (شاشة التحميل
+    السوداء بلا شيء في أسفلها، وشاشات اللعبة ملوّنة.)"""
+    a = load(img)
+    H, W = a.shape[:2]
+    if float((a.max(axis=2) < 28).mean()) < 0.8:
+        return False
+    bottom = a[int(0.86 * H):int(0.98 * H)]
+    return 0.02 < float((bottom.max(axis=2) > 150).mean()) < 0.4
+
+
 def find_give_up(img):
     """نافذة «No Available Moves»: زرّ أخضر «Play On» بالعملات يساراً وزرّ برتقالي «Give Up» يميناً في صفّ واحد أسفل الشاشة.
     يعيد مركز «Give Up» (لا تُصرف العملات) أو None."""
