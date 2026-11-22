@@ -594,6 +594,8 @@ class Bot:
         self.arrow_taps = 0            # محاولات السهم في الشاشة المجهولة الحالية
         self.last_tab_home = 0.0       # آخر ضغط على تبويب «Home» من صفحة تبويب أخرى
         self.tab_home_taps = 0         # ضغطات «Home» في الشاشة المجهولة الحالية (الثالثة تلمس موضع «Level N»)
+        self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
+        self.start_probe_tries = 0
         self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_daily_log = 0.0
@@ -1233,6 +1235,15 @@ class Bot:
             return self.grab()
         self.warn_retries = 0
         if lv is None or self.expect_new:
+            # بداية المرحلة: القوارير تدخل الشاشة متتابعة؛ تُعتمد الحالة حين تثبت بين لقطتين بينهما ثانية (قراءة مبكرة ناقصة
+            # كانت تبدو لغزاً بلا حلّ فيصرف البوت «قارورة إضافية» ثم يظنّ المرحلة أُعيدت)
+            sig = (len(st["tubes"]), solver.state_key(st))
+            if sig != self.start_probe and self.start_probe_tries < 4:
+                self.start_probe = sig
+                self.start_probe_tries += 1
+                time.sleep(1.0)
+                return self.grab()
+            self.start_probe, self.start_probe_tries = None, 0
             self.new_level(fr, st)
             lv = self.lv
         elif not compatible(lv.last_state, st, lv.extra_tubes):
