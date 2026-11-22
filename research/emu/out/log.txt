@@ -54,3 +54,29 @@
 [16:06:13] بداية المرحلة 89: 6 قارورة، سعات [(4, 6)]، مخفي 0
 [16:06:13] حالة المرحلة 89: [{"x": 64, "y": 538, "cap": 4, "layers": ["pink", "cyan", "orange"], "keys": [0]}, {"x": 133, "y": 538, "cap": 4, "layers": ["yellow", "lavender", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["brown", "lavender"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "pink"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "cyan", "orange"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "orange", "yellow"]}]
 [16:06:13] خطة المرحلة 89: 6 حركة (key، 0.4 ms)
+[16:06:37] الحركة (0, 4) تحرّر مفتاحاً؛ انتظار الباب
+[16:06:46] المرحلة 89: قوارير جديدة (باب انفتح؟ 6 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[16:06:46] حالة المرحلة 89 بعد الباب: [{"x": 64, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["brown", "lavender", "lavender"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "pink"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "cyan", "cyan"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "orange", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "purple", "darkgreen", "yellow"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "red", "brown", "darkgreen"]}]
+[16:06:46] خطة المرحلة 89: 2 حركة (key، 1.4 ms)
+[16:06:51] الحركة (6, 0) تحرّر مفتاحاً؛ انتظار الباب
+[16:07:00] المرحلة 89: قوارير جديدة (باب انفتح؟ 8 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[16:07:00] حالة المرحلة 89 بعد الباب: [{"x": 168, "y": 332, "cap": 4, "layers": ["green", "blue", "blue", "darkgreen"], "keys": [1]}, {"x": 236, "y": 332, "cap": 4, "layers": ["red", "pink", "purple", "green"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["yellow"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["brown", "lavender", "lavender"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "pink", "pink"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "cyan", "cyan"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "orange", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "purple", "darkgreen"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "red", "brown", "darkgreen"]}]
+[16:07:00] خطة المرحلة 89: 1 حركة (key، 0.2 ms)
+[16:07:01] الحركة (0, 8) تحرّر مفتاحاً؛ انتظار الباب
+[16:07:09] المرحلة 89: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:07:09] حالة المرحلة 89 بعد الباب: [{"x": 168, "y": 332, "cap": 4, "layers": ["green", "blue", "blue"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["red", "pink", "purple", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["red", "purple", "plum", "brown"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["yellow"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["brown", "lavender", "lavender"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "pink", "pink"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "cyan", "cyan"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "orange", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "purple", "darkgreen", "darkgreen"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "red", "brown", "darkgreen"]}]
+[16:07:09] خطة المرحلة 89: 8 حركة (progress، 6.8 ms)
+[16:07:26] المرحلة 89: قوارير جديدة (باب انفتح؟ 11 → 14 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:07:26] حالة المرحلة 89 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["lavender", "green", "plum", "plum"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["green", "blue", "blue"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["red", "pink", "purple", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["red", "purple", "plum", "brown"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["blue", "plum", "purple", "cyan"]}, {"x": 64, "y": 538, "cap": 4, "layers": []}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["brown", "lavender", "lavender"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "pink", "pink"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "cyan", "cyan"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "purple", "darkgreen", "darkgreen"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["darkgreen", "red", "cyan", "pink"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "red", "brown", "darkgreen"]}]
+[16:07:26] خطة المرحلة 89: 28 حركة (astar، 4.2 ms)
+[16:09:39] شاشة جديدة لم تُرَ من قبل: new_010_unknown.jpg
+[16:09:39] فوز بالمرحلة 89 (unknown): 40 حركة في 206 ث، أدوات -
+[16:09:39] انتهى التحميل بعد 290 ثانية
+[16:09:44] سهم تعليم: لمس الهدف (82, 476)
+[16:09:51] سهم تعليم: لمس الهدف (338, 705)
+[16:09:58] سهم تعليم: لمس الهدف (338, 705)
+[16:10:02] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[16:10:58] سهم تعليم: لمس الهدف (338, 705)
+[16:11:05] سهم تعليم: لمس الهدف (338, 705)
+[16:11:09] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[16:11:25] شاشة التحميل: انتظار بلا نقر
