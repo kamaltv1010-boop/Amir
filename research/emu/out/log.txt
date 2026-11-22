@@ -1122,3 +1122,30 @@
 [14:52:13] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
 [14:52:49] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
 [14:53:21] شاشة التحميل: انتظار بلا نقر
+[14:54:15] المرحلة 79 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[14:54:15] بداية المرحلة 79: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[14:54:15] حالة المرحلة 79: [{"x": 64, "y": 332, "cap": 4, "layers": ["brown", "cyan", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["orange", "green", "lavender"], "keys": [0]}, {"x": 201, "y": 332, "cap": 4, "layers": ["green", "brown", "red"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "red", "green"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "blue"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["orange", "red", "orange"]}]
+[14:54:15] خطة المرحلة 79: 3 حركة (key، 0.1 ms)
+[14:54:27] الحركة (1, 3) تحرّر مفتاحاً؛ انتظار الباب
+[14:54:35] المرحلة 79: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[14:54:35] حالة المرحلة 79 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["brown", "cyan", "blue", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["orange"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["green", "brown", "red"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "red", "green", "green"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["orange", "red", "orange"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "?", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "cyan", "yellow", "cyan"], "keys": [2]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "?", "yellow"]}]
+[14:54:35] خطة المرحلة 79: 2 حركة (key، 0.2 ms)
+[14:54:41] الحركة (7, 1) تحرّر مفتاحاً؛ انتظار الباب
+[14:54:45] شاشة جديدة لم تُرَ من قبل: new_065_unknown.jpg
+[14:54:45] انتهى التحميل بعد 84 ثانية
+[14:54:52] المرحلة 79: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:54:52] حالة المرحلة 79 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["brown", "cyan", "blue", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["cyan"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["green", "brown", "red"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "red", "green", "green"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["orange", "red", "orange", "orange"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "?", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "cyan", "yellow"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "?", "yellow"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "?", "red", "pink"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender", "?", "purple", "pink"]}]
+[14:54:52] خطة المرحلة 79: 1 حركة (reveal، 108.9 ms)
+[14:54:56] خطة المرحلة 79: 1 حركة (reveal، 41.3 ms)
+[14:55:00] خطة المرحلة 79: 4 حركة (reveal، 33.2 ms)
+[14:55:11] المرحلة 79: قوارير جديدة (باب انفتح؟ 11 → 12 قارورة، ذاكرة 2 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:55:11] حالة المرحلة 79 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["brown", "cyan", "cyan"]}, {"x": 133, "y": 332, "cap": 4, "layers": []}, {"x": 201, "y": 332, "cap": 4, "layers": ["green", "brown", "red"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "red", "green", "green"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["orange", "red", "orange", "orange"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "darkgreen", "?", "yellow"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "cyan", "yellow", "yellow"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "darkgreen", "darkgreen"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "?", "red", "pink"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender", "?", "purple", "pink"]}]
+[14:56:31] المرحلة 79: قوارير جديدة (باب انفتح؟ 12 → 13 قارورة، ذاكرة 5 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:56:31] حالة المرحلة 79 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["brown"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["green", "brown", "brown"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "red", "green", "green"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["darkgreen", "darkgreen", "darkgreen"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "green", "?", "purple"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender", "?", "purple", "purple"]}]
+[14:57:05] نسخة احتياطية لبيانات اللعبة: 35465 ك.ب (19 مرحلة مكتملة)
+[14:57:08] إعلان بملء الشاشة: رجوع (1)
+[14:57:33] شاشة التحميل: انتظار بلا نقر
+[14:58:29] المرحلة 79 أُعيدت من البداية (ذاكرة 7 طبقة مكشوفة)
+[14:58:29] بداية المرحلة 79: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[14:58:29] حالة المرحلة 79: [{"x": 64, "y": 332, "cap": 4, "layers": ["blue", "blue", "brown"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["cyan", "purple", "cyan"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["orange", "cyan", "lavender"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["orange", "yellow", "yellow"], "keys": [0]}, {"x": 338, "y": 332, "cap": 4, "layers": ["darkgreen", "brown", "orange"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["cyan", "brown", "yellow"]}]
+[14:58:29] خطة المرحلة 79: 4 حركة (key، 0.1 ms)
