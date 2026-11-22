@@ -590,6 +590,7 @@ class Bot:
         self.loading_since = None      # منذ متى تظهر شاشة التحميل (None: لا تظهر)
         self.pause_home = False        # أمر pause_home: يتوقف عند الواجهة الرئيسية التالية بدل ضغط «Level N»
         self.last_arrow_tap = 0.0      # آخر لمس لهدف سهم تعليم
+        self.arrow_taps = 0            # محاولات السهم في الشاشة المجهولة الحالية
         self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_daily_log = 0.0
@@ -1574,9 +1575,13 @@ class Bot:
                 self.log("نافذة «لا يستجيب»: انتظار")
                 self.dev.key(4)
         # تعليم بسهم أصفر يشير إلى ما يجب لمسه (صورة اللاعب قبل «الفرق» مثلاً): يُلمس الهدف بعد ثانيتين من ثبات الشاشة
-        if dur >= 2 and now - self.last_arrow_tap > 4:
+        if self.unknown_streak == 1:
+            self.arrow_taps = 0                # شاشة مجهولة جديدة: محاولات السهم من جديد
+        if dur >= 2 and now - self.last_arrow_tap > 4 and self.arrow_taps < 3:
             tgt = self.vis._pt(self.vis._safe("find_tutorial_arrow", fr.arr))
             if tgt:
+                # ثلاث محاولات على الأكثر لكل شاشة مجهولة (سهم كاذب لا يمنع التصعيد المعتاد إلى الرجوع وإعادة التشغيل)
+                self.arrow_taps += 1
                 self.last_arrow_tap = now
                 self.log("سهم تعليم: لمس الهدف %s" % (tgt,))
                 if self.arrow_shots < 10:
