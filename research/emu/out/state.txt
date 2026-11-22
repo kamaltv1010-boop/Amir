@@ -1,9 +1,9 @@
 done 16
 الحالة: يلعب
-مراحل مكتملة: 26
-الوقت: 27 دقيقة من 222
-آخر شاشة: level
-الشاشات: {'button': 105, 'unknown': 12, 'close': 95, 'level': 176}
-صور محفوظة: 40/900، شاشات جديدة: 57
-المرحلة الحالية: 29 (حركات 17، مخفي 0، إخفاقات 0، أدوات -، 2.4 دقيقة)
-الحالة المقروءة: [orange,orange,orange,orange]/4 [blue,blue,blue,blue]/4 [brown,brown]/4 [brown,purple,purple,purple]/4 [purple,yellow,yellow,yellow]/4 [pink,pink,pink,pink,pink,pink,pink,pink,pink]/10 [red]/4 [pink]/4 [green,green,green]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/10 [cyan,cyan,cyan,cyan]/4 [yellow,green]/4 [brown,red,red,red]/4
+مراحل مكتملة: 27
+الوقت: 32 دقيقة من 222
+آخر شاشة: unknown
+الشاشات: {'button': 109, 'unknown': 61, 'close': 96, 'level': 194}
+صور محفوظة: 53/900، شاشات جديدة: 66
+المرحلة الحالية: 29 (حركات 23، مخفي 0، إخفاقات 0، أدوات -، 7.5 دقيقة)
+الحالة المقروءة: [orange,orange,orange,orange]/4 [blue,blue,blue,blue]/4 []/4 [brown,brown,brown]/4 [purple,purple,purple,purple]/4 [pink,pink,pink,pink,pink,pink,pink,pink,pink,pink]/10 [red,red,red,red]/4 []/4 [green,green,green,green]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/10 [cyan,cyan,cyan,cyan]/4 [yellow,yellow,yellow,yellow]/4 [brown]/4

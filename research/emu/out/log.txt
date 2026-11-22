@@ -350,3 +350,18 @@
 [07:22:13] حالة المرحلة 29: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "yellow", "blue", "blue"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "blue", "pink", "lavender"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "?", "?", "purple"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["purple", "yellow", "red", "lavender"]}, {"x": 98, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "orange", "orange", "orange"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "?", "brown"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 372, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 166, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["yellow", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["brown", "red"]}]
 [07:22:13] خطة المرحلة 29: 1 حركة (pimc، 164.4 ms)
 [07:24:22] خطة المرحلة 29: 8 حركة (astar، 1.1 ms)
+[07:25:08] الحالة بعد (2, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:25:08] خطة المرحلة 29: 2 حركة (astar، 0.6 ms)
+[07:25:16] الحالة بعد (12, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:25:16] خطة المرحلة 29: 1 حركة (astar، 0.6 ms)
+[07:25:22] فوز بالمرحلة 29 (unknown): 23 حركة في 189 ث، أدوات -
+[07:25:26] شاشة جديدة لم تُرَ من قبل: new_058_unknown.jpg
+[07:25:30] شاشة جديدة لم تُرَ من قبل: new_059_button.jpg
+[07:25:38] شاشة جديدة لم تُرَ من قبل: new_060_close.jpg
+[07:26:17] شاشة جديدة لم تُرَ من قبل: new_061_button.jpg
+[07:26:21] شاشة جديدة لم تُرَ من قبل: new_062_unknown.jpg
+[07:26:40] شاشة جديدة لم تُرَ من قبل: new_063_unknown.jpg
+[07:27:18] شاشة جديدة لم تُرَ من قبل: new_064_unknown.jpg
+[07:27:42] شاشة جديدة لم تُرَ من قبل: new_065_unknown.jpg
+[07:28:43] شاشة جديدة لم تُرَ من قبل: new_066_unknown.jpg
+[07:29:26] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
