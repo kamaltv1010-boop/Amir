@@ -393,3 +393,28 @@
 [07:36:52] بداية المرحلة 32: 10 قارورة، سعات [(4, 10)]، مخفي 5
 [07:36:52] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "?", "lavender", "lavender"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "?", "purple"]}, {"x": 40, "y": 636, "cap": 4, "layers": []}, {"x": 118, "y": 636, "cap": 4, "layers": ["yellow", "?", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "purple", "?", "green"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}]
 [07:36:52] خطة المرحلة 32: 1 حركة (pimc، 123.5 ms)
+[07:37:46] المرحلة 32 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[07:37:46] بداية المرحلة 32: 12 قارورة، سعات [(4, 12)]، مخفي 4
+[07:37:46] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "brown"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "red", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 352, "y": 375, "cap": 4, "layers": ["purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 40, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 637, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "purple", "purple"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "green", "?", "red"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "?", "brown"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}]
+[07:37:46] خطة المرحلة 32: 1 حركة (pimc، 63.6 ms)
+[07:38:18] خطة المرحلة 32: 3 حركة (astar، 0.4 ms)
+[07:38:34] شاشة جديدة لم تُرَ من قبل: new_069_unknown.jpg
+[07:38:34] فوز بالمرحلة 32 (unknown): 10 حركة في 48 ث، أدوات -
+[07:38:38] شاشة جديدة لم تُرَ من قبل: new_070_unknown.jpg
+[07:38:51] بداية المرحلة 33: 7 قارورة، سعات [(4, 6), (11, 1)]، مخفي 6
+[07:38:51] حالة المرحلة 33: [{"x": 197, "y": 380, "cap": 4, "layers": ["brown", "orange", "pink", "yellow"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["green", "green", "yellow", "yellow"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["orange", "red", "orange"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["lavender", "yellow", "green"]}]
+[07:38:51] خطة المرحلة 33: 1 حركة (pimc، 184.9 ms)
+[07:39:00] خطة المرحلة 33: 2 حركة (reveal، 13.0 ms)
+[07:39:08] خطة المرحلة 33: 1 حركة (reveal، 13.3 ms)
+[07:39:17] خطة المرحلة 33: 1 حركة (reveal، 14.7 ms)
+[07:39:21] خطة المرحلة 33: 3 حركة (progress، 0.5 ms)
+[07:39:33] خطة المرحلة 33: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[07:39:33] المرحلة 33 عالقة (لا خطة): [brown,orange,pink,pink]/4 [red]/4 [green,green,green,green]/4 [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/11 [orange,red,orange,orange]/4 [brown,brown]/4 [lavender]/4
+[07:39:33] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[07:39:46] المرحلة 33 أُعيدت من البداية (ذاكرة 6 طبقة مكشوفة)
+[07:39:46] بداية المرحلة 33: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 6
+[07:39:46] حالة المرحلة 33: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 118, "y": 374, "cap": 4, "layers": ["purple", "pink", "blue", "pink"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["brown", "orange", "pink", "pink"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 432, "y": 512, "cap": 11, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["blue", "lavender", "red", "brown"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["orange", "red", "orange", "orange"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["brown", "brown"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["lavender"]}]
+[07:39:46] خطة المرحلة 33: 1 حركة (pimc، 19.3 ms)
+[07:42:11] خطة المرحلة 33: 3 حركة (astar، 0.6 ms)
+[07:42:31] فوز بالمرحلة 33 (unknown): 19 حركة في 165 ث، أدوات -
+[07:42:35] شاشة جديدة لم تُرَ من قبل: new_071_unknown.jpg
