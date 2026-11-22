@@ -2087,3 +2087,29 @@
 [19:03:46] سهم تعليم: لمس الهدف (338, 705)
 [19:03:52] اللعبة ليست في الواجهة (mCurrentFocus=Window{2ab4578 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [19:04:30] شاشة التحميل: انتظار بلا نقر
+[19:05:42] انتهى التحميل بعد 71 ثانية
+[19:05:56] فوز بالمرحلة 99 (لغز جديد على الشاشة): 22 حركة في 383 ث، أدوات -
+[19:05:56] بداية المرحلة 39: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[19:05:56] حالة المرحلة 39: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["yellow", "plum", "cyan", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "plum", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["purple", "purple", "red", "plum"]}, {"x": 374, "y": 538, "cap": 4, "layers": ["cyan", "c_16_7_6", "c_16_7_6", "yellow"]}]
+[19:05:56] خطة المرحلة 39: 5 حركة (progress، 2.9 ms)
+[19:06:39] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[19:06:48] فوز بالمرحلة 39 (الواجهة تعرض المرحلة 99): 4 حركة في 52 ث، أدوات -
+[19:06:58] بداية المرحلة 99: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[19:06:58] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["purple", "purple", "lavender", "purple"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["purple", "lavender", "red", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "darkgreen", "pink", "cyan"], "keys": [1]}, {"x": 373, "y": 538, "cap": 4, "layers": ["lavender", "darkgreen", "brown", "cyan"]}]
+[19:06:58] خطة المرحلة 99: 2 حركة (key، 0.9 ms)
+[19:07:04] الحركة (4, 3) تحرّر مفتاحاً؛ انتظار الباب
+[19:07:18] المرحلة 99: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:07:18] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["purple", "purple", "lavender", "purple"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["purple", "lavender", "red", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "darkgreen"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["lavender", "darkgreen", "brown", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "yellow", "c_16_7_6", "darkgreen"], "keys": [1]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "yellow", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green", "?", "red", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "blue", "red", "c_16_7_6"]}]
+[19:07:18] خطة المرحلة 99: 4 حركة (reveal، 56.1 ms)
+[19:07:51] خطة المرحلة 99: 2 حركة (progress، 5.2 ms)
+[19:08:05] فوز بالمرحلة 99 (لغز جديد على الشاشة): 6 حركة في 66 ث، أدوات -
+[19:08:05] بداية المرحلة 41: 11 قارورة، سعات [(4, 11)]، مخفي 3
+[19:08:05] حالة المرحلة 41: [{"x": 236, "y": 332, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["plum", "brown", "pink", "c_16_7_6"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["purple", "purple", "lavender", "purple"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["purple", "lavender", "red", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "darkgreen", "darkgreen"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["lavender", "darkgreen", "brown", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "yellow", "c_16_7_6", "c_16_7_6"], "keys": [1]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "c_16_7_6"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green", "orange"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "blue", "red", "red"]}]
+[19:08:05] خطة المرحلة 41: 6 حركة (progress، 14.6 ms)
+[19:08:49] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[19:09:12] فوز بالمرحلة 41 (لغز جديد على الشاشة): 5 حركة في 67 ث، أدوات -
+[19:09:12] بداية المرحلة 42: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[19:09:12] حالة المرحلة 42: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["yellow", "plum", "cyan", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "plum", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["purple", "purple", "red", "plum"]}, {"x": 374, "y": 538, "cap": 4, "layers": ["cyan", "c_16_7_6", "c_16_7_6", "yellow"]}]
+[19:09:12] خطة المرحلة 42: 5 حركة (progress، 5.7 ms)
+[19:09:51] شاشة جديدة لم تُرَ من قبل: new_050_unknown.jpg
+[19:09:56] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
