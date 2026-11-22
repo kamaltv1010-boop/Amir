@@ -1,9 +1,9 @@
 done 22
 الحالة: يلعب
 مراحل مكتملة: 38
-الوقت: 5 دقيقة من 108
+الوقت: 10 دقيقة من 108
 آخر شاشة: close
-الشاشات: {'level': 4, 'unknown': 1, 'button': 42, 'close': 40}
+الشاشات: {'level': 4, 'unknown': 1, 'button': 85, 'close': 83}
 صور محفوظة: 3/900، شاشات جديدة: 103
-المرحلة الحالية: 40 (حركات 1، مخفي 0، إخفاقات 0، أدوات -، 5.1 دقيقة)
+المرحلة الحالية: 40 (حركات 1، مخفي 0، إخفاقات 0، أدوات -، 10.2 دقيقة)
 الحالة المقروءة: [pink,pink,pink,pink]/4 []/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender]/4 [purple,purple,purple,purple]/4 [blue,blue,blue,blue]/4 [yellow,yellow,yellow,yellow]/4 []/4 []/4 []/4 [green,green,green,green]/4 [red,red,red,red]/4
