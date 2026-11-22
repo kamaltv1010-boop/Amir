@@ -1,0 +1,9 @@
+done 35
+الحالة: يلعب
+مراحل مكتملة: 0
+الوقت: 8 دقيقة من 300
+آخر شاشة: level
+الشاشات: {'button': 6, 'level': 39, 'unknown': 25, 'close': 2}
+صور محفوظة: 17/900، شاشات جديدة: 9
+المرحلة الحالية: 89 (حركات 0، مخفي 0، إخفاقات 0، أدوات -، 0.0 دقيقة)
+الحالة المقروءة: [pink,cyan,orange]/4 [yellow,lavender,orange]/4 [brown,lavender]/4 [brown,pink]/4 [lavender,cyan,orange]/4 [yellow,orange,yellow]/4
