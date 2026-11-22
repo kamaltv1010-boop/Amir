@@ -280,6 +280,7 @@ ALLOW_WARN = {"001_end", "002_picked"}
 
 # (التصنيف، نقطة find_button أو None، نقطة find_close أو None) — None في النقطة = لا يُختبر
 SCREENS = {
+    "home_superhard": ("button", (236, 786), None),     # الواجهة: «Super Hard Level 19» الأحمر (×5)
     "tos_3536": ("button", (236, 660), None),           # شروط الخدمة في النسخة 0.0.3536 (لوحة 36 وزرّ 73)
     "L016_3rows": ("level", None, None),                # شريط الأدوات عند 0.92 (ثلاثة صفوف)
     "nonet_popup": ("button", (236, 630), None),        # «No internet connection» وزرّ Retry

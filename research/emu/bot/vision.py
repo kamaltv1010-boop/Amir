@@ -690,6 +690,13 @@ def hard_btn_mask(a):
     return (B > 140) & (R > 70) & (G < 55) & (B - G > 110) & (R - G > 55)
 
 
+def superhard_btn_mask(a):
+    """أحمر زرّ «Super Hard Level» في الواجهة الرئيسية (من المرحلة 19؛ نحو 190/15/20)."""
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return (R > 150) & (G < 70) & (B < 80) & (R - G > 110) & (R - B > 100)
+
+
 def _rect_blobs(mask, W, H, min_area_frac=0.0015):
     res = []
     for c in _blobs(mask, int(min_area_frac * H * W)):
@@ -733,10 +740,11 @@ def main_button(img):
     if len(big) == 1 and len(others) <= 1:
         return int(round(big[0]["x"])), int(round(big[0]["y"])), "green"
     if not gb:
-        for b in _rect_blobs(hard_btn_mask(a), W, H, 0.01):
-            if (_is_main(b, W, H) and b["h"] >= 0.07 * H and 0.45 * H < b["y"] < 0.92 * H
-                    and b["fill"] > 0.45):
-                return int(round(b["x"])), int(round(b["y"])), "hard"
+        for kind, mask in (("hard", hard_btn_mask(a)), ("superhard", superhard_btn_mask(a))):
+            for b in _rect_blobs(mask, W, H, 0.01):
+                if (_is_main(b, W, H) and b["h"] >= 0.07 * H and 0.45 * H < b["y"] < 0.92 * H
+                        and b["fill"] > 0.45):
+                    return int(round(b["x"])), int(round(b["y"])), kind
         tos = find_tos(a)
         if tos:
             return tos[0], tos[1], "tos"
