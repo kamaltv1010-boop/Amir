@@ -597,6 +597,126 @@ def test_device_mapping():
     assert vision.to_device(236, 500) == (538, 1140)
 
 
+# ---------------------------------------------------------------- التشغيل السابع (المرحلة 99) — unittest أيضاً
+import unittest  # noqa: E402
+
+# لقطات حقيقية من التشغيلين السادس والسابع (انظر أسماءها): عناوين عادية وصعبة وصعبة جداً، ونافذتا «More Lives» و«No
+# Available Moves»، وستائر وأكياس تغطي قوارير. كل لقطات LEVELS وKEY_LEVELS وSCREENS القديمة بلا شيء من هذا.
+RUN7_LEVEL_NUMBERS = {"L089_superhard": 89, "L090_bags": 90, "L091_curtains": 91, "L094_hard_covers": 94,
+                      "L099_superhard_doors": 99, "L099_bag_keys_mint": 99}
+RUN7_BADGES = {"L089_superhard": "superhard", "L099_superhard_doors": "superhard", "L099_bag_keys_mint": "superhard",
+               "L094_hard_covers": "hard", "056_c_level14": "hard", "058_end": "hard",
+               "L090_bags": "normal", "L091_curtains": "normal", "010_a_level5": "normal", "050_c_level13": "normal",
+               "L074_keys": "hard", "030_b_home": None, "nomoves_playon_1950": None, "lives_refill_ad": None}
+RUN7_COINS = {"nomoves_playon_1950": 1950, "lives_refill_ad": 1950, "lives_refill_free": 1950, "nomoves_popup": 1900,
+              "continue_paid": 1330, "home_superhard": 1440, "L090_bags": None, "L099_superhard_doors": None,
+              "030_a_win": None}
+# (رقم القارورة، x، y، النوع، لون أيقونة الستارة)
+RUN7_COVERS = {
+    "L090_bags": [(0, 99, 331, "bag", None), (2, 236, 331, "bag", None), (4, 374, 331, "bag", None),
+                  (5, 99, 537, "bag", None), (9, 374, 537, "bag", None), (11, 236, 743, "bag", None)],
+    "L091_curtains": [(0, 100, 320, "curtain", "red"), (1, 168, 320, "curtain", "orange"), (2, 236, 320, "curtain", "brown"),
+                      (3, 304, 320, "curtain", "orange"), (5, 100, 525, "curtain", "brown"),
+                      (9, 100, 730, "curtain", "brown")],
+    "L094_hard_covers": [(5, 98, 521, "curtain", "red"), (6, 168, 537, "bag", None), (8, 304, 537, "bag", None),
+                         (9, 372, 521, "curtain", "lavender"), (10, 134, 743, "bag", None), (11, 202, 743, "bag", None),
+                         (12, 270, 743, "bag", None), (13, 338, 743, "bag", None)],
+    "L099_bag_keys_mint": [(8, 236, 743, "bag", None)],
+    "L099_curtains_bag": [(0, 103, 315, "curtain", "red"), (4, 378, 315, "curtain", "purple"), (12, 236, 742, "bag", None)],
+    "L099_superhard_doors": [],
+}
+RUN7_TUBES = {"L090_bags": 13, "L091_curtains": 13, "L094_hard_covers": 14, "L099_bag_keys_mint": 11,
+              "L099_curtains_bag": 15, "L099_superhard_doors": 6}
+
+
+def _all_testdata():
+    return sorted(os.path.splitext(n)[0] for n in os.listdir(DATA) if n.endswith(".jpg"))
+
+
+class TestRun7Vision(unittest.TestCase):
+    def test_level_numbers_hard_and_superhard(self):
+        """عنوان المرحلة يُقرأ في العادية والصعبة (بنفسجي وشريط HARD) والصعبة جداً (أحمر وشريط SUPER HARD): كان «9» يُقرأ
+        «3» بإزاحة نصف بكسل فبقي عنوان المرحلة 99 بلا رقم ساعات وانجرف العدّاد."""
+        for name, n in RUN7_LEVEL_NUMBERS.items():
+            self.assertEqual(vision.level_number(_path(name)), n, name)
+
+    def test_level_badge(self):
+        for name, b in RUN7_BADGES.items():
+            self.assertEqual(vision.level_badge(_path(name)), b, name)
+
+    def test_read_coins(self):
+        for name, n in RUN7_COINS.items():
+            self.assertEqual(vision.read_coins(_path(name)), n, name)
+
+    def test_lives_popup(self):
+        """«More Lives»: «Refill 900» الأخضر وX، والعدّاد 15:00 و09:16؛ وزرّ الإعلان «+1 Life» أو «Free Lives» تحته لا
+        يُعاد أبداً. لا تُعرف في أي لقطة أخرى (و«Continue?» بزرّها الأخضر بالعملات وX ليست هي)."""
+        for name, timer in (("lives_refill_ad", 900), ("lives_refill_free", 556)):
+            lp = vision.find_lives_popup(_path(name))
+            self.assertIsNotNone(lp, name)
+            self.assertTrue(_near(lp["refill"], (236, 523)), lp)
+            self.assertTrue(_near(lp["close"], (424, 182)), lp)
+            self.assertEqual((lp["price"], lp["timer"]), (900, timer), name)
+            self.assertEqual(vision.classify(_path(name)), "lives", name)
+            self.assertGreater(lp["refill"][1], 0.45 * 1000)      # الأخضر فوق زرّ الإعلان (نحو y=650)
+            self.assertLess(lp["refill"][1], 600)
+        for name in _all_testdata():
+            if not name.startswith("lives_"):
+                self.assertIsNone(vision.find_lives_popup(_path(name)), name)
+                self.assertNotEqual(vision.classify(_path(name)), "lives", name)
+
+    def test_play_on(self):
+        for name in ("nomoves_playon_1950", "nomoves_popup"):
+            p = vision.find_play_on(_path(name))
+            self.assertIsNotNone(p, name)
+            self.assertTrue(_near(p[:2], (124, 820)), p)
+            self.assertEqual(p[2], 900, name)
+            gu = vision.find_give_up(_path(name))
+            self.assertTrue(gu is not None and gu[0] > p[0] + 150, (name, gu))
+        for name in _all_testdata():
+            if name not in ("nomoves_playon_1950", "nomoves_popup"):
+                self.assertIsNone(vision.find_play_on(_path(name)), name)
+
+    def test_covers_are_blocked_tubes(self):
+        """الستائر والأكياس قوارير محجوبة في خاناتها بترتيب القراءة (layers فارغة، لا تحذيرات)، ولون أيقونة الستارة."""
+        for name, exp in RUN7_COVERS.items():
+            st = vision.parse_level(_path(name))
+            self.assertEqual(len(st["tubes"]), RUN7_TUBES[name], name)
+            got = [(k, t["x"], t["y"], t["cover"], t["cover_color"]) for k, t in enumerate(st["tubes"]) if t.get("blocked")]
+            self.assertEqual(len(got), len(exp), (name, got))
+            for g, e in zip(got, exp):
+                self.assertEqual((g[0], g[3], g[4]), (e[0], e[3], e[4]), (name, got))
+                self.assertTrue(_near(g[1:3], e[1:3]), (name, g, e))
+            for t in st["tubes"]:
+                if t.get("blocked"):
+                    self.assertEqual(t["layers"], [], name)
+            self.assertFalse(st.get("warnings"), (name, st.get("warnings")))
+        for name in list(LEVELS) + list(KEY_LEVELS):
+            st = vision.parse_level(_path(name))
+            self.assertFalse(any(t.get("blocked") for t in st["tubes"]), name)
+
+    def test_mint_and_full_board_level99(self):
+        """السائل النعناعي (1/206/149) لون من اللوحة لا c_16_7_6، ولا يُعدّ زجاجاً (كان يشوّه قوارير المرحلة 99)."""
+        st = vision.parse_level(_path("L099_bag_keys_mint"))
+        L = [t["layers"] for t in st["tubes"]]
+        self.assertEqual(L[0], ["mint", "mint"])
+        self.assertEqual(L[4], ["brown", "mint", "brown", "mint"])
+        self.assertEqual([k for k, t in enumerate(st["tubes"]) if t.get("keys")], [6, 7])
+        self.assertEqual(len(st["doors"]), 2)
+        st = vision.parse_level(_path("L099_superhard_doors"))
+        self.assertEqual([t["layers"] for t in st["tubes"]],
+                         [[], ["blue", "plum", "cyan", "mint"], ["blue", "brown", "mint", "cyan"], [],
+                          ["brown", "mint", "brown", "mint"], ["blue", "brown", "purple", "blue"]])
+        self.assertFalse(st.get("warnings"))
+
+    def test_legacy_checks(self):
+        """اختبارات pytest القديمة في هذا الملف تجري أيضاً مع unittest discover."""
+        for fn in (test_levels, test_screens, test_level_numbers, test_animation_frame_warns, test_palette_consistency,
+                   test_tutorial_arrow, test_give_up_and_booster_badges, test_is_ad, test_is_home, test_keys_and_doors,
+                   test_device_mapping):
+            fn()
+
+
 if __name__ == "__main__":
     total_t = total_te = total_l = total_le = 0
     failed = False

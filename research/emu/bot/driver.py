@@ -7,7 +7,13 @@
            ثم لقطة جديدة للتحقق (الطبقات المخفية تنكشف). لا تقدّم = حركة سيئة؛
            بعد 3 إخفاقات: لقطة stuck_* ثم الأدوات (قارورة إضافية، ثم خلط، ثم تراجع).
   button : نقر find_button.   close : نقر find_close.
-  unknown: لقطة unknown_* (محدودة)، ثم انتظار/رجوع/نقر الوسط/إعادة تشغيل اللعبة.
+  lives  : نافذة «More Lives»: «Refill» مرة واحدة إن كفى الرصيد ثمنه (900)، وإلا X ثم لا يُضغط زرّ المرحلة حتى موعد
+           الروح القادمة (فحص كل دقيقة). لا يُلمس زرّ الإعلان «+1 Life» ولا «Free Lives» أبداً.
+  unknown: لقطة unknown_* (محدودة)، ثم انتظار/رجوع/نقر الوسط/إعادة تشغيل اللعبة. ومنها «No Available Moves»:
+           «Give Up»، أو «Play On» (قارورة بـ 900) مرة في المحاولة إن كفى الرصيد وكانت المرحلة صعبة أو صعبة جداً بعنوانها
+           أو أُخفقت مرتين في هذا التشغيل.
+رقم المرحلة من عنوانها (العادية والصعبة والصعبة جداً)؛ ولا «فوز» بتغيّر اللوحة وحده إلا إن ظنّ البوت اللغز محلولاً: غير
+ذلك باب انفتح (استمرار المحاولة) أو إعادة المرحلة نفسها. الستائر والأكياس قوارير محجوبة ("blocked") لا يلمسها الحلّال.
 كل شاشة غير اللغز لم يُرَ شكلها من قبل (بصمة إدراكية) تُحفظ new_*.jpg، وأول لقطة
 لكل مرحلة L{n:03d}_start.jpg مع حالتها في السجل.
 
@@ -82,6 +88,10 @@ CFG = {
     "level_max_min": _env("BOT_LEVEL_MAX_MIN", 30.0, float),
     "plan_sec": _env("BOT_PLAN_SEC", 1.6, float),
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
+    "refill_price": _env("BOT_REFILL_PRICE", 900, int),     # ثمن ملء الأرواح إن لم يُقرأ من زرّ «Refill»
+    "play_on_price": _env("BOT_PLAY_ON_PRICE", 900, int),   # ثمن «Play On» (قارورة) إن لم يُقرأ من زرّه
+    "lives_wait_sec": _env("BOT_LIVES_WAIT_SEC", 300.0, float),  # انتظار الروح القادمة إن لم يُقرأ عدّادها
+    "play_on_fails": _env("BOT_PLAY_ON_FAILS", 2, int),     # «Play On» في مرحلة عادية بعد هذا العدد من «Give Up» فيها
 }
 BOOSTER_DEFAULT = {"undo": (144, 854), "shuffle": (236, 854), "add": (328, 854)}
 NOVEL_DIST = 28        # بصمة 256 بت: نوافذ الفوز بينها ≤32، والشاشات المختلفة ≥73
@@ -329,6 +339,14 @@ class Vision:
                     d["keys"] = ks
                     if t.get("key_colors"):
                         d["key_colors"] = [str(c) for c in t["key_colors"]]
+                if t.get("blocked"):                     # تحت ستارة أو كيس: محتواها مجهول ولا تُلمس
+                    d["blocked"] = True
+                    d["layers"] = []
+                    d.pop("keys", None)
+                    if t.get("cover"):
+                        d["cover"] = str(t["cover"])
+                    if t.get("cover_color"):
+                        d["cover_color"] = str(t["cover_color"])
                 tubes.append(d)
             except (KeyError, TypeError, ValueError):
                 return None
@@ -355,6 +373,41 @@ class Vision:
     def level_number(self, fr):
         n = self._safe("level_number", fr.arr)
         return n if isinstance(n, int) and 0 < n < 100000 else None
+
+    def badge(self, fr):
+        """نوع المرحلة من عنوانها: "normal" | "hard" | "superhard" أو None."""
+        b = self._safe("level_badge", fr.arr)
+        return b if b in ("normal", "hard", "superhard") else None
+
+    def coins(self, fr):
+        """رصيد العملات من الحبّة أعلى اليسار (النوافذ والواجهة) أو None."""
+        n = self._safe("read_coins", fr.arr)
+        return n if isinstance(n, int) and 0 <= n < 10 ** 7 else None
+
+    def lives_popup(self, fr):
+        """نافذة «More Lives»: {"refill": (x, y)، "close": (x, y)، "price": int|None، "timer": ثوانٍ|None} أو None."""
+        d = self._safe("find_lives_popup", fr.arr)
+        if not isinstance(d, dict):
+            return None
+        refill, close = self._pt(d.get("refill")), self._pt(d.get("close"))
+        if not refill or not close:
+            return None
+        price, timer = d.get("price"), d.get("timer")
+        return {"refill": refill, "close": close,
+                "price": price if isinstance(price, int) and price > 0 else None,
+                "timer": float(timer) if isinstance(timer, (int, float)) and timer >= 0 else None}
+
+    def play_on(self, fr):
+        """زرّ «Play On» في نافذة «No Available Moves»: ((x, y)، الثمن أو None) أو None."""
+        p = self._safe("find_play_on", fr.arr)
+        pt = self._pt(p)
+        if not pt:
+            return None
+        try:
+            price = int(p[2]) if len(p) > 2 and p[2] else None
+        except (TypeError, ValueError):
+            price = None
+        return pt, price
 
     def boosters(self, fr):
         """مواضع الأدوات من اليسار: تراجع، خلط، قارورة (إحداثيات الارتفاع 1000)."""
@@ -453,12 +506,23 @@ def color_counts(st):
     return Counter(c for t in st["tubes"] for c in t["layers"])
 
 
+def covered(st) -> bool:
+    """في اللوحة قوارير مغطّاة (ستارة/كيس) أو أبواب: ترتيب الظاهر وحده ليس فوزاً."""
+    return bool(st.get("doors")) or any(t.get("blocked") for t in st["tubes"])
+
+
 def compatible(old, new, extra_tubes=0) -> bool:
-    """هل `new` استمرار للغز `old` نفسه (لا مرحلة جديدة)؟ الألوان لا تتغيّر بالحركات."""
+    """هل `new` استمرار للغز `old` نفسه (لا مرحلة جديدة)؟ الألوان لا تتغيّر بالحركات، إلا قارورة مغطّاة انكشفت في
+    خانتها (العدد نفسه): طبقاتها جديدة فلا تُحسب في الموازنة."""
     no, nn = len(old["tubes"]), len(new["tubes"])
     if not (no - 1 <= nn <= no + 1 + extra_tubes):
         return False
     co, cn = color_counts(old), color_counts(new)
+    if no == nn:
+        for a, b in zip(old["tubes"], new["tubes"]):
+            if a.get("blocked") and not b.get("blocked"):
+                cn.subtract(b["layers"])
+        cn = +cn                                    # بلا الأعداد الصفرية والسالبة
     to, tn = sum(co.values()), sum(cn.values())
     if abs(to - tn) > 1:
         return False
@@ -474,7 +538,7 @@ def suspicious_counts(st) -> bool:
         return False
     base = Counter(t["cap"] for t in tubes).most_common(1)[0][0]
     cnt = color_counts(st)
-    hidden = cnt.pop("?", 0)
+    hidden = cnt.pop("?", 0) + sum(t["cap"] for t in tubes if t.get("blocked"))   # المغطّاة طبقات مجهولة
     giant = {t["layers"][0] for t in tubes if t["cap"] > base and t["layers"]}
     for c, n in cnt.items():
         if c in giant:
@@ -495,7 +559,9 @@ def lifted_index(st):
     if len(tubes) < 3:
         return None
     base = Counter(t["cap"] for t in tubes).most_common(1)[0][0]
-    normal = sorted([(k, t) for k, t in enumerate(tubes) if t["cap"] == base and not t.get("tall")],
+    # المغطّاة لا تُرفع، ونقطتها مقدّرة من غطائها (قد تختلف عن صفّها)
+    normal = sorted([(k, t) for k, t in enumerate(tubes)
+                     if t["cap"] == base and not t.get("tall") and not t.get("blocked")],
                     key=lambda kt: kt[1]["y"])
     rows = []
     for k, t in normal:
@@ -520,16 +586,90 @@ def compact_state(st):
         d = {"x": t["x"], "y": t["y"], "cap": t["cap"], "layers": t["layers"]}
         if t.get("keys"):
             d["keys"] = t["keys"]
+        if t.get("blocked"):
+            d["blocked"] = t.get("cover") or True
+            if t.get("cover_color"):
+                d["cover_color"] = t["cover_color"]
         out.append(d)
     return out
 
 
 def _same_tube(a, b) -> bool:
-    """القارورة نفسها قبل انفتاح باب وبعده: الطبقات نفسها (مخفية انكشفت أو لون من الذاكرة بقي "?" مقبول)."""
+    """القارورة نفسها قبل انفتاح باب وبعده: الطبقات نفسها (مخفية انكشفت أو لون من الذاكرة بقي "?" مقبول).
+    المغطّاة تطابق المغطّاة فقط (لا قارورة فارغة)."""
+    if bool(a.get("blocked")) != bool(b.get("blocked")):
+        return False
     la, lb = a["layers"], b["layers"]
     if len(la) != len(lb):
         return False
     return all(x == y or x == "?" or y == "?" for x, y in zip(la, lb))
+
+
+def _near(a, b) -> bool:
+    """الخانة نفسها تقريباً (نقطتا النقر؛ القارورة الإضافية تضغط اللوحة بضع بكسلات)."""
+    try:
+        return abs(a["x"] - b["x"]) <= 24 and abs(a["y"] - b["y"]) <= 45
+    except (KeyError, TypeError):
+        return False
+
+
+def _slot_score(a, b) -> float:
+    if a.get("blocked") or b.get("blocked"):
+        if a.get("blocked") and b.get("blocked"):
+            return 3.0 if _near(a, b) else 1.0
+        return 1.0 if (a.get("blocked") and _near(a, b)) else 0.0      # غطاء انكشف في خانته
+    if _same_tube(a, b):
+        return 3.0 if _near(a, b) else 2.0
+    if not _near(a, b):
+        return 0.0
+    pre = 0
+    for x, y in zip(a["layers"], b["layers"]):
+        if x == y or x == "?" or y == "?":
+            pre += 1
+        else:
+            break
+    return 1.5 if pre else 1.0
+
+
+def slot_map(old, new):
+    """مطابقة تقريبية {فهرس قديم: فهرس جديد} حين تتغيّر اللوحة ولا تكفي door_map (باب وغطاء معاً، صبّ أثناء الانفتاح،
+    قراءة ناقصة): تحفظ ترتيب القراءة وتعظّم مجموع الدرجات: المحتوى نفسه في الخانة نفسها 3، المحتوى نفسه بعد إعادة
+    التوزيع 2، الخانة نفسها بقاع متّفق 1.5 (المخفي لا يتحرّك)، الخانة نفسها وحدها 1 (ومنها غطاء انكشف)."""
+    to, tn = old["tubes"], new["tubes"]
+    no, nn = len(to), len(tn)
+    S = [[0.0] * (nn + 1) for _ in range(no + 1)]
+    sc = [[_slot_score(to[a], tn[b]) for b in range(nn)] for a in range(no)]
+    for a in range(no - 1, -1, -1):
+        for b in range(nn - 1, -1, -1):
+            v = max(S[a + 1][b], S[a][b + 1])
+            if sc[a][b] > 0:
+                v = max(v, sc[a][b] + S[a + 1][b + 1])
+            S[a][b] = v
+    mp, a, b = {}, 0, 0
+    while a < no and b < nn:
+        if sc[a][b] > 0 and abs(S[a][b] - (sc[a][b] + S[a + 1][b + 1])) < 1e-9:
+            mp[a] = b
+            a += 1
+            b += 1
+        elif S[a + 1][b] >= S[a][b + 1]:
+            a += 1
+        else:
+            b += 1
+    return mp
+
+
+def remap_memory(memory, mp, new):
+    """ذاكرة الطبقات المكشوفة بفهارس اللوحة الجديدة: تُنقل المطابَقة فقط، ويُترك ما لم يعد "?" بلونها في موضعه."""
+    out = {}
+    tubes = new["tubes"]
+    for (k, p), c in memory.items():
+        j = mp.get(k)
+        if j is None or j >= len(tubes) or tubes[j].get("blocked"):
+            continue
+        L = tubes[j]["layers"]
+        if p < len(L) and L[p] in ("?", c):
+            out[(j, p)] = c
+    return out
 
 
 def door_map(old, new):
@@ -597,6 +737,8 @@ class LevelCtx:
         self.memory = {}               # (قارورة، موضع) -> لون طبقة مخفية انكشفت
         self.doors_opened = 0          # أبواب انفتحت في هذه المحاولة (قوارير ظهرت بلا إعادة)
         self.door_wait = 0
+        self.badge = None              # نوع المرحلة من عنوانها: normal | hard | superhard
+        self.play_ons = 0              # «Play On» (قارورة بالعملات) في هذه المحاولة
 
     def bad_for(self, key):
         return set(self.bad.get(key, set())) | self.ban
@@ -660,6 +802,15 @@ class Bot:
         self.start_same = 0            # قراءات متتالية مطابقة لـ start_probe
         self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
+        self.restart_n = None          # رقم المرحلة التي ستُعاد (بعد «Give Up» أو إعادة مكتشفة) إن لم يُقرأ العنوان
+        self.saved_starts = set()      # مراحل حُفظت لقطة بدايتها (إعادة المرحلة لا تستهلك صوراً جديدة)
+        self.level_fails = Counter()   # رقم المرحلة -> مرات «Give Up» فيها في هذا التشغيل
+        self.coins = None              # آخر رصيد عملات مقروء
+        self.lives_until = 0.0         # لا يُضغط زرّ المرحلة قبل هذا الوقت (الأرواح نفدت ولا عملات للملء)
+        self.last_refill_tap = -1e9    # آخر ضغط على «Refill» (لا ضغطة ثانية إن عادت النافذة بعدها مباشرة)
+        self.refills = 0
+        self.last_lives_log = 0.0
+        self.lives_shots = 0
         self.last_daily_log = 0.0
         self.daily_hashes = []         # بصمات وسط نافذة «Daily Challenge» (تقويم ولغز بعدّاد): تُغلق ولا يلعبها البوت
         for p in sorted((HERE / "testdata").glob("daily_popup*.jpg")):
@@ -1109,10 +1260,14 @@ class Bot:
         ]
         if lv:
             hidden = sum(1 for t in lv.last_state["tubes"] for c in t["layers"] if c == "?")
-            lines.append("المرحلة الحالية: %d (حركات %d، مخفي %d، إخفاقات %d، أدوات %s، %.1f دقيقة)"
-                         % (lv.n, lv.moves, hidden, lv.fails, lv.boosters or "-",
-                            (time.time() - lv.t0) / 60))
+            lines.append("المرحلة الحالية: %d%s (حركات %d، مخفي %d، إخفاقات %d، أدوات %s، %.1f دقيقة)"
+                         % (lv.n, {"hard": " صعبة", "superhard": " صعبة جداً"}.get(lv.badge, ""), lv.moves, hidden,
+                            lv.fails, lv.boosters or "-", (time.time() - lv.t0) / 60))
             lines.append("الحالة المقروءة: %s" % solver.describe(lv.last_state))
+        wait = self.lives_until - time.time()
+        lines.append("العملات: %s، «Give Up» لكل مرحلة: %s%s"
+                     % (self.coins if self.coins is not None else "?", dict(self.level_fails) or "-",
+                        "، انتظار الأرواح %.0f دقيقة" % (wait / 60) if wait > 0 else ""))
         self.out.write("state.txt", "\n".join(lines) + "\n")
         self.last_state_write = time.time()
 
@@ -1283,7 +1438,9 @@ class Bot:
                 if kind == "level" and self.airplane_on is None and CFG["airplane"] == "after_load" \
                         and not self.net_required:
                     self.airplane(True)
-                if kind in ("button", "close") and self.same_screen(fr) > 6:
+                if kind in ("button", "close") and self.lives_waiting():
+                    self.repeat = (None, 0)    # انتظار الأرواح المقصود ليس «تكراراً رغم النقر» (ولا رجوع بعده)
+                elif kind in ("button", "close") and self.same_screen(fr) > 6:
                     self.log("الشاشة نفسها (%s) تتكرّر رغم النقر؛ تصعيد" % kind)
                     self.save_repeat(fr, kind)
                     self.dev.key(4) if self.repeat_escalations % 2 == 0 else \
@@ -1306,6 +1463,8 @@ class Bot:
                     fr = self.on_level(fr)
                 elif kind == "button":
                     fr = self.on_button(fr)
+                elif kind == "lives":
+                    fr = self.on_lives(fr)
                 elif kind == "close":
                     fr = self.on_close(fr)
                 else:
@@ -1342,29 +1501,45 @@ class Bot:
         self.levels_done += 1
         self.just_won_at = time.time()
         self.expect_new = True
+        if self.level_hint is None:
+            self.level_hint = lv.n + 1         # إن لم يُقرأ عنوان المرحلة التالية ولا زرّها (لا levels_done + 1)
         dt = time.time() - lv.t0
         self.log("فوز بالمرحلة %d (%s): %d حركة في %.0f ث، أدوات %s"
                  % (lv.n, why, lv.moves, dt, lv.boosters or "-"))
         self.out.append("levels.jsonl", json.dumps({
             "n": lv.n, "result": lv.result, "moves": lv.moves, "sec": round(dt),
-            "boosters": lv.boosters, "undos": lv.undos, "stuck": lv.stuck,
+            "boosters": lv.boosters, "undos": lv.undos, "stuck": lv.stuck, "badge": lv.badge,
+            "fails": self.level_fails.get(lv.n, 0),
             "start": compact_state(lv.start_state)}, ensure_ascii=False) + "\n")
         self.write_state()                     # عدد المراحل في state.txt يتبع كل فوز فوراً
 
     def new_level(self, fr, st, n=None):
-        n = n or self.vis.level_number(fr) or self.level_hint or (self.levels_done + 1)
+        # الرقم: العنوان المقروء أولاً (يُقرأ في الصعبة والصعبة جداً أيضاً)، ثم الرقم المعطى (إعادة المرحلة نفسها)، ثم زرّ
+        # الواجهة، ثم رقم المرحلة المُعادة بعد «Give Up»، وآخر شيء العدّاد. (التشغيل السابع: العنوان الأحمر لم يُقرأ فصار
+        # كل «Give Up» في المرحلة 99 «فوزاً» وانجرف العدّاد إلى 30..69 والشاشة تقول 99.)
+        ln = self.vis.level_number(fr)
+        if ln is not None and n is not None and ln != n:
+            self.log("العنوان يعرض المرحلة %d لا %d: يُعتمد العنوان" % (ln, n))
+        n = ln or n or self.level_hint or self.restart_n or (self.levels_done + 1)
         self.level_hint = None
+        self.restart_n = None
         self.lv = LevelCtx(n, st, time.time())
+        self.lv.badge = self.vis.badge(fr)
         self.lv.memory = self.memory_by_sig.setdefault(self.lv.start_sig, {})
         self.expect_new = False
-        self.out.save_jpg("L%03d_start.jpg" % n, fr.pil)
+        if n not in self.saved_starts:
+            self.saved_starts.add(n)
+            self.out.save_jpg("L%03d_start.jpg" % n, fr.pil)
         if self.close_frame is not None and time.time() - self.close_frame.t < 30:
             self.out.save_jpg("feat_L%03d.jpg" % n, self.close_frame.pil)
             self.log("نافذة قبل المرحلة %d (ميزة جديدة؟): feat_L%03d.jpg" % (n, n))
         self.close_frame = None
-        self.log("بداية المرحلة %d: %d قارورة، سعات %s، مخفي %d"
-                 % (n, len(st["tubes"]), sorted(Counter(t["cap"] for t in st["tubes"]).items()),
-                    sum(1 for t in st["tubes"] for c in t["layers"] if c == "?")))
+        nb = sum(1 for t in st["tubes"] if t.get("blocked"))
+        self.log("بداية المرحلة %d%s: %d قارورة، سعات %s، مخفي %d%s"
+                 % (n, {"hard": " (صعبة)", "superhard": " (صعبة جداً)"}.get(self.lv.badge, ""), len(st["tubes"]),
+                    sorted(Counter(t["cap"] for t in st["tubes"] if not t.get("blocked")).items()),
+                    sum(1 for t in st["tubes"] for c in t["layers"] if c == "?"),
+                    "، مغطّاة %d (ستارة/كيس)" % nb if nb else ""))
         self.log("حالة المرحلة %d: %s" % (n, json.dumps(compact_state(st), ensure_ascii=False)))
 
     def on_level(self, fr):
@@ -1405,20 +1580,38 @@ class Bot:
             lv.door_wait = 0
             self.door_opened(st, *self.door_ref(st))
         elif not compatible(lv.last_state, st, lv.extra_tubes):
+            # تغيّر كبير في اللوحة. الفوز الحقيقي يمرّ دائماً بنافذة الفوز أو زرّ الواجهة (on_button يؤكّده بالرقم)، فلا
+            # «فوز» هنا إلا إن ظنّ البوت اللغز محلولاً؛ وإلا فهو باب انفتح (قوارير أكثر) أو إعادة المرحلة نفسها. (التشغيل
+            # السابع: باب كبير انفتح فتغيّرت المواضع والعنوان الأحمر لم يُقرأ، فسُجّل «فوز» ومُحيت ذاكرة المحاولة.)
             lv.door_wait = 0
             lv.incompat += 1
-            if lv.incompat < 2:
+            no, nn = len(lv.last_state["tubes"]), len(st["tubes"])
+            # بلا مغادرة شاشة اللغز لا تُعاد المرحلة: قارورة اختفت = قراءة ناقصة غالباً، فلقطة ثالثة قبل الحكم
+            need = 3 if (lv.active and nn <= no) else 2
+            if lv.incompat < need:
                 time.sleep(0.8)
                 return self.grab()
             ln = self.vis.level_number(fr)       # رقم المرحلة من العنوان إن قُرئ
-            same = (ln == lv.n) if ln is not None else \
-                (solver.state_key(st) == lv.start_sig and not lv.maybe_won)
-            if same:
-                self.log("المرحلة %d أُعيدت من البداية (ذاكرة %d طبقة مكشوفة)" % (lv.n, len(lv.memory)))
-                self.new_level(fr, st, n=lv.n)
-            else:
-                self.win("لغز جديد على الشاشة", inferred=not lv.maybe_won)
+            if ln is not None and ln != lv.n:
+                if lv.maybe_won:
+                    self.win("لغز جديد على الشاشة: المرحلة %d" % ln)
+                else:
+                    self.log("العنوان يعرض المرحلة %d والعدّاد %d بلا نافذة فوز: يُعتمد العنوان بلا فوز" % (ln, lv.n))
                 self.new_level(fr, st, n=ln)
+            elif ln is None and lv.maybe_won:
+                self.win("لغز جديد على الشاشة")
+                self.new_level(fr, st)
+            elif nn > no:
+                self.door_remap(st)              # المرحلة نفسها وقوارير أكثر: باب أو غطاء انفتح، استمرار بلا إعادة
+            else:
+                self.log("المرحلة %d أُعيدت من البداية (%s، ذاكرة %d طبقة مكشوفة)"
+                         % (lv.n, "العنوان نفسه" if ln is not None else "العنوان غير مقروء", len(lv.memory)))
+                self.restart_n = lv.n            # بداية جديدة للمرحلة نفسها: تُعتمد حين تثبت اللوحة
+                self.expect_new = True
+                self.start_probe, self.start_probe_tries, self.start_same = None, 0, 0
+                lv.incompat = 0
+                time.sleep(0.6)
+                return self.grab()
             lv = self.lv
         lv.incompat = 0
         lv.active = True
@@ -1458,10 +1651,15 @@ class Bot:
                     lv.plan = None
                 if verdict == "different":
                     self.log("الحالة بعد %s تختلف عن المتوقَّع؛ إعادة التخطيط" % (mv,))
+        if len(st["tubes"]) != len(lv.last_state["tubes"]) and lv.memory:
+            # عدد القوارير تغيّر بلا باب (قارورة لم تُقرأ في لقطة): الذاكرة بفهارس اللوحة الجديدة، وإلا طُبّقت على غير قواريرها
+            lv.memory = remap_memory(lv.memory, slot_map(lv.last_state, st), st)
         lv.last_state = st
         stp = with_memory(st, lv.memory)
         lv.visited.add(key)
         lv.visited.add(solver.state_key(stp))
+        if lv.badge is None:
+            lv.badge = self.vis.badge(fr)
 
         # ---- قارورة مرفوعة بقيت مختارة (بعد نقرة ضائعة): أنزِلها
         li = lifted_index(st) if (not moved or verdict == "nochange") else None
@@ -1473,9 +1671,9 @@ class Bot:
             time.sleep(0.6)
             return self.grab()
 
-        # ---- محلولة؟ ننتظر نافذة الفوز
+        # ---- محلولة؟ ننتظر نافذة الفوز (أو انكشاف المغطّاة والأبواب: ترتيب الظاهر وحده ليس فوزاً)
         if solver.is_solved(stp):
-            lv.maybe_won = True
+            lv.maybe_won = not covered(st)
             if lv.solved_since is None:
                 lv.solved_since = time.time()
             if time.time() - lv.solved_since > 8:
@@ -1530,7 +1728,7 @@ class Bot:
         القديمة)، وتبقى المحاولة (الحركات والأدوات والوقت) بلا «إعادة من البداية»."""
         lv = self.lv
         old_n = len(ref["tubes"])
-        mem = {(mp[k], p): c for (k, p), c in lv.memory.items() if k in mp}
+        mem = remap_memory(lv.memory, mp, st)
         lv.memory = mem                        # قاموس جديد: ذاكرة بداية المرحلة (بفهارسها القديمة) تبقى لإعادتها
         lv.doors_opened += 1
         if lv.pending is not None:             # الحركة التي حرّرت المفتاح نجحت
@@ -1545,6 +1743,20 @@ class Bot:
         self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة"
                  % (lv.n, old_n, len(st["tubes"]), len(mem), nk))
         self.log("حالة المرحلة %d بعد الباب: %s" % (lv.n, json.dumps(compact_state(st), ensure_ascii=False)))
+
+    def door_remap(self, st):
+        """قوارير أكثر في المرحلة نفسها ولم تطابق door_map (باب كبير وغطاء معاً، صبّ أثناء الانفتاح، مواضع تغيّرت): استمرار
+        المحاولة نفسها (الحركات والأدوات والوقت)، وتُنقل ذاكرة الطبقات المكشوفة بمطابقة تقريبية بالمحتوى والخانة."""
+        lv = self.lv
+        ref = lv.pending[2] if (lv.pending is not None and lv.pending[2] is not None) else lv.last_state
+        mp = slot_map(with_memory(ref, lv.memory), st)
+        if lv.pending is not None and lv.pending[2] is not None and len(mp) < len(ref["tubes"]):
+            mp2 = slot_map(with_memory(lv.last_state, lv.memory), st)
+            if len(mp2) > len(mp):
+                ref, mp = lv.last_state, mp2
+        self.log("المرحلة %d: لوحة أكبر لا تطابق ما قبلها تماماً (طوبقت %d من %d قارورة بالمحتوى والخانة)"
+                 % (lv.n, len(mp), len(ref["tubes"])))
+        self.door_opened(st, ref, mp)
 
     def do_move(self, st, i, j):
         lv = self.lv
@@ -1564,7 +1776,7 @@ class Bot:
         lv.pending = (st, (i, j), expected, 0)
         if expected is not None:
             lv.plan_key = solver.state_key(expected)
-            if solver.is_solved(expected):
+            if solver.is_solved(expected) and not covered(expected):
                 lv.maybe_won = True
         wait = CFG["pour_wait"]
         try:
@@ -1743,12 +1955,65 @@ class Bot:
                 self.win("الواجهة تعرض المرحلة %d" % ln, inferred=not lv.maybe_won)
             if lv is None or ln > lv.n:            # رأس نافذة الفوز يعرض المرحلة المنتهية نفسها
                 self.level_hint = ln
+        if self.lives_waiting():
+            # الأرواح نفدت: لا يُضغط «Level N» ولا «Try Again» حتى موعد الروح القادمة (فحص كل دقيقة على الأكثر)
+            rem = self.lives_until - time.time()
+            if time.time() - self.last_lives_log > 300:
+                self.last_lives_log = time.time()
+                self.log("انتظار الأرواح: باقي %.0f دقيقة قبل زرّ المرحلة" % (rem / 60))
+            time.sleep(min(60.0, max(1.0, rem)))
+            return None
         pt = self.vis.button(fr)
         if pt:
             self.tap(pt)
             time.sleep(2.0)
         else:
             time.sleep(1.0)
+        return None
+
+    def lives_waiting(self) -> bool:
+        return time.time() < self.lives_until
+
+    def on_lives(self, fr):
+        """نافذة «More Lives» (الأرواح نفدت بعد إخفاقات متكرّرة): إن كفى الرصيد ثمن «Refill» (900) يُضغط مرة واحدة، وإلا
+        تُغلق بزرّ X ولا يُضغط زرّ المرحلة حتى موعد الروح القادمة (عدّاد النافذة، أو 5 دقائق إن لم يُقرأ). لا يُلمس أبداً
+        «+1 Life» (إعلان) ولا «Free Lives». (التشغيل السابع: أُغلقت كأي نافذة X فبقي البوت ينتظر نحو ربع ساعة لكل روح.)"""
+        self.unknown_streak = 0
+        self.leave_level("lives")
+        self.close_frame = None
+        lp = self.vis.lives_popup(fr)
+        if lp is None:
+            return self.on_close(fr)
+        now = time.time()
+        coins = self.vis.coins(fr)
+        if coins is not None:
+            self.coins = coins
+        price = lp["price"] or CFG["refill_price"]
+        if self.lives_shots < 6:
+            self.lives_shots += 1
+            self.out.save_jpg("lives_%02d.jpg" % self.lives_shots, fr.pil)
+        if coins is not None and coins >= price and now - self.last_refill_tap > 90:
+            self.last_refill_tap = now
+            self.refills += 1
+            self.lives_until = 0.0
+            self.log("نافذة «More Lives»: ملء الأرواح بـ %d عملة (الرصيد %d، المرة %d)" % (price, coins, self.refills))
+            self.tap(lp["refill"])
+            time.sleep(3.0)
+            return None
+        if coins is None:
+            why = "الرصيد غير مقروء"
+        elif coins < price:
+            why = "الرصيد %d أقل من %d" % (coins, price)
+        else:
+            why = "الملء قبل قليل لم يُغلقها"
+        wait = (lp["timer"] + 10) if lp["timer"] is not None else CFG["lives_wait_sec"]
+        wait = max(60.0, min(16 * 60.0, wait))
+        self.lives_until = now + wait
+        self.last_lives_log = now
+        self.log("نافذة «More Lives» (%s): إغلاق بـ X وانتظار %.1f دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)"
+                 % (why, wait / 60))
+        self.tap(lp["close"])
+        time.sleep(2.0)
         return None
 
     def on_close(self, fr):
@@ -1767,6 +2032,58 @@ class Bot:
             time.sleep(1.5)
         else:
             time.sleep(1.0)
+        return None
+
+    def on_no_moves(self, fr, gu):
+        """نافذة «No Available Moves»: «Give Up» افتراضياً (تُعاد المرحلة وتضيع روح). «Play On» الأخضر (قارورة إضافية
+        بـ 900 عملة) فقط إن كفى الرصيد المقروء ثمنه وكانت المرحلة صعبة أو صعبة جداً بعنوانها، أو أُخفقت هذه المرحلة
+        مرتين على الأقل في هذا التشغيل؛ ومرة واحدة في المحاولة. لا يُشترى غير ذلك أبداً (أثمان شريط الأدوات تبقى كما هي)."""
+        lv = self.lv
+        n = lv.n if lv else None
+        fails = self.level_fails.get(n, 0) if n is not None else 0
+        badge = lv.badge if lv else None
+        po = self.vis.play_on(fr)
+        coins = self.vis.coins(fr)
+        if coins is not None:
+            self.coins = coins
+        price = (po[1] if po and po[1] else CFG["play_on_price"])
+        hard = badge in ("hard", "superhard")
+        if (po and lv is not None and coins is not None and coins >= price and lv.play_ons < 1
+                and (hard or fails >= CFG["play_on_fails"])):
+            why = ("مرحلة %s" % {"hard": "صعبة", "superhard": "صعبة جداً"}[badge]) if hard \
+                else ("أُخفقت %d مرات" % fails)
+            self.log("نافذة «No Available Moves» في المرحلة %d: «Play On» (قارورة إضافية بـ %d عملة، الرصيد %d، %s)"
+                     % (n, price, coins, why))
+            self.out.save_jpg("playon_L%03d_%d.jpg" % (n, fails), fr.pil)
+            lv.play_ons += 1
+            lv.extra_tubes += 1
+            lv.boosters.append("playon")
+            lv.plan = None
+            lv.pending = None
+            lv.fails = 0
+            self.tap(po[0])
+            time.sleep(2.5)
+            return None
+        if not po:
+            why = "زرّ «Play On» لم يُعرف"
+        elif coins is None:
+            why = "الرصيد غير مقروء"
+        elif coins < price:
+            why = "الرصيد %d أقل من %d" % (coins, price)
+        elif lv is not None and lv.play_ons:
+            why = "«Play On» استُعمل في هذه المحاولة"
+        else:
+            why = "مرحلة %s وإخفاقاتها %d" % ({"normal": "عادية"}.get(badge, "غير معروفة النوع"), fails)
+        self.log("نافذة «No Available Moves»%s: «Give Up» (%s)" % (" في المرحلة %d" % n if n else "", why))
+        if n is not None:
+            self.level_fails[n] += 1
+            self.restart_n = n                 # ستُفتح المرحلة نفسها من جديد
+            if self.level_fails[n] <= 3:
+                self.out.save_jpg("nomoves_L%03d_%d.jpg" % (n, self.level_fails[n]), fr.pil)
+        else:
+            self.out.save_jpg("nomoves_%03d.jpg" % min(999, self.levels_done), fr.pil)
+        self.tap(gu)
+        time.sleep(2.5)
         return None
 
     def on_unknown(self, fr, kind):
@@ -1809,15 +2126,11 @@ class Bot:
             time.sleep(1.5)
             return None
         self.ad_acts = 0
-        # «No Available Moves» (الزرّ الأخضر «Play On» يصرف 900 عملة على قارورة): «Give Up» ثم تُعاد المرحلة
+        # «No Available Moves»: «Give Up» ثم تُعاد المرحلة، إلا ما تقرّره on_no_moves («Play On» بالعملات)
         gu = self.vis._pt(self.vis._safe("find_give_up", fr.arr))
         if gu:
-            self.log("نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)")
-            self.out.save_jpg("nomoves_%03d.jpg" % min(999, self.levels_done), fr.pil)
-            self.tap(gu)
             self.unknown_streak = 0
-            time.sleep(2.5)
-            return None
+            return self.on_no_moves(fr, gu)
         if self.unknown_streak == 0:
             self.unknown_since = now
             self.unknown_acts = 0
@@ -1869,6 +2182,17 @@ class Bot:
             return None
         if dur >= 2 and now - self.last_arrow_tap > 4 and self.arrow_taps < 3:
             tgt = self.vis._pt(self.vis._safe("find_tutorial_arrow", fr.arr))
+            if tgt and now - self.last_focus_check > 5:
+                # «سهم» في شاشة سطح مكتب Android (التشغيلان السادس والسابع: ثلاث لمسات على أيقونات المتجر والمتصفح بعد خروج
+                # اللعبة): لا يُلمس شيء خارج اللعبة، بل تُشغَّل
+                self.last_focus_check = now
+                f = self.dev.focus()
+                if f and PKG not in f:
+                    self.log("سهم مزعوم واللعبة ليست في الواجهة (%s): لا لمس، تشغيلها" % f.replace("\n", " ")[:120])
+                    self.dev.launch()
+                    self.unknown_streak = 0
+                    time.sleep(15)
+                    return None
             if tgt:
                 # ثلاث محاولات على الأكثر لكل شاشة مجهولة (سهم كاذب لا يمنع التصعيد المعتاد إلى الرجوع وإعادة التشغيل)
                 self.arrow_taps += 1
@@ -1914,7 +2238,7 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
     kinds = Counter()
     hashes = []
     novel = 0
-    plans = {"level": 0, "parsed": 0, "planned": 0, "solved_sim": 0, "stuck": 0, "solved": 0}
+    plans = {"level": 0, "parsed": 0, "planned": 0, "solved_sim": 0, "stuck": 0, "solved": 0, "covered": 0}
     max_ms = 0.0
     tot_ms = 0.0
     for f in files:
@@ -1942,7 +2266,7 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
                 line += " parse=فشل"
             else:
                 plans["parsed"] += 1
-                caps = Counter(t_["cap"] for t_ in st["tubes"])
+                caps = Counter(t_["cap"] for t_ in st["tubes"] if not t_.get("blocked"))
                 hid = sum(1 for t_ in st["tubes"] for c in t_["layers"] if c == "?")
                 info = {}
                 t1 = time.perf_counter()
@@ -1970,25 +2294,37 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
                 else:
                     plans["stuck"] += 1
                     sim = " (لا حركة)"
-                line += " قوارير=%d سعات=%s مخفي=%d تحذيرات=%d خطة=%d %s %.0fms%s" % (
-                    len(st["tubes"]), dict(caps), hid, len(st["warnings"]), len(mv),
-                    info.get("mode"), ms, sim)
+                nb = sum(1 for t_ in st["tubes"] if t_.get("blocked"))
+                if nb:
+                    plans["covered"] += 1
+                line += " رقم=%s نوع=%s قوارير=%d سعات=%s مخفي=%d مغطّاة=%d تحذيرات=%d خطة=%d %s %.0fms%s" % (
+                    vis.level_number(fr), vis.badge(fr), len(st["tubes"]), dict(caps), hid, nb,
+                    len(st["warnings"]), len(mv), info.get("mode"), ms, sim)
                 if verbose:
                     line += "\n      " + solver.describe(st) + "\n      moves=" + str(mv[:12])
         elif kind == "button":
             pt = vis.button(fr)
-            line += " زر=%s جهاز=%s" % (pt, to_dev(*pt) if pt else None)
+            line += " زر=%s جهاز=%s رقم=%s" % (pt, to_dev(*pt) if pt else None, vis.level_number(fr))
+        elif kind == "lives":
+            lp = vis.lives_popup(fr)
+            line += " أرواح: ملء=%s X=%s ثمن=%s عدّاد=%s عملات=%s" % (
+                lp and lp["refill"], lp and lp["close"], lp and lp["price"], lp and lp["timer"], vis.coins(fr))
         elif kind == "close":
             pt = vis.close(fr)
             line += " X=%s جهاز=%s" % (pt, to_dev(*pt) if pt else None)
+        if kind == "unknown":
+            gu = vis._pt(vis._safe("find_give_up", fr.arr))
+            if gu:
+                po = vis.play_on(fr)
+                line += " لا حركات: GiveUp=%s PlayOn=%s ثمن=%s عملات=%s" % (gu, po and po[0], po and po[1], vis.coins(fr))
         line += "  [%.0fms]" % ((time.perf_counter() - t) * 1000)
         print(line)
     print("\nالملخص: %d صورة، الأنواع %s، شاشات غير اللغز المختلفة (بصمة) %d"
           % (len(files), dict(kinds), novel))
     print("اللغز: %d لقطة، قُرئت %d، محلولة أصلاً %d، لها خطة %d (منها تحلّ اللغز كاملاً في النموذج %d)، "
-          "بلا حركة %d؛ زمن الحلّال: أقصى %.0f ms، متوسط %.0f ms"
+          "بلا حركة %d، فيها قوارير مغطّاة %d؛ زمن الحلّال: أقصى %.0f ms، متوسط %.0f ms"
           % (plans["level"], plans["parsed"], plans["solved"], plans["planned"], plans["solved_sim"],
-             plans["stuck"], max_ms, tot_ms / max(1, plans["parsed"])))
+             plans["stuck"], plans["covered"], max_ms, tot_ms / max(1, plans["parsed"])))
     if vis.errs:
         print("أخطاء vision: %s" % dict(vis.errs))
     return 0

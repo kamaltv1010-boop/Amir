@@ -28,6 +28,9 @@
     آمن (عقوبة لاستهلاك الفارغات) يكشف طبقته (لا شيء بلون آخر فوقها: هكذا انفتح الباب في المرحلتين
     63 و74)، أو يكشف الطبقة المخفية التي فوقها؛ ومفتاح مكشوف من البداية (لم يطر) يُصبّ لونه خارجها.
     إن لم يوجد تسلسل: لا تُدفن طبقة مفتاح تحت سائل آخر في الحركة الأولى ما دام بديل.
+  * القوارير المغطّاة ("blocked": True، تحت ستارة من المرحلة 33 تقريباً أو كيس من 80) محتواها مجهول ولا يُصبّ منها ولا فيها:
+    لا يراها الحلّال أبداً (تُحذف قبل البحث وتُعاد الفهارس الأصلية)، ولا تدخل في state_key ولا is_solved ولا الحركات
+    القانونية؛ وحين تنكشف تصير قارورة عادية في القراءة التالية.
 """
 from __future__ import annotations
 
@@ -50,6 +53,17 @@ def _is_hidden(c) -> bool:
         return True
     c = c.strip().lower()
     return c == "" or c.startswith("?") or c in ("unknown", "unk", "hidden", "none")
+
+
+def _visible(state):
+    """(الحالة بلا القوارير المغطّاة، فهارسها الأصلية بالترتيب) أو (الحالة نفسها، None) إن لم تكن فيها مغطّاة."""
+    tubes = (state or {}).get("tubes") or []
+    keep = [k for k, t in enumerate(tubes) if not t.get("blocked")]
+    if len(keep) == len(tubes):
+        return state, None
+    out = {k: v for k, v in state.items() if k != "tubes"}
+    out["tubes"] = [tubes[k] for k in keep]
+    return out, keep
 
 
 class _Enc:
@@ -804,15 +818,22 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
 def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
          info=None, seed=None):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
-    قوارير الطين ("clay": True) لا يُصبّ منها. انظر _plan."""
+    قوارير الطين ("clay": True) لا يُصبّ منها، والمغطّاة ("blocked": True) لا تُلمس أبداً. انظر _plan."""
     global _NOSRC, _KEYS
-    _NOSRC = frozenset(k for k, t in enumerate((state or {}).get("tubes") or []) if t.get("clay"))
+    vis, keep = _visible(state)
+    if keep is not None:                  # الفهارس الأصلية <-> فهارس الحالة بلا المغطّاة
+        inv = {k: i for i, k in enumerate(keep)}
+        bad_moves = [(inv[m[0]], inv[m[1]]) for m in (bad_moves or ()) if m[0] in inv and m[1] in inv]
+    _NOSRC = frozenset(k for k, t in enumerate((vis or {}).get("tubes") or []) if t.get("clay"))
     _KEYS = ()
     try:
-        return _plan(state, max_nodes, time_limit, bad_moves, avoid, info, seed)
+        moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed)
     finally:
         _NOSRC = frozenset()
         _KEYS = ()
+    if keep is not None:
+        moves = [(keep[i], keep[j]) for (i, j) in moves]
+    return moves
 
 
 def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
@@ -903,9 +924,11 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
 
 def state_key(state):
     """مفتاح قانوني بأسماء الألوان لحالة (dict) — لمجموعة avoid في المحرّك.
-    لا يتأثر بترتيب القوارير؛ الطبقة المخفية "?"."""
+    لا يتأثر بترتيب القوارير؛ الطبقة المخفية "?"؛ والقوارير المغطّاة لا تدخل فيه (كما لا يراها الحلّال)."""
     out = []
     for t in (state or {}).get("tubes") or []:
+        if t.get("blocked"):
+            continue
         layers = tuple("?" if _is_hidden(c) else c for c in (t.get("layers") or []))
         try:
             cap = int(t.get("cap") or 4)
@@ -916,11 +939,12 @@ def state_key(state):
 
 
 def legal_moves(state):
-    """كل الحركات القانونية بقواعد اللعبة (بلا تقليم)، [(i, j), ...]."""
-    enc = _Enc(state)
+    """كل الحركات القانونية بقواعد اللعبة (بلا تقليم)، [(i, j), ...] (لا تلمس المغطّاة)."""
+    vis, keep = _visible(state)
+    enc = _Enc(vis)
     s, caps = enc.start, enc.caps
     out = []
-    tubes = (state or {}).get("tubes") or []
+    tubes = (vis or {}).get("tubes") or []
     for i, t in enumerate(s):
         if not t or t[-1] < 0 or tubes[i].get("clay"):
             continue
@@ -930,6 +954,8 @@ def legal_moves(state):
             if u and u[-1] != t[-1]:
                 continue
             out.append((i, j))
+    if keep is not None:
+        out = [(keep[i], keep[j]) for (i, j) in out]
     return out
 
 
@@ -939,6 +965,8 @@ def apply_move(state, i, j):
     tubes = (state or {}).get("tubes") or []
     if not (0 <= i < len(tubes) and 0 <= j < len(tubes)) or i == j:
         return None
+    if tubes[i].get("blocked") or tubes[j].get("blocked"):
+        return None                       # المغطّاة لا يُصبّ منها ولا فيها
     src = list(tubes[i].get("layers") or [])
     dst = list(tubes[j].get("layers") or [])
     if not src or _is_hidden(src[-1]) or tubes[i].get("clay"):
@@ -991,14 +1019,19 @@ def key_freed(state, i, j) -> bool:
 
 
 def is_solved(state) -> bool:
-    enc = _Enc(state)
+    """هل القوارير الظاهرة مرتّبة؟ (المغطّاة لا تُحسب: السائق لا يعدّها فوزاً ما بقيت مغطّاة.)"""
+    enc = _Enc(_visible(state)[0])
     return _solved(enc.start, enc.caps)
 
 
 def describe(state) -> str:
-    """وصف نصي قصير للحالة (للسجل)."""
+    """وصف نصي قصير للحالة (للسجل). المغطّاة: [#ستارة:لونها] أو [#كيس]."""
     parts = []
     for t in (state or {}).get("tubes") or []:
+        if t.get("blocked"):
+            kind = {"curtain": "ستارة", "bag": "كيس"}.get(t.get("cover"), "غطاء")
+            parts.append("[#%s%s]" % (kind, (":" + t["cover_color"]) if t.get("cover_color") else ""))
+            continue
         layers = t.get("layers") or []
         parts.append("[" + ",".join(str(c) for c in layers) + "]/%s" % t.get("cap", "?"))
     return " ".join(parts)

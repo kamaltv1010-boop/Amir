@@ -7,14 +7,19 @@
 
 الواجهة:
     load(img)              -> مصفوفة RGB بارتفاع 1000 (يقبل مساراً أو PIL أو numpy أو bytes PNG)
-    classify(img)          -> "level" | "button" | "close" | "unknown"
+    classify(img)          -> "level" | "button" | "lives" | "close" | "unknown"
     find_button(img)       -> (x, y) مركز الزرّ الرئيسي (أخضر كبير، أو «Hard Level» البنفسجي،
                               أو CONTINUE الرمادي في شروط الخدمة)، أو None؛ لا يعيد أزرار الأسعار
     find_close(img)        -> (x, y) مركز زرّ X الأحمر (بحلقة ذهبية)، أو None
     parse_level(img)       -> {"tubes": [{"x","y","cap","layers"}, ...], "warnings"?: [...]}
     debug_draw(img, state) -> صورة PIL عليها القوارير ونقاط النقر وأسماء الطبقات
-    level_number(img)      -> رقم المرحلة (عنوان اللغز، زرّ الواجهة، رأس نافذة الفوز) أو None
+    level_number(img)      -> رقم المرحلة (عنوان اللغز ومنه الصعبة والصعبة جداً، زرّ الواجهة، رأس نافذة الفوز) أو None
+    level_badge(img)       -> "normal" | "hard" | "superhard" من عنوان شاشة اللغز، أو None
     find_boosters(img)     -> [(x, y), ...] أزرار الأدوات من اليسار (تراجع، خلط، قارورة)
+    read_coins(img)        -> رصيد العملات من الحبّة أعلى اليسار (النوافذ والواجهة) أو None
+    find_lives_popup(img)  -> {"refill", "close", "price", "timer"} لنافذة «More Lives» أو None
+    find_give_up(img)      -> (x, y) «Give Up» في نافذة «No Available Moves»؛ find_play_on -> (x, y, الثمن) لـ «Play On»
+    find_covers(img)       -> الستائر والأكياس التي تغطي قوارير (تصير في parse_level قوارير "blocked")
     analyze(img)           -> {"kind", "level", ثم "state"+"boosters" أو "button" أو "close"}
     state_key(state)       -> مفتاح لمقارنة حالتين (تحقّق الاستقرار بين لقطتين)
     to_device(x, y)        -> إحداثيات الشاشة الحقيقية 1080×2280
@@ -29,6 +34,8 @@
     المفاتيح والأبواب (من المرحلة 63): "keys" = مواضع الطبقات التي عليها ملصق مفتاح (من الأسفل) و"key_colors"
     ألوانها، والطبقة نفسها تُقرأ بلون سائلها الحقيقي؛ وفي الحالة "doors" = [{x,y,w,h,color}] أبواب خشبية بقفل
     ملوّن تخفي قوارير (لا تُعدّ قوارير). يحرّر المفتاحَ كشفُ طبقته (لا شيء بلون آخر فوقها) فيُفتح بابه.
+    الستائر (من المرحلة 33 تقريباً) والأكياس (من 80 تقريباً) تغطي قارورة في خانتها: تُقرأ قارورة {"blocked": True، "cover": "curtain"|"bag"،
+    "cover_color": لون أيقونة الستارة، "layers": []} بترتيب القراءة نفسه، فتبقى فهارس القوارير الأخرى حين تنكشف.
 
 القارورة الطويلة على حامل: قاعها مخفيّ، فيُقاس «الفراغ» (cap - عدد الطبقات) من قمة السائل
 بدقة (هذا ما يحتاجه الحلّال)، والطبقات المرئية تقدير حتى الحامل. في المراحل 10..14 قيس
@@ -60,6 +67,7 @@ PALETTE = {
     "cyan":     (0, 152, 215),      # لون جديد من المرحلة 17 (يشبه الزجاج: انظر glass_mask)
     "darkgreen": (12, 58, 2),       # من المرحلة 74 (كان يُسمّى c_10_7_1 أو c_11_7_1 فيبدو لونين)
     "plum":     (99, 0, 77),        # من المرحلة 74 (كان c_31_7_3)
+    "mint":     (1, 206, 149),      # من المرحلة 99 (كان c_16_7_6؛ يشبه الزجاج: انظر glass_mask)
 }
 # لون خارج اللوحة (مرحلة لاحقة بلون جديد) يُسمّى آلياً بتقريب HSV دقيق: c_<hue>_<sat>_<val>
 # (التصيير مسطّح، فاللون نفسه يعطي الاسم نفسه دائماً). أضِفه إلى PALETTE بعد رؤيته.
@@ -239,7 +247,9 @@ def glass_mask(a):
     m = (B > 115) & (G > 70) & (B - R > 50) & (G - R > 20) & (R < 150)
     # السائل السماوي (من المرحلة 17، نحو 0/152/215) يشبه لون الزجاج: يُستثنى (حافة الزجاج أفتح أحمراً وأقل
     # تشبّعاً؛ 0.01% فقط من بكسلاتها في لقطات المراحل 5..16 تقع في هذا المدى)
-    return m & ~((R < 60) & (G > 130) & (B > 195))
+    # والسائل النعناعي (المرحلة 99، نحو 1/206/149: أخضره أعلى من أزرقه، والزجاج بالعكس) كان نحو 40% من «الزجاج» في
+    # لقطات المرحلة 99 فتتشوّه أشكال قواريره وتختفي أحياناً؛ وفي 212 لقطة لغز أخرى لا يمسّ الاستثناء إلا 0.2% من الزجاج أو أقل
+    return m & ~((R < 60) & (G > 130) & (B > 195)) & ~((R < 90) & (G > 150) & (G - B > 25))
 
 
 def green_mask(a):
@@ -554,13 +564,19 @@ def parse_level(img, debug: bool = False) -> dict:
         else:
             t["top"] = float(min(t["y0"], t["y1"] - K_HEIGHT * tw))
 
+    # القوارير المغطّاة (ستارة أو كيس) في خاناتها بترتيب القراءة نفسه، فلا تتغيّر فهارس القوارير حين تنكشف
+    covers = []
+    for c in find_covers(a, raw):
+        covers.append({"cover": c, "top": float(c["y1"] - K_HEIGHT * w), "cx": (c["x0"] + c["x1"]) / 2.0, "w": w,
+                       "tall": False, "x0": c["x0"], "x1": c["x1"], "y0": c["y0"], "y1": c["y1"]})
+
     # القارورة المرفوعة (المختارة): قاعها أعلى من أوطأ قاع في صفّها بنحو 0.58w
-    rows = _group_rows(raw)
+    rows = _group_rows(raw + covers)
     for r in rows:
-        regs = [t for t in r["items"] if not t["tall"]]
+        regs = [t for t in r["items"] if not t["tall"] and not t.get("cover")]
         base = max(t["y1"] for t in regs) if len(regs) >= 2 else None
         for t in r["items"]:
-            t["lifted"] = bool(base is not None and not t["tall"]
+            t["lifted"] = bool(base is not None and not t["tall"] and not t.get("cover")
                                and base - t["y1"] > 0.6 * K_LIFT * t["w"])
         nl = sum(1 for t in r["items"] if t["lifted"])
         if nl > 1:
@@ -570,7 +586,11 @@ def parse_level(img, debug: bool = False) -> dict:
     tubes_out = []
     for r in rows:
         for t in r["items"]:
-            tubes_out.append(_read_tube(a, t, h, e, warnings, bg))
+            tubes_out.append(_cover_tube(t) if t.get("cover") else _read_tube(a, t, h, e, warnings, bg))
+    caps = [t["cap"] for t in tubes_out if not t.get("tall") and not t.get("blocked")]
+    for t in tubes_out:
+        if t.get("blocked") and caps:
+            t["cap"] = max(set(caps), key=caps.count)
     _check_counts(tubes_out, warnings)
     state = {"tubes": tubes_out}
     doors = find_doors(a, raw)
@@ -626,6 +646,55 @@ def find_doors(img, tubes=None):
                 color = _hue_name(np.median(reg[sel], axis=0))
         out.append({"x": int(c["x0"]), "y": int(c["y0"]), "w": int(bw), "h": int(bh), "color": color})
     out.sort(key=lambda d: (d["y"], d["x"]))
+    return out
+
+
+def cloth_mask(a):
+    """قماش الستارة الوردي الفاتح (من المرحلة 33 تقريباً): أحمره أعلى قليلاً من أخضره وأزرقه، وأزرقه ليس أقل من أخضره
+    (الخشب والطين البيج أزرقهما أقل بكثير، والسائل الوردي أخضره منخفض)."""
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return (R > 185) & (R - G >= 12) & (R - G <= 80) & (R - B >= 5) & (R - B <= 70) & (B - G >= -12)
+
+
+def bag_mask(a):
+    """قماش الكيس البنفسجي (من المرحلة 80 تقريباً، بخيط وبطاقة ذهبية برقم؛ ينفجر بعد عدد من القوارير المرتّبة): ضوءه وظلّه."""
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return (B > 150) & (B - G > 90) & (R - G > 45) & (R > 85) & (G < 120)
+
+
+def find_covers(img, tubes=None):
+    """قوارير مغطّاة لا تُرى محتوياتها: ستارة قماش وردية عليها أيقونة قارورة بلون (تنزاح حين يكتمل ذلك اللون)، وكيس بنفسجي
+    مربوط ببطاقة رقم (ينفجر بعد ذلك العدد من القوارير المرتّبة). كلاهما بحجم قارورة في خانتها (عرض 0.13 وارتفاع 0.17
+    تقريباً من الشاشة). يعيد [{"kind": "curtain"|"bag"، x0, y0, x1, y1، "color": لون أيقونة الستارة أو None}].
+    tubes: القوارير الخام (detect_tubes) لاستبعاد صناديقها (سائل وردي أو بنفسجي داخل الزجاج)."""
+    a = load(img)
+    H, W = a.shape[:2]
+    keep = np.zeros((H, W), dtype=bool)
+    keep[int(0.13 * H):play_bottom(a)] = True
+    for t in (tubes if tubes is not None else detect_tubes(a)):
+        keep[max(0, int(t["y0"]) - 3):int(t["y1"]) + 4, max(0, int(t["x0"]) - 3):int(t["x1"]) + 4] = False
+    out = []
+    for kind, mask in (("curtain", cloth_mask(a)), ("bag", bag_mask(a))):
+        for b in _rect_blobs(mask & keep, W, H, 0.004):
+            if not (0.09 * W <= b["w"] <= 0.17 * W and 0.12 * H <= b["h"] <= 0.23 * H and b["fill"] >= 0.6):
+                continue
+            x0, y0, x1, y1 = b["box"]
+            w, h = x1 - x0 + 1, y1 - y0 + 1
+            color = None
+            if kind == "curtain":
+                # أيقونة القارورة في وسط الستارة: بكسلات مشبّعة ليست قماشاً
+                sub = a[y0 + int(0.25 * h):y0 + int(0.70 * h), x0 + int(0.2 * w):x1 + 1 - int(0.2 * w)].reshape(-1, 3)
+                si = sub.astype(np.int16)
+                mx, mn = si.max(axis=1), si.min(axis=1)
+                sel = (~cloth_mask(sub[None])[0]) & ((mx - mn) > 0.45 * np.maximum(mx, 1)) & (mx > 60)
+                if sel.sum() >= 15:
+                    color = color_name(np.median(sub[sel].astype(np.float64), axis=0))
+            elif _gold_mask(a[y0:y1 + 1, x0:x1 + 1]).mean() < 0.01:
+                continue                        # كيس بلا بطاقته الذهبية: ليس كيساً
+            out.append({"kind": kind, "x0": int(x0), "y0": int(y0), "x1": int(x1), "y1": int(y1), "color": color})
+    out.sort(key=lambda c: (c["y0"], c["x0"]))
     return out
 
 
@@ -739,6 +808,14 @@ def _key_layer(a, cx, w, yc, h):
             continue
         return _PAL_NAMES[k0], _hue_name(np.median(fp[glyph], axis=0))
     return None
+
+
+def _cover_tube(t):
+    """قارورة تحت ستارة أو كيس: محجوبة ("blocked") لا يُصبّ منها ولا فيها ومحتواها مجهول (طبقات فارغة لا تعني فارغة)."""
+    c = t["cover"]
+    return {"x": int(round(t["cx"])), "y": int(round((t["top"] + c["y1"]) / 2)), "cap": 4, "layers": [],
+            "tall": False, "lifted": False, "blocked": True, "cover": c["kind"], "cover_color": c.get("color"),
+            "box": [int(c["x0"]), int(round(t["top"])), int(c["x1"]), int(c["y1"])]}
 
 
 def _read_tube(a, t, h, e, warnings, bg=None):
@@ -1011,6 +1088,146 @@ def find_give_up(img):
     return None
 
 
+def _gold_mask(a):
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return (R > 200) & (G > 140) & (B < 110) & (R - B > 110)
+
+
+def _button_price(a, b):
+    """الثمن المكتوب بالأبيض بعد العملة الذهبية داخل زرّ أخضر (b من green_buttons): «Play On 900»، «Refill 900»؛ أو None."""
+    x0, y0, x1, y1 = b["box"]
+    h = y1 - y0 + 1
+    sub = a[y0 + int(0.15 * h):y1 + 1 - int(0.10 * h), x0:x1 + 1]   # بلا شارة «Add Bottle» الصفراء فوق الزرّ
+    H, W = a.shape[:2]
+    coins = [c for c in _rect_blobs(_gold_mask(sub), W, H, 0.0002)
+             if 0.2 * h <= c["h"] <= 0.8 * h and 0.6 <= c["w"] / float(c["h"]) <= 1.6]
+    if not coins:
+        return None
+    cx1 = max(coins, key=lambda c: c["n"])["box"][2]
+    s = _read_digit_row(_white_text(sub[:, cx1 + 2:]), min_h=max(6, int(0.2 * h)))
+    return int(s) if s else None
+
+
+def read_coins(img):
+    """رصيد العملات في الحبّة أعلى يسار النوافذ («No Available Moves»، «More Lives»، «Continue?»، نافذة الإخفاق):
+    عملة ذهبية وعلى يمينها حبّة كريمية بأرقام بنّية داكنة. يعيد العدد أو None (ومنها شاشات بلا هذه الحبّة)."""
+    a = load(img)
+    H, W = a.shape[:2]
+    reg = a[:int(0.2 * H), :int(0.5 * W)]
+    ri = _i16(reg)
+    cream = (ri[..., 0] > 200) & (ri[..., 1] > 180) & (ri[..., 2] > 130)
+    gold = _gold_mask(reg)
+    for b in sorted(_rect_blobs(cream, W, H, 0.001), key=lambda b: -b["n"]):
+        if not (0.10 * W <= b["w"] <= 0.40 * W and 0.018 * H <= b["h"] <= 0.07 * H and b["w"] >= 2 * b["h"]):
+            continue
+        x0, y0, x1, y1 = b["box"]
+        if gold[y0:y1 + 1, max(0, x0 - int(0.12 * W)):x0].mean() < 0.15:
+            continue                    # بلا عملة ذهبية يسار الحبّة
+        s = _read_digit_row(_dark_text(reg[y0:y1 + 1, x0:x1 + 1]), min_h=max(6, int(0.35 * b["h"])))
+        if s:
+            return int(s)
+    return None
+
+
+def _lives_timer(a, ya, yb):
+    """عدّاد «Time to next life» (MM:SS بأرقام داكنة على حبّة كريمية بجانب ساعة ذهبية) بين ya و yb: الثواني أو None.
+    السطر المقروء هو الأوطأ (فوقه نصّ «Time to next life» بالحروف)."""
+    H, W = a.shape[:2]
+    ya, yb = max(0, int(ya)), min(H, int(yb))
+    xa, xb = int(0.15 * W), int(0.85 * W)
+    if yb - ya < 10:
+        return None
+    sub = a[ya:yb, xa:xb]
+    dark = _dark_text(sub)
+    rows = np.flatnonzero(dark.sum(axis=1) >= 2)
+    if rows.size == 0:
+        return None
+    # الأسطر: مقاطع متصلة من الصفوف التي فيها نصّ داكن (حواف اللوحة والزرّ أسطر رفيعة تُهمل)، من الأسفل
+    cuts = np.flatnonzero(np.diff(rows) > 2)
+    starts = [int(rows[0])] + [int(rows[c + 1]) for c in cuts]
+    ends = [int(rows[c]) for c in cuts] + [int(rows[-1])]
+    for s0, s1 in reversed(list(zip(starts, ends))):
+        if not 0.010 * H <= s1 - s0 + 1 <= 0.035 * H:
+            continue
+        line = slice(max(0, s0 - 2), s1 + 3)
+        gcols = np.flatnonzero(_gold_mask(sub[line]).sum(axis=0) >= 2)
+        x0 = int(gcols[-1]) + 2 if gcols.size and gcols[-1] < 0.6 * sub.shape[1] else 0   # بعد الساعة الذهبية
+        s = _read_digit_row(dark[line, x0:], min_h=8)
+        if not s or not 3 <= len(s) <= 4:
+            continue
+        mm, ss = int(s[:-2]), int(s[-2:])
+        if ss < 60 and mm < 60:
+            return mm * 60 + ss
+    return None
+
+
+def find_lives_popup(img):
+    """نافذة «More Lives» (نفدت الأرواح بعد إخفاقات المرحلة 99): قلب أحمر كبير برقمه في وسط لوحة كريمية، وتحته زرّ أخضر
+    «Refill» بثمن بالعملات، وزرّ X أحمر أعلى اليمين؛ وتحت الأخضر زرّ «+1 Life» (إعلان) أو «Free Lives»: لا يُلمسان أبداً.
+    يعيد {"refill": (x, y)، "close": (x, y)، "price": ثمن الملء أو None، "timer": ثواني الروح القادمة أو None} أو None.
+    («Continue?» فيها لوحة كريمية وزرّ أخضر بالعملات وX لكن بلا قلب في الوسط.)"""
+    a = load(img)
+    H, W = a.shape[:2]
+    if booster_bar(a):
+        return None
+    xc = find_close(a)
+    if xc is None or xc[0] < 0.6 * W or xc[1] > 0.4 * H:
+        return None
+    ya, yb = int(0.18 * H), int(0.48 * H)
+    ai = _i16(a[ya:yb])
+    R, G, B = ai[..., 0], ai[..., 1], ai[..., 2]
+    red = (R > 170) & (G < 90) & (B < 110) & (R - G > 110)
+    hearts = [b for b in _rect_blobs(red, W, H, 0.003)
+              if abs(b["x"] - W / 2.0) < 0.08 * W and 0.10 * W <= b["w"] <= 0.32 * W and 0.035 * H <= b["h"] <= 0.11 * H
+              and 0.9 <= b["w"] / float(b["h"]) <= 2.2 and b["fill"] > 0.45]
+    if not hearts:
+        return None
+    heart = max(hearts, key=lambda b: b["n"])
+    hy1 = ya + heart["box"][3]
+    greens = [g for g in green_buttons(a)
+              if _paid(a, g) and abs(g["x"] - W / 2.0) < 0.1 * W and g["w"] >= 0.4 * W and hy1 < g["y"] < hy1 + 0.35 * H]
+    if not greens:
+        return None
+    g = min(greens, key=lambda b: b["y"])
+    return {"refill": (int(round(g["x"])), int(round(g["y"]))), "close": (int(xc[0]), int(xc[1])),
+            "price": _button_price(a, g), "timer": _lives_timer(a, hy1 + 0.02 * H, g["box"][1] - 0.005 * H)}
+
+
+def find_play_on(img):
+    """زرّ «Play On» الأخضر في نافذة «No Available Moves» (يسار «Give Up» في صفّه؛ يضيف قارورة بثمن بالعملات، 900 في
+    المرحلة 99): (x, y, الثمن أو None) أو None. لا يُلمس إلا بسياسة السائق."""
+    a = load(img)
+    H, W = a.shape[:2]
+    gu = find_give_up(a)
+    if gu is None:
+        return None
+    for g in green_buttons(a):
+        if g["x"] < 0.45 * W and g["w"] >= 0.3 * W and g["y"] > 0.7 * H and abs(g["y"] - gu[1]) < 0.03 * H:
+            return int(round(g["x"])), int(round(g["y"])), _button_price(a, g)
+    return None
+
+
+def level_badge(img):
+    """نوع المرحلة من عنوانها في شاشة اللغز: "superhard" (إطار أحمر وشريط «SUPER HARD» وثلاث جماجم)، "hard" (إطار
+    بنفسجي وردي وشريط «HARD» وجمجمة)، "normal" (إطار بنفسجي أزرق بلا شريط)، أو None خارج شاشة اللغز. يُقاس الشريط تحت
+    العنوان (نحو 46% أحمر في الصعبة جداً و26..40% بنفسجي وردي في الصعبة وصفر في العادية، في 50 بداية مرحلة)."""
+    a = load(img)
+    H, W = a.shape[:2]
+    if not booster_bar(a):
+        return None
+    ai = _i16(a[int(0.15 * H):int(0.222 * H), int(0.30 * W):int(0.70 * W)])
+    R, G, B = ai[..., 0], ai[..., 1], ai[..., 2]
+    rib = (slice(int(0.04 * H), None), slice(int(0.10 * W), int(0.30 * W)))
+    red = (R > 150) & (G < 80) & (B < 90) & (R - G > 100)
+    mag = (R > 110) & (B > 150) & (G < 90) & (B - G > 100) & (R - G > 50) & (B - R > -40)
+    if red[rib].mean() > 0.15 or red.mean() > 0.06:
+        return "superhard"
+    if mag[rib].mean() > 0.10 or mag.mean() > 0.05:
+        return "hard"
+    return "normal"
+
+
 def find_button(img):
     """مركز الزرّ الرئيسي (Level N / Continue / Claim / Hard Level / CONTINUE شروط
     الخدمة)، وإلا مركز أكبر زرّ أخضر كبير في وسط الشاشة، وإلا None.
@@ -1186,6 +1403,8 @@ def classify(img) -> str:
     """level: شاشة اللغز (شريط الأدوات ظاهر بلا تعتيم).
     button: فعلها الأساسي زرّ رئيسي واحد (Level N، Continue، Claim، Hard Level،
             أو CONTINUE الرمادي في نافذة شروط الخدمة عند أول تشغيل).
+    lives: نافذة «More Lives» (find_lives_popup): لها سياسة خاصة في السائق (ملء بالعملات أو إغلاق وانتظار)، لا
+           إغلاق متكرّر بزرّ X.
     close: فيها X وليس فيها زرّ رئيسي (نوافذ الميزات، الإعدادات، الملف، الرحلة...).
     unknown: غير ذلك (تحميل، متجر، شاشة Android، احتفال الفوز...).
     ملاحظة للسائق: نافذة الفوز تظهر أولاً بلا زرّ Continue ثانية تقريباً، فإن جاء
@@ -1196,7 +1415,7 @@ def classify(img) -> str:
     if main_button(a) is not None:
         return "button"
     if find_close(a) is not None:
-        return "close"
+        return "lives" if find_lives_popup(a) is not None else "close"
     return "unknown"
 
 
@@ -1218,6 +1437,7 @@ _TW, _TH = 12, 16
 _DIGIT_T = {d: np.array([[int(b) for b in format(int(h[i:i + 3], 16), "012b")]
                          for i in range(0, len(h), 3)], dtype=np.uint8)
             for d, h in _DIGITS.items()}
+_SHIFT_COST = 4      # كلفة إزاحة الرمز بكسلاً واحداً قبل مقارنته بالقالب
 
 
 _DIGIT_STATS = deque(maxlen=200)   # (أقل مسافة، الفارق عن الثاني) لآخر الأرقام المقروءة، للتشخيص
@@ -1227,6 +1447,75 @@ def _white_text(sub):
     s = _i16(sub)
     R, G, B = s[..., 0], s[..., 1], s[..., 2]
     return (R > 200) & (G > 185) & (B > 140) & (R - B < 100)
+
+
+def _dark_text(sub):
+    """نصّ بنّي داكن على كريمي (حبّة العملات، عدّاد الروح القادمة)."""
+    s = _i16(sub)
+    R, G, B = s[..., 0], s[..., 1], s[..., 2]
+    return (R < 150) & (G < 120) & (B < 100) & (R - B > 5)
+
+
+def _digit_dists(g):
+    """مسافات الرمز g (ثنائي _TH×_TW) إلى قوالب الأرقام مرتّبة [(مسافة، رقم)]: الأدنى بين المطابقة المباشرة والمطابقة
+    بعد إزاحة بكسل واحد في أي اتجاه + _SHIFT_COST. حدّ الرمز يختلف بين اللقطات بنصف بكسل فيتغيّر عمود كامل بعد التصغير
+    («9» في «Level 90» و«Level 99» كانت أقرب إلى «3» فلم يُقرأ عنوان المرحلة 99 ساعات)، والكلفة تمنع «8» أن تُقرأ «5»
+    مزاحة. جُرّبت على 224 عنواناً وزرّاً من خمسة تشغيلات: كلها صحيحة (كانت «Level 49» تُقرأ 43)."""
+    H, W = g.shape
+    shifts = []
+    for dy in (-1, 0, 1):
+        for dx in (-1, 0, 1):
+            if dx or dy:
+                s = np.zeros_like(g)
+                s[max(0, dy):H + min(0, dy), max(0, dx):W + min(0, dx)] = \
+                    g[max(0, -dy):H - max(0, dy), max(0, -dx):W - max(0, dx)]
+                shifts.append(s)
+    out = []
+    for d, T in _DIGIT_T.items():
+        e = int((g != T).sum())
+        sh = min(int((s != T).sum()) for s in shifts)
+        out.append((min(e, sh + _SHIFT_COST), d))
+    out.sort()
+    return out
+
+
+def _glyph_digit(mask, c):
+    """رقم المكوّن c (من _components) في القناع، أو None إن لم يُتأكد منه. الضيّق (العرض أقل من 0.62 من الارتفاع) «1»."""
+    bw, bh = c["x1"] - c["x0"] + 1, c["y1"] - c["y0"] + 1
+    if bw / float(bh) < 0.62:
+        return "1"
+    crop = mask[c["y0"]:c["y1"] + 1, c["x0"]:c["x1"] + 1].astype(np.uint8) * 255
+    g = (np.asarray(Image.fromarray(crop).resize((_TW, _TH), Image.BILINEAR)) >= 128).astype(np.uint8)
+    dist = _digit_dists(g)
+    (d0, best), (d1, _) = dist[0], dist[1]
+    _DIGIT_STATS.append((d0, d1 - d0))
+    if d0 > 0.25 * _TW * _TH or d1 - d0 < 5:
+        return None          # غير متأكد: الأفضل لا رقم على رقم خاطئ
+    return best
+
+
+def _read_digit_row(mask, min_h=8):
+    """أرقام سطر واحد في قناع ثنائي: المكوّنات التي ارتفاعها قريب من وسيطها وعلى خطّ قاعدة واحد، من اليسار (تُهمل نقطتا
+    «:» وحافة الحبّة وظلّها). يعيد نصّ الأرقام، أو None إن لم توجد أو لم يُتأكد من رقم منها."""
+    comps = [c for c in _components(mask) if c["n"] >= 6 and c["y1"] - c["y0"] + 1 >= min_h]
+    if not comps:
+        return None
+    hs = sorted(c["y1"] - c["y0"] + 1 for c in comps)
+    hm = hs[len(hs) // 2]
+    gl = [c for c in comps if 0.8 * hm <= c["y1"] - c["y0"] + 1 <= 1.25 * hm]
+    if not gl:
+        return None
+    yb = float(np.median([c["y1"] for c in gl]))
+    gl = sorted([c for c in gl if abs(c["y1"] - yb) <= 0.25 * hm], key=lambda c: c["x0"])
+    if not 1 <= len(gl) <= 6:
+        return None
+    out = ""
+    for c in gl:
+        d = _glyph_digit(mask, c)
+        if d is None:
+            return None
+        out += d
+    return out
 
 
 def _read_text_number(a, x0, y0, x1, y1):
@@ -1256,18 +1545,10 @@ def _read_text_number(a, x0, y0, x1, y1):
         return None
     digits = ""
     for c in groups[1]:
-        bw, bh = c["x1"] - c["x0"] + 1, c["y1"] - c["y0"] + 1
-        if bw / float(bh) < 0.62:
-            digits += "1"
-            continue
-        crop = wm[c["y0"]:c["y1"] + 1, c["x0"]:c["x1"] + 1].astype(np.uint8) * 255
-        g = (np.asarray(Image.fromarray(crop).resize((_TW, _TH), Image.BILINEAR)) >= 128).astype(np.uint8)
-        dist = sorted((int((_DIGIT_T[d] != g).sum()), d) for d in _DIGIT_T)
-        (d0, best), (d1, _) = dist[0], dist[1]
-        _DIGIT_STATS.append((d0, d1 - d0))
-        if d0 > 0.25 * _TW * _TH or d1 - d0 < 5:
+        d = _glyph_digit(wm, c)
+        if d is None:
             return None          # غير متأكد: الأفضل لا رقم على رقم خاطئ
-        digits += best
+        digits += d
     n = int(digits)
     return n if n > 0 else None
 

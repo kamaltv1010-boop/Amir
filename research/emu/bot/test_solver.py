@@ -242,6 +242,60 @@ class TestBasics(unittest.TestCase):
         self.assertEqual(solver.state_key(a), solver.state_key(b))
 
 
+class TestBlocked(unittest.TestCase):
+    """القوارير المغطّاة (ستارة/كيس، "blocked"): محتواها مجهول، لا يُصبّ منها ولا فيها، ولا تُحسب في المفتاح والحل."""
+
+    def board(self):
+        st = mk([(4, ["red", "blue", "red", "blue"]), (4, []), (4, ["blue", "red", "blue", "red"]),
+                 (4, []), (4, []), (4, ["green", "green"])])
+        st["tubes"][1].update(blocked=True, cover="curtain", cover_color="red")
+        st["tubes"][4].update(blocked=True, cover="bag")
+        return st
+
+    def test_plan_never_touches_blocked(self):
+        st = self.board()
+        mv, _ = timed_plan(st)
+        self.assertTrue(mv)
+        self.assertFalse({1, 4} & {k for m in mv for k in m}, mv)
+        end = run_moves(st, mv)                    # الخطة كاملة صالحة بالفهارس الأصلية وتحلّ الظاهر
+        self.assertIsNotNone(end)
+        self.assertTrue(solver.is_solved(end))
+        self.assertEqual(end["tubes"][1]["layers"], [])
+        self.assertEqual(end["tubes"][4]["layers"], [])
+
+    def test_rules(self):
+        st = self.board()
+        self.assertIsNone(solver.apply_move(st, 0, 1))      # لا يُصبّ في مغطّاة (ليست فارغة)
+        self.assertIsNone(solver.apply_move(st, 1, 0))
+        self.assertIsNotNone(solver.apply_move(st, 0, 3))
+        lm = solver.legal_moves(st)
+        self.assertTrue(lm)
+        self.assertFalse({1, 4} & {k for m in lm for k in m}, lm)
+        self.assertFalse(solver.key_freed(st, 0, 1))
+
+    def test_key_and_solved_ignore_blocked(self):
+        st = self.board()
+        bare = mk([(4, ["red", "blue", "red", "blue"]), (4, ["blue", "red", "blue", "red"]), (4, []),
+                   (4, ["green", "green"])])
+        self.assertEqual(solver.state_key(st), solver.state_key(bare))
+        done = mk([(4, ["red"] * 4), (4, []), (4, ["blue"] * 4)])
+        done["tubes"][1]["blocked"] = True
+        self.assertTrue(solver.is_solved(done))           # الظاهر مرتّب (السائق لا يعدّه فوزاً ما بقيت مغطّاة)
+        self.assertIn("#ستارة:red", solver.describe(st))
+
+    def test_bad_moves_use_original_indices(self):
+        st = self.board()
+        first = timed_plan(st)[0][0]
+        mv2, _ = timed_plan(st, bad_moves={first})
+        self.assertTrue(mv2)
+        self.assertNotEqual(mv2[0], first)
+        self.assertFalse({1, 4} & set(mv2[0]))
+        nxt = solver.apply_move(st, *first)
+        mv3, _ = timed_plan(st, avoid={solver.state_key(nxt)})
+        self.assertTrue(mv3)
+        self.assertNotEqual(solver.state_key(run_moves(st, mv3[:1])), solver.state_key(nxt))
+
+
 class TestPlainPuzzles(unittest.TestCase):
     def test_plain_8_to_14_tubes(self):
         total = solved = 0

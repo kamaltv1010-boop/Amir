@@ -533,6 +533,393 @@ class TestDriverSim(unittest.TestCase):
         self.assertTrue(bot.stop)
 
 
+class CoverGame(FakeGame):
+    """قوارير تحت ستارة (تنزاح حين يكتمل لون أيقونتها) أو كيس (ينفجر بعد عدد من القوارير المكتملة)، كما في المرحلة 99:
+    تظهر للرؤية قارورة "blocked" بلا طبقات، ولمسها لا يفعل شيئاً (ويُعدّ خطأً). levels[k][3] = {قارورة: (نوع، وسيط)}."""
+
+    def load(self, k):
+        super().load(k)
+        lvl = self.levels[k]
+        self.covers = dict(lvl[3]) if len(lvl) > 3 else {}
+        self.opened_covers = []
+        self.cover_taps = getattr(self, "cover_taps", 0)
+
+    def visible(self):
+        st = super().visible()
+        for k, (kind, arg) in self.covers.items():
+            st["tubes"][k].update(layers=[], blocked=True, cover=kind, cover_color=arg if kind == "curtain" else None)
+        return st
+
+    def tap(self, x, y):
+        if self.screen == "level" and abs(y - 854) >= 35:
+            k = self.tube_at(x, y)
+            if k in self.covers:
+                self.cover_taps += 1
+                return
+        super().tap(x, y)
+
+    def pour(self, i, j):
+        ok = super().pour(i, j)
+        done = sum(1 for k, t in enumerate(self.truth) if len(t) == self.caps[k] and len(set(t)) == 1)
+        for k, (kind, arg) in list(self.covers.items()):
+            if (kind == "curtain" and [arg] * 4 in self.truth) or (kind == "bag" and done >= arg):
+                del self.covers[k]
+                self.opened_covers.append(kind)
+        return ok
+
+
+class TestCovers(unittest.TestCase):
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        driver.time = self._time
+        self.tmp.cleanup()
+
+    def test_curtain_and_bag_levels(self):
+        """ستارة حمراء على قارورة فيها الأصفر والأخضر، ثم كيس ينفجر بعد قارورتين مكتملتين: لا يلمسهما البوت وهما مغطّتان،
+        ولا يعدّ انكشافهما «إعادة» ولا «فوزاً»، ويكمل المرحلتين."""
+        tubes = [["red", "blue", "red", "blue"], ["blue", "red", "blue", "red"], ["green", "yellow", "yellow", "green"],
+                 ["yellow", "green", "green", "yellow"], [], []]
+        hid = [[False] * 4] * 4 + [[], []]
+        levels = [([4] * 6, tubes, hid, {3: ("curtain", "red")}), ([4] * 6, tubes, hid, {3: ("bag", 2)})]
+        game = CoverGame(levels, random.Random(4))
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(FakeDevice(game), driver.Vision(FakeVisionModule(game), out), out, 600, git=False)
+        for _ in range(30):
+            bot.run(max_iters=100)
+            if game.wins >= 2:
+                break
+        log = (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+        self.assertEqual((game.wins, bot.levels_done), (2, 2), log[-3000:])
+        self.assertEqual(game.cover_taps, 0, log[-3000:])
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertIn("مغطّاة 1", log)
+        self.assertIn('"blocked": "curtain", "cover_color": "red"', log)
+        self.assertEqual(game.opened_covers, ["bag"])            # المرحلة الثانية (load يصفّر القائمة)
+
+
+class ScriptVision:
+    """رؤية مزيّفة بنصّ يكتبه الاختبار في `now` (لا تنظر إلى الصورة)."""
+
+    def __init__(self):
+        self.now = {"kind": "level", "state": None, "level": None, "badge": None, "coins": None, "lives": None,
+                    "give_up": None, "play_on": None, "button": None, "close": None}
+
+    def classify(self, arr):
+        return self.now["kind"]
+
+    def parse_level(self, arr):
+        st = self.now["state"]
+        if st is None:
+            return None
+        out = {"tubes": [dict(t, layers=list(t["layers"])) for t in st["tubes"]], "warnings": []}
+        if st.get("doors"):
+            out["doors"] = st["doors"]
+        return out
+
+    def level_number(self, arr):
+        return self.now["level"]
+
+    def level_badge(self, arr):
+        return self.now["badge"]
+
+    def read_coins(self, arr):
+        return self.now["coins"]
+
+    def find_lives_popup(self, arr):
+        return self.now["lives"]
+
+    def find_give_up(self, arr):
+        return self.now["give_up"]
+
+    def find_play_on(self, arr):
+        return self.now["play_on"]
+
+    def find_button(self, arr):
+        return self.now["button"]
+
+    def find_close(self, arr):
+        return self.now["close"]
+
+
+class TapDevice(FakeDevice):
+    """جهاز مزيّف يسجّل النقرات بإحداثيات الارتفاع 1000."""
+
+    def __init__(self):
+        self.W, self.H = 1080, 2280
+        self.raw_ok = True
+        self.keys = []
+        self.launched = 0
+        self.taps = []
+
+    def screencap(self):
+        return Image.new("RGB", (47, 100), (12, 12, 40))
+
+    def tap(self, X, Y):
+        self.taps.append((int(round(X * 1000.0 / self.H)), int(round(Y * 1000.0 / self.H))))
+
+
+def T(x, y, layers, **kw):
+    d = {"x": x, "y": y, "cap": 4, "layers": list(layers)}
+    d.update(kw)
+    return {k: v for k, v in d.items()}
+
+
+def near(p, q, tol=3):
+    return abs(p[0] - q[0]) <= tol and abs(p[1] - q[1]) <= tol
+
+
+class TestRun7Policies(unittest.TestCase):
+    """التشغيل السابع (المرحلة 99): لا فوز كاذب حين تتغيّر اللوحة، وسياسة الأرواح و«Play On»."""
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cfg = dict(driver.CFG)
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        self.tmp.cleanup()
+
+    def make(self):
+        sv = ScriptVision()
+        dev = TapDevice()
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(dev, driver.Vision(sv, out), out, 600, git=False)
+        bot.loading_hashes, bot.daily_hashes, bot.nonet_hashes = [], [], []
+        return bot, sv, dev
+
+    def log(self):
+        return (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+
+    def level99(self, bot, st, n=99, active=True):
+        lv = driver.LevelCtx(n, st, self.clock.time())
+        lv.badge = "superhard"
+        lv.active = active
+        bot.lv = lv
+        bot.expect_new = False
+        return lv
+
+    @staticmethod
+    def board6():
+        return {"tubes": [T(236, 332, []), T(99, 538, ["?", "red", "blue"]), T(167, 538, ["blue", "blue"]),
+                          T(236, 538, []), T(304, 538, ["red", "red", "green"]), T(372, 538, ["green", "blue", "red", "yellow"])]}
+
+    def feed(self, bot, n=8, until=None):
+        fr = bot.grab()
+        for _ in range(n):
+            fr = bot.on_level(fr) or bot.grab()
+            if until and until():
+                break
+
+    def test_big_door_is_not_a_win(self):
+        """باب كبير انفتح فدخلت قوارير قبل القديمة وبعدها، وقارورة قديمة تغيّرت (فلا تطابق door_map)، والعنوان غير مقروء:
+        كان «فوز بالمرحلة 99 (لغز جديد على الشاشة)» ومحو الذاكرة؛ الآن استمرار المحاولة نفسها وتنتقل الذاكرة إلى فهرسها الجديد."""
+        bot, sv, dev = self.make()
+        old = self.board6()
+        lv = self.level99(bot, old)
+        lv.memory = {(1, 0): "green"}
+        lv.moves = 7
+        new = {"tubes": [T(99, 332, [], blocked=True, cover="curtain", cover_color="red"), T(167, 332, ["yellow", "yellow"]),
+                         T(236, 332, []), T(99, 538, ["?", "red", "blue"]), T(167, 538, ["blue", "blue"]), T(236, 538, []),
+                         T(304, 538, ["red", "red"]), T(372, 538, ["green", "blue", "red", "yellow"]),
+                         T(98, 743, ["?", "purple", "red"]), T(167, 743, ["yellow", "purple"]),
+                         T(304, 743, ["purple", "purple", "green"]), T(373, 743, ["?", "blue", "yellow"])]}
+        self.assertIsNone(driver.door_map(driver.with_memory(old, lv.memory), new))
+        sv.now.update(kind="level", state=new, level=None)
+        self.feed(bot, until=lambda: bot.lv.doors_opened)
+        log = self.log()
+        self.assertNotIn("فوز", log)
+        self.assertEqual((bot.levels_done, bot.lv.n, bot.lv.doors_opened, bot.lv.moves), (0, 99, 1, 7), log)
+        self.assertIs(bot.lv, lv)
+        self.assertEqual(lv.memory, {(3, 0): "green"})
+        self.assertIn("لوحة أكبر", log)
+
+    def test_restart_keeps_level_number(self):
+        """بعد «Give Up» تُفتح المرحلة نفسها بلوحة أصغر وألوان أخرى والعنوان غير مقروء: إعادة المرحلة 99 لا «فوز» ولا عدّاد
+        جديد (التشغيل السابع: صار العدّاد 30..69)، وتُعتمد البداية حين تثبت اللوحة."""
+        bot, sv, dev = self.make()
+        big = {"tubes": [T(60 + 34 * k, 400 + 200 * (k // 6), ["red", "blue"]) for k in range(12)]}
+        self.level99(bot, big, active=False)
+        new = {"tubes": [T(236, 332, []), T(99, 538, ["pink", "cyan", "brown"]), T(167, 538, ["cyan", "pink"]),
+                         T(236, 538, []), T(304, 538, ["brown", "brown", "pink", "cyan"]), T(372, 538, ["cyan", "pink"])]}
+        sv.now.update(kind="level", state=new, level=None)
+        self.feed(bot, n=10, until=lambda: len(bot.lv.start_state["tubes"]) == 6)
+        log = self.log()
+        self.assertNotIn("فوز", log)
+        self.assertEqual((bot.levels_done, bot.lv.n, len(bot.lv.start_state["tubes"])), (0, 99, 6), log)
+        self.assertIn("المرحلة 99 أُعيدت من البداية (العنوان غير مقروء", log)
+        self.assertIn("بداية المرحلة 99:", log)
+        self.assertIsNone(bot.restart_n)
+
+    def test_header_number_corrects_counter_without_win(self):
+        bot, sv, dev = self.make()
+        big = {"tubes": [T(60 + 34 * k, 400 + 200 * (k // 6), ["red", "blue"]) for k in range(12)]}
+        self.level99(bot, big, n=26, active=False)
+        sv.now.update(kind="level", state=self.board6(), level=99, badge="superhard")
+        self.feed(bot, n=4, until=lambda: bot.lv.n != 26)
+        self.assertEqual((bot.levels_done, bot.lv.n, bot.lv.badge), (0, 99, "superhard"), self.log())
+        self.assertIn("يُعتمد العنوان بلا فوز", self.log())
+
+    def test_solved_puzzle_then_new_board_is_a_win(self):
+        """اللغز محلول بنظر البوت ثم لوحة أخرى والعنوان غير مقروء (نافذة الفوز فاتت بين لقطتين): فوز كما كان."""
+        bot, sv, dev = self.make()
+        lv = self.level99(bot, self.board6(), n=40, active=False)
+        lv.maybe_won = True
+        nxt = {"tubes": [T(100, 400, ["red", "blue"]), T(200, 400, ["blue", "red"]), T(300, 400, [])]}
+        sv.now.update(kind="level", state=nxt, level=None)
+        self.feed(bot, n=3, until=lambda: bot.levels_done)
+        self.assertEqual(bot.levels_done, 1, self.log())
+        self.assertEqual(bot.lv.n, 41)
+
+    def test_solved_with_covers_is_not_maybe_won(self):
+        bot, sv, dev = self.make()
+        st = {"tubes": [T(100, 400, ["red"] * 4), T(200, 400, [], blocked=True, cover="bag"), T(300, 400, ["blue"] * 4)]}
+        self.level99(bot, st)
+        sv.now.update(kind="level", state=st, level=99)
+        bot.on_level(bot.grab())
+        self.assertFalse(bot.lv.maybe_won)
+        st2 = {"tubes": [T(100, 400, ["red"] * 4), T(200, 400, ["green"] * 4), T(300, 400, ["blue"] * 4)]}
+        sv.now.update(state=st2)
+        bot.on_level(bot.grab())
+        self.assertTrue(bot.lv.maybe_won)
+
+    def test_slot_map_and_remap_memory(self):
+        old = self.board6()
+        new = {"tubes": [T(99, 332, [], blocked=True), T(167, 332, ["pink"])] + [dict(t) for t in old["tubes"]]}
+        new["tubes"][6] = T(304, 538, ["red", "red"])          # تغيّرت بصبّة أثناء الانفتاح
+        mp = driver.slot_map(old, new)
+        self.assertEqual(mp, {k: k + 2 for k in range(6)})
+        self.assertEqual(driver.remap_memory({(1, 0): "green", (4, 2): "green"}, mp, new), {(3, 0): "green"})
+        # غطاء انكشف في خانته (العدد نفسه): يطابق الخانة، والموازنة لا تحسب طبقاته
+        a = {"tubes": [T(100, 400, ["red", "blue"]), T(200, 400, [], blocked=True, cover="curtain"), T(300, 400, [])]}
+        b = {"tubes": [T(100, 400, ["red", "blue"]), T(200, 400, ["green", "yellow", "green"]), T(300, 400, [])]}
+        self.assertEqual(driver.slot_map(a, b), {0: 0, 1: 1, 2: 2})
+        self.assertTrue(driver.compatible(a, b))
+        self.assertFalse(driver._same_tube(a["tubes"][1], a["tubes"][2]))   # المغطّاة ليست قارورة فارغة
+
+    # ---------------------------------------------------------------- الأرواح
+    LIVES = {"refill": (236, 523), "close": (424, 182), "price": 900, "timer": 556}
+
+    def test_lives_refill_once_when_coins_suffice(self):
+        bot, sv, dev = self.make()
+        sv.now.update(kind="lives", lives=dict(self.LIVES), coins=1950, close=(424, 182))
+        bot.on_lives(bot.grab())
+        self.assertEqual(len(dev.taps), 1)
+        self.assertTrue(near(dev.taps[0], (236, 523)), dev.taps)
+        self.assertIn("ملء الأرواح بـ 900 عملة (الرصيد 1950", self.log())
+        self.clock.sleep(5)
+        bot.on_lives(bot.grab())                              # عادت النافذة فوراً: لا ضغطة «Refill» ثانية
+        self.assertTrue(near(dev.taps[-1], (424, 182)), dev.taps)
+        self.assertEqual(sum(1 for p in dev.taps if near(p, (236, 523))), 1)
+        self.assertTrue(bot.lives_waiting())
+
+    def test_lives_wait_without_coins(self):
+        """الرصيد أقل من 900: إغلاق بـ X ثم لا يُضغط زرّ المرحلة قبل موعد الروح القادمة (عدّاد النافذة + 10 ث)، بفحص كل
+        دقيقة على الأكثر؛ ثم يُضغط. لا يُلمس زرّ الإعلان أبداً."""
+        bot, sv, dev = self.make()
+        sv.now.update(kind="lives", lives=dict(self.LIVES), coins=150)
+        t0 = self.clock.time()
+        bot.on_lives(bot.grab())
+        self.assertEqual(len(dev.taps), 1)
+        self.assertTrue(near(dev.taps[0], (424, 182)), dev.taps)
+        self.assertAlmostEqual(bot.lives_until - t0, 566, delta=1)
+        self.assertIn("الرصيد 150 أقل من 900", self.log())
+        sv.now.update(kind="button", button=(236, 786), lives=None)
+        steps = 0
+        while self.clock.time() < bot.lives_until and steps < 30:
+            before = self.clock.time()
+            bot.on_button(bot.grab())
+            self.assertLessEqual(self.clock.time() - before, 61)
+            steps += 1
+        self.assertEqual(len(dev.taps), 1, dev.taps)           # لا ضغطة أثناء الانتظار
+        self.assertGreaterEqual(steps, 9)
+        bot.on_button(bot.grab())
+        self.assertTrue(near(dev.taps[-1], (236, 786)), dev.taps)
+        self.assertFalse(any(abs(p[1] - 650) < 40 for p in dev.taps))
+
+    def test_lives_loop_runs_slowly(self):
+        """الحلقة كاملة 20 دقيقة افتراضية والأرواح تعود بعد 12 دقيقة: إغلاق واحد وضغطة مرحلة واحدة بعد الموعد، لا حلقة
+        نقر ولا إعلان ولا «Free Lives» ولا تصعيد بزرّ الرجوع."""
+        bot, sv, dev = self.make()
+        regen = self.clock.time() + 12 * 60
+        lives = dict(self.LIVES, timer=12 * 60)
+        sv.now.update(kind="lives", lives=lives, coins=150, close=(424, 182))
+        clock = self.clock
+        started = []
+        keys_at_start = []
+
+        def tap(X, Y):
+            TapDevice.tap(dev, X, Y)
+            p = dev.taps[-1]
+            if sv.now["kind"] == "lives" and near(p, (424, 182), 8):
+                sv.now.update(kind="button", button=(236, 786), lives=None)
+            elif sv.now["kind"] == "button" and near(p, (236, 786), 8):
+                if clock.time() >= regen:
+                    started.append(clock.time())
+                    keys_at_start.extend(dev.keys)
+                    sv.now.update(kind="unknown", button=None)
+                else:
+                    sv.now.update(kind="lives", lives=dict(lives, timer=int(regen - clock.time())))
+        dev.tap = tap
+        for _ in range(40):
+            bot.run(max_iters=10)
+            if started:
+                break
+        self.assertTrue(started, self.log()[-1500:])
+        self.assertGreaterEqual(started[0], regen)
+        self.assertLess(started[0] - regen, 90)
+        self.assertEqual(sum(1 for p in dev.taps if near(p, (424, 182), 8)), 1, dev.taps)
+        self.assertEqual(sum(1 for p in dev.taps if near(p, (236, 786), 8)), 1, dev.taps)
+        self.assertEqual(sum(1 for p in dev.taps if near(p, (236, 523), 8)), 0)
+        self.assertEqual(keys_at_start, [])                   # لا زرّ رجوع طوال الانتظار
+
+    # ---------------------------------------------------------------- «No Available Moves»
+    def nomoves(self, bot, sv, badge, coins, fails=0, play_ons=0):
+        st = self.board6()
+        lv = self.level99(bot, st, n=99 if badge == "superhard" else 95)
+        lv.badge = badge
+        lv.play_ons = play_ons
+        bot.level_fails[lv.n] = fails
+        sv.now.update(kind="unknown", give_up=(350, 820), play_on=(124, 820, 900), coins=coins)
+        bot.on_unknown(bot.grab(), "unknown")
+        return lv
+
+    def test_play_on_on_superhard_with_coins(self):
+        bot, sv, dev = self.make()
+        lv = self.nomoves(bot, sv, "superhard", 1950)
+        self.assertEqual(dev.taps, [(124, 820)])
+        self.assertEqual((lv.play_ons, lv.extra_tubes, bot.level_fails[99]), (1, 1, 0))
+        self.assertIn("«Play On» (قارورة إضافية بـ 900 عملة، الرصيد 1950، مرحلة صعبة جداً)", self.log())
+
+    def test_give_up_on_normal_level_then_play_on_after_two_fails(self):
+        bot, sv, dev = self.make()
+        lv = self.nomoves(bot, sv, "normal", 1950)
+        self.assertEqual(dev.taps, [(350, 820)])
+        self.assertEqual((bot.level_fails[95], bot.restart_n, lv.play_ons), (1, 95, 0))
+        self.assertIn("«Give Up» (مرحلة عادية وإخفاقاتها 0)", self.log())
+        bot2, sv2, dev2 = self.make()
+        self.nomoves(bot2, sv2, "normal", 1950, fails=2)
+        self.assertEqual(dev2.taps, [(124, 820)])
+        self.assertIn("أُخفقت 2 مرات", self.log())
+
+    def test_give_up_without_coins_or_after_play_on(self):
+        for badge, coins, used, why in (("hard", 500, 0, "الرصيد 500 أقل من 900"), ("superhard", None, 0, "الرصيد غير مقروء"),
+                                        ("superhard", 1950, 1, "«Play On» استُعمل في هذه المحاولة")):
+            bot, sv, dev = self.make()
+            self.nomoves(bot, sv, badge, coins, play_ons=used)
+            self.assertEqual(dev.taps, [(350, 820)], (badge, coins, used))
+            self.assertIn(why, self.log())
+
+
 FAKE_ADB = r"""#!/usr/bin/env python3
 import io, os, struct, sys
 args = sys.argv[1:]
