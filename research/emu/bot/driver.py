@@ -321,7 +321,8 @@ class Vision:
             try:
                 tubes.append({"x": int(t["x"]), "y": int(t["y"]), "cap": int(t.get("cap") or 4),
                               "layers": [c if isinstance(c, str) else "?" for c in (t.get("layers") or [])],
-                              "tall": bool(t.get("tall", False)), "lifted": bool(t.get("lifted", False))})
+                              "tall": bool(t.get("tall", False)), "lifted": bool(t.get("lifted", False)),
+                              "clay": bool(t.get("clay", False))})
             except (KeyError, TypeError, ValueError):
                 return None
         return {"tubes": tubes, "warnings": list(st.get("warnings") or [])}

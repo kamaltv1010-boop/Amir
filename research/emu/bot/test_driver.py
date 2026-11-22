@@ -615,5 +615,22 @@ class TestLoadingScreen(unittest.TestCase):
                 self.assertFalse(bot.is_nonet(driver.Frame(Image.open(p))), p.name)
 
 
+class TestClayPassThrough(unittest.TestCase):
+    """علامة «الطين» من الرؤية تصل إلى الحلّال (كان Vision.parse يحذفها فيصبّ البوت منها)."""
+
+    def test_clay_flag_reaches_plan(self):
+        import vision as real_vision
+        td = Path(driver.HERE) / "testdata"
+        out = driver.Out(Path(tempfile.mkdtemp()), 10, quiet=True)
+        vis = driver.Vision(real_vision, out)
+        st = vis.parse(driver.Frame(Image.open(td / "L041_clay_full.jpg")))
+        self.assertIsNotNone(st)
+        clay = [k for k, t in enumerate(st["tubes"]) if t.get("clay")]
+        self.assertEqual(clay, [0, 1, 4, 5])
+        mv = solver.plan(st)
+        self.assertTrue(mv)
+        self.assertNotIn(mv[0][0], clay)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
