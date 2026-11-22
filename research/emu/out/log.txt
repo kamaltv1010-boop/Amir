@@ -271,3 +271,17 @@
 [06:49:32] بداية المرحلة 24: 11 قارورة، سعات [(4, 11)]، مخفي 8
 [06:49:32] حالة المرحلة 24: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["?", "green", "?", "yellow"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "orange", "?", "orange"]}, {"x": 352, "y": 375, "cap": 4, "layers": []}, {"x": 432, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["?", "orange", "?", "yellow"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["purple", "purple"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["brown", "brown", "pink", "purple"]}, {"x": 314, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["?", "brown", "?", "pink"]}]
 [06:49:32] خطة المرحلة 24: 1 حركة (pimc، 213.3 ms)
+[06:50:50] خطة المرحلة 24: 1 حركة (astar، 0.4 ms)
+[06:50:58] شاشة جديدة لم تُرَ من قبل: new_044_unknown.jpg
+[06:50:58] فوز بالمرحلة 24 (unknown): 19 حركة في 87 ث، أدوات -
+[06:51:16] شاشة جديدة لم تُرَ من قبل: new_045_unknown.jpg
+[06:51:48] بداية المرحلة 25: 11 قارورة، سعات [(4, 11)]، مخفي 9
+[06:51:48] حالة المرحلة 25: [{"x": 167, "y": 332, "cap": 4, "layers": ["red", "yellow", "blue"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "green", "purple"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["orange", "pink", "blue"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "?", "orange"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "?", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "?", "green"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "orange", "pink"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["lavender", "purple", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "pink", "green"]}]
+[06:51:49] خطة المرحلة 25: 1 حركة (pimc، 560.8 ms)
+[06:52:34] خطة المرحلة 25: 16 حركة (astar، 1.9 ms)
+[06:53:44] فوز بالمرحلة 25 (unknown): 26 حركة في 116 ث، أدوات -
+[06:53:48] شاشة جديدة لم تُرَ من قبل: new_046_unknown.jpg
+[06:53:57] شاشة جديدة لم تُرَ من قبل: new_047_unknown.jpg
+[06:54:29] شاشة جديدة لم تُرَ من قبل: new_048_close.jpg
+[06:54:32] شاشة جديدة لم تُرَ من قبل: new_049_button.jpg
+[06:54:36] شاشة جديدة لم تُرَ من قبل: new_050_button.jpg
