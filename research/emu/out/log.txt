@@ -193,3 +193,22 @@
 [11:44:06] شاشة جديدة لم تُرَ من قبل: new_024_unknown.jpg
 [11:44:06] فوز بالمرحلة 66 (unknown): 13 حركة في 109 ث، أدوات -
 [11:44:11] شاشة جديدة لم تُرَ من قبل: new_025_unknown.jpg
+[11:47:09] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[11:47:37] شاشة التحميل: انتظار بلا نقر
+[11:48:44] بداية المرحلة 67: 6 قارورة، سعات [(4, 5), (17, 1)]، مخفي 0
+[11:48:44] حالة المرحلة 67: [{"x": 167, "y": 524, "cap": 17, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["c_03_7_7", "pink", "blue"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["blue", "blue", "pink"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["blue", "blue", "purple", "purple"]}, {"x": 372, "y": 540, "cap": 4, "layers": ["green", "blue", "purple"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "red", "yellow"]}]
+[11:48:44] خطة المرحلة 67: 8 حركة (progress، 1.9 ms)
+[11:49:11] خطة المرحلة 67: 4 حركة (progress، 1.4 ms)
+[11:49:42] المرحلة 67 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[11:49:42] بداية المرحلة 67: 8 قارورة، سعات [(4, 7), (16, 1)]، مخفي 0
+[11:49:42] حالة المرحلة 67: [{"x": 167, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["c_03_7_7", "pink", "pink"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 304, "y": 540, "cap": 4, "layers": []}, {"x": 372, "y": 540, "cap": 4, "layers": ["blue", "blue"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["blue", "orange", "yellow", "yellow"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["lavender", "lavender", "c_03_7_7", "pink"]}]
+[11:49:42] خطة المرحلة 67: 8 حركة (progress، 8.3 ms)
+[11:50:04] المرحلة 67 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[11:50:04] بداية المرحلة 67: 10 قارورة، سعات [(4, 9), (16, 1)]، مخفي 0
+[11:50:04] حالة المرحلة 67: [{"x": 167, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple", "green", "green", "brown"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["orange", "pink", "pink", "red"]}, {"x": 236, "y": 539, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["pink", "pink"]}, {"x": 372, "y": 539, "cap": 4, "layers": []}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["blue", "orange", "yellow", "yellow"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["lavender", "lavender", "c_03_7_7", "pink"]}]
+[11:50:04] خطة المرحلة 67: 8 حركة (progress، 27.0 ms)
+[11:50:18] المرحلة 67 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[11:50:18] بداية المرحلة 67: 11 قارورة، سعات [(4, 10), (16, 1)]، مخفي 3
+[11:50:18] حالة المرحلة 67: [{"x": 167, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["red", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple", "green", "green", "brown"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["orange", "pink", "blue"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 236, "y": 539, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["pink", "pink"]}, {"x": 372, "y": 539, "cap": 4, "layers": []}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["blue", "orange", "yellow", "yellow"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["lavender", "lavender", "c_03_7_7", "pink"]}]
+[11:50:19] خطة المرحلة 67: 1 حركة (pimc، 148.4 ms)
+[11:50:43] خطة المرحلة 67: 13 حركة (astar، 1.0 ms)
