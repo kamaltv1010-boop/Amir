@@ -80,3 +80,20 @@
 [16:11:05] سهم تعليم: لمس الهدف (338, 705)
 [16:11:09] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [16:11:25] شاشة التحميل: انتظار بلا نقر
+[16:11:43] انتهى التحميل بعد 18 ثانية
+[16:11:43] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[16:12:03] اللعبة ليست في الواجهة للمرة الثالثة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ إيقافها ثم تشغيلها
+[16:12:24] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[16:13:03] شاشة التحميل: انتظار بلا نقر
+[16:14:35] بداية المرحلة 90: 7 قارورة، سعات [(4, 7)]، مخفي 0
+[16:14:35] حالة المرحلة 90: [{"x": 167, "y": 332, "cap": 4, "layers": ["orange", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["pink", "blue"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["red", "red"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["brown", "green", "purple"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green", "lavender", "cyan"]}]
+[16:14:35] خطة المرحلة 90: 2 حركة (progress، 0.3 ms)
+[16:14:48] المرحلة 90: قوارير جديدة (باب انفتح؟ 7 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:14:48] حالة المرحلة 90 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["blue", "brown", "yellow"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["orange", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["pink", "blue"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["pink", "pink", "red"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "?", "?", "orange"]}, {"x": 166, "y": 538, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["red", "red"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["brown", "green", "purple"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["purple", "orange", "yellow", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green"]}]
+[16:15:23] خطة المرحلة 90: 1 حركة (key، 0.4 ms)
+[16:15:25] الحركة (2, 9) تحرّر مفتاحاً؛ انتظار الباب
+[16:15:42] خطة المرحلة 90: 10 حركة (astar، 1.3 ms)
+[16:16:28] فوز بالمرحلة 90 (unknown): 24 حركة في 113 ث، أدوات -
+[16:16:28] انتهى التحميل بعد 205 ثانية
+[16:16:32] شاشة جديدة لم تُرَ من قبل: new_011_unknown.jpg
+[16:16:32] سهم تعليم: لمس الهدف (85, 476)
