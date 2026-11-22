@@ -53,6 +53,7 @@ PALETTE = {
     "purple":   (94, 30, 142),
     "pink":     (254, 111, 216),
     "lavender": (92, 100, 165),
+    "brown":    (114, 49, 42),      # لون جديد من المرحلة 15
 }
 # لون خارج اللوحة (مرحلة لاحقة بلون جديد) يُسمّى آلياً بتقريب HSV دقيق: c_<hue>_<sat>_<val>
 # (التصيير مسطّح، فاللون نفسه يعطي الاسم نفسه دائماً). أضِفه إلى PALETTE بعد رؤيته.
@@ -414,7 +415,7 @@ def detect_tubes(a, diag=None):
     m = glass_mask(a)
     # منطقة اللعب فقط (تحت عنوان المرحلة وفوق شريط الأدوات)
     play = np.zeros_like(m)
-    play[int(0.13 * H):int(0.83 * H)] = True
+    play[int(0.13 * H):play_bottom(a)] = True
     m &= play
     md = _shift_or(m, 2)
     comps = [c for c in _components(md) if c["y1"] - c["y0"] >= 0.04 * H]
@@ -826,40 +827,52 @@ def booster_bar(img):
     """هل شريط الأدوات ظاهر؟ 2..5 أزرار بنفسجية مربعة (≈0.13 من العرض) في صف واحد
     قرب 0.85 من الارتفاع، متساوية التباعد وحول منتصف الشاشة. (أشرطة التبويب في
     الواجهة الرئيسية والمتجر مستطيلة وأوطأ، وأيقونات المتجر أصغر.)"""
-    a = load(img)
+    return _bar_boxes(load(img)) is not None
+
+
+def _bar_boxes(a):
+    """أزرار شريط الأدوات [{x, y (في الصورة كلها), w, h}...] أو None. الشريط قرب 0.85 من الارتفاع عادة،
+    وينزل إلى نحو 0.92 حين تحتاج القوارير ثلاثة صفوف (المرحلة 16 وما بعدها)."""
     H, W = a.shape[:2]
-    y0, y1 = int(0.76 * H), int(0.95 * H)
+    y0, y1 = int(0.76 * H), int(0.99 * H)
     pm = purple_btn_mask(a[y0:y1])
     boxes = []
     for b in _rect_blobs(pm, W, H):
         if (0.10 * W <= b["w"] <= 0.17 * W and 0.10 * W <= b["h"] <= 0.17 * W
                 and 0.82 <= b["w"] / float(b["h"]) <= 1.22 and b["fill"] >= 0.45
-                and 0.80 * H <= b["y"] + y0 <= 0.91 * H):
-            boxes.append(b)
+                and 0.80 * H <= b["y"] + y0 <= 0.95 * H):
+            boxes.append(dict(b, y=b["y"] + y0))
     if not (2 <= len(boxes) <= 5):
-        return False
+        return None
     ys = [b["y"] for b in boxes]
     if max(ys) - min(ys) > 0.015 * H:
-        return False
+        return None
     xs = sorted(b["x"] for b in boxes)
     gaps = np.diff(xs)
     if gaps.min() < 0.14 * W or gaps.max() > 1.6 * gaps.min() + 0.01 * W:
-        return False
-    return abs((xs[0] + xs[-1]) / 2 - W / 2) < 0.1 * W
+        return None
+    if abs((xs[0] + xs[-1]) / 2 - W / 2) >= 0.1 * W:
+        return None
+    return sorted(boxes, key=lambda b: b["x"])
+
+
+def play_bottom(a):
+    """أسفل منطقة اللعب: فوق شريط الأدوات بقليل (0.83 من الارتفاع إن لم يظهر الشريط)."""
+    H = a.shape[0]
+    boxes = _bar_boxes(a)
+    if not boxes:
+        return int(0.83 * H)
+    top = min(b["y"] - b["h"] / 2.0 for b in boxes)
+    return int(max(0.83 * H, min(0.92 * H, top - 0.03 * H)))
 
 
 def find_boosters(img):
     """مراكز أزرار الأدوات من اليسار إلى اليمين [(x, y), ...] (في المراحل الأولى:
     تراجع، خلط، قارورة إضافية)، أو [] إن لم يظهر الشريط."""
-    a = load(img)
-    H, W = a.shape[:2]
-    if not booster_bar(a):
+    boxes = _bar_boxes(load(img))
+    if not boxes:
         return []
-    y0, y1 = int(0.76 * H), int(0.95 * H)
-    bs = [b for b in _rect_blobs(purple_btn_mask(a[y0:y1]), W, H)
-          if 0.10 * W <= b["w"] <= 0.17 * W and 0.10 * W <= b["h"] <= 0.17 * W]
-    bs.sort(key=lambda b: b["x"])
-    return [(int(round(b["x"])), int(round(b["y"] + y0))) for b in bs]
+    return [(int(round(b["x"])), int(round(b["y"]))) for b in boxes]
 
 
 def classify(img) -> str:
@@ -998,7 +1011,7 @@ def state_key(state):
 
 # ---------------------------------------------------------------- الرسم للتشخيص
 _SHORT = {"red": "R", "orange": "O", "yellow": "Y", "green": "G", "blue": "B",
-          "purple": "P", "pink": "K", "lavender": "L", "?": "?"}
+          "purple": "P", "pink": "K", "lavender": "L", "brown": "N", "?": "?"}
 
 
 def debug_draw(img, state=None, scale: float = 1.6):

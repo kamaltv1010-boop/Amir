@@ -20,6 +20,32 @@ TOL = 8  # سماحية نقطة النقر بالبكسل (ارتفاع 1000)
 
 # (x, y, cap, "طبقات من الأسفل", {خيارات})
 LEVELS = {
+    "L016_3rows": [  # ثلاثة صفوف وقارورة عملاقة (سعة 16) في الوسط؛ شريط الأدوات أوطأ (0.92)
+        (100, 334, 4, 'red yellow blue green'),
+        (168, 334, 4, 'purple orange orange purple'),
+        (236, 522, 16, 'purple purple purple purple', {"tall": True, "free": 12}),
+        (304, 335, 4, 'purple pink red orange'),
+        (372, 334, 4, 'purple blue yellow lavender'),
+        (100, 539, 4, 'green purple green yellow'),
+        (168, 539, 4, 'green purple purple purple'),
+        (304, 539, 4, 'lavender lavender lavender purple'),
+        (372, 539, 4, 'blue purple pink pink'),
+        (168, 744, 4, 'pink red purple yellow'),
+        (304, 744, 4, 'purple orange red blue'),
+    ],
+    "L015_brown": [  # لون جديد (بنّي) من المرحلة 15
+        (40, 375, 4, 'red yellow blue yellow'),
+        (118, 375, 4, 'green green purple purple'),
+        (196, 375, 4, ''),
+        (274, 375, 4, ''),
+        (353, 375, 4, 'orange pink blue green'),
+        (431, 374, 4, 'lavender orange green lavender'),
+        (79, 636, 4, 'purple ? ? red'),
+        (157, 636, 4, 'yellow ? ? blue'),
+        (236, 636, 4, 'brown ? ? orange'),
+        (314, 636, 4, 'pink ? ? blue'),
+        (392, 636, 4, 'brown ? ? pink'),
+    ],
     "001_end": [  # التعليم: يد بيضاء تغطي قاع القارورة اليسرى
         (179, 506, 4, 'red red red'),
         (292, 506, 4, 'red'),
@@ -238,6 +264,9 @@ ALLOW_WARN = {"001_end", "002_picked"}
 
 # (التصنيف، نقطة find_button أو None، نقطة find_close أو None) — None في النقطة = لا يُختبر
 SCREENS = {
+    "L016_3rows": ("level", None, None),                # شريط الأدوات عند 0.92 (ثلاثة صفوف)
+    "nonet_popup": ("button", (236, 630), None),        # «No internet connection» وزرّ Retry
+    "loading_splash": ("unknown", None, None),          # شاشة التحميل (النسخة 0.0.3536)
     "000_launch_120s": ("button", (236, 660), None),   # شروط الخدمة: CONTINUE رمادي
     "000_launch_10s": ("unknown", None, None),          # شاشة سوداء أثناء التحميل
     "005_d_3s": ("unknown", None, None),                # ألعاب نارية بعد الفوز

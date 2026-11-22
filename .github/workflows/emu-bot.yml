@@ -62,8 +62,8 @@ jobs:
           BOT_MINUTES: ${{ github.event.inputs.minutes || '300' }}
           BOT_BRANCH: claude/quirky-ride-r4oor0
           GAME_DIR: /tmp/game
-          BOT_MAX_IMAGES: "600"
-          BOT_AIRPLANE: after_load
+          BOT_MAX_IMAGES: "900"
+          BOT_AIRPLANE: "off"          # النسخ الحديثة من اللعبة تشترط الإنترنت
         with:
           api-level: 30
           arch: x86_64
