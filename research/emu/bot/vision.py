@@ -744,23 +744,29 @@ def main_button(img):
 
 
 def find_tos(img):
-    """زرّ CONTINUE الرمادي في نافذة شروط الخدمة عند أول تشغيل (لوحة 18,18,18 وزرّ 36,36,36)."""
+    """زرّ CONTINUE الرمادي في نافذة شروط الخدمة عند أول تشغيل: زرّ رمادي عريض فوقه لوحة رمادية بنصف إضاءته تقريباً.
+    النسخ القديمة: لوحة 18 وزرّ 36؛ النسخة 0.0.3536: لوحة 36 وزرّ 73 (يُبحث في مدى إضاءة كل منهما على حدة حتى لا
+    تلتصق اللوحة بالزرّ في قناع واحد)."""
     a = load(img)
     H, W = a.shape[:2]
     ai = _i16(a)
     R, G, B = ai[..., 0], ai[..., 1], ai[..., 2]
-    gray = (abs(R - G) < 7) & (abs(G - B) < 7) & (R >= 28) & (R <= 48)
-    for b in _rect_blobs(gray, W, H, 0.01):
-        if not (b["w"] >= 0.5 * W and 0.045 * H <= b["h"] <= 0.12 * H and b["fill"] > 0.6):
-            continue
-        x0, y0, x1, y1 = b["box"]
-        above = ai[max(0, y0 - int(0.06 * H)):max(1, y0 - int(0.01 * H)), x0:x1 + 1].reshape(-1, 3)
-        if above.size == 0:
-            continue
-        panel = ((np.abs(above[:, 0] - 18) < 9) & (np.abs(above[:, 1] - above[:, 0]) < 6)
-                 & (np.abs(above[:, 2] - above[:, 0]) < 6)).mean()
-        if panel > 0.5:
-            return int(round(b["x"])), int(round(b["y"]))
+    neutral = (abs(R - G) < 7) & (abs(G - B) < 7)
+    for lo, hi in ((28, 48), (55, 95)):
+        gray = neutral & (R >= lo) & (R <= hi)
+        for b in _rect_blobs(gray, W, H, 0.01):
+            if not (b["w"] >= 0.5 * W and 0.045 * H <= b["h"] <= 0.12 * H and b["fill"] > 0.6):
+                continue
+            x0, y0, x1, y1 = b["box"]
+            bv = float(np.median(ai[y0:y1 + 1, x0:x1 + 1][gray[y0:y1 + 1, x0:x1 + 1]][:, 0]))
+            above = ai[max(0, y0 - int(0.06 * H)):max(1, y0 - int(0.01 * H)), x0:x1 + 1].reshape(-1, 3)
+            if above.size == 0:
+                continue
+            pv = above[:, 0]
+            panel = ((pv > 0.35 * bv) & (pv < 0.7 * bv) & (np.abs(above[:, 1] - pv) < 6)
+                     & (np.abs(above[:, 2] - pv) < 6)).mean()
+            if panel > 0.5:
+                return int(round(b["x"])), int(round(b["y"]))
     return None
 
 
