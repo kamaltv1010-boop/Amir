@@ -278,3 +278,30 @@
 [16:57:13] حالة المرحلة 94 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "blue"]}, {"x": 372, "y": 332, "cap": 4, "layers": []}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["plum", "purple", "pink", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["yellow", "cyan", "yellow", "pink"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["?", "plum", "purple", "purple"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["?", "yellow", "darkgreen"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["purple", "cyan", "darkgreen", "blue"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "red", "plum"]}]
 [16:57:50] المرحلة 94: قوارير جديدة (باب انفتح؟ 13 → 14 قارورة، ذاكرة 3 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
 [16:57:50] حالة المرحلة 94 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "darkgreen", "?", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["plum", "purple", "purple", "purple"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["yellow", "cyan", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["?", "plum", "plum"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["?", "yellow", "darkgreen", "darkgreen"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["purple"]}, {"x": 340, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan"]}]
+[16:58:23] خطة المرحلة 94: 5 حركة (astar، 0.7 ms)
+[16:58:50] شاشة جديدة لم تُرَ من قبل: new_022_unknown.jpg
+[16:58:50] فوز بالمرحلة 94 (unknown): 37 حركة في 170 ث، أدوات -
+[16:58:50] انتهى التحميل بعد 255 ثانية
+[16:58:55] شاشة جديدة لم تُرَ من قبل: new_023_unknown.jpg
+[16:58:55] سهم تعليم: لمس الهدف (85, 476)
+[16:58:59] شاشة جديدة لم تُرَ من قبل: new_024_button.jpg
+[16:59:10] شاشة جديدة لم تُرَ من قبل: new_025_unknown.jpg
+[16:59:10] إعلان بملء الشاشة: رجوع (1)
+[16:59:13] شاشة جديدة لم تُرَ من قبل: new_026_unknown.jpg
+[16:59:18] سهم تعليم: لمس الهدف (256, 374)
+[16:59:22] شاشة جديدة لم تُرَ من قبل: new_027_unknown.jpg
+[16:59:22] صفحة تبويب: العودة إلى الرئيسية
+[16:59:26] شاشة جديدة لم تُرَ من قبل: new_028_unknown.jpg
+[16:59:26] سهم تعليم: لمس الهدف (367, 652)
+[16:59:31] شاشة جديدة لم تُرَ من قبل: new_029_unknown.jpg
+[16:59:31] صفحة تبويب: العودة إلى الرئيسية
+[16:59:44] بداية المرحلة 95: 13 قارورة، سعات [(4, 13)]، مخفي 15
+[16:59:44] حالة المرحلة 95: [{"x": 98, "y": 332, "cap": 4, "layers": ["blue", "pink", "red", "brown"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["brown", "green", "pink", "lavender"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 201, "y": 538, "cap": 4, "layers": []}, {"x": 270, "y": 538, "cap": 4, "layers": []}, {"x": 338, "y": 538, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["cyan", "brown", "purple"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "blue", "red"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["green", "lavender", "lavender"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "pink", "orange"]}]
+[16:59:45] خطة المرحلة 95: 1 حركة (pimc، 826.3 ms)
+[17:01:33] خطة المرحلة 95: 13 حركة (astar، 2.2 ms)
+[17:02:33] فوز بالمرحلة 95 (unknown): 36 حركة في 169 ث، أدوات -
+[17:02:37] شاشة جديدة لم تُرَ من قبل: new_030_unknown.jpg
+[17:02:37] سهم تعليم: لمس الهدف (85, 476)
+[17:02:42] سهم تعليم: لمس الهدف (338, 705)
+[17:02:49] سهم تعليم: لمس الهدف (338, 705)
+[17:02:55] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
