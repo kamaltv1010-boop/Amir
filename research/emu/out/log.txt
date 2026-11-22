@@ -10,3 +10,33 @@
 [21:05:04] شاشة جديدة لم تُرَ من قبل: new_002_close.jpg
 [21:06:35] اللعبة ليست في الواجهة (mCurrentFocus=Window{d78dea4 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [21:07:05] شاشة التحميل: انتظار بلا نقر
+[21:21:32] بداية المرحلة 1: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[21:21:32] حالة المرحلة 1: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "brown", "c_16_7_6", "cyan"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "c_16_7_6", "brown", "c_16_7_6"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}]
+[21:21:32] خطة المرحلة 1: 5 حركة (key، 1.0 ms)
+[21:22:03] فوز بالمرحلة 1 (لغز جديد على الشاشة): 2 حركة في 31 ث، أدوات -
+[21:22:03] بداية المرحلة 2: 5 قارورة، سعات [(4, 5)]، مخفي 0
+[21:22:03] حالة المرحلة 2: [{"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "brown"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "c_16_7_6", "brown", "c_16_7_6"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}]
+[21:22:03] خطة المرحلة 2: 1 حركة (key، 0.2 ms)
+[21:22:04] الحركة (1, 2) تحرّر مفتاحاً؛ انتظار الباب
+[21:22:18] المرحلة 2: قوارير جديدة (باب انفتح؟ 5 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[21:22:18] حالة المرحلة 2 بعد الباب: [{"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["brown"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "c_16_7_6", "brown", "c_16_7_6"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "lavender", "cyan", "green"], "keys": [2]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "?", "green", "red"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "?", "darkgreen", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[21:22:18] خطة المرحلة 2: 1 حركة (progress، 1.6 ms)
+[21:22:25] خطة المرحلة 2: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[21:22:25] المرحلة 2 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue,blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[21:22:25] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:22:25] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:22:32] خطة المرحلة 2: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:22:32] المرحلة 2 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue,blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[21:22:32] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:22:32] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:22:39] خطة المرحلة 2: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[21:22:39] المرحلة 2 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue,blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[21:22:39] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:22:39] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:22:46] خطة المرحلة 2: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:22:46] المرحلة 2 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue,blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[21:22:46] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:22:46] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:22:46] الرجوع لم يُعِد المرحلة 2 (4 محاولات)؛ إعادة تشغيل اللعبة
+[21:23:16] التحميل طال أكثر من 12 دقيقة؛ إعادة تشغيل اللعبة
+[21:23:46] شاشة التحميل: انتظار بلا نقر
