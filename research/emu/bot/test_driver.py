@@ -646,6 +646,19 @@ class ScriptVision:
         return self.now["close"]
 
 
+class TabScriptVision(ScriptVision):
+    """ومعها شريط التبويبات والأزرار الخضراء (المدفوعة منها بـ "paid") كما يكتبها الاختبار."""
+
+    def tabbar_fraction(self, arr):
+        return self.now.get("tabbar", 0.0)
+
+    def green_buttons(self, arr):
+        return list(self.now.get("greens") or [])
+
+    def _paid(self, arr, b):
+        return bool(b.get("paid"))
+
+
 class TapDevice(FakeDevice):
     """جهاز مزيّف يسجّل النقرات بإحداثيات الارتفاع 1000."""
 
@@ -689,8 +702,8 @@ class TestRun7Policies(unittest.TestCase):
         driver.CFG.update(self.cfg)
         self.tmp.cleanup()
 
-    def make(self):
-        sv = ScriptVision()
+    def make(self, vision_cls=ScriptVision):
+        sv = vision_cls()
         dev = TapDevice()
         out = driver.Out(Path(self.tmp.name), 600, quiet=True)
         bot = driver.Bot(dev, driver.Vision(sv, out), out, 600, git=False)
@@ -918,6 +931,167 @@ class TestRun7Policies(unittest.TestCase):
             self.nomoves(bot, sv, badge, coins, play_ons=used)
             self.assertEqual(dev.taps, [(350, 820)], (badge, coins, used))
             self.assertIn(why, self.log())
+
+    # ---------------------------------------------------------------- إصلاحات المراجعة
+    def test_next_level_header_is_inferred_win(self):
+        """فوز حقيقي فاتت نافذته وmaybe_won خاطئ (بعد حركات «لا تقدّم»؛ وزرّ «Super Hard» في الواجهة لا يُقرأ رقمه): العنوان
+        يعرض المرحلة التالية مباشرة فيُسجَّل فوزاً مستنتجاً (levels_done وlevels.jsonl)؛ ورقم أبعد يبقى تصحيحاً بلا فوز."""
+        bot, sv, dev = self.make()
+        big = {"tubes": [T(60 + 34 * k, 400 + 200 * (k // 6), ["red", "blue"]) for k in range(12)]}
+        self.level99(bot, big, n=18, active=False)
+        sv.now.update(kind="level", state=self.board6(), level=19, badge="superhard")
+        self.feed(bot, n=4, until=lambda: bot.lv.n != 18)
+        log = self.log()
+        self.assertEqual((bot.levels_done, bot.lv.n), (1, 19), log)
+        self.assertIn("فوز بالمرحلة 18 (لغز جديد على الشاشة: المرحلة 19)", log)
+        rows = [json.loads(ln) for ln in (Path(self.tmp.name) / "levels.jsonl").read_text(encoding="utf-8").splitlines()]
+        self.assertEqual([(r["n"], r["result"]) for r in rows], [(18, "win-inferred")])
+
+    def test_truncated_price_is_floored(self):
+        """قراءة «Play On 900» مقطوعة (90) والرصيد 500 لا يكفي: «Give Up» لا «Play On»؛ ومثلها «Refill» في نافذة الأرواح."""
+        bot, sv, dev = self.make()
+        self.level99(bot, self.board6())
+        sv.now.update(kind="unknown", give_up=(350, 820), play_on=(124, 820, 90), coins=500)
+        bot.on_unknown(bot.grab(), "unknown")
+        self.assertEqual(dev.taps, [(350, 820)])
+        self.assertIn("الرصيد 500 أقل من 900", self.log())
+        bot2, sv2, dev2 = self.make()
+        sv2.now.update(kind="lives", lives=dict(self.LIVES, price=90), coins=500, close=(424, 182))
+        bot2.on_lives(bot2.grab())
+        self.assertEqual(len(dev2.taps), 1)
+        self.assertTrue(near(dev2.taps[0], (424, 182)), dev2.taps)
+        self.assertTrue(bot2.lives_waiting())
+
+    def test_play_on_keeps_refill_reserve(self):
+        """الصعبة جداً والرصيد 1050 (يكفي «Play On» وحده): «Give Up» ليبقى ثمن «Refill» (كان يصرف 1950 ← 1050 ← 150 فلا
+        يُملأ أبداً)؛ والاحتياطي 0 يعيد «Play On» أولاً."""
+        bot, sv, dev = self.make()
+        self.nomoves(bot, sv, "superhard", 1050)
+        self.assertEqual(dev.taps, [(350, 820)])
+        self.assertIn("الرصيد 1050 لا يُبقي بعد ثمنه 900 احتياطي ملء الأرواح 900", self.log())
+        driver.CFG["play_on_reserve"] = 0
+        bot2, sv2, dev2 = self.make()
+        self.nomoves(bot2, sv2, "superhard", 1050)
+        self.assertEqual(dev2.taps, [(124, 820)])
+
+    def test_give_up_starts_new_attempt_with_same_colors(self):
+        """«Play On» ثم «Give Up» ثم بداية بالألوان نفسها (يقبلها compatible فكانت المحاولة القديمة تستمر بـ play_ons=1):
+        محاولة جديدة للمرحلة 99 بلا فوز، و«No Available Moves» التالية والرصيد يكفي تضغط «Play On» من جديد."""
+        bot, sv, dev = self.make()
+        lv = self.level99(bot, self.board6())
+        lv.play_ons, lv.extra_tubes = 1, 1
+        sv.now.update(kind="unknown", give_up=(350, 820), play_on=(124, 820, 900), coins=1950)
+        bot.on_unknown(bot.grab(), "unknown")
+        self.assertEqual(dev.taps, [(350, 820)])
+        self.assertTrue(bot.expect_new)
+        fresh = {"tubes": [T(236, 332, []), T(99, 538, ["?", "blue", "red"]), T(167, 538, ["red", "blue"]),
+                           T(236, 538, []), T(304, 538, ["green", "red", "blue"]), T(372, 538, ["blue", "red", "yellow", "green"])]}
+        self.assertTrue(driver.compatible(lv.last_state, fresh, lv.extra_tubes))
+        sv.now.update(kind="level", state=fresh, level=99, badge="superhard", give_up=None, play_on=None)
+        self.feed(bot, n=6, until=lambda: bot.lv is not lv)
+        log = self.log()
+        self.assertIsNot(bot.lv, lv, log)
+        self.assertEqual((bot.lv.n, bot.lv.play_ons, bot.lv.extra_tubes, bot.levels_done), (99, 0, 0, 0), log)
+        self.assertNotIn("فوز", log)
+        self.assertIsNone(bot.restart_n)
+        sv.now.update(kind="unknown", give_up=(350, 820), play_on=(124, 820, 900), coins=1950, state=None)
+        bot.on_unknown(bot.grab(), "unknown")
+        self.assertEqual(dev.taps[-1], (124, 820))
+
+    def test_lives_wait_on_unknown_home_screen(self):
+        """الواجهة بزرّ «Super Hard» الأحمر تُقرأ «unknown» أثناء انتظار الأرواح: لا «Home» ولا موضع «Level N» ولا رجوع حتى
+        الموعد (كان مسار شريط التبويبات يفتح نافذة More Lives كل 23 ثانية)، ثم «Home» مرتين وموضع «Level N» مرة."""
+        bot, sv, dev = self.make(TabScriptVision)
+        regen = self.clock.time() + 14 * 60
+        bot.lives_until = regen
+        sv.now.update(kind="unknown", tabbar=0.68)
+        times, started, before = [], [], []
+
+        def tap(X, Y):
+            TapDevice.tap(dev, X, Y)
+            times.append(self.clock.time())
+            if near(dev.taps[-1], (236, 786), 8) and not started:
+                started.append(self.clock.time())
+                before.extend([list(dev.taps), list(dev.keys)])
+                sv.now.update(kind="level", tabbar=0.0)      # بدأت المرحلة (بلا لوحة مقروءة في هذا الاختبار)
+        dev.tap = tap
+        for _ in range(40):
+            bot.run(max_iters=10)
+            if started:
+                break
+        self.assertTrue(started, self.log()[-1500:])
+        self.assertEqual([t for t in times if t < regen], [], dev.taps)
+        self.assertLess(started[0] - regen, 90)
+        taps, keys = before
+        self.assertEqual(sum(1 for p in taps if near(p, (236, 955), 8)), 2, taps)
+        self.assertEqual(len(taps), 3, taps)
+        self.assertEqual(keys, [])
+        self.assertIn("انتظار الأرواح (شاشة مجهولة)", self.log())
+
+    def test_escalation_never_taps_paid_button(self):
+        """«Continue?» لا تُغلق بـ X (الشاشة نفسها تتكرّر): التصعيد يضغط الرجوع ولا يلمس الوسط (236,620) داخل «Play On 900»؛
+        ونقرة الوسط بالزمن في شاشة مجهولة مثلها."""
+        paid = [{"box": (97, 561, 375, 646), "paid": True}]
+        inside = lambda taps: [p for p in taps if 97 <= p[0] <= 375 and 561 <= p[1] <= 646]   # noqa: E731
+        bot, sv, dev = self.make(TabScriptVision)
+        sv.now.update(kind="close", close=(428, 215), greens=paid)
+        for _ in range(4):
+            bot.run(max_iters=10)
+        self.assertGreaterEqual(bot.repeat_escalations, 2, self.log())
+        self.assertEqual(inside(dev.taps), [])
+        self.assertGreaterEqual(dev.keys.count(4), 2)
+        bot2, sv2, dev2 = self.make(TabScriptVision)
+        self.clock.sleep(9 * 60)                              # بعد 8 دقائق: نقرة الوسط لا زرّ الشروط
+        sv2.now.update(kind="unknown", greens=paid)
+        for _ in range(4):
+            bot2.run(max_iters=10)
+        self.assertGreaterEqual(bot2.unknown_acts, 2, self.log())
+        self.assertEqual(inside(dev2.taps), [])
+        self.assertIn("نقرة التصعيد فوق زرّ يصرف العملات", self.log())
+
+    def test_counters_survive_update(self):
+        """أمر «update» (os.execv) كان يصفّر «Give Up» لكل مرحلة وموعد الروح القادمة وحارس «Refill»: تُحفظ قبل التحديث
+        وتُقرأ بعده مرة واحدة، والملف القديم (أكثر من 10 دقائق) أو التالف يُهمل."""
+        from unittest import mock
+        old_sf = driver.STATE_FILE
+        driver.STATE_FILE = Path(self.tmp.name) / "bot_state.json"
+        try:
+            bot, sv, dev = self.make()
+            bot.level_fails.update({95: 2, 99: 5})
+            bot.lives_until = self.clock.time() + 500
+            bot.last_refill_tap = self.clock.time() - 30
+            bot.coins = 150
+            bot.git = lambda *a, **k: (0, "")
+            bot.publish = lambda msg: True
+            argvs = []
+
+            def fake_execv(exe, argv):
+                argvs.append(argv)
+                raise SystemExit(0)
+            with mock.patch.object(driver.os, "execv", fake_execv):
+                with self.assertRaises(SystemExit):
+                    bot.self_update()
+            self.assertIn("--no-setup", argvs[0])
+            self.clock.sleep(3)
+            bot2, _, _ = self.make()
+            self.assertTrue(bot2.load_counters())
+            self.assertEqual(dict(bot2.level_fails), {95: 2, 99: 5})
+            self.assertAlmostEqual(bot2.lives_until, bot.lives_until)
+            self.assertAlmostEqual(bot2.last_refill_tap, bot.last_refill_tap)
+            self.assertEqual(bot2.coins, 150)
+            self.assertTrue(bot2.lives_waiting())
+            self.assertFalse(driver.STATE_FILE.exists())          # يُقرأ مرة واحدة
+            self.assertFalse(bot2.load_counters())
+            bot.save_counters()
+            self.clock.sleep(700)
+            bot3, _, _ = self.make()
+            self.assertFalse(bot3.load_counters())
+            self.assertEqual(dict(bot3.level_fails), {})
+            driver.STATE_FILE.write_text("{bad json", encoding="utf-8")
+            self.assertFalse(bot3.load_counters())
+            self.assertIn("عدّادات ما قبل التحديث", self.log())
+        finally:
+            driver.STATE_FILE = old_sf
 
 
 FAKE_ADB = r"""#!/usr/bin/env python3

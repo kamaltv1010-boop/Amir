@@ -7,11 +7,11 @@
            ثم لقطة جديدة للتحقق (الطبقات المخفية تنكشف). لا تقدّم = حركة سيئة؛
            بعد 3 إخفاقات: لقطة stuck_* ثم الأدوات (قارورة إضافية، ثم خلط، ثم تراجع).
   button : نقر find_button.   close : نقر find_close.
-  lives  : نافذة «More Lives»: «Refill» مرة واحدة إن كفى الرصيد ثمنه (900)، وإلا X ثم لا يُضغط زرّ المرحلة حتى موعد
-           الروح القادمة (فحص كل دقيقة). لا يُلمس زرّ الإعلان «+1 Life» ولا «Free Lives» أبداً.
-  unknown: لقطة unknown_* (محدودة)، ثم انتظار/رجوع/نقر الوسط/إعادة تشغيل اللعبة. ومنها «No Available Moves»:
-           «Give Up»، أو «Play On» (قارورة بـ 900) مرة في المحاولة إن كفى الرصيد وكانت المرحلة صعبة أو صعبة جداً بعنوانها
-           أو أُخفقت مرتين في هذا التشغيل.
+  lives  : نافذة «More Lives»: «Refill» مرة واحدة إن كفى الرصيد ثمنه (900)، وإلا X ثم لا يُضغط زرّ المرحلة (ولا يُلمس
+           شيء في شاشة مجهولة) حتى موعد الروح القادمة (فحص كل دقيقة). لا يُلمس زرّ الإعلان «+1 Life» ولا «Free Lives» أبداً.
+  unknown: لقطة unknown_* (محدودة)، ثم انتظار/رجوع/نقر الوسط (لا فوق زرّ يصرف العملات)/إعادة تشغيل اللعبة. ومنها
+           «No Available Moves»: «Give Up» (ثم محاولة جديدة)، أو «Play On» (قارورة بـ 900) مرة في المحاولة إن كفى الرصيد
+           ثمنه واحتياطي «Refill» بعده (900) وكانت المرحلة صعبة أو صعبة جداً بعنوانها أو أُخفقت مرتين في هذا التشغيل.
 رقم المرحلة من عنوانها (العادية والصعبة والصعبة جداً)؛ ولا «فوز» بتغيّر اللوحة وحده إلا إن ظنّ البوت اللغز محلولاً: غير
 ذلك باب انفتح (استمرار المحاولة) أو إعادة المرحلة نفسها. الستائر والأكياس قوارير محجوبة ("blocked") لا يلمسها الحلّال.
 كل شاشة غير اللغز لم يُرَ شكلها من قبل (بصمة إدراكية) تُحفظ new_*.jpg، وأول لقطة
@@ -88,14 +88,17 @@ CFG = {
     "level_max_min": _env("BOT_LEVEL_MAX_MIN", 30.0, float),
     "plan_sec": _env("BOT_PLAN_SEC", 1.6, float),
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
-    "refill_price": _env("BOT_REFILL_PRICE", 900, int),     # ثمن ملء الأرواح إن لم يُقرأ من زرّ «Refill»
-    "play_on_price": _env("BOT_PLAY_ON_PRICE", 900, int),   # ثمن «Play On» (قارورة) إن لم يُقرأ من زرّه
+    # الثمنان حدّان أدنى: المقروء من الزرّ يُعتمد إن زاد عليهما فقط (قراءة «Play On 900» قد تُسقط صفراً فتصير 90)
+    "refill_price": _env("BOT_REFILL_PRICE", 900, int),     # ثمن ملء الأرواح الأدنى (زرّ «Refill»)
+    "play_on_price": _env("BOT_PLAY_ON_PRICE", 900, int),   # ثمن «Play On» (قارورة) الأدنى
+    "play_on_reserve": _env("BOT_PLAY_ON_RESERVE", 900, int),  # يبقى بعد «Play On» لملء الأرواح مرة (0: «Play On» أولاً)
     "lives_wait_sec": _env("BOT_LIVES_WAIT_SEC", 300.0, float),  # انتظار الروح القادمة إن لم يُقرأ عدّادها
     "play_on_fails": _env("BOT_PLAY_ON_FAILS", 2, int),     # «Play On» في مرحلة عادية بعد هذا العدد من «Give Up» فيها
 }
 BOOSTER_DEFAULT = {"undo": (144, 854), "shuffle": (236, 854), "add": (328, 854)}
 NOVEL_DIST = 28        # بصمة 256 بت: نوافذ الفوز بينها ≤32، والشاشات المختلفة ≥73
 PUB_DIR = Path(os.environ.get("BOT_PUB_DIR", "/tmp/bot_pub"))   # شجرة git منفصلة للنشر
+STATE_FILE = Path(os.environ.get("BOT_STATE_FILE", "/tmp/bot_state.json"))   # عدّادات السياسات عبر أمر «update»
 TOS_POINT = (236, 660)                 # زرّ CONTINUE في نافذة الشروط عند أول تشغيل
 
 
@@ -408,6 +411,21 @@ class Vision:
         except (TypeError, ValueError):
             price = None
         return pt, price
+
+    def paid_at(self, fr, pt) -> bool:
+        """هل تقع النقطة داخل زرّ أخضر يصرف العملات؟ (نقطة الوسط (236,620) في نافذة «Continue?» داخل «Play On 900»، فلا
+        تلمسها نقرات التصعيد العمياء.) خطأ في فحص الثمن يُعدّ «يصرف» (الرجوع بدل النقر)."""
+        gb = self._safe("green_buttons", fr.arr)
+        if not isinstance(gb, list):
+            return False
+        for b in gb:
+            try:
+                x0, y0, x1, y1 = b["box"]
+                if x0 <= pt[0] <= x1 and y0 <= pt[1] <= y1 and self._safe("_paid", fr.arr, b, default=True):
+                    return True
+            except (KeyError, TypeError, ValueError, IndexError):
+                continue
+        return False
 
     def boosters(self, fr):
         """مواضع الأدوات من اليسار: تراجع، خلط، قارورة (إحداثيات الارتفاع 1000)."""
@@ -1159,8 +1177,52 @@ class Bot:
         self.stop = True
         argv = [sys.executable, str(HERE / "driver.py"), "--no-setup", "--minutes", "%.1f" % left,
                 "--levels-done", str(self.levels_done)]
+        self.save_counters()                   # بعد النشر (قد يطول) حتى يبقى الملف حديثاً عند قراءته
         sys.stdout.flush()
         os.execv(sys.executable, argv)
+
+    def save_counters(self):
+        """قبل os.execv في أمر «update»: عدّادات السياسات التي لا تُقرأ من الشاشة (مرات «Give Up» لكل مرحلة، موعد الروح
+        القادمة، آخر «Refill»، الرصيد) في ملف مؤقت يقرؤه البوت الجديد مرة واحدة، فلا تعود صفراً بعد كل تحديث ساخن."""
+        try:
+            tmp = STATE_FILE.with_name("." + STATE_FILE.name + ".tmp")
+            tmp.write_text(json.dumps({
+                "t": time.time(), "level_fails": {str(k): int(v) for k, v in self.level_fails.items()},
+                "lives_until": float(self.lives_until), "last_refill_tap": float(self.last_refill_tap),
+                "refills": int(self.refills), "coins": self.coins}), encoding="utf-8")
+            os.replace(tmp, STATE_FILE)
+        except (OSError, TypeError, ValueError) as e:
+            self.log("تعذّر حفظ العدّادات قبل التحديث: %r" % e)
+
+    def load_counters(self, max_age=600.0) -> bool:
+        """بعد «update» (--no-setup): عدّادات البوت السابق إن كان ملفها أحدث من 10 دقائق، ثم يُحذف (لا يُقرأ مرتين). أي خطأ
+        يُهمل بصمت: البدء بعدّادات صفرية كما كان أفضل من توقف البوت."""
+        try:
+            d = json.loads(STATE_FILE.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return False
+        try:
+            STATE_FILE.unlink()
+        except OSError:
+            pass
+        try:
+            if not (isinstance(d, dict) and 0 <= time.time() - float(d.get("t", 0)) < max_age):
+                return False
+            fails = {int(k): int(v) for k, v in (d.get("level_fails") or {}).items()}
+            lives_until = float(d.get("lives_until") or 0.0)
+            last_refill = float(d.get("last_refill_tap", -1e9))
+            refills = int(d.get("refills") or 0)
+            coins = None if d.get("coins") is None else int(d["coins"])
+        except (TypeError, ValueError, AttributeError):
+            return False
+        self.level_fails.update(fails)
+        self.lives_until, self.last_refill_tap, self.refills = lives_until, last_refill, refills
+        if coins is not None:
+            self.coins = coins
+        self.log("عدّادات ما قبل التحديث: «Give Up» لكل مرحلة %s، انتظار الأرواح %.0f ث، الرصيد %s"
+                 % (dict(self.level_fails) or "-", max(0.0, self.lives_until - time.time()),
+                    self.coins if self.coins is not None else "?"))
+        return True
 
     def confirm_backup_dialog(self, tries=25):
         """نافذة تأكيد adb backup/restore (com.android.backupconfirm): يُلمس زرّ الموافقة («Back up my data» أو «Restore my
@@ -1443,8 +1505,12 @@ class Bot:
                 elif kind in ("button", "close") and self.same_screen(fr) > 6:
                     self.log("الشاشة نفسها (%s) تتكرّر رغم النقر؛ تصعيد" % kind)
                     self.save_repeat(fr, kind)
-                    self.dev.key(4) if self.repeat_escalations % 2 == 0 else \
-                        self.dev.tap_std(fr.arr.shape[1] // 2, int(STD_H * 0.62))
+                    mid = (fr.arr.shape[1] // 2, int(STD_H * 0.62))
+                    # نقرة الوسط لا تلمس زرّاً يصرف العملات («Play On 900» في «Continue?» بعد «Give Up»): رجوع بدلها
+                    if self.repeat_escalations % 2 == 0 or self.vis.paid_at(fr, mid):
+                        self.dev.key(4)
+                    else:
+                        self.dev.tap_std(*mid)
                     self.repeat_escalations += 1
                     self.repeat = (None, 0)
                     time.sleep(2)
@@ -1593,8 +1659,10 @@ class Bot:
                 return self.grab()
             ln = self.vis.level_number(fr)       # رقم المرحلة من العنوان إن قُرئ
             if ln is not None and ln != lv.n:
-                if lv.maybe_won:
-                    self.win("لغز جديد على الشاشة: المرحلة %d" % ln)
+                # المرحلة التالية مباشرة فوز حقيقي فاتت نافذته (maybe_won قد يكون خاطئاً بعد حركات «لا تقدّم»، وزرّ «Super Hard»
+                # في الواجهة لا يُقرأ رقمه)؛ أما رقم أبعد أو أقل فتصحيح لانجراف العدّاد بلا فوز (30..69 في التشغيل السابع)
+                if lv.maybe_won or ln == lv.n + 1:
+                    self.win("لغز جديد على الشاشة: المرحلة %d" % ln, inferred=not lv.maybe_won)
                 else:
                     self.log("العنوان يعرض المرحلة %d والعدّاد %d بلا نافذة فوز: يُعتمد العنوان بلا فوز" % (ln, lv.n))
                 self.new_level(fr, st, n=ln)
@@ -1988,7 +2056,7 @@ class Bot:
         coins = self.vis.coins(fr)
         if coins is not None:
             self.coins = coins
-        price = lp["price"] or CFG["refill_price"]
+        price = max(lp["price"] or 0, CFG["refill_price"])   # قراءة أقل من الثمن المعروف مقطوعة (90 بدل 900)
         if self.lives_shots < 6:
             self.lives_shots += 1
             self.out.save_jpg("lives_%02d.jpg" % self.lives_shots, fr.pil)
@@ -2036,8 +2104,9 @@ class Bot:
 
     def on_no_moves(self, fr, gu):
         """نافذة «No Available Moves»: «Give Up» افتراضياً (تُعاد المرحلة وتضيع روح). «Play On» الأخضر (قارورة إضافية
-        بـ 900 عملة) فقط إن كفى الرصيد المقروء ثمنه وكانت المرحلة صعبة أو صعبة جداً بعنوانها، أو أُخفقت هذه المرحلة
-        مرتين على الأقل في هذا التشغيل؛ ومرة واحدة في المحاولة. لا يُشترى غير ذلك أبداً (أثمان شريط الأدوات تبقى كما هي)."""
+        بـ 900 عملة) فقط إن كفى الرصيد المقروء ثمنه واحتياطي ملء الأرواح بعده (play_on_reserve)، وكانت المرحلة صعبة أو صعبة
+        جداً بعنوانها أو أُخفقت مرتين على الأقل في هذا التشغيل؛ ومرة واحدة في المحاولة. لا يُشترى غير ذلك أبداً (أثمان شريط
+        الأدوات تبقى كما هي)."""
         lv = self.lv
         n = lv.n if lv else None
         fails = self.level_fails.get(n, 0) if n is not None else 0
@@ -2046,10 +2115,14 @@ class Bot:
         coins = self.vis.coins(fr)
         if coins is not None:
             self.coins = coins
-        price = (po[1] if po and po[1] else CFG["play_on_price"])
+        price = max((po[1] if po else 0) or 0, CFG["play_on_price"])   # قراءة الزرّ قد تُسقط صفراً (90 بدل 900)
+        # احتياطي لملء الأرواح مرة: بلا هذا يصرف «Play On» الرصيد كله (1950 ← 1050 ← 150) قبل نفاد الأرواح، فلا يُستعمل
+        # «Refill» أبداً ويعود انتظار ربع ساعة لكل روح
+        reserve = max(0, CFG["play_on_reserve"])
         hard = badge in ("hard", "superhard")
-        if (po and lv is not None and coins is not None and coins >= price and lv.play_ons < 1
-                and (hard or fails >= CFG["play_on_fails"])):
+        eligible = hard or fails >= CFG["play_on_fails"]
+        if (po and lv is not None and coins is not None and coins >= price + reserve and lv.play_ons < 1
+                and eligible):
             why = ("مرحلة %s" % {"hard": "صعبة", "superhard": "صعبة جداً"}[badge]) if hard \
                 else ("أُخفقت %d مرات" % fails)
             self.log("نافذة «No Available Moves» في المرحلة %d: «Play On» (قارورة إضافية بـ %d عملة، الرصيد %d، %s)"
@@ -2072,8 +2145,10 @@ class Bot:
             why = "الرصيد %d أقل من %d" % (coins, price)
         elif lv is not None and lv.play_ons:
             why = "«Play On» استُعمل في هذه المحاولة"
-        else:
+        elif not eligible or lv is None:
             why = "مرحلة %s وإخفاقاتها %d" % ({"normal": "عادية"}.get(badge, "غير معروفة النوع"), fails)
+        else:
+            why = "الرصيد %d لا يُبقي بعد ثمنه %d احتياطي ملء الأرواح %d" % (coins, price, reserve)
         self.log("نافذة «No Available Moves»%s: «Give Up» (%s)" % (" في المرحلة %d" % n if n else "", why))
         if n is not None:
             self.level_fails[n] += 1
@@ -2083,6 +2158,10 @@ class Bot:
         else:
             self.out.save_jpg("nomoves_%03d.jpg" % min(999, self.levels_done), fr.pil)
         self.tap(gu)
+        # اللعبة تعيد المرحلة دائماً بعد «Give Up» (ثم X في «Continue?»): محاولة جديدة تُعتمد حين تثبت اللوحة، حتى لو بدأت
+        # بالألوان نفسها (بدايات المرحلة 99 تتكرّر فيقبلها compatible)، فلا يبقى «Play On» محسوباً ولا الحظر والذاكرة والوقت
+        self.expect_new = True
+        self.start_probe, self.start_probe_tries, self.start_same = None, 0, 0
         time.sleep(2.5)
         return None
 
@@ -2161,6 +2240,17 @@ class Bot:
             if "Not Responding" in f:
                 self.log("نافذة «لا يستجيب»: انتظار")
                 self.dev.key(4)
+        if self.lives_waiting():
+            # الأرواح نفدت: لا «Home» ولا موضع «Level N» ولا سهم ولا نقر ورجوع بالزمن حتى موعد الروح القادمة (الواجهة بزرّ
+            # «Super Hard» الأحمر تُقرأ «unknown» فكان مسار شريط التبويبات يفتح نافذة More Lives كل 23 ثانية)؛ وبعده تُعامل
+            # الشاشة كمجهولة جديدة (تصعيد بطيء من أوله). فحص التركيز والإعلانات والتحميل قبل هذا كما هي.
+            rem = self.lives_until - now
+            if now - self.last_lives_log > 300:
+                self.last_lives_log = now
+                self.log("انتظار الأرواح (شاشة مجهولة): باقي %.0f دقيقة بلا لمس" % (rem / 60))
+            self.unknown_streak = 0
+            time.sleep(min(60.0, max(1.0, rem)))
+            return None
         # تعليم بسهم أصفر يشير إلى ما يجب لمسه (صورة اللاعب قبل «الفرق» مثلاً): يُلمس الهدف بعد ثانيتين من ثبات الشاشة
         # صفحة تبويب غير الرئيسية (الفرق، المتصدّرون، المجموعة، المتجر): شريط التبويبات مضيء بلا زرّ «Level N»؛
         # العودة بزرّ «Home» في وسط الشريط
@@ -2209,8 +2299,12 @@ class Bot:
         if self.unknown_acts < len(steps) and dur >= steps[self.unknown_acts][0]:
             act = steps[self.unknown_acts][1]
             self.unknown_acts += 1
+            pt = TOS_POINT if self.elapsed_min() < 8 else (fr.arr.shape[1] // 2, int(STD_H * 0.62))
+            if act == "tap" and self.vis.paid_at(fr, pt):
+                self.log("نقرة التصعيد فوق زرّ يصرف العملات %s: رجوع بدلها" % (pt,))
+                act = "back"
             if act == "tap":
-                self.tap(TOS_POINT if self.elapsed_min() < 8 else (fr.arr.shape[1] // 2, int(STD_H * 0.62)))
+                self.tap(pt)
             else:
                 self.dev.key(4)
             time.sleep(2)
@@ -2381,6 +2475,8 @@ def main(argv=None):
         bot.git("config", "user.name", "emu-bot")
         bot.git("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
     bot.log("بدء البوت: %.0f دقيقة، الفرع %s" % (args.minutes or CFG["minutes"], CFG["branch"]))
+    if args.no_setup:
+        bot.load_counters()                    # بعد أمر «update»: عدّادات السياسات من البوت السابق
     if git_on:
         bot.setup_publisher()
         bot.poll_remote()                      # يسجّل الـ seq الحالي كمنفَّذ
