@@ -661,3 +661,26 @@
 [12:42:45] فوز بالمرحلة 69 (unknown): 52 حركة في 1998 ث، أدوات ['shuffle']
 [12:42:45] إعلان بملء الشاشة: رجوع (1)
 [12:43:10] شاشة التحميل: انتظار بلا نقر
+[12:44:17] بداية المرحلة 69: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[12:44:17] حالة المرحلة 69: [{"x": 202, "y": 336, "cap": 4, "layers": ["purple", "pink", "green", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["blue", "green", "brown", "lavender"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["lavender", "yellow", "yellow", "c_10_7_1"]}, {"x": 406, "y": 431, "cap": 10, "layers": ["cyan", "cyan"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["yellow", "orange", "cyan", "cyan"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["brown", "lavender", "orange", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["pink", "pink", "cyan", "purple"]}]
+[12:44:17] خطة المرحلة 69: 4 حركة (progress، 0.3 ms)
+[12:44:49] انتهى التحميل بعد 99 ثانية
+[12:44:54] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[12:45:19] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:45:19] بداية المرحلة 69: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[12:45:19] حالة المرحلة 69: [{"x": 202, "y": 336, "cap": 4, "layers": ["c_03_7_7", "yellow", "purple", "cyan"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "brown", "pink", "c_10_7_1"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["lavender", "orange", "purple", "pink"]}, {"x": 406, "y": 431, "cap": 10, "layers": ["cyan", "cyan"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["c_10_7_1", "cyan", "cyan", "c_10_7_1"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "brown", "cyan", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "c_10_7_1", "brown"]}]
+[12:45:19] خطة المرحلة 69: 8 حركة (progress، 1.5 ms)
+[12:46:27] خطة المرحلة 69: 5 حركة (progress، 1.0 ms)
+[12:47:07] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[12:47:29] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:47:29] بداية المرحلة 69: 7 قارورة، سعات [(4, 6), (11, 1)]، مخفي 0
+[12:47:29] حالة المرحلة 69: [{"x": 202, "y": 336, "cap": 4, "layers": ["green", "purple", "yellow", "yellow"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["red", "cyan", "brown", "red"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["pink", "lavender", "lavender", "red"]}, {"x": 406, "y": 422, "cap": 11, "layers": ["yellow", "yellow"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["c_03_7_7", "purple", "yellow", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "cyan", "pink", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["red", "green", "yellow", "green"]}]
+[12:47:29] خطة المرحلة 69: 8 حركة (progress، 0.7 ms)
+[12:47:42] الحالة بعد (4, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[12:47:42] خطة المرحلة 69: 6 حركة (progress، 1.4 ms)
+[12:47:57] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:47:57] بداية المرحلة 69: 9 قارورة، سعات [(4, 8), (10, 1)]، مخفي 2
+[12:47:57] حالة المرحلة 69: [{"x": 66, "y": 336, "cap": 4, "layers": ["?", "cyan", "?", "yellow"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["pink", "blue", "brown", "c_10_7_1"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["green"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["red", "cyan", "brown", "red"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["pink", "lavender", "lavender", "red"]}, {"x": 406, "y": 422, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "cyan", "pink", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["red", "green", "yellow", "green"]}]
+[12:47:57] خطة المرحلة 69: 6 حركة (progress، 12.9 ms)
+[12:48:45] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[12:48:59] إعلان بملء الشاشة: رجوع (1)
