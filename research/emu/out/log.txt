@@ -83,3 +83,18 @@
 [05:04:39] بداية المرحلة 14: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 15
 [05:04:39] حالة المرحلة 14: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 196, "y": 380, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 274, "y": 380, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 431, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "blue", "orange"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 196, "y": 640, "cap": 4, "layers": ["green", "orange", "lavender"]}, {"x": 274, "y": 640, "cap": 4, "layers": ["orange", "green", "pink"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["green", "lavender", "red"]}]
 [05:04:39] خطة المرحلة 14: 1 حركة (pimc، 182.3 ms)
+[05:05:59] خطة المرحلة 14: 11 حركة (astar، 0.8 ms)
+[05:07:20] شاشة جديدة لم تُرَ من قبل: new_017_unknown.jpg
+[05:07:20] فوز بالمرحلة 14 (unknown): 29 حركة في 162 ث، أدوات -
+[05:07:25] شاشة جديدة لم تُرَ من قبل: new_018_unknown.jpg
+[05:07:36] شاشة جديدة لم تُرَ من قبل: new_019_close.jpg
+[05:07:44] بداية المرحلة 15: 11 قارورة، سعات [(4, 11)]، مخفي 10
+[05:07:44] حالة المرحلة 15: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "purple", "purple"]}, {"x": 196, "y": 375, "cap": 4, "layers": []}, {"x": 274, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 375, "cap": 4, "layers": ["orange", "pink", "blue", "green"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["lavender", "orange", "green", "lavender"]}, {"x": 79, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "red"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["yellow", "?", "?", "blue"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["brown", "?", "?", "orange"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["pink", "?", "?", "blue"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["brown", "?", "?", "pink"]}]
+[05:07:45] خطة المرحلة 15: 1 حركة (pimc، 269.9 ms)
+[05:09:06] خطة المرحلة 15: 10 حركة (astar، 0.9 ms)
+[05:09:48] شاشة جديدة لم تُرَ من قبل: new_020_unknown.jpg
+[05:09:48] فوز بالمرحلة 15 (unknown): 29 حركة في 124 ث، أدوات -
+[05:10:02] بداية المرحلة 16: 11 قارورة، سعات [(4, 10), (17, 1)]، مخفي 0
+[05:10:02] حالة المرحلة 16: [{"x": 99, "y": 335, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["purple", "orange", "orange", "purple"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple", "pink", "red", "orange"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["purple", "blue", "yellow", "lavender"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["green", "purple", "green", "yellow"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["green", "purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["lavender", "lavender", "lavender", "purple"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["blue", "purple", "pink", "pink"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["pink", "red", "purple", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["purple", "orange", "red", "blue"]}]
+[05:10:02] خطة المرحلة 16: 29 حركة (astar، 1.7 ms)
+[05:10:07] خطة المرحلة 16: 28 حركة (astar، 1.6 ms)
