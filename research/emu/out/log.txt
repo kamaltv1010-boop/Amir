@@ -2298,3 +2298,49 @@
 [19:30:31] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
 [19:30:31] الرجوع لم يُعِد المرحلة 50 (4 محاولات)؛ إعادة تشغيل اللعبة
 [19:31:07] شاشة التحميل: انتظار بلا نقر
+[19:32:25] انتهى التحميل بعد 78 ثانية
+[19:32:32] فوز بالمرحلة 50 (لغز جديد على الشاشة): 2 حركة في 126 ث، أدوات ['shuffle']
+[19:32:32] بداية المرحلة 51: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[19:32:32] حالة المرحلة 51: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen", "pink", "brown"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}]
+[19:32:32] خطة المرحلة 51: 2 حركة (key، 0.8 ms)
+[19:32:38] الحركة (1, 3) تحرّر مفتاحاً؛ انتظار الباب
+[19:32:52] المرحلة 51: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:32:52] حالة المرحلة 51 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "red", "green"]}, {"x": 167, "y": 744, "cap": 4, "layers": ["brown", "?", "blue", "brown"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "c_16_7_6", "yellow"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:32:52] خطة المرحلة 51: 1 حركة (key، 0.2 ms)
+[19:32:54] الحركة (7, 0) تحرّر مفتاحاً؛ انتظار الباب
+[19:33:09] المرحلة 51: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:33:09] حالة المرحلة 51 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "green", "purple"], "keys": [2]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "red", "green"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "c_16_7_6", "yellow"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:33:09] خطة المرحلة 51: 2 حركة (key، 0.2 ms)
+[19:33:18] الحركة (1, 3) تحرّر مفتاحاً؛ انتظار الباب
+[19:33:33] المرحلة 51: قوارير جديدة (باب انفتح؟ 11 → 12 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[19:33:33] حالة المرحلة 51 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["?", "pink", "?", "red"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "green"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen", "darkgreen"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "purple"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "red", "green"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "c_16_7_6", "yellow"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:33:33] خطة المرحلة 51: 2 حركة (reveal، 168.4 ms)
+[19:33:50] خطة المرحلة 51: 3 حركة (reveal، 157.2 ms)
+[19:34:14] خطة المرحلة 51: 3 حركة (reveal، 248.8 ms)
+[19:34:38] خطة المرحلة 51: 2 حركة (progress، 4.3 ms)
+[19:34:50] شاشة جديدة لم تُرَ من قبل: new_052_unknown.jpg
+[19:34:55] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[19:35:05] فوز بالمرحلة 51 (الواجهة تعرض المرحلة 99): 14 حركة في 153 ث، أدوات -
+[19:35:28] بداية المرحلة 99: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[19:35:28] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "c_16_7_6"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "brown", "c_16_7_6", "cyan"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "c_16_7_6", "brown", "c_16_7_6"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}]
+[19:35:28] خطة المرحلة 99: 5 حركة (key، 1.5 ms)
+[19:36:02] فوز بالمرحلة 99 (لغز جديد على الشاشة): 2 حركة في 33 ث، أدوات -
+[19:36:02] بداية المرحلة 53: 5 قارورة، سعات [(4, 5)]، مخفي 0
+[19:36:02] حالة المرحلة 53: [{"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "brown"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "c_16_7_6", "brown", "c_16_7_6"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}]
+[19:36:02] خطة المرحلة 53: 1 حركة (key، 0.2 ms)
+[19:36:03] الحركة (1, 2) تحرّر مفتاحاً؛ انتظار الباب
+[19:36:18] المرحلة 53: قوارير جديدة (باب انفتح؟ 5 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[19:36:18] حالة المرحلة 53 بعد الباب: [{"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["brown"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "c_16_7_6", "brown", "c_16_7_6"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "lavender", "cyan", "green"], "keys": [2]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "?", "green", "red"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "?", "darkgreen", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:36:18] خطة المرحلة 53: 1 حركة (progress، 1.7 ms)
+[19:36:26] خطة المرحلة 53: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[19:36:26] المرحلة 53 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue,blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[19:36:26] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle
+[19:36:26] أداة: تراجع (1)
+[19:36:33] خطة المرحلة 53: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[19:36:33] المرحلة 53 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple,blue]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[19:36:33] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[19:36:33] حركة عشوائية (4, 1) (1)
+[19:36:41] خطة المرحلة 53: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[19:36:41] المرحلة 53 عالقة (لا خطة): [blue,plum,cyan,cyan]/4 [blue,blue]/4 [brown]/4 [brown,c_16_7_6,brown,c_16_7_6]/4 [blue,brown,purple]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+[19:36:41] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[19:36:41] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
