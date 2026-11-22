@@ -86,3 +86,24 @@
 [11:01:20] بداية المرحلة 63: 11 قارورة، سعات [(4, 11)]، مخفي 2
 [11:01:20] حالة المرحلة 63: [{"x": 66, "y": 392, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["brown", "brown"]}, {"x": 202, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["green", "pink", "red"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["c_03_7_7", "green", "orange"]}, {"x": 100, "y": 618, "cap": 4, "layers": ["purple"]}, {"x": 168, "y": 618, "cap": 4, "layers": ["orange"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["green", "purple", "yellow", "blue"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["?", "blue", "?", "brown"]}, {"x": 440, "y": 618, "cap": 4, "layers": ["red"]}]
 [11:01:20] خطة المرحلة 63: 1 حركة (pimc، 57.1 ms)
+[11:02:14] خطة المرحلة 63: 5 حركة (astar، 0.3 ms)
+[11:02:43] المرحلة 63 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[11:02:43] بداية المرحلة 63: 12 قارورة، سعات [(4, 12)]، مخفي 0
+[11:02:43] حالة المرحلة 63: [{"x": 66, "y": 392, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 202, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 270, "y": 392, "cap": 4, "layers": ["orange", "orange", "green", "blue"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["blue", "blue"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["c_03_7_7", "green", "green", "green"]}, {"x": 100, "y": 618, "cap": 4, "layers": ["purple", "purple"]}, {"x": 168, "y": 618, "cap": 4, "layers": ["orange", "orange"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["blue"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["red"]}, {"x": 440, "y": 618, "cap": 4, "layers": ["red", "red"]}]
+[11:02:43] خطة المرحلة 63: 6 حركة (astar، 0.4 ms)
+[11:03:17] الحالة بعد (6, 5) تختلف عن المتوقَّع؛ إعادة التخطيط
+[11:03:17] خطة المرحلة 63: 2 حركة (astar، 0.2 ms)
+[11:03:22] المرحلة 63 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[11:03:22] بداية المرحلة 63: 13 قارورة، سعات [(4, 13)]، مخفي 2
+[11:03:22] حالة المرحلة 63: [{"x": 66, "y": 392, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 202, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 270, "y": 392, "cap": 4, "layers": []}, {"x": 338, "y": 392, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 32, "y": 618, "cap": 4, "layers": []}, {"x": 100, "y": 618, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 168, "y": 620, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 236, "y": 618, "cap": 4, "layers": ["?", "purple", "?", "lavender"]}, {"x": 304, "y": 620, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["red"]}, {"x": 440, "y": 618, "cap": 4, "layers": ["red", "red"]}]
+[11:03:22] خطة المرحلة 63: 1 حركة (pimc، 13.2 ms)
+[11:03:35] خطة المرحلة 63: 2 حركة (astar، 0.2 ms)
+[11:03:44] شاشة جديدة لم تُرَ من قبل: new_014_unknown.jpg
+[11:03:44] فوز بالمرحلة 63 (unknown): 5 حركة في 22 ث، أدوات -
+[11:03:48] شاشة جديدة لم تُرَ من قبل: new_015_unknown.jpg
+[11:03:52] سهم تعليم: لمس الهدف (338, 705)
+[11:03:58] سهم تعليم: لمس الهدف (338, 705)
+[11:04:04] سهم تعليم: لمس الهدف (338, 705)
+[11:04:07] اللعبة ليست في الواجهة (mCurrentFocus=Window{202807d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[11:04:26] تنفيذ أوامر الدفعة 32: update
+[11:04:27] تحديث كود البوت وإعادة تشغيله (290 دقيقة باقية، 3 مرحلة مكتملة)
