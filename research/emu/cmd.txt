@@ -1,29 +1,23 @@
-seq 14
+seq 15
 # التحكم عن بعد ببوت Magic Sort: ارفع seq ثم اكتب الأوامر (تُنفَّذ مرة واحدة لكل seq جديد،
 # والـ seq الموجود عند بدء البوت يُعتبر منفَّذاً). الإحداثيات بكسلات الجهاز 1080x2280.
 # pause | resume | stop | tap X Y | swipe X1 Y1 X2 Y2 [MS] | wait S | shot NAME | back | key K
 # launch | relaunch | logcat [N] | top | booster undo|shuffle|add | minutes M | skip | airplane on|off
-tap 538 347
-wait 3
-shot m1
-tap 139 169
-wait 3
-shot m2
-back
+tap 540 1500
 wait 2
-shot m3
-back
+tap 939 169
 wait 2
-shot m4
+shot n1
 tap 123 605
 wait 3
-shot s1
+shot n2
 tap 146 174
 wait 3
-shot s2
-back
+shot n3
+tap 540 1500
 wait 2
-shot s3
-back
+shot n4
+tap 941 174
 wait 2
-shot s4
+shot n5
+resume
