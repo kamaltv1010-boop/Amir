@@ -20,10 +20,26 @@ TOL = 8  # سماحية نقطة النقر بالبكسل (ارتفاع 1000)
 
 # (x, y, cap, "طبقات من الأسفل", {خيارات})
 LEVELS = {
+    "L017_cyan": [  # لون سماوي جديد يشبه الزجاج، وقارورتان عملاقتان (سعة 17) على طرفي ثلاثة صفوف
+        (65, 521, 17, 'yellow', {"tall": True, "free": 1}),
+        (134, 336, 4, '? yellow blue blue'),
+        (202, 334, 4, ''),
+        (270, 335, 4, ''),
+        (338, 336, 4, 'orange orange orange orange'),
+        (406, 523, 17, 'lavender', {"tall": True, "free": 1}),
+        (134, 540, 4, 'green green green'),
+        (202, 540, 4, 'brown brown'),
+        (270, 541, 4, 'pink pink pink pink'),
+        (338, 541, 4, 'green lavender brown red'),
+        (134, 746, 4, 'purple purple purple purple'),
+        (202, 744, 4, '? blue'),
+        (270, 746, 4, 'cyan cyan cyan'),
+        (338, 746, 4, '? brown red red'),
+    ],
     "L016_3rows": [  # ثلاثة صفوف وقارورة عملاقة (سعة 16) في الوسط؛ شريط الأدوات أوطأ (0.92)
         (100, 334, 4, 'red yellow blue green'),
         (168, 334, 4, 'purple orange orange purple'),
-        (236, 522, 16, 'purple purple purple purple', {"tall": True, "free": 12}),
+        (236, 522, 17, 'purple purple purple purple', {"tall": True, "free": 13}),  # سعة العملاقة بثلاثة صفوف 17 (كما في L017)
         (304, 335, 4, 'purple pink red orange'),
         (372, 334, 4, 'purple blue yellow lavender'),
         (100, 539, 4, 'green purple green yellow'),

@@ -883,6 +883,8 @@ class Bot:
                     elif c == "minutes":
                         self.deadline = self.t_start + float(a[1]) * 60
                         self.log("مهلة جديدة: %s دقيقة من البداية" % a[1])
+                    elif c == "update":
+                        self.self_update()
                     elif c == "skip":
                         if self.lv:
                             self.lv.plan = None
@@ -898,6 +900,25 @@ class Bot:
             self.write_state()
             threading.Thread(target=self.publish, args=("بوت المحاكي: الدفعة %d" % seq,),
                              daemon=True).start()
+
+    def self_update(self):
+        """أمر «update»: يجلب research/emu/bot من الفرع ثم يعيد تشغيل البوت في العملية نفسها (os.execv) بلا تثبيت ولا
+        إعادة تشغيل للعبة، بما بقي من الوقت وعدد المراحل المكتملة. هكذا يُصلَح خطأ في القراءة دون خسارة تقدّم اللعبة."""
+        rc, o = self.git("fetch", "-q", "origin", CFG["branch"], timeout=120)
+        if rc == 0:
+            rc, o = self.git("checkout", "FETCH_HEAD", "--", "research/emu/bot", timeout=60)
+        if rc != 0:
+            self.log("تعذّر تحديث الكود: %s" % o.strip()[-200:])
+            return
+        left = max(1.0, (self.deadline - time.time()) / 60.0)
+        self.log("تحديث كود البوت وإعادة تشغيله (%.0f دقيقة باقية، %d مرحلة مكتملة)" % (left, self.levels_done))
+        self.write_state()
+        self.publish("بوت المحاكي: تحديث الكود")
+        self.stop = True
+        argv = [sys.executable, str(HERE / "driver.py"), "--no-setup", "--minutes", "%.1f" % left,
+                "--levels-done", str(self.levels_done)]
+        sys.stdout.flush()
+        os.execv(sys.executable, argv)
 
     def dump_logcat(self, name, n):
         try:
@@ -1654,6 +1675,7 @@ def main(argv=None):
     ap.add_argument("--verbose", action="store_true")
     ap.add_argument("--vision", metavar="PATH", help="مسار بديل لـ vision.py (للاختبار)")
     ap.add_argument("--minutes", type=float, default=None)
+    ap.add_argument("--levels-done", type=int, default=0, help="عدد المراحل المكتملة قبل «update»")
     ap.add_argument("--no-git", action="store_true", help="بلا نشر git (تجربة محلية مع adb)")
     ap.add_argument("--no-setup", action="store_true", help="بلا تثبيت/تشغيل (اللعبة تعمل)")
     ap.add_argument("--make-known", metavar="DIR", help="توليد known_screens.json من لقطات")
@@ -1671,6 +1693,7 @@ def main(argv=None):
     dev = Device(args.serial)
     git_on = not args.no_git
     bot = Bot(dev, Vision(vis_mod, out), out, args.minutes or CFG["minutes"], git=git_on)
+    bot.levels_done = args.levels_done
     if git_on and os.environ.get("GITHUB_ACTIONS") == "true":
         bot.git("config", "user.name", "emu-bot")
         bot.git("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
