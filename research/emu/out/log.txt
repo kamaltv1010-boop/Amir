@@ -115,3 +115,23 @@
 [16:20:51] المرحلة 91: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 5 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
 [16:20:51] حالة المرحلة 91 بعد الباب: [{"x": 99, "y": 335, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 372, "y": 542, "cap": 17, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 99, "y": 540, "cap": 4, "layers": ["pink", "pink"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 100, "y": 744, "cap": 4, "layers": ["pink", "purple", "cyan", "cyan"]}, {"x": 168, "y": 746, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["green", "green"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["purple"]}]
 [16:21:46] خطة المرحلة 91: 5 حركة (astar، 1.1 ms)
+[16:22:26] شاشة جديدة لم تُرَ من قبل: new_016_unknown.jpg
+[16:22:26] فوز بالمرحلة 91 (unknown): 44 حركة في 287 ث، أدوات -
+[16:22:33] سهم تعليم: لمس الهدف (338, 705)
+[16:22:39] سهم تعليم: لمس الهدف (338, 705)
+[16:22:45] سهم تعليم: لمس الهدف (338, 705)
+[16:22:48] اللعبة ليست في الواجهة (mCurrentFocus=Window{eebd259 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[16:23:22] شاشة التحميل: انتظار بلا نقر
+[16:24:39] شاشة جديدة لم تُرَ من قبل: new_017_unknown.jpg
+[16:24:39] انتهى التحميل بعد 77 ثانية
+[16:24:48] بداية المرحلة 92: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[16:24:48] حالة المرحلة 92: [{"x": 134, "y": 423, "cap": 10, "layers": ["red", "red", "red", "red", "red"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["purple", "lavender", "purple", "lavender"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["brown", "brown", "red", "red"]}, {"x": 338, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["purple", "red", "purple"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "green", "pink"]}]
+[16:24:48] خطة المرحلة 92: 8 حركة (progress، 1.4 ms)
+[16:25:19] المرحلة 92: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:25:19] حالة المرحلة 92 بعد الباب: [{"x": 134, "y": 423, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red", "red", "red"]}, {"x": 202, "y": 336, "cap": 4, "layers": []}, {"x": 270, "y": 336, "cap": 4, "layers": ["brown", "brown"]}, {"x": 338, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 202, "y": 542, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "green", "pink"]}, {"x": 168, "y": 745, "cap": 4, "layers": ["cyan", "green", "red", "cyan"]}, {"x": 236, "y": 745, "cap": 4, "layers": ["pink", "cyan", "cyan", "orange"]}, {"x": 304, "y": 745, "cap": 4, "layers": ["lavender", "red", "yellow", "yellow"]}]
+[16:25:19] خطة المرحلة 92: 6 حركة (progress، 1.7 ms)
+[16:25:51] فوز بالمرحلة 92 (لغز جديد على الشاشة): 12 حركة في 63 ث، أدوات -
+[16:25:51] بداية المرحلة 5: 11 قارورة، سعات [(4, 9), (10, 1), (11, 1)]، مخفي 4
+[16:25:51] حالة المرحلة 5: [{"x": 66, "y": 336, "cap": 4, "layers": ["orange", "?", "?", "pink"]}, {"x": 134, "y": 440, "cap": 11, "layers": ["red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["brown", "brown"]}, {"x": 338, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["blue", "?", "?", "green"]}, {"x": 202, "y": 542, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "green", "pink"]}, {"x": 168, "y": 745, "cap": 4, "layers": ["cyan", "green"]}, {"x": 236, "y": 745, "cap": 4, "layers": ["pink", "cyan", "cyan", "cyan"]}, {"x": 304, "y": 745, "cap": 4, "layers": ["orange"]}]
+[16:25:51] خطة المرحلة 5: 1 حركة (pimc، 22.3 ms)
+[16:26:28] خطة المرحلة 5: 7 حركة (astar، 0.7 ms)
