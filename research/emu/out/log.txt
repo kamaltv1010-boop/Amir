@@ -1148,3 +1148,10 @@
 [10:28:27] شاشة جديدة لم تُرَ من قبل: new_151_unknown.jpg
 [10:29:06] اللعبة ليست في الواجهة (mCurrentFocus=Window{d485c9c u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
 [10:29:51] اللعبة ليست في الواجهة (mCurrentFocus=Window{d485c9c u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:31:19] اللعبة ليست في الواجهة (mCurrentFocus=Window{aa286b6 u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:32:04] اللعبة ليست في الواجهة (mCurrentFocus=Window{aa286b6 u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:32:49] اللعبة ليست في الواجهة (mCurrentFocus=Window{aa286b6 u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:34:17] اللعبة ليست في الواجهة (mCurrentFocus=Window{7eacd0a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:34:41] نسخة احتياطية لبيانات اللعبة: 34396 ك.ب (66 مرحلة مكتملة)
+[10:34:44] شاشة جديدة لم تُرَ من قبل: new_152_unknown.jpg
+[10:35:18] شاشة التحميل: انتظار بلا نقر
