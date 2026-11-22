@@ -97,3 +97,21 @@
 [16:16:28] انتهى التحميل بعد 205 ثانية
 [16:16:32] شاشة جديدة لم تُرَ من قبل: new_011_unknown.jpg
 [16:16:32] سهم تعليم: لمس الهدف (85, 476)
+[16:16:36] شاشة جديدة لم تُرَ من قبل: new_012_button.jpg
+[16:16:47] شاشة جديدة لم تُرَ من قبل: new_013_unknown.jpg
+[16:17:20] شاشة جديدة لم تُرَ من قبل: new_014_close.jpg
+[16:17:23] شاشة جديدة لم تُرَ من قبل: new_015_button.jpg
+[16:17:39] بداية المرحلة 91: 7 قارورة، سعات [(4, 6), (17, 1)]، مخفي 0
+[16:17:39] حالة المرحلة 91: [{"x": 372, "y": 524, "cap": 17, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["brown", "brown", "brown", "red"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["red", "brown", "red", "brown"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["brown", "yellow", "orange", "green"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["brown", "brown", "red", "brown"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["green", "brown", "blue", "brown"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["brown", "lavender", "blue", "orange"]}]
+[16:17:39] خطة المرحلة 91: 8 حركة (progress، 47.9 ms)
+[16:17:52] خطة المرحلة 91: 8 حركة (progress، 58.9 ms)
+[16:18:09] الحالة بعد (2, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:18:09] خطة المرحلة 91: 8 حركة (progress، 19.5 ms)
+[16:18:25] المرحلة 91: قوارير جديدة (باب انفتح؟ 7 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:18:25] حالة المرحلة 91 بعد الباب: [{"x": 99, "y": 335, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 372, "y": 524, "cap": 17, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 168, "y": 540, "cap": 4, "layers": []}, {"x": 236, "y": 540, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["brown", "yellow", "orange", "green"]}, {"x": 168, "y": 744, "cap": 4, "layers": []}, {"x": 236, "y": 744, "cap": 4, "layers": ["green", "brown", "blue"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["brown", "lavender", "blue", "orange"]}]
+[16:18:59] خطة المرحلة 91: 6 حركة (astar، 0.6 ms)
+[16:19:34] المرحلة 91: قوارير جديدة (باب انفتح؟ 8 → 11 قارورة، ذاكرة 3 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:19:34] حالة المرحلة 91 بعد الباب: [{"x": 99, "y": 335, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 372, "y": 542, "cap": 17, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 100, "y": 540, "cap": 4, "layers": ["blue", "yellow", "cyan", "blue"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["blue", "blue"]}, {"x": 100, "y": 744, "cap": 4, "layers": ["pink", "purple", "cyan", "pink"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["green", "green"]}, {"x": 304, "y": 744, "cap": 4, "layers": []}]
+[16:20:51] المرحلة 91: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 5 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[16:20:51] حالة المرحلة 91 بعد الباب: [{"x": 99, "y": 335, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 372, "y": 542, "cap": 17, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 99, "y": 540, "cap": 4, "layers": ["pink", "pink"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 100, "y": 744, "cap": 4, "layers": ["pink", "purple", "cyan", "cyan"]}, {"x": 168, "y": 746, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["green", "green"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["purple"]}]
+[16:21:46] خطة المرحلة 91: 5 حركة (astar، 1.1 ms)
