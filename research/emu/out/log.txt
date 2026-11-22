@@ -292,3 +292,39 @@
 [12:01:16] سهم تعليم: لمس الهدف (338, 705)
 [12:01:23] اللعبة ليست في الواجهة (mCurrentFocus=Window{202807d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [12:01:49] شاشة التحميل: انتظار بلا نقر
+[12:02:52] المرحلة 69 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[12:02:52] بداية المرحلة 69: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[12:02:52] حالة المرحلة 69: [{"x": 202, "y": 336, "cap": 4, "layers": ["c_03_7_7", "yellow", "purple", "cyan"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "brown", "pink", "c_10_7_1"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["lavender", "orange", "purple", "pink"]}, {"x": 406, "y": 431, "cap": 10, "layers": ["cyan", "cyan"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["c_10_7_1", "cyan", "cyan", "c_10_7_1"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "brown", "cyan", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "c_10_7_1", "brown"]}]
+[12:02:52] خطة المرحلة 69: 8 حركة (progress، 1.7 ms)
+[12:04:02] خطة المرحلة 69: 5 حركة (progress، 0.9 ms)
+[12:04:40] انتهى التحميل بعد 171 ثانية
+[12:04:40] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[12:04:45] شاشة جديدة لم تُرَ من قبل: new_036_close.jpg
+[12:04:56] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:04:56] بداية المرحلة 69: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[12:04:56] حالة المرحلة 69: [{"x": 202, "y": 336, "cap": 4, "layers": ["pink", "lavender", "yellow", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "red", "purple", "blue"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["yellow", "lavender", "brown", "brown"]}, {"x": 406, "y": 423, "cap": 10, "layers": ["brown", "brown"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "blue", "yellow", "brown"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["orange", "red", "cyan", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["cyan", "purple", "lavender", "brown"]}]
+[12:04:56] خطة المرحلة 69: 8 حركة (progress، 3.5 ms)
+[12:05:16] الحالة بعد (2, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[12:05:16] خطة المرحلة 69: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[12:05:16] المرحلة 69 عالقة (لا خطة): [pink,lavender,yellow,purple]/4 [orange,red,purple,blue]/4 [green]/4 [brown,brown,brown,brown,brown,brown]/10 [cyan,blue,yellow]/4 [orange,red,cyan,cyan]/4 [cyan,purple,lavender,lavender]/4
+[12:05:16] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[12:05:29] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:05:29] بداية المرحلة 69: 9 قارورة، سعات [(4, 8), (10, 1)]، مخفي 2
+[12:05:29] حالة المرحلة 69: [{"x": 66, "y": 336, "cap": 4, "layers": ["?", "c_33_4_7", "?", "c_10_7_1"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["pink", "cyan", "brown", "green"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["pink", "lavender", "yellow", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "red", "purple", "blue"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["green"]}, {"x": 406, "y": 423, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "blue", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["orange", "red", "cyan", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["cyan", "purple", "lavender", "lavender"]}]
+[12:05:29] خطة المرحلة 69: 3 حركة (progress، 1.4 ms)
+[12:05:53] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:05:53] بداية المرحلة 69: 10 قارورة، سعات [(4, 8), (10, 1), (11, 1)]، مخفي 4
+[12:05:53] حالة المرحلة 69: [{"x": 66, "y": 438, "cap": 11, "layers": ["?", "green", "?", "brown", "c_22_6_2", "c_23_7_1", "?", "orange", "?", "c_10_7_1"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["pink", "c_10_7_1"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["pink", "lavender", "yellow", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "red", "purple", "blue"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["green", "green"]}, {"x": 406, "y": 423, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["green", "red", "brown", "c_10_7_1"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "blue", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["orange", "red", "cyan", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["cyan", "purple", "lavender", "lavender"]}]
+[12:05:53] خطة المرحلة 69: 1 حركة (reveal، 23.0 ms)
+[12:06:01] خطة المرحلة 69: 8 حركة (progress، 26.7 ms)
+[12:07:02] لا تقدّم بعد الحركة (9, 0) (إخفاق 1)
+[12:07:02] خطة المرحلة 69: 1 حركة (progress، 6.5 ms)
+[12:07:16] المرحلة 69 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[12:07:16] بداية المرحلة 69: 12 قارورة، سعات [(4, 10), (10, 1), (11, 1)]، مخفي 5
+[12:07:16] حالة المرحلة 69: [{"x": 66, "y": 438, "cap": 11, "layers": ["?", "green", "?", "brown", "c_22_6_2", "c_23_7_1", "?", "orange"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["pink", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["pink", "lavender", "lavender", "lavender"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "red", "purple", "blue"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["green", "green"]}, {"x": 406, "y": 423, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["green", "red"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "blue", "yellow", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["orange", "red", "cyan", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["cyan", "purple", "purple", "purple"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["?", "lavender", "?", "c_10_7_1"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["blue", "brown", "yellow", "red"]}]
+[12:07:16] خطة المرحلة 69: 1 حركة (progress، 1.9 ms)
+[12:07:24] خطة المرحلة 69: 0 حركة (progress-none، 1.5 ms) — لا حركة مفيدة
+[12:07:24] المرحلة 69 عالقة (لا خطة): [?,green,?,brown,c_22_6_2,c_23_7_1,?,orange]/11 [pink,c_10_7_1,c_10_7_1,c_10_7_1]/4 [pink,lavender,lavender,lavender]/4 [orange,red,purple,blue]/4 [green,green]/4 [brown,brown,brown,brown,brown,brown,brown,brown]/10 [green,red,red]/4 [cyan,blue,yellow,yellow]/4 [orange,red,cyan,cyan]/4 [cyan,purple,purple,purple]/4 [?,lavender,?,c_10_7_1]/4 [blue,brown,yellow]/4
+[12:07:24] أداة: قارورة إضافية
+[12:07:32] خطة المرحلة 69: 1 حركة (reveal، 595.1 ms)
+[12:07:41] خطة المرحلة 69: 3 حركة (reveal، 661.6 ms)
