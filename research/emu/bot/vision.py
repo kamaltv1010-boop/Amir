@@ -764,6 +764,17 @@ def _is_main(b, W, H):
     return b["w"] >= 0.38 * W and b["h"] >= 0.05 * H and abs(b["x"] - W / 2) < 0.12 * W
 
 
+def _paid(a, b):
+    """زرّ أخضر يصرف العملات («Play On 900» في نافذة «Continue?»): فيه عملة ذهبية داخل الزرّ (بعيداً عن حوافه)."""
+    x0, y0, x1, y1 = b["box"]
+    w, h = x1 - x0, y1 - y0
+    reg = _i16(a)[y0 + int(0.2 * h):y1 - int(0.2 * h), x0 + int(0.12 * w):x1 - int(0.12 * w)]
+    if reg.size == 0:
+        return False
+    R, G, B = reg[..., 0], reg[..., 1], reg[..., 2]
+    return float(((R > 200) & (G > 150) & (B < 90) & (R - B > 120)).mean()) > 0.015
+
+
 def main_button(img):
     """الزرّ الرئيسي: أخضر كبير في وسط الشاشة، أو بنفسجي «Hard Level» كبير.
     يعيد (x, y, نوع) أو None. لا يُعدّ رئيسياً إن كانت في الشاشة أزرار خضراء أخرى
@@ -773,7 +784,8 @@ def main_button(img):
     gb = green_buttons(a)
     # توهّج المشهد (بوّابة الحلقة 40 الخضراء) كتلة شبه مربّعة ممتلئة دون النصف: ليست زرّاً، ولا تُحسب «زرّاً آخر»
     gb = [b for b in gb if b["fill"] >= 0.5]
-    big = [b for b in gb if _is_main(b, W, H) and b["w"] >= 1.6 * b["h"]]
+    # زرّ يصرف العملات لا يُعدّ رئيسياً: تُغلق نافذته بـ X («Continue?» بعد «Give Up»)
+    big = [b for b in gb if _is_main(b, W, H) and b["w"] >= 1.6 * b["h"] and not _paid(a, b)]
     others = [b for b in gb if b not in big and b["n"] >= 0.004 * H * W]
     if len(big) == 1 and len(others) <= 1:
         return int(round(big[0]["x"])), int(round(big[0]["y"])), "green"
@@ -865,7 +877,7 @@ def find_button(img):
     if mb:
         return mb[0], mb[1]
     for b in green_buttons(a):
-        if _is_main(b, W, H):
+        if _is_main(b, W, H) and not _paid(a, b):
             return int(round(b["x"])), int(round(b["y"]))
     return None
 
