@@ -1088,3 +1088,37 @@
 [14:44:28] فوز بالمرحلة 77 (unknown): 31 حركة في 176 ث، أدوات -
 [14:47:31] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
 [14:48:05] شاشة التحميل: انتظار بلا نقر
+[14:48:57] بداية المرحلة 78: 2 قارورة، سعات [(4, 2)]، مخفي 0
+[14:48:57] حالة المرحلة 78: [{"x": 201, "y": 743, "cap": 4, "layers": ["purple", "purple", "orange"], "keys": [0]}, {"x": 270, "y": 743, "cap": 4, "layers": ["orange", "pink", "orange"]}]
+[14:48:57] خطة المرحلة 78: 1 حركة (key، 0.1 ms)
+[14:48:59] الحركة (0, 1) تحرّر مفتاحاً؛ انتظار الباب
+[14:49:08] المرحلة 78: قوارير جديدة (باب انفتح؟ 2 → 6 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[14:49:08] حالة المرحلة 78 بعد الباب: [{"x": 133, "y": 538, "cap": 4, "layers": ["orange", "?", "yellow"], "keys": [0]}, {"x": 201, "y": 538, "cap": 4, "layers": ["red", "?", "yellow"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["pink", "?", "green"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "?", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["orange", "pink", "orange", "orange"]}]
+[14:49:08] خطة المرحلة 78: 1 حركة (key، 0.1 ms)
+[14:49:12] خطة المرحلة 78: 1 حركة (key، 0.1 ms)
+[14:49:14] الحركة (0, 2) تحرّر مفتاحاً؛ انتظار الباب
+[14:49:23] المرحلة 78: قوارير جديدة (باب انفتح؟ 6 → 12 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:49:23] حالة المرحلة 78 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["pink", "?", "red"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["lavender", "?", "brown"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["red", "?", "brown"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["blue", "?", "green"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["pink", "?", "lavender"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["brown", "?", "lavender"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["red", "?", "yellow", "yellow"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["pink", "?", "green", "green"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "?", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["orange", "pink", "orange", "orange"]}]
+[14:50:15] خطة المرحلة 78: 2 حركة (key، 0.2 ms)
+[14:50:35] خطة المرحلة 78: 7 حركة (astar، 0.5 ms)
+[14:51:04] شاشة جديدة لم تُرَ من قبل: new_062_unknown.jpg
+[14:51:04] فوز بالمرحلة 78 (unknown): 26 حركة في 127 ث، أدوات -
+[14:51:04] انتهى التحميل بعد 179 ثانية
+[14:51:08] شاشة جديدة لم تُرَ من قبل: new_063_unknown.jpg
+[14:51:08] سهم تعليم: لمس الهدف (85, 476)
+[14:51:25] بداية المرحلة 79: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[14:51:25] حالة المرحلة 79: [{"x": 64, "y": 332, "cap": 4, "layers": ["red", "lavender", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["orange", "blue", "orange"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["orange", "darkgreen", "red"], "keys": [0]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "brown", "purple"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["blue", "purple", "darkgreen"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "red"]}]
+[14:51:25] خطة المرحلة 79: 2 حركة (key، 0.1 ms)
+[14:51:31] الحركة (2, 4) تحرّر مفتاحاً؛ انتظار الباب
+[14:51:40] المرحلة 79: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[14:51:40] حالة المرحلة 79 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["red", "lavender", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["orange", "blue", "orange"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["orange"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "brown", "purple"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["blue", "purple", "darkgreen", "darkgreen"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "red", "red"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "?", "cyan"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["purple", "pink", "yellow", "darkgreen"], "keys": [2]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "?", "green"]}]
+[14:51:40] خطة المرحلة 79: 2 حركة (key، 0.2 ms)
+[14:51:46] الحركة (7, 2) تحرّر مفتاحاً؛ انتظار الباب
+[14:51:55] المرحلة 79: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:51:55] حالة المرحلة 79 بعد الباب: [{"x": 64, "y": 332, "cap": 4, "layers": ["red", "lavender", "blue"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["orange", "blue", "orange", "orange"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["darkgreen"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "brown", "purple"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["blue", "purple", "darkgreen", "darkgreen"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "red", "red"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "?", "cyan"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["purple", "pink", "yellow"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "?", "green"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["orange", "?", "brown", "pink"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["yellow", "?", "brown", "brown"]}]
+[14:51:55] خطة المرحلة 79: 3 حركة (reveal، 120.3 ms)
+[14:52:08] خطة المرحلة 79: 1 حركة (progress، 1.8 ms)
+[14:52:13] شاشة جديدة لم تُرَ من قبل: new_064_unknown.jpg
+[14:52:13] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[14:52:49] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:53:21] شاشة التحميل: انتظار بلا نقر
