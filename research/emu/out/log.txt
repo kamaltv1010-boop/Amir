@@ -373,3 +373,23 @@
 [07:32:21] تحديث كود البوت وإعادة تشغيله (188 دقيقة باقية، 27 مرحلة مكتملة)
 [07:32:23] بدء البوت: 188 دقيقة، الفرع claude/quirky-ride-r4oor0
 [07:32:23] التحكم عن بعد: seq الحالي 17 (يُعتبر منفَّذاً)
+[07:32:27] بداية المرحلة 30: 10 قارورة، سعات [(4, 10)]، مخفي 2
+[07:32:27] حالة المرحلة 30: [{"x": 80, "y": 375, "cap": 4, "layers": []}, {"x": 157, "y": 376, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 236, "y": 376, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["?", "?", "purple", "purple"]}, {"x": 392, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["blue", "blue"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["blue", "red", "pink", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["pink", "lavender", "purple", "purple"]}]
+[07:32:27] خطة المرحلة 30: 1 حركة (pimc، 24.1 ms)
+[07:32:48] خطة المرحلة 30: 4 حركة (astar، 0.4 ms)
+[07:33:08] شاشة جديدة لم تُرَ من قبل: new_067_unknown.jpg
+[07:33:08] فوز بالمرحلة 30 (unknown): 9 حركة في 41 ث، أدوات -
+[07:33:21] بداية المرحلة 31: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 12
+[07:33:21] حالة المرحلة 31: [{"x": 40, "y": 375, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["purple", "lavender", "purple", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["orange", "yellow", "yellow", "purple"]}, {"x": 354, "y": 502, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["green", "pink", "pink", "blue"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["red", "lavender", "yellow", "pink"]}]
+[07:33:21] خطة المرحلة 31: 1 حركة (pimc، 101.2 ms)
+[07:34:52] خطة المرحلة 31: 5 حركة (astar، 0.6 ms)
+[07:35:29] فوز بالمرحلة 31 (unknown): 24 حركة في 129 ث، أدوات -
+[07:35:34] شاشة جديدة لم تُرَ من قبل: new_068_unknown.jpg
+[07:36:21] بداية المرحلة 32: 8 قارورة، سعات [(4, 8)]، مخفي 6
+[07:36:21] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "?", "lavender"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "?", "pink"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "?", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "?", "lavender"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "?", "blue"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "?", "purple"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "orange"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "orange"]}]
+[07:36:23] خطة المرحلة 32: 1 حركة (pimc، 1281.8 ms)
+[07:36:41] خطة المرحلة 32: 3 حركة (reveal، 26.6 ms)
+[07:36:52] المرحلة 32 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[07:36:52] بداية المرحلة 32: 10 قارورة، سعات [(4, 10)]، مخفي 5
+[07:36:52] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "?", "lavender", "lavender"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "?", "purple"]}, {"x": 40, "y": 636, "cap": 4, "layers": []}, {"x": 118, "y": 636, "cap": 4, "layers": ["yellow", "?", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "purple", "?", "green"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}]
+[07:36:52] خطة المرحلة 32: 1 حركة (pimc، 123.5 ms)
