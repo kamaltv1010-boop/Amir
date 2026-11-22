@@ -311,6 +311,7 @@ ALLOW_WARN = {"001_end", "002_picked"}
 SCREENS = {
     "home_superhard": ("button", (236, 786), None),     # الواجهة: «Super Hard Level 19» الأحمر (×5)
     "home_portal40": ("button", (236, 786), None),      # واجهة الحلقة 40: بوّابة خضراء متوهّجة فوق زرّ «Level 40»
+    "nomoves_popup": ("unknown", None, None),           # «No Available Moves»: Play On (900) وGive Up (find_give_up)
     "tos_3536": ("button", (236, 660), None),           # شروط الخدمة في النسخة 0.0.3536 (لوحة 36 وزرّ 73)
     "L016_3rows": ("level", None, None),                # شريط الأدوات عند 0.92 (ثلاثة صفوف)
     "nonet_popup": ("button", (236, 630), None),        # «No internet connection» وزرّ Retry
@@ -485,6 +486,19 @@ def test_tutorial_arrow():
     # صفحات التبويب المضيئة (الفرق، المتجر، الواجهة) ليست تعليماً: أزرارها البرتقالية لا تُعدّ أسهماً
     for n in ("teams_page", "007_a_shop", "home_events"):
         assert vision.find_tutorial_arrow(_path(n)) is None, n
+
+
+def test_give_up_and_booster_badges():
+    """«No Available Moves»: يُلمس «Give Up» لا «Play On» (900 عملة)؛ وأداة بلا شارة حمراء نفدت (ثمنها بالعملات)."""
+    pt = vision.find_give_up(_path("nomoves_popup"))
+    assert pt is not None and abs(pt[0] - 350) <= 15 and abs(pt[1] - 820) <= 15, pt
+    for n in SCREENS:
+        if n != "nomoves_popup":
+            assert vision.find_give_up(_path(n)) is None, n
+    for n in LEVELS:
+        assert vision.find_give_up(_path(n)) is None, n
+    assert vision.booster_free(_path("L041_clay_full")) == [True, True, False]   # القارورة الإضافية: 900 عملة
+    assert vision.booster_free(_path("L040_clay")) == [True, True, True]
 
 
 def test_is_home():

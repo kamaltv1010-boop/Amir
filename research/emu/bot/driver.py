@@ -1398,15 +1398,22 @@ class Bot:
             time.sleep(1.0)
             return self.grab()
         bp = self.vis.boosters(fr)
+        # أداة بلا شارة عدد حمراء نفدت ويظهر مكانها ثمنها بالعملات (القارورة 900): لا تُشترى
+        free = self.vis._safe("booster_free", fr.arr)
+        skip = set()
+        if isinstance(free, list) and len(free) >= 2:
+            skip = {name for name, k in (("undo", 0), ("shuffle", len(free) // 2), ("add", len(free) - 1)) if not free[k]}
+            if skip:
+                self.log("أدوات نفدت (ثمنها بالعملات، لا تُشترى): %s" % ", ".join(sorted(skip)))
         reset = False
-        if "add" not in lv.boosters:
+        if "add" not in lv.boosters and "add" not in skip:
             lv.boosters.append("add")
             self.log("أداة: قارورة إضافية")
             self.tap(bp["add"])
             lv.extra_tubes += 1
             time.sleep(2.0)
             reset = True
-        elif "shuffle" not in lv.boosters:
+        elif "shuffle" not in lv.boosters and "shuffle" not in skip:
             lv.boosters.append("shuffle")
             lv.memory.clear()                  # الخلط يغيّر مواضع الطبقات
             tgt = self.shuffle_target(st)
@@ -1418,7 +1425,7 @@ class Bot:
                 self.dev.tap_std(t["x"], t["y"])
             time.sleep(2.5)
             reset = True
-        elif lv.undos < 6:
+        elif lv.undos < 6 and "undo" not in skip:
             lv.undos += 1
             self.log("أداة: تراجع (%d)" % lv.undos)
             self.tap(bp["undo"])
@@ -1567,6 +1574,15 @@ class Bot:
         if self.loading_since is not None:
             self.log("انتهى التحميل بعد %.0f ثانية" % (now - self.loading_since))
             self.loading_since = None
+        # «No Available Moves» (الزرّ الأخضر «Play On» يصرف 900 عملة على قارورة): «Give Up» ثم تُعاد المرحلة
+        gu = self.vis._pt(self.vis._safe("find_give_up", fr.arr))
+        if gu:
+            self.log("نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)")
+            self.out.save_jpg("nomoves_%03d.jpg" % min(999, self.levels_done), fr.pil)
+            self.tap(gu)
+            self.unknown_streak = 0
+            time.sleep(2.5)
+            return None
         if self.unknown_streak == 0:
             self.unknown_since = now
             self.unknown_acts = 0

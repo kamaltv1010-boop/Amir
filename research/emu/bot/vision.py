@@ -816,6 +816,45 @@ def find_tos(img):
     return None
 
 
+def booster_free(img):
+    """لكل زرّ في شريط الأدوات من اليسار: هل عليه شارة عدد حمراء (أداة مملوكة)؟ حين تنفد يظهر مكانها ثمن بالعملات
+    (القارورة الإضافية 900): False. None إن لم يُعرف الشريط."""
+    a = load(img)
+    bx = _bar_boxes(a)
+    if bx is None:
+        return None
+    ai = _i16(a)
+    out = []
+    for b in bx:
+        x0, x1 = int(b["x"] + 0.1 * b["w"]), int(b["x"] + 0.8 * b["w"])
+        y0, y1 = int(b["y"] + 0.2 * b["h"]), int(b["y"] + 0.8 * b["h"])
+        reg = ai[max(0, y0):y1, max(0, x0):x1]
+        if reg.size == 0:
+            out.append(False)
+            continue
+        R, G, B = reg[..., 0], reg[..., 1], reg[..., 2]
+        out.append(bool(((R > 170) & (G < 80) & (B < 120) & (R - G > 110)).mean() > 0.1))
+    return out
+
+
+def find_give_up(img):
+    """نافذة «No Available Moves»: زرّ أخضر «Play On» بالعملات يساراً وزرّ برتقالي «Give Up» يميناً في صفّ واحد أسفل الشاشة.
+    يعيد مركز «Give Up» (لا تُصرف العملات) أو None."""
+    a = load(img)
+    H, W = a.shape[:2]
+    ai = _i16(a)
+    R, G, B = ai[..., 0], ai[..., 1], ai[..., 2]
+    orange = (R > 200) & (G > 50) & (G < 150) & (B < 90) & (R - G > 80)
+    greens = [g for g in green_buttons(a) if g["x"] < 0.45 * W and g["w"] >= 0.3 * W and g["y"] > 0.7 * H]
+    for b in _rect_blobs(orange, W, H, 0.004):
+        if not (b["x"] > 0.55 * W and b["w"] >= 0.3 * W and 0.06 * H <= b["h"] <= 0.12 * H and b["y"] > 0.7 * H
+                and b["fill"] > 0.5):
+            continue
+        if any(abs(g["y"] - b["y"]) < 0.03 * H for g in greens):
+            return int(round(b["x"])), int(round(b["y"]))
+    return None
+
+
 def find_button(img):
     """مركز الزرّ الرئيسي (Level N / Continue / Claim / Hard Level / CONTINUE شروط
     الخدمة)، وإلا مركز أكبر زرّ أخضر كبير في وسط الشاشة، وإلا None.
