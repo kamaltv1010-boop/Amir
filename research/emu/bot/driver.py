@@ -594,6 +594,8 @@ class Bot:
         self.arrow_taps = 0            # محاولات السهم في الشاشة المجهولة الحالية
         self.last_tab_home = 0.0       # آخر ضغط على تبويب «Home» من صفحة تبويب أخرى
         self.tab_home_taps = 0         # ضغطات «Home» في الشاشة المجهولة الحالية (الثالثة تلمس موضع «Level N»)
+        self.last_backup = time.time()  # آخر نسخة احتياطية لبيانات اللعبة (backup_app)
+        self.final_backup_done = False
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
         self.start_probe_tries = 0
         self.arrow_shots = 0
@@ -912,6 +914,8 @@ class Bot:
                         self.log("سيتوقف البوت عند الواجهة الرئيسية التالية (للاستكشاف بالأوامر)")
                     elif c == "update":
                         self.self_update()
+                    elif c == "backup":
+                        self.backup_app()
                     elif c == "skip":
                         if self.lv:
                             self.lv.plan = None
@@ -946,6 +950,79 @@ class Bot:
                 "--levels-done", str(self.levels_done)]
         sys.stdout.flush()
         os.execv(sys.executable, argv)
+
+    def confirm_backup_dialog(self, tries=25):
+        """نافذة تأكيد adb backup/restore (com.android.backupconfirm): يُلمس زرّ الموافقة («Back up my data» أو «Restore my
+        data») بموضعه من uiautomator. يعيد True إن لُمس."""
+        import re
+        pat = re.compile(r'resource-id="com\.android\.backupconfirm:id/button_allow"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"')
+        for _ in range(tries):
+            time.sleep(1.5)
+            self.dev.sh("uiautomator dump /sdcard/bot_ui.xml", timeout=30)
+            xml = self.dev.sh("cat /sdcard/bot_ui.xml", timeout=20)
+            m = pat.search(xml)
+            if m:
+                x1, y1, x2, y2 = (int(v) for v in m.groups())
+                self.dev.tap((x1 + x2) // 2, (y1 + y2) // 2)
+                return True
+        return False
+
+    def backup_app(self):
+        """أمر «backup» (وتلقائياً كل 45 دقيقة وقبل النهاية): نسخة احتياطية لبيانات اللعبة بلا APK (adb backup) في
+        out/game_backup.ab تُرفع مع المخرجات، حتى يستعيدها تشغيل لاحق على محاكٍ جديد (restore_app) فيكمل من المرحلة نفسها
+        بدل البدء من 1. تطلب تأكيداً على الشاشة يُلمس آلياً."""
+        self.last_backup = time.time()
+        tmp = "/tmp/game_backup.ab"
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        try:
+            p = subprocess.Popen(self.dev._cmd(["backup", "-f", tmp, "-noapk", PKG]),
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError as e:
+            self.log("تعذّرت النسخة الاحتياطية: %r" % e)
+            return False
+        ok = self.confirm_backup_dialog()
+        try:
+            p.wait(timeout=300)
+        except subprocess.TimeoutExpired:
+            p.kill()
+        size = os.path.getsize(tmp) if os.path.exists(tmp) else 0
+        if size > 2048 and size < 90 * 1024 * 1024:
+            shutil.copy2(tmp, self.out.dir / "game_backup.ab")
+            self.log("نسخة احتياطية لبيانات اللعبة: %d ك.ب (%d مرحلة مكتملة)" % (size // 1024, self.levels_done))
+        else:
+            self.log("لم تُحفظ النسخة الاحتياطية (الحجم %d بايت، التأكيد %s)" % (size, ok))
+        time.sleep(2)
+        if PKG not in self.dev.focus():
+            self.dev.launch()
+        return size > 2048
+
+    def restore_app(self):
+        """تشغيل جديد على محاكٍ فارغ: يستعيد بيانات اللعبة من نسخة سابقة (research/emu/save/game_backup.ab، وإلا
+        out/game_backup.ab) قبل أول تشغيل لها، فتكمل من مرحلتها. adb restore يطلب تأكيداً على الشاشة يُلمس آلياً."""
+        src = None
+        for p in (HERE.parent / "save" / "game_backup.ab", HERE.parent / "out" / "game_backup.ab"):
+            if p.exists() and p.stat().st_size > 2048:
+                src = p
+                break
+        if src is None:
+            self.log("لا نسخة احتياطية: اللعبة تبدأ من المرحلة 1")
+            return False
+        try:
+            p = subprocess.Popen(self.dev._cmd(["restore", str(src)]), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError as e:
+            self.log("تعذّرت الاستعادة: %r" % e)
+            return False
+        ok = self.confirm_backup_dialog()
+        try:
+            p.wait(timeout=300)
+        except subprocess.TimeoutExpired:
+            p.kill()
+        self.log("استعادة بيانات اللعبة من %s (%d ك.ب): %s" % (src.parent.name + "/" + src.name, src.stat().st_size // 1024,
+                                                           "تمت" if ok else "لم يظهر التأكيد"))
+        return ok
 
     def dump_logcat(self, name, n):
         try:
@@ -997,6 +1074,7 @@ class Bot:
             d.sh(c)
         if not d.installed():
             self.install_game()
+            self.restore_app()
         else:
             self.log("اللعبة مثبّتة مسبقاً")
         if CFG["airplane"] == "start":
@@ -1097,6 +1175,14 @@ class Bot:
             if max_iters is not None and iters > max_iters:
                 return                         # للاختبارات: بلا إنهاء
             self.run_commands()
+            # نسخة احتياطية لتقدّم اللعبة كل 45 دقيقة وقبل النهاية بـ 6 دقائق (يكمل منها التشغيل التالي)
+            if self.git_enabled and self.levels_done > 0 and (
+                    time.time() - self.last_backup > 45 * 60
+                    or (self.deadline - time.time() < 6 * 60 and not self.final_backup_done)):
+                if self.deadline - time.time() < 6 * 60:
+                    self.final_backup_done = True
+                self.backup_app()
+                fr = None
             if self.stop:
                 break
             if self.paused:
