@@ -916,3 +916,10 @@
 [13:55:06] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
 [13:55:51] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
 [13:56:36] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[13:57:21] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[13:58:06] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[13:58:51] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[13:59:36] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:00:22] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:01:07] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:01:52] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
