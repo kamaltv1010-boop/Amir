@@ -1,9 +1,9 @@
 done 6
 الحالة: يلعب
-مراحل مكتملة: 8
-الوقت: 27 دقيقة من 310
-آخر شاشة: level
-الشاشات: {'unknown': 58, 'level': 154, 'close': 3, 'button': 14}
-صور محفوظة: 25/900، شاشات جديدة: 10
-المرحلة الحالية: 10 (حركات 20، مخفي 0، إخفاقات 0، أدوات -، 1.5 دقيقة)
-الحالة المقروءة: [red,red,red,red]/4 [yellow,yellow,yellow]/4 [purple,purple,purple,purple,purple,purple,purple,purple,purple]/11 [orange,orange,orange,orange]/4 [green,green,green]/4 [blue,blue,blue]/4 [blue]/4 [purple,pink,pink,pink]/4 [pink,purple,yellow,green]/4
+مراحل مكتملة: 11
+الوقت: 33 دقيقة من 310
+آخر شاشة: button
+الشاشات: {'unknown': 64, 'level': 221, 'close': 3, 'button': 19}
+صور محفوظة: 33/900، شاشات جديدة: 16
+المرحلة الحالية: 12 (حركات 26، مخفي 0، إخفاقات 0، أدوات -، 2.2 دقيقة)
+الحالة المقروءة: [blue,blue,blue,blue,blue,blue,blue,blue,blue,blue]/10 [pink,pink,pink,pink]/4 [purple,purple,purple,purple]/4 []/4 [yellow,yellow,yellow,yellow]/4 []/4 [lavender,lavender,lavender,lavender]/4 [orange,orange,orange,orange]/4 [green,green,green]/4 [red,red,red,red]/4 [green]/4
