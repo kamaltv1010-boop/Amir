@@ -1,9 +1,9 @@
 done 36
 الحالة: يلعب
 مراحل مكتملة: 3
-الوقت: 58 دقيقة من 300
+الوقت: 63 دقيقة من 300
 آخر شاشة: button
-الشاشات: {'button': 427, 'close': 425, 'unknown': 42, 'level': 58}
+الشاشات: {'button': 466, 'close': 464, 'unknown': 42, 'level': 58}
 صور محفوظة: 18/900، شاشات جديدة: 7
-المرحلة الحالية: 4 (حركات 0، مخفي 6، إخفاقات 0، أدوات -، 8.5 دقيقة)
+المرحلة الحالية: 4 (حركات 0، مخفي 6، إخفاقات 0، أدوات -، 13.5 دقيقة)
 الحالة المقروءة: [?,purple,?,plum]/4 [brown,brown]/4 [brown,brown,lavender,lavender]/4 [red,lavender,green,green]/4 []/4 [blue,orange,orange]/4 [yellow,blue,darkgreen,darkgreen]/4 [?,red,c_16_7_6]/4 [yellow,?,yellow,pink]/4 [red,?,orange,cyan]/4 [?,c_16_7_6,plum,green]/4
