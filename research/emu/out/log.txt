@@ -1058,3 +1058,26 @@
 [14:35:23] حالة المرحلة 76 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["?", "orange", "?", "blue"]}, {"x": 197, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 275, "y": 374, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["orange", "yellow", "yellow"]}, {"x": 432, "y": 375, "cap": 4, "layers": []}, {"x": 40, "y": 636, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "red", "orange"]}, {"x": 197, "y": 637, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 275, "y": 637, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 353, "y": 637, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["yellow"]}]
 [14:35:52] خطة المرحلة 76: 1 حركة (astar، 0.4 ms)
 [14:35:58] فوز بالمرحلة 76 (unknown): 31 حركة في 159 ث، أدوات -
+[14:38:59] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[14:39:27] شاشة التحميل: انتظار بلا نقر
+[14:40:28] بداية المرحلة 77: 6 قارورة، سعات [(4, 5), (10, 1)]، مخفي 0
+[14:40:28] حالة المرحلة 77: [{"x": 168, "y": 332, "cap": 4, "layers": ["blue", "orange", "red", "purple"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "lavender", "green", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["cyan", "lavender", "purple", "lavender"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "purple", "green"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["purple", "cyan", "green"]}]
+[14:40:28] خطة المرحلة 77: 8 حركة (progress، 6.3 ms)
+[14:41:02] خطة المرحلة 77: 1 حركة (progress، 0.2 ms)
+[14:41:06] خطة المرحلة 77: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[14:41:06] المرحلة 77 عالقة (لا خطة): [blue,orange]/4 [red]/4 [cyan,lavender,lavender,lavender]/4 [lavender,purple,purple,purple]/4 [green,green,green,green,green,green,green,green,green]/10 [purple,cyan]/4
+[14:41:06] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[14:41:09] شاشة جديدة لم تُرَ من قبل: new_059_unknown.jpg
+[14:41:09] انتهى التحميل بعد 102 ثانية
+[14:41:09] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[14:41:14] شاشة جديدة لم تُرَ من قبل: new_060_close.jpg
+[14:41:32] المرحلة 77 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[14:41:32] بداية المرحلة 77: 6 قارورة، سعات [(4, 5), (10, 1)]، مخفي 0
+[14:41:32] حالة المرحلة 77: [{"x": 167, "y": 332, "cap": 4, "layers": ["yellow", "pink", "cyan", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["red", "lavender", "lavender", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["green", "cyan", "orange", "red"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "orange", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "lavender", "orange"]}]
+[14:41:32] خطة المرحلة 77: 7 حركة (progress، 3.1 ms)
+[14:42:06] المرحلة 77: قوارير جديدة (باب انفتح؟ 6 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:42:06] حالة المرحلة 77 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["yellow", "purple", "green", "red"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["yellow", "pink", "cyan", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["red", "red"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["green", "cyan"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["?", "green", "?", "red"]}]
+[14:42:06] خطة المرحلة 77: 1 حركة (reveal، 7.5 ms)
+[14:42:10] خطة المرحلة 77: 3 حركة (reveal، 5.1 ms)
+[14:42:24] المرحلة 77: قوارير جديدة (باب انفتح؟ 8 → 11 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[14:42:24] حالة المرحلة 77 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["yellow", "purple", "green", "green"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["yellow", "pink", "cyan", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["green", "cyan", "cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["orange", "pink", "brown", "blue"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["brown", "purple", "blue", "blue"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["?", "pink", "?", "purple"]}]
