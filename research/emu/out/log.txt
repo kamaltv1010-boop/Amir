@@ -2383,3 +2383,15 @@
 [19:41:44] بداية المرحلة 99: 6 قارورة، سعات [(4, 6)]، مخفي 0
 [19:41:44] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange", "green", "darkgreen"], "keys": [1]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "brown"]}]
 [19:41:44] خطة المرحلة 99: 5 حركة (key، 1.7 ms)
+[19:42:04] الحركة (4, 2) تحرّر مفتاحاً؛ انتظار الباب
+[19:42:19] المرحلة 99: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:42:19] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "lavender"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "red", "pink", "orange"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "yellow", "pink"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "orange", "cyan"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "plum", "green"]}]
+[19:42:19] خطة المرحلة 99: 2 حركة (key، 0.5 ms)
+[19:42:33] فوز بالمرحلة 99 (لغز جديد على الشاشة): 5 حركة في 49 ث، أدوات -
+[19:42:33] بداية المرحلة 56: 11 قارورة، سعات [(4, 11)]، مخفي 6
+[19:42:33] حالة المرحلة 56: [{"x": 167, "y": 332, "cap": 4, "layers": ["?", "purple", "?", "plum"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "lavender"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange", "orange"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "red", "c_16_7_6"]}, {"x": 167, "y": 744, "cap": 4, "layers": ["yellow", "?", "yellow", "pink"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "orange", "cyan"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "plum", "green"]}]
+[19:42:33] خطة المرحلة 56: 1 حركة (key، 0.7 ms)
+[19:42:35] الحركة (8, 4) تحرّر مفتاحاً؛ انتظار الباب
+[19:42:41] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[19:45:56] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[19:46:36] شاشة التحميل: انتظار بلا نقر
