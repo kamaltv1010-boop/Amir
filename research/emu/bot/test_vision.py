@@ -20,6 +20,20 @@ TOL = 8  # سماحية نقطة النقر بالبكسل (ارتفاع 1000)
 
 # (x, y, cap, "طبقات من الأسفل", {خيارات})
 LEVELS = {
+    "L041_clay_full": [  # طين أمام قاع قوارير فيها سائل (يستمرّ خلفه)؛ السائل الخزامي يشبه لون الزجاج
+        (40, 374, 4, 'purple purple purple', {"clay": True}),
+        (118, 374, 4, 'yellow yellow yellow', {"clay": True}),
+        (196, 374, 4, 'blue blue'),
+        (274, 374, 4, '? pink pink'),
+        (352, 374, 4, 'lavender lavender', {"clay": True}),
+        (431, 374, 4, 'green green', {"clay": True}),
+        (40, 636, 4, 'blue orange pink'),
+        (118, 636, 4, 'green brown lavender lavender'),
+        (196, 636, 4, '? orange'),
+        (274, 636, 4, '? red red red'),
+        (353, 636, 4, 'red yellow blue green'),
+        (431, 636, 4, 'brown orange brown orange'),
+    ],
     "L040_clay": [  # «الطين» (المرحلة 40): أربع قوارير فارغة بشظايا طين في قاعها تخفي حافة القاع
         (66, 392, 4, 'pink blue lavender blue'),
         (134, 392, 4, 'orange green green green'),

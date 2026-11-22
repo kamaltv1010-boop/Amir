@@ -479,13 +479,13 @@ def detect_tubes(a, diag=None):
             stand = sm[ys0:ys1, max(0, xs0):min(W, xs1)].mean() if ys1 > ys0 else 0.0
             t["stand"] = float(stand)
             t["tall"] = bool(tall)
-            # «الطين» (من المرحلة 40): شظايا بيج تغطي قاع القارورة فتخفي حافة القاع قرب المحور؛
-            # فينتهي الزجاج قرب المحور عند العنق بينما يمتدّ الجداران حتى الطين
+            # «الطين» (من المرحلة 40): شظايا بيج أمام قاع القارورة (أعرض منها) يستمرّ السائل خلفها، وتخفي حافة
+            # القاع قرب المحور (فلا يُعتمد y1). تُعرف بلونها في نافذة حول نهاية الجدارين؛ لا سائل يمرّ بقناعها
             t["clay"] = False
-            if not tall and t["ywall"] - t["y1"] > 0.5 * w:
-                ya, yb = int(t["ywall"] - 0.2 * w), min(H, int(t["ywall"] + 0.7 * w))
-                xa, xb = max(0, int(t["cx"] - 0.35 * w)), min(W, int(t["cx"] + 0.35 * w))
-                if yb > ya and sm[ya:yb, xa:xb].mean() > 0.12:
+            if not tall:
+                ya, yb = int(t["ywall"] - 0.25 * w), min(H, int(t["ywall"] + 0.55 * w))
+                xa, xb = max(0, int(t["cx"] - 0.45 * w)), min(W, int(t["cx"] + 0.45 * w))
+                if yb > ya and sm[ya:yb, xa:xb].mean() > 0.15:
                     t["clay"] = True
             out.append(t)
         # قاع قارورة الطين: من ارتفاع القوارير العادية (وسيطها) لا من الحافة المخفية
