@@ -776,3 +776,35 @@
 [13:20:19] حالة المرحلة 73: [{"x": 98, "y": 332, "cap": 4, "layers": ["green", "pink"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["green", "blue", "blue"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "brown", "?", "yellow"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "yellow", "?", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "yellow", "?", "purple"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "lavender", "?", "orange"]}]
 [13:20:19] خطة المرحلة 73: 1 حركة (pimc، 73.3 ms)
 [13:20:32] الحالة بعد (0, 8) تختلف عن المتوقَّع؛ إعادة التخطيط
+[13:20:38] المرحلة 73 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[13:20:38] بداية المرحلة 73: 12 قارورة، سعات [(4, 12)]، مخفي 6
+[13:20:38] حالة المرحلة 73: [{"x": 98, "y": 332, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["orange", "orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["purple"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["green"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "brown", "?", "yellow"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "yellow", "?", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "yellow", "pink", "pink"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "lavender", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["yellow", "orange", "lavender", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["pink", "brown", "purple", "purple"]}]
+[13:20:38] خطة المرحلة 73: 1 حركة (pimc، 59.2 ms)
+[13:21:56] خطة المرحلة 73: 1 حركة (astar، 0.3 ms)
+[13:22:00] فوز بالمرحلة 73 (unknown): 19 حركة في 82 ث، أدوات -
+[13:22:00] انتهى التحميل بعد 188 ثانية
+[13:22:04] شاشة جديدة لم تُرَ من قبل: new_043_unknown.jpg
+[13:22:04] سهم تعليم: لمس الهدف (85, 476)
+[13:22:35] بداية المرحلة 74: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[13:22:35] حالة المرحلة 74: [{"x": 64, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "purple", "c_10_7_1"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["c_33_4_6", "cyan", "cyan", "red"]}, {"x": 202, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "pink", "blue", "red"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_10_7_1", "cyan", "red", "purple"]}]
+[13:22:35] خطة المرحلة 74: 3 حركة (progress، 0.2 ms)
+[13:23:00] المرحلة 74 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[13:23:00] بداية المرحلة 74: 9 قارورة، سعات [(4, 7), (10, 2)]، مخفي 4
+[13:23:00] حالة المرحلة 74: [{"x": 64, "y": 332, "cap": 4, "layers": ["pink", "yellow", "lavender", "c_10_7_1"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "cyan"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "green"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "purple", "c_10_7_1"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 200, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "pink", "blue", "red"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_10_7_1", "cyan", "red", "purple"]}]
+[13:23:00] خطة المرحلة 74: 1 حركة (reveal، 21.3 ms)
+[13:23:09] خطة المرحلة 74: 1 حركة (reveal، 55.1 ms)
+[13:23:17] خطة المرحلة 74: 2 حركة (reveal، 40.5 ms)
+[13:23:32] المرحلة 74 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[13:23:32] بداية المرحلة 74: 12 قارورة، سعات [(4, 10), (10, 2)]، مخفي 6
+[13:23:32] حالة المرحلة 74: [{"x": 64, "y": 332, "cap": 4, "layers": ["pink", "yellow", "lavender", "c_10_7_1"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "purple", "purple"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "brown"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["?", "orange", "?", "brown"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "green"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["lavender", "c_31_7_3", "green", "blue"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "purple", "c_10_7_1"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["green", "green"]}, {"x": 200, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "pink", "blue", "red"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_10_7_1", "cyan", "red", "purple"]}]
+[13:23:32] خطة المرحلة 74: 1 حركة (reveal، 223.5 ms)
+[13:23:40] خطة المرحلة 74: 1 حركة (reveal، 34.1 ms)
+[13:23:49] خطة المرحلة 74: 3 حركة (progress، 2.7 ms)
+[13:24:04] شاشة جديدة لم تُرَ من قبل: new_044_unknown.jpg
+[13:24:04] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[13:24:13] شاشة جديدة لم تُرَ من قبل: new_045_close.jpg
+[13:24:24] سهم تعليم: لمس الهدف (338, 705)
+[13:24:30] سهم تعليم: لمس الهدف (338, 705)
+[13:24:36] سهم تعليم: لمس الهدف (338, 705)
+[13:24:43] اللعبة ليست في الواجهة (mCurrentFocus=Window{202807d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[13:25:09] شاشة التحميل: انتظار بلا نقر
