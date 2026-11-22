@@ -1,9 +1,9 @@
 done 34
 الحالة: يلعب
 مراحل مكتملة: 13
-الوقت: 78 دقيقة من 237
-آخر شاشة: unknown
-الشاشات: {'level': 1576, 'unknown': 198, 'button': 18, 'close': 10}
-صور محفوظة: 67/900، شاشات جديدة: 42
-المرحلة الحالية: 73 (حركات 1، مخفي 0، إخفاقات 0، أدوات -، 0.8 دقيقة)
-الحالة المقروءة: [lavender,lavender]/4 [brown,brown]/4 [yellow,yellow]/4 [green]/4 [c_03_7_7,pink,red,red]/4 [purple,yellow,pink]/4 [purple,yellow,purple,lavender]/4
+الوقت: 83 دقيقة من 237
+آخر شاشة: level
+الشاشات: {'level': 1591, 'unknown': 260, 'button': 19, 'close': 10}
+صور محفوظة: 72/900، شاشات جديدة: 42
+المرحلة الحالية: 73 (حركات 3، مخفي 6، إخفاقات 0، أدوات -، 0.3 دقيقة)
+الحالة المقروءة: [blue]/4 [orange,orange]/4 [purple]/4 [lavender,lavender]/4 [green,blue,blue]/4 [?,brown,?,yellow]/4 [?,yellow,?,green]/4 [red,red,red,red]/4 [?,yellow,pink,pink]/4 [?,lavender,blue]/4
