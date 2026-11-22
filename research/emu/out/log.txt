@@ -45,3 +45,11 @@
 [10:50:35] بداية المرحلة 62: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 0
 [10:50:35] حالة المرحلة 62: [{"x": 40, "y": 380, "cap": 4, "layers": ["red", "orange", "blue", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["orange", "orange"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["lavender", "pink", "lavender", "green"]}, {"x": 275, "y": 380, "cap": 4, "layers": []}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "yellow", "yellow", "yellow"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "lavender", "green", "green"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["red", "orange"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["yellow", "purple", "lavender", "red"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["pink", "pink", "pink"]}]
 [10:50:35] خطة المرحلة 62: 16 حركة (astar، 1.0 ms)
+[10:52:10] شاشة جديدة لم تُرَ من قبل: new_007_unknown.jpg
+[10:52:10] فوز بالمرحلة 62 (unknown): 15 حركة في 96 ث، أدوات -
+[10:52:20] شاشة جديدة لم تُرَ من قبل: new_008_unknown.jpg
+[10:52:28] شاشة جديدة لم تُرَ من قبل: new_009_unknown.jpg
+[10:52:41] شاشة جديدة لم تُرَ من قبل: new_010_unknown.jpg
+[10:53:40] اللعبة ليست في الواجهة (mCurrentFocus=Window{9cf806d u0 com.android.vending/com.google.android.finsky.unauthenticated.UnauthenticatedMainActivit)؛ تشغيلها
+[10:55:06] اللعبة ليست في الواجهة (mCurrentFocus=Window{8562ead u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:55:54] اللعبة ليست في الواجهة (mCurrentFocus=Window{7ad11bd u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
