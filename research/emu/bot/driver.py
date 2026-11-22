@@ -2117,8 +2117,9 @@ class Bot:
             self.coins = coins
         price = max((po[1] if po else 0) or 0, CFG["play_on_price"])   # قراءة الزرّ قد تُسقط صفراً (90 بدل 900)
         # احتياطي لملء الأرواح مرة: بلا هذا يصرف «Play On» الرصيد كله (1950 ← 1050 ← 150) قبل نفاد الأرواح، فلا يُستعمل
-        # «Refill» أبداً ويعود انتظار ربع ساعة لكل روح
-        reserve = max(0, CFG["play_on_reserve"])
+        # «Refill» أبداً ويعود انتظار ربع ساعة لكل روح. إلا في الصعبة جداً: التشغيل الثامن في المرحلة 99 ينتهي كل محاولة بعد
+        # انفتاح الأبواب كلها بـ «No Available Moves»، فقارورة إضافية عندها أنفع من خمس محاولات أخرى تنتهي مثلها
+        reserve = 0 if badge == "superhard" else max(0, CFG["play_on_reserve"])
         hard = badge in ("hard", "superhard")
         eligible = hard or fails >= CFG["play_on_fails"]
         if (po and lv is not None and coins is not None and coins >= price + reserve and lv.play_ons < 1

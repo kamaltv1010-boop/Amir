@@ -963,15 +963,18 @@ class TestRun7Policies(unittest.TestCase):
         self.assertTrue(bot2.lives_waiting())
 
     def test_play_on_keeps_refill_reserve(self):
-        """الصعبة جداً والرصيد 1050 (يكفي «Play On» وحده): «Give Up» ليبقى ثمن «Refill» (كان يصرف 1950 ← 1050 ← 150 فلا
-        يُملأ أبداً)؛ والاحتياطي 0 يعيد «Play On» أولاً."""
+        """الصعبة والرصيد 1050 (يكفي «Play On» وحده): «Give Up» ليبقى ثمن «Refill» (كان يصرف 1950 ← 1050 ← 150 فلا
+        يُملأ أبداً)؛ والاحتياطي 0 يعيد «Play On» أولاً. وفي الصعبة جداً «Play On» بلا احتياطي (المرحلة 99 في التشغيل الثامن)."""
         bot, sv, dev = self.make()
-        self.nomoves(bot, sv, "superhard", 1050)
+        self.nomoves(bot, sv, "hard", 1050)
         self.assertEqual(dev.taps, [(350, 820)])
         self.assertIn("الرصيد 1050 لا يُبقي بعد ثمنه 900 احتياطي ملء الأرواح 900", self.log())
+        bot3, sv3, dev3 = self.make()
+        self.nomoves(bot3, sv3, "superhard", 1050)
+        self.assertEqual(dev3.taps, [(124, 820)])
         driver.CFG["play_on_reserve"] = 0
         bot2, sv2, dev2 = self.make()
-        self.nomoves(bot2, sv2, "superhard", 1050)
+        self.nomoves(bot2, sv2, "hard", 1050)
         self.assertEqual(dev2.taps, [(124, 820)])
 
     def test_give_up_starts_new_attempt_with_same_colors(self):
