@@ -189,3 +189,47 @@
 [22:37:29] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange", "green", "darkgreen"], "keys": [1]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "brown"]}]
 [22:37:29] خطة المرحلة 99: 5 حركة (key، 1.1 ms)
 [22:37:47] الحركة (4, 2) تحرّر مفتاحاً؛ انتظار الباب
+[22:37:55] المرحلة 99: قوارير جديدة (باب انفتح؟ 6 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[22:37:55] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "lavender"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "red", "mint", "orange"], "keys": [2]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "yellow", "pink"], "keys": [2]}, {"x": 236, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "orange", "cyan"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "mint", "plum", "green"]}]
+[22:37:55] خطة المرحلة 99: 1 حركة (key، 0.2 ms)
+[22:37:57] الحركة (6, 4) تحرّر مفتاحاً؛ انتظار الباب
+[22:38:05] المرحلة 99: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[22:38:05] حالة المرحلة 99 بعد الباب: [{"x": 99, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "green"}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "purple", "?", "plum"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "lavender"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange", "orange"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "red", "mint"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "yellow", "pink"], "keys": [2]}, {"x": 236, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "orange", "cyan"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "mint", "plum", "green"]}]
+[22:38:05] خطة المرحلة 99: 1 حركة (key، 0.7 ms)
+[22:38:06] الحركة (9, 5) تحرّر مفتاحاً؛ انتظار الباب
+[22:38:13] نافذة «No Available Moves» في المرحلة 99: «Give Up» (الرصيد 1050 لا يُبقي بعد ثمنه 900 احتياطي ملء الأرواح 900)
+[22:38:25] نافذة «More Lives»: ملء الأرواح بـ 900 عملة (الرصيد 1050، المرة 2)
+[22:38:39] بداية المرحلة 99 (صعبة جداً): 6 قارورة، سعات [(4, 6)]، مخفي 0
+[22:38:39] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "mint"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue", "brown", "mint", "cyan"], "keys": [0]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "mint", "brown", "mint"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}]
+[22:38:39] خطة المرحلة 99: 5 حركة (key، 1.0 ms)
+[22:38:58] الحركة (2, 4) تحرّر مفتاحاً؛ انتظار الباب
+[22:39:07] المرحلة 99: قوارير جديدة (باب انفتح؟ 6 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[22:39:07] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["mint", "mint", "mint"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "mint", "brown", "brown"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "lavender", "cyan", "green"], "keys": [2]}, {"x": 167, "y": 743, "cap": 4, "layers": ["lavender", "?", "green", "red"], "keys": [2]}, {"x": 236, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "?", "darkgreen", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[22:39:07] خطة المرحلة 99: 1 حركة (key، 0.5 ms)
+[22:39:08] الحركة (6, 3) تحرّر مفتاحاً؛ انتظار الباب
+[22:39:16] المرحلة 99: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[22:39:16] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["mint", "mint", "mint"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["darkgreen", "pink", "purple", "cyan"]}, {"x": 373, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "mint", "brown", "brown"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "brown", "purple", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "lavender", "cyan"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "?", "green", "red"], "keys": [2]}, {"x": 236, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "?", "darkgreen", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[22:39:16] خطة المرحلة 99: 8 حركة (key، 0.4 ms)
+[22:39:45] الحالة بعد (4, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
+[22:39:45] خطة المرحلة 99: 1 حركة (key، 0.5 ms)
+[22:39:46] الحركة (9, 4) تحرّر مفتاحاً؛ انتظار الباب
+[22:39:54] المرحلة 99: قوارير جديدة (باب انفتح؟ 13 → 15 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[22:39:54] حالة المرحلة 99 بعد الباب: [{"x": 99, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "red", "?", "yellow"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["mint", "mint", "mint", "mint"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["darkgreen", "pink", "purple", "purple"]}, {"x": 373, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "plum", "cyan", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "lavender", "cyan", "cyan"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "?", "green"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["orange", "darkgreen", "?", "orange"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "?", "darkgreen", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[22:39:55] خطة المرحلة 99: 1 حركة (reveal، 194.7 ms)
+[22:39:58] خطة المرحلة 99: 1 حركة (reveal، 11.7 ms)
+[22:40:03] خطة المرحلة 99: 2 حركة (reveal، 11.6 ms)
+[22:40:11] خطة المرحلة 99: 1 حركة (reveal، 13.7 ms)
+[22:40:15] خطة المرحلة 99: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[22:40:15] المرحلة 99 عالقة (لا خطة): [#ستارة:red] [lavender]/4 [mint,mint,mint,mint]/4 [darkgreen,pink,purple,purple]/4 [#ستارة:brown] [blue,plum,cyan,cyan]/4 [red,red,red,red]/4 [green,green]/4 [brown,brown,brown,brown]/4 [blue,blue,blue]/4 [?,lavender,cyan,cyan]/4 [lavender,orange,orange]/4 [orange,darkgreen,darkgreen]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,yellow]/4
+[22:40:15] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[22:40:15] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[22:40:19] خطة المرحلة 99: 2 حركة (progress، 2.7 ms)
+[22:40:27] خطة المرحلة 99: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[22:40:27] المرحلة 99 عالقة (لا خطة): [plum,plum]/4 [lavender,lavender]/4 [mint,mint,mint,mint]/4 [darkgreen,pink,purple,purple]/4 [#ستارة:brown] [blue,plum,cyan,cyan]/4 [red,red,red,red]/4 [green,green,green]/4 [brown,brown,brown,brown]/4 [blue,blue,blue]/4 [?,lavender,cyan,cyan]/4 [lavender,orange,orange]/4 [orange,darkgreen,darkgreen]/4 [plum,?,darkgreen,pink]/4 [?,orange,yellow,yellow]/4
+[22:40:27] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[22:40:27] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[22:40:31] نافذة «No Available Moves» في المرحلة 99: «Give Up» (الرصيد 150 أقل من 900)
+[22:40:48] شاشة جديدة لم تُرَ من قبل: new_012_unknown.jpg
+[22:40:55] شاشة جديدة لم تُرَ من قبل: new_013_unknown.jpg
+[22:42:32] تنفيذ أوامر الدفعة 38: update
+[22:42:33] تحديث كود البوت وإعادة تشغيله (200 دقيقة باقية، 5 مرحلة مكتملة)
