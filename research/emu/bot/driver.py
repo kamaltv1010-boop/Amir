@@ -598,6 +598,7 @@ class Bot:
         self.final_backup_done = False
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
         self.start_probe_tries = 0
+        self.start_same = 0            # قراءات متتالية مطابقة لـ start_probe
         self.arrow_shots = 0
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_daily_log = 0.0
@@ -1289,6 +1290,7 @@ class Bot:
             "n": lv.n, "result": lv.result, "moves": lv.moves, "sec": round(dt),
             "boosters": lv.boosters, "undos": lv.undos, "stuck": lv.stuck,
             "start": compact_state(lv.start_state)}, ensure_ascii=False) + "\n")
+        self.write_state()                     # عدد المراحل في state.txt يتبع كل فوز فوراً
 
     def new_level(self, fr, st, n=None):
         n = n or self.vis.level_number(fr) or self.level_hint or (self.levels_done + 1)
@@ -1323,13 +1325,15 @@ class Bot:
         if lv is None or self.expect_new:
             # بداية المرحلة: القوارير تدخل الشاشة متتابعة؛ تُعتمد الحالة حين تثبت بين لقطتين بينهما ثانية (قراءة مبكرة ناقصة
             # كانت تبدو لغزاً بلا حلّ فيصرف البوت «قارورة إضافية» ثم يظنّ المرحلة أُعيدت)
+            # (صفّ القوارير السفلي قد يدخل بعد العلوي بأكثر من ثانية: ثلاث قراءات متطابقة بينها 1.2 ثانية)
             sig = (len(st["tubes"]), solver.state_key(st))
-            if sig != self.start_probe and self.start_probe_tries < 4:
+            self.start_same = self.start_same + 1 if sig == self.start_probe else 0
+            if self.start_same < 2 and self.start_probe_tries < 6:
                 self.start_probe = sig
                 self.start_probe_tries += 1
-                time.sleep(1.0)
+                time.sleep(1.2)
                 return self.grab()
-            self.start_probe, self.start_probe_tries = None, 0
+            self.start_probe, self.start_probe_tries, self.start_same = None, 0, 0
             self.new_level(fr, st)
             lv = self.lv
         elif not compatible(lv.last_state, st, lv.extra_tubes):
