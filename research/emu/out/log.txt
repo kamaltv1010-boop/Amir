@@ -66,3 +66,15 @@
 [03:48:39] بداية المرحلة 10: 9 قارورة، سعات [(4, 8), (11, 1)]، مخفي 0
 [03:48:39] حالة المرحلة 10: [{"x": 79, "y": 380, "cap": 4, "layers": ["red", "yellow", "red", "yellow"]}, {"x": 157, "y": 380, "cap": 4, "layers": ["blue", "green", "red", "purple"]}, {"x": 236, "y": 493, "cap": 11, "layers": ["purple", "purple", "purple"]}, {"x": 314, "y": 380, "cap": 4, "layers": ["orange", "orange", "purple", "orange"]}, {"x": 392, "y": 380, "cap": 4, "layers": ["green", "purple", "blue", "pink"]}, {"x": 79, "y": 640, "cap": 4, "layers": ["blue", "red", "yellow", "purple"]}, {"x": 157, "y": 640, "cap": 4, "layers": ["blue", "purple", "green", "pink"]}, {"x": 314, "y": 640, "cap": 4, "layers": ["purple", "pink", "orange", "purple"]}, {"x": 392, "y": 640, "cap": 4, "layers": ["pink", "purple", "yellow", "green"]}]
 [03:48:39] خطة المرحلة 10: 26 حركة (astar، 1.2 ms)
+[03:50:31] شاشة جديدة لم تُرَ من قبل: new_012_unknown.jpg
+[03:50:31] فوز بالمرحلة 10 (unknown): 26 حركة في 112 ث، أدوات -
+[03:50:35] شاشة جديدة لم تُرَ من قبل: new_013_unknown.jpg
+[03:50:48] بداية المرحلة 11: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 0
+[03:50:48] حالة المرحلة 11: [{"x": 40, "y": 502, "cap": 10, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["yellow", "purple", "yellow", "orange"]}, {"x": 274, "y": 375, "cap": 4, "layers": ["yellow", "blue", "orange", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["pink", "red", "red", "purple"]}, {"x": 431, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "green", "blue", "orange"]}, {"x": 196, "y": 636, "cap": 4, "layers": ["purple", "pink", "pink", "green"]}, {"x": 274, "y": 636, "cap": 4, "layers": ["orange", "yellow", "yellow", "orange"]}, {"x": 352, "y": 636, "cap": 4, "layers": ["orange", "purple", "blue", "red"]}]
+[03:50:48] خطة المرحلة 11: 24 حركة (astar، 1.3 ms)
+[03:52:45] شاشة جديدة لم تُرَ من قبل: new_014_unknown.jpg
+[03:52:45] فوز بالمرحلة 11 (unknown): 23 حركة في 117 ث، أدوات -
+[03:52:49] شاشة جديدة لم تُرَ من قبل: new_015_unknown.jpg
+[03:53:03] بداية المرحلة 12: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 10
+[03:53:03] حالة المرحلة 12: [{"x": 40, "y": 502, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["purple", "yellow", "red", "orange"]}, {"x": 274, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "lavender", "purple"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 196, "y": 636, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 274, "y": 636, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 431, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}]
+[03:53:04] خطة المرحلة 12: 1 حركة (pimc، 288.7 ms)
