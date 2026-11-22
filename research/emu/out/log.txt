@@ -692,3 +692,23 @@
 [12:53:39] خطة المرحلة 69: 7 حركة (progress، 0.8 ms)
 [12:54:39] انتهى التحميل بعد 120 ثانية
 [12:54:40] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[12:54:49] شاشة جديدة لم تُرَ من قبل: new_037_button.jpg
+[12:55:02] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:55:02] بداية المرحلة 69: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[12:55:02] حالة المرحلة 69: [{"x": 202, "y": 336, "cap": 4, "layers": ["brown", "c_03_7_7", "orange", "lavender"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "pink", "orange", "green"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1", "lavender", "lavender"]}, {"x": 406, "y": 422, "cap": 10, "layers": ["green", "green"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "lavender", "green"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["green", "cyan", "brown", "yellow"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "blue", "pink", "blue"]}]
+[12:55:02] خطة المرحلة 69: 4 حركة (progress، 0.5 ms)
+[12:55:41] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:55:41] بداية المرحلة 69: 9 قارورة، سعات [(4, 8), (10, 1)]، مخفي 2
+[12:55:41] حالة المرحلة 69: [{"x": 66, "y": 336, "cap": 4, "layers": ["?", "cyan", "?", "green"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["brown", "yellow", "green", "green"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["brown", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "pink", "orange", "orange"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1", "lavender", "lavender"]}, {"x": 406, "y": 422, "cap": 10, "layers": ["green", "green", "green", "green"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "lavender", "lavender"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["green", "cyan", "brown", "yellow"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "blue", "pink", "blue"]}]
+[12:55:41] خطة المرحلة 69: 1 حركة (reveal، 3.4 ms)
+[12:55:56] المرحلة 69 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[12:55:56] بداية المرحلة 69: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 3
+[12:55:56] حالة المرحلة 69: [{"x": 66, "y": 336, "cap": 4, "layers": ["?", "purple", "purple"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["brown", "yellow", "green", "green"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["brown", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "pink", "orange", "orange"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1", "lavender", "lavender"]}, {"x": 406, "y": 422, "cap": 10, "layers": ["green", "green", "green", "green", "green"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["?", "c_32_5_7", "?", "yellow"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["green", "blue", "green", "red"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "lavender", "lavender"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["green", "cyan", "brown", "yellow"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "blue", "pink", "blue"]}]
+[12:55:56] خطة المرحلة 69: 1 حركة (reveal، 70.5 ms)
+[12:56:04] خطة المرحلة 69: 2 حركة (reveal، 57.2 ms)
+[12:56:20] خطة المرحلة 69: 8 حركة (progress، 31.0 ms)
+[12:57:31] المرحلة 69 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[12:57:31] بداية المرحلة 69: 13 قارورة، سعات [(4, 12), (10, 1)]، مخفي 3
+[12:57:31] حالة المرحلة 69: [{"x": 66, "y": 336, "cap": 4, "layers": ["red"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["brown", "yellow", "yellow", "yellow"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["brown", "purple", "purple", "purple"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1", "lavender", "lavender"]}, {"x": 406, "y": 422, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["?", "red"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["green", "blue", "blue", "blue"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "lavender", "lavender"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["green", "cyan", "brown"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "blue", "pink", "pink"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["?", "cyan", "?", "pink"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["c_10_7_1", "red", "brown", "red"]}]
+[12:57:31] خطة المرحلة 69: 1 حركة (pimc، 74.4 ms)
+[12:59:03] خطة المرحلة 69: 10 حركة (astar، 0.7 ms)
