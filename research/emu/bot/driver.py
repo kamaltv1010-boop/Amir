@@ -75,7 +75,7 @@ CFG = {
     "max_images": _env("BOT_MAX_IMAGES", 600, int),
     "publish_sec": _env("BOT_PUBLISH_SEC", 300.0, float),
     "poll_sec": _env("BOT_POLL_SEC", 10.0, float),
-    "airplane": _env("BOT_AIRPLANE", "after_load"),     # after_load | start | off
+    "airplane": _env("BOT_AIRPLANE", "off"),            # off | after_load | start (النسخ الحديثة تشترط الإنترنت)
     "loading_max_sec": _env("BOT_LOADING_MAX_SEC", 720.0, float),  # صبر شاشة التحميل قبل إعادة التشغيل
     "pour_wait": _env("BOT_POUR_WAIT", 1.2, float),
     "tap_gap": _env("BOT_TAP_GAP", 0.3, float),
@@ -162,6 +162,13 @@ class Frame:
 def dhash(fr: Frame, size=16):
     g = fr.pil.convert("L").resize((size + 1, size), Image.BILINEAR)
     a = np.asarray(g, dtype=np.int16)
+    return (a[:, 1:] > a[:, :-1]).flatten()
+
+
+def center_hash(fr: Frame, size=16):
+    """بصمة وسط الشاشة (حيث النوافذ المنبثقة) بمقياس اللقطة المعيارية 473×1000."""
+    g = fr.pil.convert("L").resize((473, 1000), Image.BILINEAR).crop((40, 260, 433, 700))
+    a = np.asarray(g.resize((size + 1, size), Image.BILINEAR), dtype=np.int16)
     return (a[:, 1:] > a[:, :-1]).flatten()
 
 
@@ -581,6 +588,14 @@ class Bot:
         self.repeat_escalations = 0
         self.stuck_total = 0
         self.loading_since = None      # منذ متى تظهر شاشة التحميل (None: لا تظهر)
+        self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
+        self.last_nonet_log = 0.0
+        self.nonet_hashes = []         # بصمات وسط نافذة «لا يوجد إنترنت» (النافذة معتمة فلا تتأثر بما خلفها)
+        for p in sorted((HERE / "testdata").glob("nonet_*.jpg")):
+            try:
+                self.nonet_hashes.append(center_hash(Frame(Image.open(p))))
+            except Exception:                           # noqa: BLE001
+                pass
         self.loading_hashes = []       # بصمات شاشة التحميل («Loading.»): تُنتظر بلا نقر ولا رجوع
         for p in sorted((HERE / "testdata").glob("loading_*.jpg")):
             try:
@@ -627,6 +642,26 @@ class Bot:
             return False
         h = dhash(fr)
         return any(int(np.count_nonzero(h != r)) <= 36 for r in self.loading_hashes)
+
+    def is_nonet(self, fr: Frame) -> bool:
+        """نافذة «No internet connection» وزرّ Retry (المسافة صفر في اللقطة الحقيقية، وأقرب شاشة أخرى 93 من 256)."""
+        if not self.nonet_hashes:
+            return False
+        h = center_hash(fr)
+        return any(int(np.count_nonzero(h != r)) <= 30 for r in self.nonet_hashes)
+
+    def handle_nonet(self, fr: Frame):
+        """النسخ الحديثة تشترط الإنترنت: يُلغى وضع الطيران (ولا يعود في هذا التشغيل) ثم يُضغط Retry."""
+        now = time.time()
+        if now - self.last_nonet_log > 60:
+            self.last_nonet_log = now
+            self.log("نافذة «لا يوجد إنترنت»: إلغاء وضع الطيران وضغط Retry")
+        self.net_required = True
+        if self.airplane_on:
+            self.airplane(False)
+            time.sleep(6)
+        self.tap(self.vis.button(fr) or (236, 630))
+        time.sleep(4)
 
     def same_screen(self, fr: Frame) -> int:
         """عدد مرات تكرار الشاشة نفسها (بصمة) على التوالي."""
@@ -1021,13 +1056,19 @@ class Bot:
                     self.dev.run(["wait-for-device"], timeout=60)
                     time.sleep(3)
                     continue
+                if self.is_nonet(fr):
+                    self.kinds["nonet"] += 1
+                    self.handle_nonet(fr)
+                    fr = None
+                    continue
                 kind = self.vis.classify(fr)
                 self.kinds[kind] += 1
                 self.last_kind = kind
                 self.novelty(fr, kind)
                 if time.time() - self.last_state_write > 20:
                     self.write_state()
-                if kind == "level" and self.airplane_on is None and CFG["airplane"] == "after_load":
+                if kind == "level" and self.airplane_on is None and CFG["airplane"] == "after_load" \
+                        and not self.net_required:
                     self.airplane(True)
                 if kind in ("button", "close") and self.same_screen(fr) > 6:
                     self.log("الشاشة نفسها (%s) تتكرّر رغم النقر؛ تصعيد" % kind)

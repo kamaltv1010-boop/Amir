@@ -595,6 +595,16 @@ class TestLoadingScreen(unittest.TestCase):
         for name in ("010_a_level5.jpg", "056_b_home.jpg", "030_a_win.jpg", "000_launch_120s.jpg", "007_a_shop.jpg"):
             self.assertFalse(bot.is_loading(driver.Frame(Image.open(td / name))), name)
 
+    def test_is_nonet(self):
+        bot = driver.Bot.__new__(driver.Bot)
+        td = Path(driver.HERE) / "testdata"
+        bot.nonet_hashes = [driver.center_hash(driver.Frame(Image.open(p))) for p in sorted(td.glob("nonet_*.jpg"))]
+        self.assertTrue(bot.nonet_hashes)
+        self.assertTrue(bot.is_nonet(driver.Frame(Image.open(td / "nonet_popup.jpg"))))
+        for p in sorted(td.glob("*.jpg")):
+            if not p.name.startswith("nonet_"):
+                self.assertFalse(bot.is_nonet(driver.Frame(Image.open(p))), p.name)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
