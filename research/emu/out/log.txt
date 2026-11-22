@@ -867,3 +867,32 @@
 [13:34:55] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
 [13:35:10] اللعبة ليست في الواجهة (mCurrentFocus=Window{202807d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [13:35:36] شاشة التحميل: انتظار بلا نقر
+[13:36:40] المرحلة 74 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[13:36:40] بداية المرحلة 74: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[13:36:40] حالة المرحلة 74: [{"x": 64, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "purple", "c_10_7_1"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["c_33_4_6", "cyan", "cyan", "red"]}, {"x": 202, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "pink", "blue", "red"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_10_7_1", "cyan", "red", "purple"]}]
+[13:36:40] خطة المرحلة 74: 3 حركة (progress، 0.3 ms)
+[13:37:05] المرحلة 74 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[13:37:05] بداية المرحلة 74: 9 قارورة، سعات [(4, 7), (10, 2)]، مخفي 4
+[13:37:05] حالة المرحلة 74: [{"x": 64, "y": 332, "cap": 4, "layers": ["pink", "yellow", "lavender", "c_10_7_1"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "cyan"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "green"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "purple", "c_10_7_1"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 200, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "pink", "blue", "red"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_10_7_1", "cyan", "red", "purple"]}]
+[13:37:05] خطة المرحلة 74: 4 حركة (reveal، 69.9 ms)
+[13:37:38] المرحلة 74 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[13:37:38] بداية المرحلة 74: 12 قارورة، سعات [(4, 10), (10, 2)]، مخفي 6
+[13:37:38] حالة المرحلة 74: [{"x": 64, "y": 332, "cap": 4, "layers": ["pink", "yellow", "lavender", "c_10_7_1"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "purple", "purple"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "brown"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["?", "orange", "?", "brown"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "green"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["lavender", "c_31_7_3", "green", "blue"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "purple", "c_10_7_1"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["green", "green"]}, {"x": 200, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["red", "red", "red", "red", "red", "red", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "pink", "blue", "red"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_10_7_1", "cyan", "red", "purple"]}]
+[13:37:38] خطة المرحلة 74: 5 حركة (progress، 10.2 ms)
+[13:38:10] انتهى التحميل بعد 154 ثانية
+[13:38:10] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[13:38:15] شاشة جديدة لم تُرَ من قبل: new_052_close.jpg
+[13:38:31] المرحلة 74 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[13:38:31] بداية المرحلة 74: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[13:38:31] حالة المرحلة 74: [{"x": 64, "y": 538, "cap": 4, "layers": ["c_10_7_1", "red", "orange", "green"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["blue", "brown", "brown", "yellow"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 270, "y": 625, "cap": 10, "layers": ["c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["orange", "blue", "orange", "c_31_7_3"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["c_33_4_7", "c_31_7_3", "c_31_7_3", "c_31_7_3"]}]
+[13:38:31] خطة المرحلة 74: 3 حركة (progress، 0.4 ms)
+[13:38:54] شاشة جديدة لم تُرَ من قبل: new_053_unknown.jpg
+[13:39:08] المرحلة 74 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[13:39:08] بداية المرحلة 74: 9 قارورة، سعات [(4, 7), (10, 2)]، مخفي 4
+[13:39:08] حالة المرحلة 74: [{"x": 64, "y": 332, "cap": 4, "layers": ["purple", "lavender", "pink", "cyan"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "green"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "cyan", "?", "brown"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["c_10_7_1", "red", "orange", "green"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["blue", "brown", "brown", "yellow"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 270, "y": 642, "cap": 10, "layers": ["c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["orange", "blue"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["orange"]}]
+[13:39:08] خطة المرحلة 74: 8 حركة (progress، 15.3 ms)
+[13:40:13] المرحلة 74 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[13:40:13] بداية المرحلة 74: 12 قارورة، سعات [(4, 10), (10, 2)]، مخفي 6
+[13:40:13] حالة المرحلة 74: [{"x": 64, "y": 332, "cap": 4, "layers": ["purple", "lavender", "pink", "cyan"]}, {"x": 133, "y": 332, "cap": 4, "layers": ["?", "brown", "yellow", "yellow"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "cyan"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["?", "c_06_7_4", "?", "blue"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["?", "pink", "?", "pink"]}, {"x": 407, "y": 332, "cap": 4, "layers": ["red", "cyan", "yellow", "purple"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["c_10_7_1", "red", "red"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["blue", "brown", "brown", "brown"]}, {"x": 202, "y": 623, "cap": 10, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 270, "y": 642, "cap": 10, "layers": ["c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3", "c_31_7_3"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["orange", "blue"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["green", "green"]}]
+[13:40:13] خطة المرحلة 74: 5 حركة (progress، 5.4 ms)
+[13:40:54] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
