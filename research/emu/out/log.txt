@@ -1267,3 +1267,14 @@
 [15:17:43] المرحلة 83: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
 [15:17:43] حالة المرحلة 83 بعد الباب: [{"x": 40, "y": 512, "cap": 11, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["purple", "pink", "orange"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 432, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 118, "y": 641, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 196, "y": 640, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["pink", "pink"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["purple", "lavender"]}, {"x": 432, "y": 640, "cap": 4, "layers": ["lavender", "blue", "lavender", "lavender"]}]
 [15:19:02] خطة المرحلة 83: 5 حركة (astar، 0.6 ms)
+[15:19:39] شاشة جديدة لم تُرَ من قبل: new_076_unknown.jpg
+[15:19:39] فوز بالمرحلة 83 (unknown): 25 حركة في 177 ث، أدوات -
+[15:22:39] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[15:23:07] شاشة التحميل: انتظار بلا نقر
+[15:24:04] بداية المرحلة 84: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[15:24:04] حالة المرحلة 84: [{"x": 40, "y": 375, "cap": 4, "layers": ["green", "pink", "blue", "brown"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["orange", "lavender", "red", "lavender"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["cyan", "green", "cyan", "brown"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "brown", "brown", "cyan"]}, {"x": 352, "y": 375, "cap": 4, "layers": []}, {"x": 432, "y": 375, "cap": 4, "layers": []}]
+[15:24:04] خطة المرحلة 84: 7 حركة (progress، 3.9 ms)
+[15:24:25] المرحلة 84: قوارير جديدة (باب انفتح؟ 6 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[15:24:25] حالة المرحلة 84 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["green", "pink", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["orange", "lavender", "red"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["cyan", "green", "cyan", "cyan"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red"]}, {"x": 353, "y": 376, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["orange", "lavender", "?", "red"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "?", "blue", "pink"]}]
+[15:24:25] خطة المرحلة 84: 1 حركة (reveal، 37.0 ms)
+[15:24:29] خطة المرحلة 84: 3 حركة (reveal، 40.5 ms)
