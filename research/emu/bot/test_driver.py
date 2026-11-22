@@ -465,6 +465,27 @@ class TestDriverSim(unittest.TestCase):
         self.assertTrue(stops, log[-2000:])
         self.assertIn("إيقافها ثم تشغيلها", log)
 
+    def test_ignored_back_relaunches_game(self):
+        """التشغيل السابع: الرجوع داخل المرحلة لا يفعل شيئاً فتكرّرت «لا حركة قانونية» 40 دقيقة. بعد 4 محاولات «إعادة»
+        بلا حركة بينها تُعاد اللعبة نفسها مرة واحدة، والحركة الناجحة تصفّر العدّ."""
+        game, bot, out = self.make_bot([make_level(random.Random(1), 2, 1)])
+        stops = []
+        bot.dev.force_stop = lambda: stops.append(1)
+        bot.lv = driver.LevelCtx(7, {"tubes": []}, 0.0)
+        for _ in range(3):
+            bot.restart_level()
+        self.assertEqual((stops, bot.dev.launched, bot.dev.keys), ([], 0, [4, 4, 4]))
+        bot.restart_level()
+        self.assertEqual((len(stops), bot.dev.launched, bot.lv.dead_restarts), (1, 1, 0))
+        log = (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+        self.assertIn("الرجوع لم يُعِد المرحلة 7", log)
+        bot.restart_level()
+        bot.lv.dead_restarts = 3
+        st = {"tubes": [{"x": 100, "y": 500, "cap": 4, "layers": ["red"]},
+                        {"x": 200, "y": 500, "cap": 4, "layers": []}]}
+        bot.do_move(st, 0, 1)
+        self.assertEqual(bot.lv.dead_restarts, 0)
+
     def test_stuck_uses_boosters(self):
         # لغز مستحيل بلا قارورة إضافية: يجب أن يضغط أداة «قارورة»
         caps = [4, 4, 4, 4]

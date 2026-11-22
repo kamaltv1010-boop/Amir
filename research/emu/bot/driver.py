@@ -588,6 +588,7 @@ class LevelCtx:
         self.incompat = 0
         self.extra_tubes = 0
         self.random_moves = 0
+        self.dead_restarts = 0         # «إعادة» بالرجوع متتالية بلا حركة بينها (Magic Sort قد يتجاهل الرجوع)
         self.reparse = 0
         self.attempts = Counter()      # (state_key، حركة) -> عدد المحاولات
         self.active = True
@@ -1547,6 +1548,7 @@ class Bot:
 
     def do_move(self, st, i, j):
         lv = self.lv
+        lv.dead_restarts = 0
         k = (solver.state_key(st), (i, j))
         lv.attempts[k] += 1
         if lv.attempts[k] >= 3:                # الحركة نفسها من الحالة نفسها 3 مرات: سيئة
@@ -1704,13 +1706,28 @@ class Bot:
         return self.stuck(fr, st, "محلولة بنظر الحلّال فقط")
 
     def restart_level(self):
-        """آخر حل: زرّ الرجوع (قد يفتح نافذة الخروج؛ تعالجها الحلقة)."""
+        """آخر حل: زرّ الرجوع (قد يفتح نافذة الخروج؛ تعالجها الحلقة). Magic Sort قد يتجاهل الرجوع داخل المرحلة (التشغيل
+        السابع: 40 دقيقة في المرحلة 99 تتكرّر فيها «لا حركة قانونية» كل 8 ثوانٍ)، فبعد 4 محاولات بلا حركة بينها تُعاد اللعبة
+        نفسها (force-stop ثم تشغيل)، فتُفتح المرحلة نفسها من جديد."""
+        lv = self.lv
+        if lv is not None:
+            lv.dead_restarts += 1
+            if lv.dead_restarts >= 4:
+                self.log("الرجوع لم يُعِد المرحلة %d (%d محاولات)؛ إعادة تشغيل اللعبة" % (lv.n, lv.dead_restarts))
+                lv.dead_restarts = 0
+                lv.plan = None
+                lv.pending = None
+                self.dev.force_stop()
+                time.sleep(2)
+                self.dev.launch()
+                time.sleep(25)
+                return None
         self.dev.key(4)
         time.sleep(2)
-        if self.lv:
-            self.lv.plan = None
-            self.lv.pending = None
-            self.lv.t0 = time.time()
+        if lv is not None:
+            lv.plan = None
+            lv.pending = None
+            lv.t0 = time.time()
         return None
 
     # ------------------------------------------------ الشاشات الأخرى
