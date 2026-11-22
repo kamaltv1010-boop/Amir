@@ -2442,3 +2442,23 @@
 [19:52:07] خطة المرحلة 60: 1 حركة (key، 0.7 ms)
 [19:52:08] الحركة (8, 4) تحرّر مفتاحاً؛ انتظار الباب
 [19:52:14] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[19:52:23] فوز بالمرحلة 60 (الواجهة تعرض المرحلة 99): 0 حركة في 16 ث، أدوات -
+[19:52:33] بداية المرحلة 99: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[19:52:33] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen", "pink", "brown"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}]
+[19:52:33] خطة المرحلة 99: 2 حركة (key، 0.8 ms)
+[19:52:39] الحركة (1, 3) تحرّر مفتاحاً؛ انتظار الباب
+[19:52:53] المرحلة 99: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:52:53] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "red", "green"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "?", "blue", "brown"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "c_16_7_6", "yellow"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:52:53] خطة المرحلة 99: 1 حركة (key، 0.2 ms)
+[19:52:55] الحركة (7, 0) تحرّر مفتاحاً؛ انتظار الباب
+[19:53:09] المرحلة 99: قوارير جديدة (باب انفتح؟ 10 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:53:09] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "green", "purple"], "keys": [2]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "darkgreen"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "red", "green"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["brown", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "c_16_7_6", "yellow"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:53:09] خطة المرحلة 99: 2 حركة (key، 0.3 ms)
+[19:53:19] الحركة (1, 3) تحرّر مفتاحاً؛ انتظار الباب
+[19:53:34] المرحلة 99: قوارير جديدة (باب انفتح؟ 11 → 12 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[19:53:34] حالة المرحلة 99 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["?", "pink", "?", "red"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 304, "y": 328, "cap": 4, "layers": ["lavender", "lavender", "green"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen", "darkgreen"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "orange", "purple", "purple"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "lavender", "orange", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "blue", "brown", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "red", "green"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["cyan", "?", "c_16_7_6", "yellow"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "orange", "yellow", "red"]}]
+[19:53:34] خطة المرحلة 99: 2 حركة (reveal، 196.5 ms)
+[19:53:50] خطة المرحلة 99: 3 حركة (reveal، 152.7 ms)
+[19:54:15] خطة المرحلة 99: 3 حركة (reveal، 267.2 ms)
+[19:54:38] خطة المرحلة 99: 2 حركة (progress، 4.0 ms)
+[19:54:55] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
