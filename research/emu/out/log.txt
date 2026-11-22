@@ -1607,3 +1607,17 @@
 [18:15:33] المرحلة 25: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
 [18:15:33] حالة المرحلة 25 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["purple", "purple", "lavender", "purple"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["purple", "lavender", "red", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "darkgreen"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["lavender", "darkgreen", "brown", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "yellow", "c_16_7_6", "darkgreen"], "keys": [1]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "yellow", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green", "?", "red", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "blue", "red", "c_16_7_6"]}]
 [18:15:33] خطة المرحلة 25: 4 حركة (reveal، 54.1 ms)
+[18:16:07] خطة المرحلة 25: 2 حركة (progress، 7.4 ms)
+[18:16:22] فوز بالمرحلة 25 (لغز جديد على الشاشة): 6 حركة في 69 ث، أدوات -
+[18:16:22] بداية المرحلة 26: 11 قارورة، سعات [(4, 11)]، مخفي 3
+[18:16:22] حالة المرحلة 26: [{"x": 236, "y": 332, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["plum", "brown", "pink", "c_16_7_6"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["purple", "purple", "lavender", "purple"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["purple", "lavender", "red", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "darkgreen", "darkgreen"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["lavender", "darkgreen", "brown", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "yellow", "c_16_7_6", "c_16_7_6"], "keys": [1]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "c_16_7_6"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green", "orange"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "blue", "red", "red"]}]
+[18:16:22] خطة المرحلة 26: 6 حركة (progress، 18.6 ms)
+[18:17:12] شاشة جديدة لم تُرَ من قبل: new_041_unknown.jpg
+[18:17:17] شاشة جديدة لم تُرَ من قبل: new_042_unknown.jpg
+[18:17:17] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[18:17:26] فوز بالمرحلة 26 (الواجهة تعرض المرحلة 99): 5 حركة في 64 ث، أدوات -
+[18:17:49] بداية المرحلة 99: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[18:17:49] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["yellow", "plum", "cyan", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "plum", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["purple", "purple", "red", "plum"]}, {"x": 374, "y": 538, "cap": 4, "layers": ["cyan", "c_16_7_6", "c_16_7_6", "yellow"]}]
+[18:17:49] خطة المرحلة 99: 5 حركة (progress، 2.7 ms)
+[18:18:32] شاشة جديدة لم تُرَ من قبل: new_043_unknown.jpg
+[18:18:32] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
