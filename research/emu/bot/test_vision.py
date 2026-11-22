@@ -545,6 +545,14 @@ KEY_LEVELS = {
         (202, 622, 'orange', None, None, 1), (270, 641, 'plum', None, None, 0),
         (339, 537, 'orange blue blue'), (407, 537, 'green green'),
     ], [(101, 647, 67, 185, "green"), (306, 647, 67, 185, "gold")]),
+    "L064_key_doors": ([   # المرحلة 64: بابان (أزرق يغطي أربع خانات وذهبي خانتين) والمفتاح الأزرق على بني تحت بني وأصفر
+        (40, 636, 'brown lavender lavender lavender'), (118, 636, 'brown brown yellow', [0], ["blue"]),
+        (196, 636, 'cyan cyan cyan'), (274, 636, 'green green'), (353, 636, 'red pink pink pink'), (431, 636, ''),
+    ], [(0, 264, 315, 226, "blue"), (317, 264, 153, 226, "gold")]),
+    "L061_key_flying": ([  # المرحلة 61: المفتاح الوردي يطير من قارورة بقيت فيها طبقته وحدها (كُشفت ولم تُصبّ)
+        (40, 375, 'yellow'), (118, 376, 'green green green green'), (196, 376, 'pink'), (275, 375, 'lavender red'),
+        (353, 358, 'purple purple purple purple'), (431, 376, 'orange orange orange orange'),
+    ], [(39, 526, 395, 225, "pink")]),
 }
 
 

@@ -716,18 +716,29 @@ def _key_layer(a, cx, w, yc, h):
     k0 = int(np.argmax(cnt))
     if cnt[k0] < 0.25 * len(px):
         return None
-    farv = np.sqrt(((lab - _PAL_LAB[k0]) ** 2).sum(-1)) > 35
-    if farv.mean() < 0.18:
-        return None
-    rowf = farv.reshape(hh, ww).mean(axis=1)
-    if float(((rowf > 0.15) & (rowf < 0.85)).mean()) < 0.3:
-        return None
-    fp = px[farv]
-    mx, mn = fp.max(axis=1), fp.min(axis=1)
-    glyph = (mx > 120) & ((mx - mn) / np.maximum(mx, 1) > 0.45)
-    if glyph.sum() < 0.08 * len(px):
-        return None
-    return _PAL_NAMES[k0], _hue_name(np.median(fp[glyph], axis=0))
+    dd = np.sqrt(((lab - _PAL_LAB[k0]) ** 2).sum(-1))
+    # المستوى الأول: ملصق بلون آخر (ΔE>35). الثاني: مفتاح بلون الطبقة نفسها (وردي على وردي في المرحلة 63): ظلّه وحدّه
+    # المشبّعان أبعد من ΔE 25، بصفوف مختلطة أكثر (يد التعليم البيضاء غير مشبّعة فلا تُعدّ)
+    for thr, fmin, mmin in ((35, 0.18, 0.3), (25, 0.2, 0.4)):
+        farv = dd > thr
+        if farv.mean() < fmin:
+            continue
+        rowf = farv.reshape(hh, ww).mean(axis=1)
+        if float(((rowf > 0.15) & (rowf < 0.85)).mean()) < mmin:
+            continue
+        fp = px[farv]
+        mx, mn = fp.max(axis=1), fp.min(axis=1)
+        sat = (mx - mn) / np.maximum(mx, 1)
+        if thr == 35:
+            glyph = (mx > 120) & (sat > 0.45)
+        else:
+            glyph = sat > 0.5
+            if glyph.mean() < 0.5:
+                continue
+        if glyph.sum() < 0.08 * len(px):
+            continue
+        return _PAL_NAMES[k0], _hue_name(np.median(fp[glyph], axis=0))
+    return None
 
 
 def _read_tube(a, t, h, e, warnings, bg=None):

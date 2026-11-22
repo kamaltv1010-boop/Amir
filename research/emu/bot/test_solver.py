@@ -481,6 +481,16 @@ class TestSpeed(unittest.TestCase):
         self.assertEqual(info["mode"], "key")
         self.assertEqual(mv[0], (3, 10))
 
+    def test_level64_board_from_image(self):
+        """لوحة L064_key_doors: المفتاح على البني تحت بني وأصفر؛ يُصبّ الأصفر في الفارغة فتنكشف طبقته."""
+        st = self._mkk([(4, ["brown", "lavender", "lavender", "lavender"]), (4, ["brown", "brown", "yellow"]),
+                        (4, ["cyan"] * 3), (4, ["green"] * 2), (4, ["red", "pink", "pink", "pink"]), (4, [])], {1: [0]})
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "key")
+        self.assertEqual(mv, [(1, 5)])
+        self.assertTrue(solver.key_freed(st, 1, 5))
+
     def test_worst_case_speed(self):
         # ألغاز كبيرة عشوائية (قد تكون مستحيلة): يجب أن يعود خلال الحد دائماً
         for seed in range(6):
