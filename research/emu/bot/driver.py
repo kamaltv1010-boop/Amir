@@ -76,6 +76,7 @@ CFG = {
     "publish_sec": _env("BOT_PUBLISH_SEC", 300.0, float),
     "poll_sec": _env("BOT_POLL_SEC", 10.0, float),
     "airplane": _env("BOT_AIRPLANE", "after_load"),     # after_load | start | off
+    "loading_max_sec": _env("BOT_LOADING_MAX_SEC", 720.0, float),  # صبر شاشة التحميل قبل إعادة التشغيل
     "pour_wait": _env("BOT_POUR_WAIT", 1.2, float),
     "tap_gap": _env("BOT_TAP_GAP", 0.3, float),
     "level_max_min": _env("BOT_LEVEL_MAX_MIN", 30.0, float),
@@ -579,6 +580,13 @@ class Bot:
         self.repeat_shots = 0
         self.repeat_escalations = 0
         self.stuck_total = 0
+        self.loading_since = None      # منذ متى تظهر شاشة التحميل (None: لا تظهر)
+        self.loading_hashes = []       # بصمات شاشة التحميل («Loading.»): تُنتظر بلا نقر ولا رجوع
+        for p in sorted((HERE / "testdata").glob("loading_*.jpg")):
+            try:
+                self.loading_hashes.append(dhash(Frame(Image.open(p))))
+            except Exception:                           # noqa: BLE001
+                pass
         self._load_known_hashes()
 
     # ------------------------------------------------ أدوات عامة
@@ -611,6 +619,14 @@ class Bot:
                 self.new_count += 1
             except Exception:                           # noqa: BLE001
                 pass
+
+    def is_loading(self, fr: Frame) -> bool:
+        """شاشة التحميل (شعار اللعبة و«Loading.»): بصمتها قريبة جداً من الصورة المرجعية (المسافة صفر في
+        اللقطات الحقيقية، وأقرب شاشة أخرى أكثر من 70 من 256)."""
+        if not self.loading_hashes:
+            return False
+        h = dhash(fr)
+        return any(int(np.count_nonzero(h != r)) <= 36 for r in self.loading_hashes)
 
     def same_screen(self, fr: Frame) -> int:
         """عدد مرات تكرار الشاشة نفسها (بصمة) على التوالي."""
@@ -904,7 +920,7 @@ class Bot:
             self.airplane()
         d.launch()
         self.log("شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية")
-        t_end = time.time() + 240
+        t_end = time.time() + 600
         tos_taps = 0
         while time.time() < t_end:
             time.sleep(5)
@@ -916,13 +932,13 @@ class Bot:
                 self.log("أول شاشة: %s" % kind)
                 self.out.save_jpg("000_first_%s.jpg" % kind, fr.pil)
                 break
-            if time.time() > t_end - 180 and tos_taps < 2:
+            if time.time() > t_end - 540 and tos_taps < 2 and not self.is_loading(fr):
                 tos = self.vis._pt(self.vis._safe("find_tos", fr.arr))
                 if tos:
                     tos_taps += 1
                     self.tap(tos)
         else:
-            self.log("لم تظهر شاشة تفاعلية خلال 4 دقائق؛ يكمل المحرّك على أي حال")
+            self.log("لم تظهر شاشة تفاعلية خلال 10 دقائق؛ يكمل المحرّك على أي حال")
         # after_load: يُفعَّل وضع الطيران عند أول شاشة لغز (اللعبة حمّلت كل شيء)
 
     def airplane(self, on=True):
@@ -1406,6 +1422,25 @@ class Bot:
         (زرّ الرجوع أثناء التحميل قد يغلق اللعبة، فلا يُضغط قبل 35 ثانية)."""
         self.leave_level(kind)
         now = time.time()
+        if self.is_loading(fr):
+            # التحميل الأول على المحاكي (ترجمة arm64) يأخذ نحو 6 دقائق: لا نقر ولا رجوع ولا إعادة تشغيل
+            if self.loading_since is None:
+                self.loading_since = now
+                self.log("شاشة التحميل: انتظار بلا نقر")
+            if now - self.loading_since < CFG["loading_max_sec"]:
+                self.unknown_streak = 0
+                time.sleep(5)
+                return None
+            self.log("التحميل طال أكثر من %.0f دقيقة؛ إعادة تشغيل اللعبة" % (CFG["loading_max_sec"] / 60))
+            self.loading_since = None
+            self.dev.force_stop()
+            time.sleep(2)
+            self.dev.launch()
+            time.sleep(25)
+            return None
+        if self.loading_since is not None:
+            self.log("انتهى التحميل بعد %.0f ثانية" % (now - self.loading_since))
+            self.loading_since = None
         if self.unknown_streak == 0:
             self.unknown_since = now
             self.unknown_acts = 0

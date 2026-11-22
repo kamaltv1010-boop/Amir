@@ -581,5 +581,20 @@ class TestInstallAbi(unittest.TestCase):
         self.assertEqual(files, ["com.grandgames.magicsort.apk", "config.armeabi_v7a.apk"])
 
 
+
+class TestLoadingScreen(unittest.TestCase):
+    """شاشة التحميل تُعرف ببصمتها فتُنتظر بلا نقر؛ وشاشات اللعب والواجهة ونافذة الشروط ليست تحميلاً."""
+
+    def test_is_loading(self):
+        bot = driver.Bot.__new__(driver.Bot)
+        td = Path(driver.HERE) / "testdata"
+        bot.loading_hashes = [driver.dhash(driver.Frame(Image.open(p))) for p in sorted(td.glob("loading_*.jpg"))]
+        self.assertTrue(bot.loading_hashes)
+        self.assertTrue(bot.is_loading(driver.Frame(Image.open(td / "loading_splash.jpg"))))
+        self.assertTrue(bot.is_loading(driver.Frame(Image.open(td / "014_a_relaunch_25s.jpg"))))
+        for name in ("010_a_level5.jpg", "056_b_home.jpg", "030_a_win.jpg", "000_launch_120s.jpg", "007_a_shop.jpg"):
+            self.assertFalse(bot.is_loading(driver.Frame(Image.open(td / name))), name)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
