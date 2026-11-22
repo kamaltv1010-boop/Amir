@@ -1,7 +1,9 @@
 done 6
 الحالة: يلعب
-مراحل مكتملة: 0
-الوقت: 12 دقيقة من 310
+مراحل مكتملة: 4
+الوقت: 17 دقيقة من 310
 آخر شاشة: unknown
-الشاشات: {'unknown': 15}
-صور محفوظة: 4/900، شاشات جديدة: 1
+الشاشات: {'unknown': 35, 'level': 45, 'close': 1, 'button': 4}
+صور محفوظة: 13/900، شاشات جديدة: 4
+المرحلة الحالية: 6 (حركات 6، مخفي 0، إخفاقات 0، أدوات -، 1.3 دقيقة)
+الحالة المقروءة: [red,red,red]/4 [red]/4 [blue,yellow,green]/4 [purple,yellow,green,green]/4 [green,purple,purple,purple]/4 [yellow,yellow]/4 [blue,blue,blue]/4
