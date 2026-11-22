@@ -1,0 +1,77 @@
+# بوت Magic Sort الذاتي على محاكي Android (بحث فقط): يلعب حتى مراحل عالية ويصوّر كل شاشة وميزة جديدة
+# لنصمّم ميزات أصلية مماثلة في لعبتنا. يشتغل فقط عند تعديل هذا الملف على الفرع claude/quirky-ride-r4oor0
+# أو بتشغيل يدوي (workflow_dispatch) من الفرع نفسه.
+# المتابعة: research/emu/out (state.txt، log.txt، levels.jsonl، L*_start.jpg، feat_*.jpg، new_*.jpg، stuck_*.jpg)
+# تُرفع كل 5 دقائق. التحكم عن بعد: research/emu/cmd.txt (seq N ثم pause/resume/stop/tap/shot...).
+name: emu-bot (بوت Magic Sort)
+
+on:
+  push:
+    branches: [claude/quirky-ride-r4oor0]
+    paths: [".github/workflows/emu-bot.yml"]
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "مدة اللعب بالدقائق (الحد 310)"
+        default: "300"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: emu-bot
+  cancel-in-progress: true
+
+jobs:
+  bot:
+    if: github.ref == 'refs/heads/claude/quirky-ride-r4oor0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/quirky-ride-r4oor0
+          fetch-depth: 1
+
+      - name: تفعيل KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -la /dev/kvm
+
+      - name: مكتبات Python
+        run: pip install -q numpy pillow opencv-python-headless
+
+      - name: اختبارات الحلّال والمحرّك (بلا محاكي، لا توقف التشغيل إن فشلت)
+        continue-on-error: true
+        timeout-minutes: 6
+        run: |
+          python3 research/emu/bot/test_solver.py 2>&1 | tail -n 25
+          python3 research/emu/bot/test_driver.py 2>&1 | tail -n 12
+
+      - name: تحميل اللعبة (XAPK)
+        run: |
+          curl -sSL --retry 3 -A "Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 Chrome/130 Mobile Safari/537.36" \
+            -o /tmp/game.xapk "https://d.apkpure.net/b/XAPK/com.grandgames.magicsort?version=latest"
+          mkdir -p /tmp/game && cd /tmp/game && unzip -q /tmp/game.xapk && ls -la
+
+      - name: تشغيل المحاكي والبوت
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          BOT_MINUTES: ${{ github.event.inputs.minutes || '300' }}
+          BOT_BRANCH: claude/quirky-ride-r4oor0
+          GAME_DIR: /tmp/game
+          BOT_MAX_IMAGES: "600"
+          BOT_AIRPLANE: after_load
+        with:
+          api-level: 30
+          arch: x86
+          target: playstore
+          profile: pixel_4
+          cores: 4
+          ram-size: 4096M
+          disk-size: 8G
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          disable-animations: true
+          script: python3 research/emu/bot/driver.py
