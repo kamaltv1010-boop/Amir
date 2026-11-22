@@ -78,3 +78,20 @@
 [03:53:03] بداية المرحلة 12: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 10
 [03:53:03] حالة المرحلة 12: [{"x": 40, "y": 502, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["purple", "yellow", "red", "orange"]}, {"x": 274, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "lavender", "purple"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 196, "y": 636, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 274, "y": 636, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 431, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}]
 [03:53:04] خطة المرحلة 12: 1 حركة (pimc، 288.7 ms)
+[03:54:29] خطة المرحلة 12: 8 حركة (astar، 0.9 ms)
+[03:55:06] شاشة جديدة لم تُرَ من قبل: new_016_unknown.jpg
+[03:55:06] فوز بالمرحلة 12 (unknown): 26 حركة في 122 ث، أدوات -
+[03:55:10] شاشة جديدة لم تُرَ من قبل: new_017_unknown.jpg
+[03:55:22] بداية المرحلة 13: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 8
+[03:55:22] حالة المرحلة 13: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["yellow", "?", "?", "blue"]}, {"x": 196, "y": 500, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "?", "?", "green"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["lavender", "orange", "pink", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["lavender", "purple", "yellow", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "pink", "lavender", "green"]}, {"x": 431, "y": 636, "cap": 4, "layers": ["orange", "pink", "purple", "red"]}]
+[03:55:22] خطة المرحلة 13: 1 حركة (pimc، 90.8 ms)
+[03:56:19] خطة المرحلة 13: 15 حركة (astar، 1.1 ms)
+[03:58:12] فوز بالمرحلة 13 (unknown): 25 حركة في 170 ث، أدوات -
+[03:58:16] شاشة جديدة لم تُرَ من قبل: new_018_unknown.jpg
+[03:58:32] بداية المرحلة 14: 9 قارورة، سعات [(4, 8), (11, 1)]، مخفي 15
+[03:58:32] حالة المرحلة 14: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 196, "y": 380, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 274, "y": 380, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 431, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "blue", "orange"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 196, "y": 640, "cap": 4, "layers": ["green", "orange", "lavender"]}]
+[03:58:32] خطة المرحلة 14: 1 حركة (pimc، 49.4 ms)
+[03:58:38] المرحلة 14 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[03:58:38] بداية المرحلة 14: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 14
+[03:58:38] حالة المرحلة 14: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 196, "y": 380, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 274, "y": 380, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 431, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "blue", "orange"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 196, "y": 640, "cap": 4, "layers": ["green", "orange", "lavender"]}, {"x": 274, "y": 640, "cap": 4, "layers": ["orange", "green", "pink"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["green", "lavender", "red"]}]
+[03:58:39] خطة المرحلة 14: 1 حركة (pimc، 264.1 ms)
