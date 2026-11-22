@@ -929,3 +929,11 @@
 [14:04:52] اللعبة ليست في الواجهة (mCurrentFocus=Window{385702a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
 [14:06:19] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
 [14:07:04] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:07:49] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:08:34] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:09:20] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:10:05] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:10:50] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:11:35] اللعبة ليست في الواجهة (mCurrentFocus=Window{4b190ef u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[14:11:50] تنفيذ أوامر الدفعة 35: relaunch ; update
+[14:11:52] تحديث كود البوت وإعادة تشغيله (102 دقيقة باقية، 14 مرحلة مكتملة)
