@@ -893,6 +893,25 @@ def find_boosters(img):
     return [(int(round(b["x"])), int(round(b["y"]))) for b in boxes]
 
 
+def tabbar_fraction(img) -> float:
+    """نسبة البنفسجي في شريط التبويبات السفلي (0.935..0.99 من الارتفاع): نحو 0.68 في الواجهة الرئيسية والمتجر،
+    وصفر تقريباً في اللعب والنوافذ المعتمة."""
+    a = load(img)
+    H = a.shape[0]
+    band = _i16(a[int(0.935 * H):int(0.99 * H)])
+    R, G, B = band[..., 0], band[..., 1], band[..., 2]
+    return float(((B > 120) & (R > 60) & (G < 110) & (B - G > 60)).mean())
+
+
+def is_home(img) -> bool:
+    """الواجهة الرئيسية: شريط التبويبات ظاهر وزرّ «Level N» الرئيسي في أسفل الشاشة."""
+    a = load(img)
+    if tabbar_fraction(a) < 0.5:
+        return False
+    b = main_button(a)
+    return b is not None and b[1] > 0.7 * a.shape[0]
+
+
 def classify(img) -> str:
     """level: شاشة اللغز (شريط الأدوات ظاهر بلا تعتيم).
     button: فعلها الأساسي زرّ رئيسي واحد (Level N، Continue، Claim، Hard Level،

@@ -445,6 +445,14 @@ def test_palette_consistency():
     assert dmin > 20, dmin
 
 
+def test_is_home():
+    """الواجهة الرئيسية (زرّ «Level N» وشريط التبويبات) لأمر pause_home؛ ونوافذ الأحداث واللعب والمتجر ليست هي."""
+    for n in ("home_superhard", "home_events", "056_b_home", "030_b_home"):
+        assert vision.is_home(_path(n)), n
+    for n in ("popup_strikeshow", "popup_magicstreak", "L016_3rows", "030_a_win", "007_a_shop", "nonet_popup", "038_b_home"):
+        assert not vision.is_home(_path(n)), n
+
+
 def test_device_mapping():
     assert vision.to_device(236, 500) == (538, 1140)
 

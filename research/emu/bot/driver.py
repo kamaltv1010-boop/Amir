@@ -588,6 +588,7 @@ class Bot:
         self.repeat_escalations = 0
         self.stuck_total = 0
         self.loading_since = None      # منذ متى تظهر شاشة التحميل (None: لا تظهر)
+        self.pause_home = False        # أمر pause_home: يتوقف عند الواجهة الرئيسية التالية بدل ضغط «Level N»
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.last_nonet_log = 0.0
         self.nonet_hashes = []         # بصمات وسط نافذة «لا يوجد إنترنت» (النافذة معتمة فلا تتأثر بما خلفها)
@@ -883,6 +884,9 @@ class Bot:
                     elif c == "minutes":
                         self.deadline = self.t_start + float(a[1]) * 60
                         self.log("مهلة جديدة: %s دقيقة من البداية" % a[1])
+                    elif c == "pause_home":
+                        self.pause_home = True
+                        self.log("سيتوقف البوت عند الواجهة الرئيسية التالية (للاستكشاف بالأوامر)")
                     elif c == "update":
                         self.self_update()
                     elif c == "skip":
@@ -1108,6 +1112,15 @@ class Bot:
                     self.repeat_escalations += 1
                     self.repeat = (None, 0)
                     time.sleep(2)
+                    fr = None
+                    continue
+                if kind == "button" and self.pause_home and self.vis._safe("is_home", fr.arr, default=False):
+                    self.pause_home = False
+                    self.paused = True
+                    self.out.save_jpg("home_paused_%s.jpg" % time.strftime("%H%M%S"), fr.pil, force=True)
+                    self.log("توقف عند الواجهة الرئيسية (pause_home): الأوامر التالية تستكشف، ثم resume")
+                    self.write_state()
+                    threading.Thread(target=self.publish, args=("بوت المحاكي: توقف عند الواجهة",), daemon=True).start()
                     fr = None
                     continue
                 if kind == "level":
