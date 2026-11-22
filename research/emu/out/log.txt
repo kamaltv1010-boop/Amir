@@ -314,3 +314,4 @@
 [07:11:59] تنفيذ أوامر الدفعة 14: tap 538 347 ; wait 3 ; shot m1 ; tap 139 169 ; wait 3 ; shot m2 ; back ; wait 2 ; shot m3 ; back ; wait 2 ; shot m4 ; tap 123 605 ; wait 3 ; shot s1 ; tap 146 174 ; wait 3 ; shot s2 ; back ; wait 2 ; shot s3 ; back ; wait 2 ; shot s4
 [07:13:21] تنفيذ أوامر الدفعة 15: tap 540 1500 ; wait 2 ; tap 939 169 ; wait 2 ; shot n1 ; tap 123 605 ; wait 3 ; shot n2 ; tap 146 174 ; wait 3 ; shot n3 ; tap 540 1500 ; wait 2 ; shot n4 ; tap 941 174 ; wait 2 ; shot n5 ; resume
 [07:13:49] توقف عند الواجهة الرئيسية (pause_home): الأوامر التالية تستكشف، ثم resume
+[07:14:23] تنفيذ أوامر الدفعة 16: resume
