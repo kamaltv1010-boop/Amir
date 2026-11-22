@@ -180,3 +180,30 @@
 [16:37:00] بداية المرحلة 8: 13 قارورة، سعات [(4, 10), (10, 1), (16, 1), (17, 1)]، مخفي 0
 [16:37:00] حالة المرحلة 8: [{"x": 66, "y": 437, "cap": 10, "layers": ["pink", "green", "green"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 202, "y": 524, "cap": 16, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 270, "y": 542, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["lavender", "red", "pink", "pink"]}, {"x": 134, "y": 539, "cap": 4, "layers": ["green", "blue", "blue", "blue"]}, {"x": 338, "y": 539, "cap": 4, "layers": ["red"]}, {"x": 406, "y": 539, "cap": 4, "layers": ["brown", "brown"]}, {"x": 65, "y": 744, "cap": 4, "layers": ["pink", "blue", "orange", "red"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["green", "red", "orange", "brown"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["brown", "lavender", "cyan", "cyan"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["lavender", "lavender"]}]
 [16:37:00] خطة المرحلة 8: 16 حركة (astar، 3.3 ms)
+[16:37:40] الحالة بعد (10, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:37:40] خطة المرحلة 8: 13 حركة (astar، 1.8 ms)
+[16:38:04] لا تقدّم بعد الحركة (0, 10) (إخفاق 1)
+[16:38:04] القارورة 10 مرفوعة؛ نقرة لإنزالها
+[16:38:17] خطة المرحلة 8: 12 حركة (astar، 1.7 ms)
+[16:38:32] فوز بالمرحلة 8 (لغز جديد على الشاشة): 5 حركة في 92 ث، أدوات -
+[16:38:32] بداية المرحلة 9: 13 قارورة، سعات [(4, 10), (10, 1), (17, 2)]، مخفي 0
+[16:38:32] حالة المرحلة 9: [{"x": 66, "y": 437, "cap": 10, "layers": ["pink", "green", "green", "c_23_7_1", "c_22_6_1", "c_23_7_1", "green"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 202, "y": 542, "cap": 17, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "c_03_6_7"]}, {"x": 270, "y": 542, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["lavender", "red", "pink", "pink"]}, {"x": 134, "y": 539, "cap": 4, "layers": ["green", "blue", "blue", "blue"]}, {"x": 338, "y": 539, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 406, "y": 539, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 65, "y": 744, "cap": 4, "layers": ["pink", "blue"]}, {"x": 134, "y": 744, "cap": 4, "layers": []}, {"x": 338, "y": 744, "cap": 4, "layers": ["brown", "lavender", "cyan", "cyan"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["lavender", "lavender"]}]
+[16:38:32] خطة المرحلة 9: 15 حركة (astar، 7.6 ms)
+[16:38:55] فوز بالمرحلة 9 (لغز جديد على الشاشة): 1 حركة في 23 ث، أدوات -
+[16:38:55] بداية المرحلة 10: 13 قارورة، سعات [(4, 10), (10, 1), (17, 2)]، مخفي 0
+[16:38:55] حالة المرحلة 10: [{"x": 66, "y": 437, "cap": 10, "layers": ["pink", "green", "green"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 202, "y": 542, "cap": 17, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "c_03_6_7"]}, {"x": 270, "y": 542, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["lavender", "red", "pink", "pink"]}, {"x": 134, "y": 539, "cap": 4, "layers": ["green", "green"]}, {"x": 338, "y": 539, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 406, "y": 539, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 65, "y": 744, "cap": 4, "layers": ["pink", "blue"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["brown", "lavender", "cyan", "cyan"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["lavender", "lavender"]}]
+[16:38:55] خطة المرحلة 10: 10 حركة (astar، 4.9 ms)
+[16:39:23] الحالة بعد (0, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:39:23] خطة المرحلة 10: 10 حركة (astar، 1.2 ms)
+[16:39:57] الحالة بعد (2, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:39:57] خطة المرحلة 10: 10 حركة (astar، 1.4 ms)
+[16:40:24] الحالة بعد (0, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:40:24] خطة المرحلة 10: 10 حركة (astar، 1.3 ms)
+[16:40:52] الحالة بعد (2, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:40:52] خطة المرحلة 10: 10 حركة (astar، 1.1 ms)
+[16:41:18] الحالة بعد (0, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:41:18] خطة المرحلة 10: 10 حركة (astar، 1.7 ms)
+[16:41:45] الحالة بعد (2, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:41:45] خطة المرحلة 10: 10 حركة (astar، 0.9 ms)
+[16:42:28] الحالة بعد (0, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:42:28] خطة المرحلة 10: 9 حركة (astar، 1.2 ms)
