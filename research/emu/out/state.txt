@@ -1,9 +1,10 @@
 done 37
 الحالة: يلعب
 مراحل مكتملة: 5
-الوقت: 85 دقيقة من 300
-آخر شاشة: button
-الشاشات: {'button': 607, 'close': 606, 'unknown': 63, 'level': 110}
-صور محفوظة: 26/900، شاشات جديدة: 9
-المرحلة الحالية: 5 (حركات 14، مخفي 3، إخفاقات 0، أدوات -، 4.5 دقيقة)
-الحالة المقروءة: [green]/4 [brown,brown,brown]/4 [lavender,lavender,green,green]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [plum,orange,purple,purple]/4 [pink,pink]/4 [pink,lavender,orange,orange]/4 [lavender,blue,blue]/4 [?,c_16_7_6,red,red]/4 [brown,yellow,yellow,yellow]/4 [cyan,?,c_16_7_6]/4 [?,orange,yellow,red]/4
+الوقت: 5 دقيقة من 215
+آخر شاشة: level
+الشاشات: {'lives': 1, 'button': 4, 'unknown': 18, 'level': 48, 'close': 2}
+صور محفوظة: 7/900، شاشات جديدة: 10
+المرحلة الحالية: 99 صعبة جداً (حركات 5، مخفي 4، إخفاقات 0، أدوات -، 0.5 دقيقة)
+الحالة المقروءة: [mint,mint,mint]/4 [blue,plum,cyan,cyan]/4 [blue]/4 []/4 [brown,mint,brown,brown]/4 [blue,brown,purple,blue]/4 [?,lavender,cyan,green]/4 [lavender,?,green,red]/4 [#كيس] [plum,?,darkgreen,pink]/4 [?,orange,yellow,red]/4
+العملات: 1050، «Give Up» لكل مرحلة: {99: 2}
