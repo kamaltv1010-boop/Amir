@@ -1,7 +1,9 @@
 done 16
 الحالة: يلعب
-مراحل مكتملة: 24
-الوقت: 17 دقيقة من 222
-آخر شاشة: button
-الشاشات: {'button': 99, 'unknown': 8, 'close': 95}
-صور محفوظة: 32/900، شاشات جديدة: 54
+مراحل مكتملة: 25
+الوقت: 22 دقيقة من 222
+آخر شاشة: level
+الشاشات: {'button': 103, 'unknown': 10, 'close': 95, 'level': 83}
+صور محفوظة: 37/900، شاشات جديدة: 56
+المرحلة الحالية: 28 (حركات 15، مخفي 0، إخفاقات 0، أدوات -، 1.2 دقيقة)
+الحالة المقروءة: [red,red,red,red,red,red,red,red,red,red,red,red,red,red]/17 [pink]/4 [green,purple,orange,orange]/4 [pink,blue,green,green]/4 [purple,purple,purple,purple,purple,purple,purple,purple,purple,purple,purple,purple,purple]/17 [purple,pink,blue,blue]/4 [yellow,yellow]/4 [red,pink,red]/4 [yellow,blue,purple,green]/4 [red,orange,orange,yellow]/4 [purple]/4
