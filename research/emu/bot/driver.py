@@ -590,6 +590,13 @@ class Bot:
         self.loading_since = None      # منذ متى تظهر شاشة التحميل (None: لا تظهر)
         self.pause_home = False        # أمر pause_home: يتوقف عند الواجهة الرئيسية التالية بدل ضغط «Level N»
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
+        self.last_daily_log = 0.0
+        self.daily_hashes = []         # بصمات وسط نافذة «Daily Challenge» (تقويم ولغز بعدّاد): تُغلق ولا يلعبها البوت
+        for p in sorted((HERE / "testdata").glob("daily_popup*.jpg")):
+            try:
+                self.daily_hashes.append(center_hash(Frame(Image.open(p))))
+            except Exception:                           # noqa: BLE001
+                pass
         self.last_nonet_log = 0.0
         self.nonet_hashes = []         # بصمات وسط نافذة «لا يوجد إنترنت» (النافذة معتمة فلا تتأثر بما خلفها)
         for p in sorted((HERE / "testdata").glob("nonet_*.jpg")):
@@ -650,6 +657,14 @@ class Bot:
             return False
         h = center_hash(fr)
         return any(int(np.count_nonzero(h != r)) <= 30 for r in self.nonet_hashes)
+
+    def is_daily_popup(self, fr: Frame) -> bool:
+        """نافذة «Daily Challenge» (من المرحلة 30): تقويم وزرّ «Play November 22». لغزها صفّ قوارير طويلة جداً بعدّاد 3 دقائق
+        لا تقرؤه الرؤية، فيُغلق بزرّ X بدل الدخول (المسافة صفر في اللقطة الحقيقية، وأقرب شاشة أخرى 102 من 256)."""
+        if not self.daily_hashes:
+            return False
+        h = center_hash(fr)
+        return any(int(np.count_nonzero(h != r)) <= 30 for r in self.daily_hashes)
 
     def handle_nonet(self, fr: Frame):
         """النسخ الحديثة تشترط الإنترنت: يُلغى وضع الطيران (ولا يعود في هذا التشغيل) ثم يُضغط Retry."""
@@ -1093,6 +1108,16 @@ class Bot:
                 if self.is_nonet(fr):
                     self.kinds["nonet"] += 1
                     self.handle_nonet(fr)
+                    fr = None
+                    continue
+                if self.is_daily_popup(fr):
+                    self.kinds["daily"] += 1
+                    if time.time() - self.last_daily_log > 300:
+                        self.last_daily_log = time.time()
+                        self.out.save_jpg("daily_popup_%s.jpg" % time.strftime("%H%M%S"), fr.pil)
+                        self.log("نافذة التحدّي اليومي: إغلاق (لغزه بعدّاد وقوارير طويلة لا يلعبها البوت)")
+                    self.tap(self.vis.close(fr) or (422, 96))
+                    time.sleep(2)
                     fr = None
                     continue
                 kind = self.vis.classify(fr)
