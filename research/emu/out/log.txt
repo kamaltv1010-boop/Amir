@@ -212,3 +212,35 @@
 [11:50:18] حالة المرحلة 67: [{"x": 167, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["red", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple", "green", "green", "brown"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["orange", "pink", "blue"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 236, "y": 539, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["pink", "pink"]}, {"x": 372, "y": 539, "cap": 4, "layers": []}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["blue", "orange", "yellow", "yellow"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["lavender", "lavender", "c_03_7_7", "pink"]}]
 [11:50:19] خطة المرحلة 67: 1 حركة (pimc، 148.4 ms)
 [11:50:43] خطة المرحلة 67: 13 حركة (astar، 1.0 ms)
+[11:51:04] المرحلة 67 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[11:51:04] بداية المرحلة 67: 12 قارورة، سعات [(4, 11), (16, 1)]، مخفي 3
+[11:51:04] حالة المرحلة 67: [{"x": 99, "y": 335, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 167, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["orange", "pink", "blue"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["brown", "brown"]}, {"x": 236, "y": 539, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["pink", "pink"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["green", "green"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["blue", "orange", "yellow", "yellow"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["lavender", "lavender", "c_03_7_7", "pink"]}]
+[11:51:04] خطة المرحلة 67: 1 حركة (pimc، 67.9 ms)
+[11:51:27] خطة المرحلة 67: 12 حركة (astar، 0.8 ms)
+[11:52:42] الحالة بعد (11, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
+[11:52:42] خطة المرحلة 67: 2 حركة (astar، 0.3 ms)
+[11:52:48] المرحلة 67 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[11:52:48] بداية المرحلة 67: 13 قارورة، سعات [(4, 12), (16, 1)]، مخفي 3
+[11:52:48] حالة المرحلة 67: [{"x": 99, "y": 335, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 167, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["lavender"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 99, "y": 539, "cap": 4, "layers": []}, {"x": 236, "y": 539, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 99, "y": 744, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 304, "y": 744, "cap": 4, "layers": []}, {"x": 372, "y": 744, "cap": 4, "layers": ["lavender", "lavender"]}]
+[11:52:48] خطة المرحلة 67: 1 حركة (pimc، 13.1 ms)
+[11:52:56] الحالة بعد (9, 1) تختلف عن المتوقَّع؛ إعادة التخطيط
+[11:53:10] خطة المرحلة 67: 3 حركة (astar، 0.3 ms)
+[11:53:23] لا تقدّم بعد الحركة (1, 5) (إخفاق 1)
+[11:53:23] خطة المرحلة 67: 3 حركة (astar، 0.2 ms)
+[11:53:43] لا تقدّم بعد الحركة (1, 3) (إخفاق 1)
+[11:53:43] خطة المرحلة 67: 2 حركة (astar، 0.2 ms)
+[11:53:50] شاشة جديدة لم تُرَ من قبل: new_026_unknown.jpg
+[11:53:50] انتهى التحميل بعد 372 ثانية
+[11:53:57] سهم تعليم: لمس الهدف (338, 705)
+[11:54:03] سهم تعليم: لمس الهدف (338, 705)
+[11:54:09] سهم تعليم: لمس الهدف (338, 705)
+[11:54:12] اللعبة ليست في الواجهة (mCurrentFocus=Window{202807d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[11:54:39] شاشة التحميل: انتظار بلا نقر
+[11:55:24] فوز بالمرحلة 67 (الواجهة تعرض المرحلة 68): 4 حركة في 156 ث، أدوات -
+[11:55:36] بداية المرحلة 68: 3 قارورة، سعات [(4, 3)]، مخفي 0
+[11:55:36] حالة المرحلة 68: [{"x": 168, "y": 538, "cap": 4, "layers": ["red", "blue", "purple"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "blue", "purple"]}]
+[11:55:36] خطة المرحلة 68: 3 حركة (progress، 0.2 ms)
+[11:55:50] شاشة جديدة لم تُرَ من قبل: new_027_unknown.jpg
+[11:55:50] انتهى التحميل بعد 71 ثانية
+[11:55:56] شاشة جديدة لم تُرَ من قبل: new_028_unknown.jpg
+[11:55:56] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
