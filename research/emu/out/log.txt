@@ -2017,3 +2017,50 @@
 [18:55:08] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
 [18:55:08] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
 [18:55:08] أداة: تراجع (3)
+[18:55:16] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:55:16] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:16] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:16] أداة: تراجع (4)
+[18:55:23] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:55:23] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:23] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:23] أداة: تراجع (5)
+[18:55:31] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:55:31] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:31] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:31] أداة: تراجع (6)
+[18:55:39] خطة المرحلة 36: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[18:55:39] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:39] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:39] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:55:47] خطة المرحلة 36: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[18:55:47] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:47] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:47] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:55:55] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:55:55] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:55:55] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:55:55] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:56:03] خطة المرحلة 36: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:56:03] المرحلة 36 عالقة (لا خطة): [?,cyan,red,red]/4 [brown,brown,brown,brown]/4 [plum,c_16_7_6,plum,c_16_7_6]/4 [yellow,yellow]/4 [plum]/4 [pink,pink,pink,pink]/4 [?,purple,purple,purple]/4 [blue,?,lavender,lavender]/4 [purple,cyan]/4 [green,blue,cyan,orange]/4 [?,blue,darkgreen,darkgreen]/4
+[18:56:03] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add
+[18:56:03] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:56:03] الرجوع لم يُعِد المرحلة 36 (4 محاولات)؛ إعادة تشغيل اللعبة
+[18:56:32] انتهى التحميل بعد 341 ثانية
+[18:56:43] شاشة التحميل: انتظار بلا نقر
+[18:58:16] فوز بالمرحلة 36 (لغز جديد على الشاشة): 11 حركة في 138 ث، أدوات ['shuffle']
+[18:58:16] بداية المرحلة 37: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[18:58:16] حالة المرحلة 37: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["yellow", "plum", "cyan", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "plum", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["purple", "purple", "red", "plum"]}, {"x": 374, "y": 538, "cap": 4, "layers": ["cyan", "c_16_7_6", "c_16_7_6", "yellow"]}]
+[18:58:16] خطة المرحلة 37: 5 حركة (progress، 2.4 ms)
+[18:58:55] شاشة جديدة لم تُرَ من قبل: new_049_unknown.jpg
+[18:58:55] انتهى التحميل بعد 132 ثانية
+[18:59:01] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[18:59:10] فوز بالمرحلة 37 (الواجهة تعرض المرحلة 99): 4 حركة في 54 ث، أدوات -
+[18:59:34] بداية المرحلة 99: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[18:59:34] حالة المرحلة 99: [{"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "pink"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "lavender", "pink"], "keys": [1]}]
+[18:59:34] خطة المرحلة 99: 3 حركة (key، 0.5 ms)
+[18:59:53] الحركة (5, 4) تحرّر مفتاحاً؛ انتظار الباب
+[19:00:08] المرحلة 99: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:00:08] حالة المرحلة 99 بعد الباب: [{"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink"]}, {"x": 100, "y": 538, "cap": 4, "layers": ["brown", "cyan", "c_16_7_6", "orange"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["blue", "cyan", "darkgreen", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender", "green", "lavender", "lavender"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["darkgreen", "red"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "c_16_7_6", "yellow", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "?", "blue", "red"], "keys": [2]}, {"x": 304, "y": 743, "cap": 4, "layers": ["orange", "?", "blue", "yellow"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["?", "purple", "plum", "pink"]}]
+[19:00:08] خطة المرحلة 99: 1 حركة (key، 0.5 ms)
+[19:00:09] الحركة (7, 5) تحرّر مفتاحاً؛ انتظار الباب
