@@ -340,3 +340,13 @@
 [07:18:35] الحالة بعد (6, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
 [07:18:49] الحالة بعد (5, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
 [07:19:22] خطة المرحلة 28: 20 حركة (astar، 2.6 ms)
+[07:20:57] فوز بالمرحلة 28 (unknown): 33 حركة في 160 ث، أدوات -
+[07:21:01] شاشة جديدة لم تُرَ من قبل: new_057_unknown.jpg
+[07:21:13] بداية المرحلة 29: 8 قارورة، سعات [(4, 6), (10, 2)]، مخفي 3
+[07:21:13] حالة المرحلة 29: [{"x": 98, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "orange", "cyan", "pink"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "?", "?", "cyan"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["green", "lavender", "orange", "lavender"]}, {"x": 372, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["pink", "cyan", "orange", "lavender"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["yellow", "green", "cyan", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["brown", "red", "pink", "pink"]}]
+[07:21:14] خطة المرحلة 29: 1 حركة (pimc، 580.9 ms)
+[07:22:13] المرحلة 29 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[07:22:13] بداية المرحلة 29: 13 قارورة، سعات [(4, 11), (10, 2)]، مخفي 6
+[07:22:13] حالة المرحلة 29: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "yellow", "blue", "blue"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "blue", "pink", "lavender"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "?", "?", "purple"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["purple", "yellow", "red", "lavender"]}, {"x": 98, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "orange", "orange", "orange"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "?", "brown"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 372, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 166, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["yellow", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["brown", "red"]}]
+[07:22:13] خطة المرحلة 29: 1 حركة (pimc، 164.4 ms)
+[07:24:22] خطة المرحلة 29: 8 حركة (astar، 1.1 ms)
