@@ -647,3 +647,18 @@
 [20:37:32] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "yellow", "?", "yellow"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["orange", "green", "blue", "lavender"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "lavender", "lavender", "pink"], "keys": [0]}]
 [20:37:32] خطة المرحلة 124: 3 حركة (key، 0.3 ms)
 [20:37:43] الحركة (6, 2) تحرّر مفتاحاً؛ انتظار الباب
+[20:37:53] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:37:53] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "yellow", "?", "yellow"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["orange", "green", "blue", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["cyan", "darkgreen", "orange", "pink"], "keys": [2]}, {"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue"]}]
+[20:37:53] خطة المرحلة 124: 2 حركة (key، 0.3 ms)
+[20:37:59] الحركة (3, 6) تحرّر مفتاحاً؛ انتظار الباب
+[20:38:08] المرحلة 124: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:38:08] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "yellow", "?", "yellow"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["orange", "green", "blue", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["cyan", "darkgreen", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "yellow", "brown", "pink"], "keys": [0]}, {"x": 373, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "yellow"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "pink"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue"]}]
+[20:39:38] خطة المرحلة 124: 1 حركة (reveal، 21.0 ms)
+[20:39:47] خطة المرحلة 124: 1 حركة (reveal، 55.8 ms)
+[20:39:56] خطة المرحلة 124: 2 حركة (reveal، 16.3 ms)
+[20:40:13] خطة المرحلة 124: 1 حركة (progress، 2.6 ms)
+[20:40:20] انتهى التحميل بعد 311 ثانية
+[20:40:21] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[20:40:39] سهم تعليم: لمس الهدف (338, 705)
+[20:40:45] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{9a07aa6 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
+[20:41:25] شاشة التحميل: انتظار بلا نقر

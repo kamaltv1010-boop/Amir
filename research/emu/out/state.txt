@@ -1,10 +1,10 @@
 done 42
 الحالة: يلعب
 مراحل مكتملة: 15
-الوقت: 171 دقيقة من 300
-آخر شاشة: level
-الشاشات: {'close': 24, 'button': 49, 'unknown': 895, 'level': 1040, 'lives': 1}
-صور محفوظة: 123/900، شاشات جديدة: 57
-المرحلة الحالية: 124 صعبة (حركات 4، مخفي 2، إخفاقات 0، أدوات -، 0.6 دقيقة)
-الحالة المقروءة: [?,yellow,?,yellow]/4 [orange,green,blue,lavender]/4 [lavender,lavender,lavender,lavender,lavender]/10 [orange,green,pink,pink]/4 [lavender,lavender]/4 [blue,purple,purple,purple]/4 [blue,lavender,lavender]/4
-العملات: 70، «Give Up» لكل مرحلة: {114: 1, 117: 1, 122: 1, 123: 1, 124: 4}
+الوقت: 177 دقيقة من 300
+آخر شاشة: unknown
+الشاشات: {'close': 25, 'button': 50, 'unknown': 923, 'level': 1081, 'lives': 1}
+صور محفوظة: 125/900، شاشات جديدة: 57
+المرحلة الحالية: 124 صعبة (حركات 20، مخفي 1، إخفاقات 0، أدوات -، 5.8 دقيقة)
+الحالة المقروءة: [?,yellow,cyan,cyan]/4 [orange,green,blue,blue]/4 [red,red,red]/4 [cyan,darkgreen,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/10 [blue,yellow,yellow,yellow]/4 [darkgreen,orange]/4 [brown]/4 [pink,pink,pink,pink]/4 [blue,purple,purple,purple]/4 [green,green]/4
+العملات: 70، «Give Up» لكل مرحلة: {114: 1, 117: 1, 122: 1, 123: 1, 124: 5}
