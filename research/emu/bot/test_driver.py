@@ -1330,5 +1330,20 @@ class TestClayPassThrough(unittest.TestCase):
         self.assertEqual(mv[0][0], 3)
 
 
+class TestPlanBoost(unittest.TestCase):
+    """مضاعف التخطيط: الصعبة جداً 3، وكل «Give Up» في المرحلة نفسها يزيده 0.75 حتى 4."""
+
+    def test_boost_grows_with_give_ups(self):
+        self.assertEqual(driver.plan_boost("unknown", 0), 1.0)
+        self.assertEqual(driver.plan_boost(None, 1), 1.75)
+        self.assertEqual(driver.plan_boost("hard", 2), 2.5)
+        self.assertEqual(driver.plan_boost("unknown", 4), 4.0)
+        self.assertEqual(driver.plan_boost("unknown", 40), 4.0)       # الحدّ
+        self.assertEqual(driver.plan_boost("superhard", 0), 3.0)
+        self.assertEqual(driver.plan_boost("superhard", 1), 3.0)      # الأكبر من الاثنين
+        self.assertEqual(driver.plan_boost("superhard", 9), 4.0)
+        self.assertEqual(driver.plan_boost("unknown", -3), 1.0)       # عدّاد غريب لا يُنقص
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

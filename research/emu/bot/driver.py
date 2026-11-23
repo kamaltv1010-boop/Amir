@@ -88,6 +88,9 @@ CFG = {
     "level_max_min": _env("BOT_LEVEL_MAX_MIN", 30.0, float),
     "plan_sec": _env("BOT_PLAN_SEC", 1.6, float),
     "superhard_plan_x": _env("BOT_SUPERHARD_PLAN_X", 3.0, float),  # مضاعف وقت التخطيط وعقده في المراحل الصعبة جداً
+    # كل «Give Up» في المرحلة نفسها يزيد التفكير خطوة حتى الحدّ (المرحلة 107 انسدّت أربع مرات بالميزانية العادية)
+    "fail_plan_step": _env("BOT_FAIL_PLAN_STEP", 0.75, float),
+    "fail_plan_max": _env("BOT_FAIL_PLAN_MAX", 4.0, float),
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
     # الثمنان حدّان أدنى: المقروء من الزرّ يُعتمد إن زاد عليهما فقط (قراءة «Play On 900» قد تُسقط صفراً فتصير 90)
     "refill_price": _env("BOT_REFILL_PRICE", 900, int),     # ثمن ملء الأرواح الأدنى (زرّ «Refill»)
@@ -97,6 +100,16 @@ CFG = {
     "play_on_fails": _env("BOT_PLAY_ON_FAILS", 2, int),     # «Play On» في مرحلة عادية بعد هذا العدد من «Give Up» فيها
 }
 BOOSTER_DEFAULT = {"undo": (144, 854), "shuffle": (236, 854), "add": (328, 854)}
+
+
+def plan_boost(badge, give_ups):
+    """مضاعف وقت التخطيط وعقده: 3 في الصعبة جداً، و1 + 0.75 لكل «Give Up» سابق في المرحلة نفسها حتى 4 (الأكبر منهما).
+    الإخفاق المتكرّر في مرحلة يعني أن الميزانية العادية لا تكفيها، وانتظار روح (15 دقيقة) أغلى بكثير من ثوانٍ من التفكير."""
+    base = CFG["superhard_plan_x"] if badge == "superhard" else 1.0
+    extra = min(CFG["fail_plan_max"], 1.0 + CFG["fail_plan_step"] * max(0, int(give_ups or 0)))
+    return max(base, extra)
+
+
 NOVEL_DIST = 28        # بصمة 256 بت: نوافذ الفوز بينها ≤32، والشاشات المختلفة ≥73
 PUB_DIR = Path(os.environ.get("BOT_PUB_DIR", "/tmp/bot_pub"))   # شجرة git منفصلة للنشر
 STATE_FILE = Path(os.environ.get("BOT_STATE_FILE", "/tmp/bot_state.json"))   # عدّادات السياسات عبر أمر «update»
@@ -1764,8 +1777,9 @@ class Bot:
         key = solver.state_key(stp)
         if not (lv.plan and lv.plan_key == key):
             info = {}
-            # الصعبة جداً: ثلاثة أضعاف الوقت والعقد (البوت ينتظر الأرواح أكثر مما يفكّر، والمرحلة 99 تنسدّ في آخر كل محاولة)
-            boost = CFG["superhard_plan_x"] if lv.badge == "superhard" else 1.0
+            # الصعبة جداً: ثلاثة أضعاف الوقت والعقد (البوت ينتظر الأرواح أكثر مما يفكّر، والمرحلة 99 تنسدّ في آخر كل محاولة)،
+            # وكل «Give Up» في المرحلة نفسها يزيده (plan_boost)
+            boost = plan_boost(lv.badge, self.level_fails.get(lv.n, 0))
             lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), avoid=lv.visited,
                                   time_limit=CFG["plan_sec"] * boost, max_nodes=int(40000 * boost), info=info)
             lv.plan_key = key
