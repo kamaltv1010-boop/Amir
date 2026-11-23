@@ -1,10 +1,10 @@
 done 39
 الحالة: يلعب
-مراحل مكتملة: 6
-الوقت: 70 دقيقة من 300
-آخر شاشة: level
-الشاشات: {'button': 24, 'unknown': 832, 'level': 358, 'close': 8}
-صور محفوظة: 72/900، شاشات جديدة: 38
-المرحلة الحالية: 105 (حركات 9، مخفي 7، إخفاقات 0، أدوات -، 0.7 دقيقة)
-الحالة المقروءة: [blue]/4 [?,brown,brown]/4 [pink,pink,pink]/4 [?,?,purple,purple]/4 [yellow,yellow,red]/4 [red,cyan,red]/4 [cyan,pink,orange,orange]/4 [brown,purple,cyan,cyan]/4 [blue,blue]/4 [green,green]/4 [brown,yellow,orange,lavender]/4 [?,?,lavender,lavender]/4 [?,?,red]/4
+مراحل مكتملة: 8
+الوقت: 75 دقيقة من 300
+آخر شاشة: unknown
+الشاشات: {'button': 28, 'unknown': 836, 'level': 431, 'close': 9}
+صور محفوظة: 78/900، شاشات جديدة: 41
+المرحلة الحالية: 106 (حركات 38، مخفي 0، إخفاقات 0، أدوات -، 3.0 دقيقة)
+الحالة المقروءة: []/4 [orange,orange,orange,orange]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/16 [purple,purple,purple,purple]/4 [pink,pink,pink,pink]/4 [lavender,lavender,lavender,lavender]/4 [red,red,red,red]/4 [yellow,yellow,yellow,yellow]/4 []/4 [cyan,cyan,cyan,cyan]/4 [blue,blue,blue,blue]/4 [brown]/4 [green,green,green,green]/4
 العملات: 1050، «Give Up» لكل مرحلة: {99: 1}
