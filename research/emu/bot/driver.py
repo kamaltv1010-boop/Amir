@@ -12,8 +12,12 @@
   unknown: لقطة unknown_* (محدودة)، ثم انتظار/رجوع/نقر الوسط (لا فوق زرّ يصرف العملات)/إعادة تشغيل اللعبة. ومنها
            «No Available Moves»: «Give Up» (ثم محاولة جديدة)، أو «Play On» (قارورة بـ 900) مرة في المحاولة إن كفى الرصيد
            ثمنه واحتياطي «Refill» بعده (900) وكانت المرحلة صعبة أو صعبة جداً بعنوانها أو أُخفقت مرتين في هذا التشغيل.
+           والإعلانات المفروضة (on_ad: الأسود، والتجريبي الأبيض AppLovin بعد عدّه التنازلي) تُغلق فقط بالرجوع أو زرّ X في زاوية
+           علوية ثم إعادة اللعبة بعد مهلة؛ وشعار «MAGIC SORT» فوق لوحة معتمة (on_logo) يُنتظر ثم رجوع ثم إعادة اللعبة.
 رقم المرحلة من عنوانها (العادية والصعبة والصعبة جداً)؛ ولا «فوز» بتغيّر اللوحة وحده إلا إن ظنّ البوت اللغز محلولاً: غير
-ذلك باب انفتح (استمرار المحاولة) أو إعادة المرحلة نفسها. الستائر والأكياس قوارير محجوبة ("blocked") لا يلمسها الحلّال.
+ذلك باب انفتح (استمرار المحاولة) أو إعادة المرحلة نفسها. الستائر والأكياس والجبس قوارير محجوبة ("blocked") لا يلمسها الحلّال؛
+وانكسار الجبس (حين تكتمل جارته) يجعل القالب قارورة ظاهرة في خانته: استمرار للمحاولة نفسها («الجبس انكسر»)، وقبله (ثوانٍ بعد
+إكمال الجارة) لا أدوات ولا حركة عشوائية ولا «إعادة» حين لا حركة، بل انتظار وإعادة تصوير.
 كل شاشة غير اللغز لم يُرَ شكلها من قبل (بصمة إدراكية) تُحفظ new_*.jpg، وأول لقطة
 لكل مرحلة L{n:03d}_start.jpg مع حالتها في السجل.
 
@@ -92,6 +96,16 @@ CFG = {
     "fail_plan_step": _env("BOT_FAIL_PLAN_STEP", 0.75, float),
     "fail_plan_max": _env("BOT_FAIL_PLAN_MAX", 4.0, float),
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
+    # بعد حركة تكمل جارة جبس: ينكسر الجبس بعد ثوانٍ (التشغيل التاسع: يظهر مكسوراً بعد 6..7 ث من النقر، وقائماً بعد 4 ث)
+    "plaster_wait": _env("BOT_PLASTER_WAIT", 4.0, float),
+    "plaster_grace": _env("BOT_PLASTER_GRACE", 10.0, float),  # «عالقة» قبل هذا بعد إكمال الجارة: انتظار الجبس لا الأدوات
+    # الإعلان التجريبي الأبيض (AppLovin): انتظار عدّه التنازلي (نحو 9..15 ث) قبل X أو الرجوع، وإعادة اللعبة إن بقي بعد المهلة
+    "ad_wait_sec": _env("BOT_AD_WAIT_SEC", 12.0, float),
+    "ad_max_sec": _env("BOT_AD_MAX_SEC", 45.0, float),
+    "ad_black_max_sec": _env("BOT_AD_BLACK_MAX_SEC", 90.0, float),   # الإعلان الأسود (يُغلق برجوع واحد عادة)
+    # شعار «MAGIC SORT» فوق لوحة معتمة بعد الفوز: انتظار بلا لمس، ثم رجوع مرة، ثم إعادة اللعبة بعد مهلة أخرى
+    "logo_wait_sec": _env("BOT_LOGO_WAIT_SEC", 40.0, float),
+    "logo_back_sec": _env("BOT_LOGO_BACK_SEC", 15.0, float),
     # الثمنان حدّان أدنى: المقروء من الزرّ يُعتمد إن زاد عليهما فقط (قراءة «Play On 900» قد تُسقط صفراً فتصير 90)
     "refill_price": _env("BOT_REFILL_PRICE", 900, int),     # ثمن ملء الأرواح الأدنى (زرّ «Refill»)
     "play_on_price": _env("BOT_PLAY_ON_PRICE", 900, int),   # ثمن «Play On» (قارورة) الأدنى
@@ -356,7 +370,7 @@ class Vision:
                     d["keys"] = ks
                     if t.get("key_colors"):
                         d["key_colors"] = [str(c) for c in t["key_colors"]]
-                if t.get("blocked"):                     # تحت ستارة أو كيس: محتواها مجهول ولا تُلمس
+                if t.get("blocked"):                     # تحت ستارة أو كيس أو جبس: محتواها مجهول ولا تُلمس
                     d["blocked"] = True
                     d["layers"] = []
                     d.pop("keys", None)
@@ -364,6 +378,12 @@ class Vision:
                         d["cover"] = str(t["cover"])
                     if t.get("cover_color"):
                         d["cover_color"] = str(t["cover_color"])
+                bx = t.get("box")
+                if isinstance(bx, (list, tuple)) and len(bx) == 4:
+                    try:
+                        d["box"] = [int(v) for v in bx]  # صفّ القارورة الطويلة وجارات الجبس في الحلّال
+                    except (TypeError, ValueError):
+                        pass
                 tubes.append(d)
             except (KeyError, TypeError, ValueError):
                 return None
@@ -539,8 +559,44 @@ def color_counts(st):
 
 
 def covered(st) -> bool:
-    """في اللوحة قوارير مغطّاة (ستارة/كيس) أو أبواب: ترتيب الظاهر وحده ليس فوزاً."""
+    """في اللوحة قوارير مغطّاة (ستارة/كيس/جبس) أو أبواب: ترتيب الظاهر وحده ليس فوزاً."""
     return bool(st.get("doors")) or any(t.get("blocked") for t in st["tubes"])
+
+
+COVER_AR = {"curtain": "ستارة", "bag": "كيس", "plaster": "جبس"}
+
+
+def cover_summary(st) -> str:
+    """«ستارة 2، جبس 4» لأنواع القوارير المغطّاة في اللوحة (للسجل)."""
+    c = Counter(COVER_AR.get(t.get("cover"), "غطاء") for t in st["tubes"] if t.get("blocked"))
+    return "، ".join("%s %d" % kv for kv in sorted(c.items()))
+
+
+def plaster_breaks(old, new):
+    """فهارس قوالب جبس انكسرت بين لوحتين بالعدد نفسه من القوارير: خانة كانت جبساً في `old` وصارت قارورة ظاهرة في `new` في
+    الموضع نفسه تقريباً (الفهارس لا تتغيّر: القالب قارورة في ترتيب القراءة). العدد المختلف (قالب لم يُقرأ ثم ظهرت قارورته) يمرّ
+    بمسار الأبواب (door_map أو slot_map)."""
+    to, tn = old["tubes"], new["tubes"]
+    if len(to) != len(tn):
+        return []
+    return [k for k, (a, b) in enumerate(zip(to, tn))
+            if a.get("blocked") and a.get("cover") == "plaster" and not b.get("blocked") and _near(a, b)]
+
+
+def full_tube(t) -> bool:
+    """قارورة ظاهرة ممتلئة بلون واحد معروف (مكتملة: تُسدّ بسدادة ذهبية، وتكسر الجبس المجاور إن كانت كاسرته)."""
+    L = t.get("layers") or []
+    try:
+        return not t.get("blocked") and bool(L) and len(L) >= int(t["cap"]) and len(set(L)) == 1 and L[0] != "?"
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def mask_tubes(st, ref, idx):
+    """نسخة من `st` تعود فيها القوارير `idx` كما في `ref` (جبس انكسر بعد الحركة: يُحكم على الحركة نفسها بلا طبقاته الجديدة)."""
+    out = dict(st)
+    out["tubes"] = [ref["tubes"][k] if k in idx else t for k, t in enumerate(st["tubes"])]
+    return out
 
 
 def compatible(old, new, extra_tubes=0) -> bool:
@@ -769,6 +825,10 @@ class LevelCtx:
         self.memory = {}               # (قارورة، موضع) -> لون طبقة مخفية انكشفت
         self.doors_opened = 0          # أبواب انفتحت في هذه المحاولة (قوارير ظهرت بلا إعادة)
         self.door_wait = 0
+        self.plasters_broken = 0       # قوالب جبس انكسرت في هذه المحاولة
+        self.plaster_expect = 0.0      # وقت آخر حركة أكملت جارة جبس (ينكسر بعدها بثوانٍ؛ يُصفَّر حين يُرى الانكسار)
+        self.plaster_waits = 0         # إعادات تصوير «عالقة» بانتظار جبس اكتملت جارته (تُصفَّر بإكمال جارة أو انكسار)
+        self.plaster_seen = False      # قُرئ قالب جبس في هذه المرحلة (وسم «الجبس انكسر» لقارورة جديدة بلا قالب مقروء)
         self.badge = None              # نوع المرحلة من عنوانها: normal | hard | superhard
         self.play_ons = 0              # «Play On» (قارورة بالعملات) في هذه المحاولة
 
@@ -827,6 +887,12 @@ class Bot:
         self.tab_home_taps = 0         # ضغطات «Home» في الشاشة المجهولة الحالية (الثالثة تلمس موضع «Level N»)
         self.last_ad_act = 0.0          # آخر محاولة لإغلاق إعلان بملء الشاشة
         self.ad_acts = 0
+        self.ad_kind = None             # "black" | "white" للإعلان الظاهر الآن
+        self.ad_since = 0.0             # منذ متى يظهر هذا الإعلان (لمهلة إعادة التشغيل)
+        self.ad_last = None             # آخر لقطة فيها إعلان (فجوة أكثر من 20 ث = إعلان جديد)
+        self.logo_since = 0.0           # شعار «MAGIC SORT» فوق لوحة معتمة: منذ متى
+        self.logo_last = None
+        self.logo_backs = 0
         self.last_backup = time.time()  # آخر نسخة احتياطية لبيانات اللعبة (backup_app)
         self.final_backup_done = False
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
@@ -1619,7 +1685,12 @@ class Bot:
                  % (n, {"hard": " (صعبة)", "superhard": " (صعبة جداً)"}.get(self.lv.badge, ""), len(st["tubes"]),
                     sorted(Counter(t["cap"] for t in st["tubes"] if not t.get("blocked")).items()),
                     sum(1 for t in st["tubes"] for c in t["layers"] if c == "?"),
-                    "، مغطّاة %d (ستارة/كيس)" % nb if nb else ""))
+                    "، مغطّاة %d (%s)" % (nb, cover_summary(st)) if nb else ""))
+        br = solver.plaster_breakers(st)
+        if br:
+            self.log("جبس المرحلة %d: %s" % (n, "؛ ".join(
+                "القالب %d ينكسر بامتلاء %s" % (p, "، ".join("القارورة %d" % k for k in ks) if ks else "جار لم ينكشف بعد")
+                for p, ks in sorted(br.items()))))
         self.log("حالة المرحلة %d: %s" % (n, json.dumps(compact_state(st), ensure_ascii=False)))
 
     def on_level(self, fr):
@@ -1699,6 +1770,9 @@ class Bot:
         lv.active = True
         key = solver.state_key(st)
 
+        # ---- جبس انكسر (اكتملت جارته): القالب صار قارورة ظاهرة في خانته بالفهرس نفسه، استمرار للمحاولة نفسها
+        broke = plaster_breaks(lv.last_state, st)
+
         # ---- التحقق من الحركة السابقة
         moved = lv.pending is not None
         verdict = None
@@ -1708,7 +1782,9 @@ class Bot:
                 lv.pending = (prev, mv, expected, retries + 1)
                 time.sleep(0.7)
                 return self.grab()
-            verdict, revealed = compare(prev, expected, with_memory(st, lv.memory))
+            # طبقات القارورة التي ظهرت من الجبس جديدة: يُحكم على الحركة بلوحة تبقى فيها تلك الخانة جبساً كما كانت
+            cur = mask_tubes(st, prev, set(broke)) if broke and len(st["tubes"]) == len(prev["tubes"]) else st
+            verdict, revealed = compare(prev, expected, with_memory(cur, lv.memory))
             if verdict == "ok":
                 for (k, p, c) in revealed:
                     lv.memory[(k, p)] = c
@@ -1733,9 +1809,29 @@ class Bot:
                     lv.plan = None
                 if verdict == "different":
                     self.log("الحالة بعد %s تختلف عن المتوقَّع؛ إعادة التخطيط" % (mv,))
-        if len(st["tubes"]) != len(lv.last_state["tubes"]) and lv.memory:
-            # عدد القوارير تغيّر بلا باب (قارورة لم تُقرأ في لقطة): الذاكرة بفهارس اللوحة الجديدة، وإلا طُبّقت على غير قواريرها
+        blk_old = [bool(t.get("blocked")) for t in lv.last_state["tubes"]]
+        blk_new = [bool(t.get("blocked")) for t in st["tubes"]]
+        # غطاء انكشف في خانته (جبس انكسر، ستارة انزاحت، كيس انفجر) لا يغيّر الفهارس: تبقى الذاكرة نفسها (مشتركة مع
+        # memory_by_sig فتبقى ما ينكشف بعده للمحاولة التالية بعد «Give Up»)
+        same = {k for k, (a, b) in enumerate(zip(lv.last_state["tubes"], st["tubes"]))
+                if a.get("blocked") and not b.get("blocked") and _near(a, b)}
+        shifted = len(blk_old) != len(blk_new) or any(a != b and k not in same
+                                                       for k, (a, b) in enumerate(zip(blk_old, blk_new)))
+        if shifted and lv.memory:
+            # عدد القوارير تغيّر بلا باب (قارورة لم تُقرأ في لقطة)، أو تبدّلت المغطّاة بغير انكشاف في خانتها (قالب لم يُقرأ وآخر
+            # انكسر): الذاكرة بفهارس اللوحة الجديدة بالموضع، وإلا طُبّقت على غير قواريرها
             lv.memory = remap_memory(lv.memory, slot_map(lv.last_state, st), st)
+        if any(t.get("blocked") and t.get("cover") == "plaster" for t in st["tubes"]):
+            lv.plaster_seen = True
+        if broke:
+            lv.plasters_broken += len(broke)
+            lv.plaster_expect, lv.plaster_waits = 0.0, 0      # الانكسار المنتظَر حدث (لا انتظار بعده لقالب آخر بلا كاسرة مكتملة)
+            lv.plan = None                      # قارورة جديدة ظاهرة (ومعها كاسرات جديدة ربما): تخطيط من جديد
+            left = sum(1 for t in st["tubes"] if t.get("blocked") and t.get("cover") == "plaster")
+            self.log("الجبس انكسر في المرحلة %d: %s؛ باقٍ %d قالب، استمرار المحاولة نفسها بلا إعادة"
+                     % (lv.n, "، ".join("القارورة %d (%d،%d) ← [%s]" % (k, st["tubes"][k]["x"], st["tubes"][k]["y"],
+                                                                        ",".join(st["tubes"][k]["layers"])) for k in broke),
+                        left))
         lv.last_state = st
         stp = with_memory(st, lv.memory)
         lv.visited.add(key)
@@ -1753,8 +1849,15 @@ class Bot:
             time.sleep(0.6)
             return self.grab()
 
-        # ---- محلولة؟ ننتظر نافذة الفوز (أو انكشاف المغطّاة والأبواب: ترتيب الظاهر وحده ليس فوزاً)
-        if solver.is_solved(stp):
+        # ---- محلولة؟ ننتظر نافذة الفوز (أو انكشاف المغطّاة والأبواب: ترتيب الظاهر وحده ليس فوزاً). إلا جبساً قائماً تكتمل
+        # جارته بخطة (طويلة أحادية غير مكتملة تُصبّ في كاسرة فارغة؛ المكتملة مسدودة): يُخطَّط له بدل الانتظار
+        solved = solver.is_solved(stp)
+        if solved and any(t.get("blocked") and t.get("cover") == "plaster" for t in st["tubes"]):
+            pinfo = {}
+            if solver.plan(stp, time_limit=0.5, max_nodes=10000, info=pinfo) and pinfo.get("mode") == "plaster":
+                solved = False
+                lv.solved_since = None
+        if solved:
             lv.maybe_won = not covered(st)
             if lv.solved_since is None:
                 lv.solved_since = time.time()
@@ -1825,9 +1928,46 @@ class Bot:
         lv.bad.clear()
         lv.last_state = st
         nk = sum(len(t.get("keys") or ()) for t in st["tubes"])
-        self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة"
-                 % (lv.n, old_n, len(st["tubes"]), len(mem), nk))
+        # جبس انكسر وقالبه لم يُقرأ قبل ذلك (قارورة جديدة بين القديمة)، أو انكسر في خانته مع تغيّر آخر في اللوحة
+        broke = [mp[k] for k, t in enumerate(ref["tubes"]) if k in mp and t.get("blocked") and t.get("cover") == "plaster"
+                 and not st["tubes"][mp[k]].get("blocked")]
+        newk = [k for k in range(len(st["tubes"])) if k not in set(mp.values())]
+        # المغطّاة التي عادت إلى القراءة ليست انكساراً، ولا القارورة الفارغة (أداة «قارورة إضافية» أو «Play On»)
+        newk_open = [k for k in newk if not st["tubes"][k].get("blocked") and st["tubes"][k]["layers"]]
+        # والقارورة الجديدة جبس لم يُقرأ قالبه فقط بلا مفتاح ولا باب في اللوحة السابقة (وإلا فهي خلف باب ولو في المرحلة قوالب)،
+        # و«بجوار مكتملة» في مراحل الجبس وحدها (قالب قُرئ فيها، أو من المرحلة 100): قارورة فاتت قراءتها ثم عادت ليست جبساً
+        doorish = bool(ref.get("doors")) or any(t.get("keys") for t in ref["tubes"])
+        missed = newk_open if newk_open and not doorish and (
+            any(t.get("cover") == "plaster" for t in ref["tubes"]) or time.time() - lv.plaster_expect < 30
+            or ((lv.plaster_seen or lv.n >= 100) and self.beside_complete(ref, st, newk_open))) else []
+        if broke or missed:
+            lv.plasters_broken += len(broke) + len(missed)
+            lv.plaster_expect, lv.plaster_waits = 0.0, 0      # الانكسار المنتظَر حدث
+            self.log("الجبس انكسر في المرحلة %d (%s): %d → %d قارورة، ذاكرة %d طبقة؛ استمرار بلا إعادة"
+                     % (lv.n, "، ".join(["القارورة %d في خانة قالب" % k for k in broke]
+                                        + ["القارورة %d جديدة (قالب لم يُقرأ؟)" % k for k in missed]
+                                        + ["القارورة %d جديدة (باب انفتح؟)" % k for k in newk_open if k not in missed]),
+                        old_n, len(st["tubes"]), len(mem)))
+        elif newk and not newk_open and any(st["tubes"][k].get("blocked") for k in newk):
+            self.log("المرحلة %d: قارورة مغطّاة عادت إلى القراءة (%s، %d → %d قارورة)؛ استمرار بلا إعادة"
+                     % (lv.n, cover_summary({"tubes": [st["tubes"][k] for k in newk]}), old_n, len(st["tubes"])))
+        else:
+            self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة"
+                     % (lv.n, old_n, len(st["tubes"]), len(mem), nk))
         self.log("حالة المرحلة %d بعد الباب: %s" % (lv.n, json.dumps(compact_state(st), ensure_ascii=False)))
+
+    @staticmethod
+    def beside_complete(ref, st, newk) -> bool:
+        """قارورة جديدة بجوار قارورة مكتملة في صفّها (قالب جبس لم تقرأه الرؤية انكسر)، حين لا مفاتيح ولا أبواب في اللوحة السابقة."""
+        if ref.get("doors") or any(t.get("keys") for t in ref["tubes"]):
+            return False
+        try:
+            probe = {"tubes": [dict(t, blocked=True, cover="plaster", layers=[]) if k in newk else t
+                               for k, t in enumerate(st["tubes"])]}
+            adj = solver.plaster_breakers(probe)
+        except Exception:                               # noqa: BLE001
+            return False
+        return any(full_tube(st["tubes"][j]) for k in newk for j in adj.get(k, []))
 
     def door_remap(self, st):
         """قوارير أكثر في المرحلة نفسها ولم تطابق door_map (باب كبير وغطاء معاً، صبّ أثناء الانفتاح، مواضع تغيّرت): استمرار
@@ -1868,6 +2008,11 @@ class Bot:
             if solver.key_freed(st, i, j):
                 wait += CFG["key_wait"]        # المفتاح يطير إلى قفله ثم ينفتح الباب: لا تُقرأ اللوحة أثناء ذلك
                 self.log("الحركة %s تحرّر مفتاحاً؛ انتظار الباب" % ((i, j),))
+            elif solver.breaker_completed(st, i, j):
+                wait += CFG["plaster_wait"]    # تمتلئ الجارة ثم ينكسر الجبس بعد ثوانٍ: لا تُقرأ اللوحة أثناء ذلك
+                lv.plaster_expect = time.time()
+                lv.plaster_waits = 0
+                self.log("الحركة %s تكمل جارة الجبس؛ انتظار انكساره" % ((i, j),))
         except Exception:
             pass
         time.sleep(wait)
@@ -1880,8 +2025,31 @@ class Bot:
             self.stuck_total += 1
             self.out.save_jpg("stuck_L%03d_%d_%s.jpg" % (lv.n, lv.stuck_shots, tag), fr.pil)
 
+    def plaster_pending(self, st) -> bool:
+        """قالب جبس قائم يُنتظر انكساره: حركة أكملت جارته منذ أقل من plaster_grace ثانية، أو له كاسرة مكتملة الآن."""
+        lv = self.lv
+        if lv is None or not any(t.get("blocked") and t.get("cover") == "plaster" for t in st["tubes"]):
+            return False
+        if time.time() - lv.plaster_expect < CFG["plaster_grace"]:
+            return True
+        try:
+            br = solver.plaster_breakers(st)
+        except Exception:                               # noqa: BLE001
+            return False
+        return any(full_tube(st["tubes"][k]) for ks in br.values() for k in ks)
+
     def stuck(self, fr, st, why):
         lv = self.lv
+        # جبس قائم اكتملت جارته منذ قليل أو جارته مكتملة الآن: ينكسر وحده بعد ثوانٍ (3..7 في التشغيل التاسع) فتظهر قارورته، فلا أداة
+        # ولا حركة عشوائية ولا «إعادة» قبله بل إعادة تصوير بعدّاد محدود (الأساس كان ينجو صدفةً بإعادة تصوير «الأعداد غير المنطقية»)
+        if lv.plaster_waits < 6 and self.plaster_pending(st):
+            lv.plaster_waits += 1
+            lv.fails = 0
+            lv.plan = None
+            self.log("المرحلة %d بلا حركة (%s) وجارة الجبس مكتملة ولم ينكسر بعد: انتظار وإعادة التصوير بلا أدوات (%d)"
+                     % (lv.n, why, lv.plaster_waits))
+            time.sleep(1.0)
+            return self.grab()
         lv.stuck += 1
         lv.fails = 0
         self.log("المرحلة %d عالقة (%s): %s" % (lv.n, why, solver.describe(st)))
@@ -2119,6 +2287,81 @@ class Bot:
             time.sleep(1.0)
         return None
 
+    def relaunch(self, why):
+        """إيقاف اللعبة ثم تشغيلها (تُفتح المرحلة الجارية نفسها أو الواجهة)."""
+        self.log(why)
+        self.dev.force_stop()
+        time.sleep(2)
+        self.dev.launch()
+        self.unknown_streak = 0
+        time.sleep(25)
+        return None
+
+    def on_ad(self, fr, kind):
+        """إعلان بملء الشاشة فرضته اللعبة (البوت لا يطلب إعلاناً أبداً: لا «+1 Life» ولا «Free Lives» ولا «Install»).
+        الأسود (is_ad): رجوع ثم زاويتا الإغلاق كما كان. الأبيض التجريبي (AppLovin MAX، is_white_ad): زرّ X في زاوية علوية
+        (find_ad_close: يظهر بعد العدّ التنازلي) يُلمس متى ظهر، وإلا رجوع بعد مهلة العدّ (ad_wait_sec)، كل 5 ثوانٍ على الأكثر؛
+        لا يُلمس وسطه ولا «Install».
+        إن بقي الإعلان أكثر من ad_max_sec (الأبيض) أو ad_black_max_sec (الأسود) تُعاد اللعبة. (التشغيل التاسع: الأبيض بقي حتى
+        مهلة الثلاث دقائق بنقرات تصعيد في وسطه، وشاشة تعليم معتمة ظُنّت إعلاناً أسود فدام الرجوع 25 دقيقة.)"""
+        now = time.time()
+        if self.ad_last is None or now - self.ad_last > 20 or self.ad_kind != kind:
+            self.ad_since, self.ad_acts, self.ad_kind = now, 0, kind
+            if kind == "white":
+                self.log("إعلان تجريبي أبيض (AppLovin): انتظار عدّه التنازلي ثم زرّ الإغلاق أو الرجوع (لا «Install» أبداً)")
+        self.ad_last = now
+        el = now - self.ad_since
+        if el > (CFG["ad_max_sec"] if kind == "white" else CFG["ad_black_max_sec"]):
+            self.ad_last = None
+            return self.relaunch("الإعلان %s باقٍ منذ %.0f ثانية؛ إعادة تشغيل اللعبة"
+                                 % ("التجريبي الأبيض" if kind == "white" else "الأسود", el))
+        if kind == "white":
+            # زرّ X في زاوية علوية يعني أن العدّ انتهى: يُلمس متى ظهر؛ والرجوع بعد مهلة العدّ فقط
+            x = self.vis._pt(self.vis._safe("find_ad_close", fr.arr)) if el >= 2 else None
+            if (x or el >= CFG["ad_wait_sec"]) and now - self.last_ad_act > 5:
+                self.last_ad_act = now
+                self.ad_acts += 1
+                if x:
+                    self.log("الإعلان التجريبي: زرّ الإغلاق X في الزاوية %s (%d)" % (x, self.ad_acts))
+                    self.tap(x)
+                else:
+                    self.log("الإعلان التجريبي: رجوع (%d)" % self.ad_acts)
+                    self.dev.key(4)
+        elif now - self.last_ad_act > 5:
+            # الأسود: الرجوع يغلقه عادة بعد عدّه التنازلي، وإلا زرّ الإغلاق الصغير في زاوية علوية
+            self.last_ad_act = now
+            self.ad_acts += 1
+            k = self.ad_acts % 3
+            if self.ad_acts == 1 or k == 1:
+                self.log("إعلان بملء الشاشة: رجوع (%d)" % self.ad_acts)
+                self.dev.key(4)
+            else:
+                self.tap((455, 18) if k == 2 else (18, 18))
+        self.unknown_streak = 0
+        time.sleep(1.5)
+        return None
+
+    def on_logo(self, fr):
+        """شعار «MAGIC SORT» فوق لوحة معتمة (جزء من احتفال الفوز يزول عادة في ثوانٍ): لا لمس حتى logo_wait_sec، ثم رجوع مرة
+        واحدة، ثم إعادة تشغيل اللعبة بعد logo_back_sec أخرى. (التشغيل التاسع: بقي مرتين حتى مهلة الثلاث دقائق، ومعها ثلاث لمسات
+        «سهم تعليم» كاذبة على حروفه الصفراء.)"""
+        now = time.time()
+        if self.logo_last is None or now - self.logo_last > 20:
+            self.logo_since, self.logo_backs = now, 0
+            self.log("شعار «MAGIC SORT» فوق لوحة معتمة (بعد الفوز): انتظار حتى %.0f ثانية بلا لمس" % CFG["logo_wait_sec"])
+        self.logo_last = now
+        el = now - self.logo_since
+        if el >= CFG["logo_wait_sec"] + CFG["logo_back_sec"]:
+            self.logo_last = None
+            return self.relaunch("الشعار باقٍ منذ %.0f ثانية رغم الرجوع؛ إعادة تشغيل اللعبة" % el)
+        if el >= CFG["logo_wait_sec"] and self.logo_backs == 0:
+            self.logo_backs = 1
+            self.log("الشعار باقٍ منذ %.0f ثانية: رجوع مرة واحدة" % el)
+            self.dev.key(4)
+        self.unknown_streak = 0
+        time.sleep(2)
+        return None
+
     def on_no_moves(self, fr, gu):
         """نافذة «No Available Moves»: «Give Up» افتراضياً (تُعاد المرحلة وتضيع روح). «Play On» الأخضر (قارورة إضافية
         بـ 900 عملة) فقط إن كفى الرصيد المقروء ثمنه واحتياطي ملء الأرواح بعده (play_on_reserve)، وكانت المرحلة صعبة أو صعبة
@@ -2207,27 +2450,20 @@ class Bot:
         if self.loading_since is not None:
             self.log("انتهى التحميل بعد %.0f ثانية" % (now - self.loading_since))
             self.loading_since = None
-        # إعلان بملء الشاشة بعد مرحلة (أسود وزرّ «Install»): الرجوع يغلقه عادة بعد عدّه التنازلي، وإلا زرّ الإغلاق الصغير في
-        # زاوية علوية (لا يُلمس «Install» أبداً)
-        if self.vis._safe("is_ad", fr.arr, default=False):
-            if now - self.last_ad_act > 5:
-                self.last_ad_act = now
-                self.ad_acts += 1
-                k = self.ad_acts % 3
-                if self.ad_acts == 1 or k == 1:
-                    self.log("إعلان بملء الشاشة: رجوع (%d)" % self.ad_acts)
-                    self.dev.key(4)
-                else:
-                    self.tap((455, 18) if k == 2 else (18, 18))
-            self.unknown_streak = 0
-            time.sleep(1.5)
-            return None
+        # إعلان بملء الشاشة فرضته اللعبة بعد مرحلة (لا يطلب البوت إعلاناً أبداً): الأسود بزرّ «Install»، أو التجريبي الأبيض
+        # (AppLovin MAX). لا يُلمس «Install» ولا وسط الإعلان أبداً (on_ad)
+        white = bool(self.vis._safe("is_white_ad", fr.arr, default=False))
+        if white or self.vis._safe("is_ad", fr.arr, default=False):
+            return self.on_ad(fr, "white" if white else "black")
         self.ad_acts = 0
         # «No Available Moves»: «Give Up» ثم تُعاد المرحلة، إلا ما تقرّره on_no_moves («Play On» بالعملات)
         gu = self.vis._pt(self.vis._safe("find_give_up", fr.arr))
         if gu:
             self.unknown_streak = 0
             return self.on_no_moves(fr, gu)
+        # شعار «MAGIC SORT» فوق لوحة معتمة (احتفال الفوز): انتظار بلا لمس، لا «سهم» على حروفه الصفراء ولا مهلة الثلاث دقائق
+        if self.vis._safe("is_logo_overlay", fr.arr, default=False):
+            return self.on_logo(fr)
         if self.unknown_streak == 0:
             self.unknown_since = now
             self.unknown_acts = 0
@@ -2407,10 +2643,13 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
                     plans["stuck"] += 1
                     sim = " (لا حركة)"
                 nb = sum(1 for t_ in st["tubes"] if t_.get("blocked"))
+                npl = sum(1 for t_ in st["tubes"] if t_.get("blocked") and t_.get("cover") == "plaster")
                 if nb:
                     plans["covered"] += 1
-                line += " رقم=%s نوع=%s قوارير=%d سعات=%s مخفي=%d مغطّاة=%d تحذيرات=%d خطة=%d %s %.0fms%s" % (
-                    vis.level_number(fr), vis.badge(fr), len(st["tubes"]), dict(caps), hid, nb,
+                if npl:
+                    plans["plaster"] = plans.get("plaster", 0) + 1
+                line += " رقم=%s نوع=%s قوارير=%d سعات=%s مخفي=%d مغطّاة=%d جبس=%d تحذيرات=%d خطة=%d %s %.0fms%s" % (
+                    vis.level_number(fr), vis.badge(fr), len(st["tubes"]), dict(caps), hid, nb, npl,
                     len(st["warnings"]), len(mv), info.get("mode"), ms, sim)
                 if verbose:
                     line += "\n      " + solver.describe(st) + "\n      moves=" + str(mv[:12])
@@ -2429,6 +2668,14 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
             if gu:
                 po = vis.play_on(fr)
                 line += " لا حركات: GiveUp=%s PlayOn=%s ثمن=%s عملات=%s" % (gu, po and po[0], po and po[1], vis.coins(fr))
+            if vis._safe("is_white_ad", fr.arr, default=False):
+                plans["white_ad"] = plans.get("white_ad", 0) + 1
+                line += " إعلان-أبيض X=%s" % (vis._pt(vis._safe("find_ad_close", fr.arr)),)
+            elif vis._safe("is_ad", fr.arr, default=False):
+                line += " إعلان-أسود"
+            elif vis._safe("is_logo_overlay", fr.arr, default=False):
+                plans["logo"] = plans.get("logo", 0) + 1
+                line += " شعار-MAGIC-SORT"
         line += "  [%.0fms]" % ((time.perf_counter() - t) * 1000)
         print(line)
     print("\nالملخص: %d صورة، الأنواع %s، شاشات غير اللغز المختلفة (بصمة) %d"
@@ -2437,6 +2684,8 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
           "بلا حركة %d، فيها قوارير مغطّاة %d؛ زمن الحلّال: أقصى %.0f ms، متوسط %.0f ms"
           % (plans["level"], plans["parsed"], plans["solved"], plans["planned"], plans["solved_sim"],
              plans["stuck"], plans["covered"], max_ms, tot_ms / max(1, plans["parsed"])))
+    print("فيها جبس %d لقطة؛ إعلان تجريبي أبيض %d؛ شعار «MAGIC SORT» فوق لوحة معتمة %d"
+          % (plans.get("plaster", 0), plans.get("white_ad", 0), plans.get("logo", 0)))
     if vis.errs:
         print("أخطاء vision: %s" % dict(vis.errs))
     return 0

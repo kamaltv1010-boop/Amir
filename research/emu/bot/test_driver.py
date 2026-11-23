@@ -602,6 +602,211 @@ class TestCovers(unittest.TestCase):
         self.assertEqual(game.opened_covers, ["bag"])            # المرحلة الثانية (load يصفّر القائمة)
 
 
+class PlasterGame(FakeGame):
+    """قوالب جبس (من المرحلة 100): قارورة محجوبة ("cover": "plaster") ينكسر جبسها حين تكتمل (تمتلئ بلون واحد) قارورة ظاهرة في
+    الخانة المجاورة لها في صفّها، فتظهر بطبقاتها (ومنها المخفي) في خانتها. لمسها وهي جبس لا يفعل شيئاً (ويُعدّ خطأً).
+    levels[k][3] = فهارس القوالب. show_casts=False: الرؤية لا ترى القوالب أصلاً (كما قبل هذا الإصلاح)، فتظهر قارورتها جديدة
+    بين القديمة حين تنكسر (المواضع نفسها لا تتغيّر)."""
+
+    def __init__(self, levels, rng, show_casts=True, **kw):
+        self.show_casts = show_casts
+        super().__init__(levels, rng, **kw)
+
+    def load(self, k):
+        super().load(k)
+        lvl = self.levels[k]
+        self.plaster = set(lvl[3]) if len(lvl) > 3 else set()
+        self.broken = []
+        self.plaster_taps = getattr(self, "plaster_taps", 0)
+
+    def neighbours(self, k):
+        n = len(self.truth)
+        per = n if n <= 5 else (n + 1) // 2
+        r, c = divmod(k, per)
+        m = per if r == 0 else n - per
+        return [r * per + c + d for d in (-1, 1) if 0 <= c + d < m]
+
+    def visible(self):
+        st = super().visible()
+        tubes = []
+        for k, t in enumerate(st["tubes"]):
+            if k in self.plaster:
+                if not self.show_casts:
+                    continue
+                t.update(layers=[], blocked=True, cover="plaster")
+            tubes.append(t)
+        return {"tubes": tubes, "warnings": []}
+
+    def tap(self, x, y):
+        if self.screen == "level" and abs(y - 854) >= 35 and self.tube_at(x, y) in self.plaster:
+            self.plaster_taps += 1
+            return
+        super().tap(x, y)
+
+    def pour(self, i, j):
+        ok = super().pour(i, j)
+        for p in sorted(self.plaster):
+            if any(k not in self.plaster and len(self.truth[k]) == self.caps[k] and len(set(self.truth[k])) == 1
+                   for k in self.neighbours(p)):
+                self.plaster.discard(p)
+                self.broken.append(p)
+        return ok
+
+
+def plaster_level():
+    """ثماني قوارير في صفّين (أربع في كل صف): القالب 0 جاره الأحمر 1 (ينقصه أحمر في قمة 2)، وفيه أخضر وأصفر بثلاث طبقات
+    مخفية؛ ولا يكتمل الأخضر ولا الأصفر بلا ما في الجبس."""
+    truth = [["green", "yellow", "green", "yellow"], ["red", "red", "red"], ["blue", "blue", "blue", "red"], [],
+             ["yellow", "green", "blue"], ["green", "yellow"], [], []]
+    hidden = [[True, True, True, False], [False] * 3, [False] * 4, [], [False] * 3, [False] * 2, [], []]
+    return [4] * 8, truth, hidden, {0}
+
+
+class DelayedPlasterGame(PlasterGame):
+    """جبس ينكسر بعد `delay` ثانية من اكتمال جارته بساعة المحرّك الافتراضية (التشغيل التاسع: يظهر مكسوراً بعد 6..7 ث من النقر،
+    وقائماً بعد 4 ث)، لا لحظة الصبّ."""
+
+    def __init__(self, levels, rng, clock, delay, **kw):
+        self.clock, self.delay = clock, delay
+        super().__init__(levels, rng, **kw)
+
+    def load(self, k):
+        super().load(k)
+        self.due = {}                       # قالب -> وقت انكساره
+
+    def tick(self):
+        for p, at in sorted(self.due.items()):
+            if self.clock.time() >= at:
+                del self.due[p]
+                self.plaster.discard(p)
+                self.broken.append(p)
+
+    def visible(self):
+        self.tick()
+        return super().visible()
+
+    def tap(self, x, y):
+        self.tick()
+        super().tap(x, y)
+
+    def pour(self, i, j):
+        ok = FakeGame.pour(self, i, j)
+        for p in sorted(self.plaster):
+            if p not in self.due and any(k not in self.plaster and len(self.truth[k]) == self.caps[k]
+                                         and len(set(self.truth[k])) == 1 for k in self.neighbours(p)):
+                self.due[p] = self.clock.time() + self.delay
+        return ok
+
+
+def delayed_plaster_level():
+    """ست قوارير في صفّين بلا فارغة: القالب 0 جاره الأحمر 1 (ينقصه أحمر في قمة 2)؛ بعد إكماله لا حركة قانونية حتى ينكسر الجبس."""
+    truth = [["orange", "green", "purple", "orange"], ["red", "red", "red"], ["green", "blue", "red"],
+             ["blue", "green", "orange"], ["purple", "orange", "green"], ["blue", "purple", "blue", "purple"]]
+    return [4] * 6, truth, [[False] * len(t) for t in truth], {0}
+
+
+class PricedVision(FakeVisionModule):
+    """والأدوات نفدت: لا شارة عدد حمراء على أيّ منها (ثمنها بالعملات، كما في كل لقطات المراحل 100..110)."""
+
+    def booster_free(self, arr):
+        return [False, False, False]
+
+
+class TestPlasterSim(unittest.TestCase):
+    """البوت كاملاً على مراحل جبس مزيّفة: يكمل الجارة فينكسر الجبس، ويكمل المحاولة نفسها بلا «إعادة» ولا «فوز» كاذب."""
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cfg = dict(driver.CFG)
+        driver.CFG.update(plaster_wait=4.0, plaster_grace=10.0)   # القيم الافتراضية مهما كانت متغيّرات البيئة
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        self.tmp.cleanup()
+
+    def play(self, show_casts, n=None):
+        import test_solver as TS
+        caps, truth, hidden, _p = plaster_level()
+        self.assertTrue(TS.reference_solvable({"tubes": [{"cap": c, "layers": list(t)} for c, t in zip(caps, truth)]}))
+        game = PlasterGame([plaster_level()], random.Random(6), show_casts=show_casts)
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(FakeDevice(game), driver.Vision(FakeVisionModule(game), out), out, 600, git=False)
+        bot.level_hint = n                      # رقم المرحلة (الرؤية المزيّفة لا تقرأ العنوان)
+        for _ in range(30):
+            bot.run(max_iters=100)
+            if game.wins:
+                break
+        return game, bot, (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+
+    def test_plaster_breaks_in_place(self):
+        game, bot, log = self.play(True)
+        self.assertEqual((game.wins, bot.levels_done), (1, 1), log[-3000:])
+        self.assertEqual(game.broken, [0], log[-3000:])
+        self.assertEqual(game.plaster_taps, 0, log[-3000:])
+        self.assertIn("مغطّاة 1 (جبس 1)", log)
+        self.assertIn("القالب 0 ينكسر بامتلاء القارورة 1", log)
+        self.assertIn("تكمل جارة الجبس؛ انتظار انكساره", log)
+        self.assertIn("الجبس انكسر في المرحلة 1: القارورة 0", log)
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertNotIn("تختلف عن المتوقَّع", log)          # الحركة التي كسرت الجبس نجحت كما توقّع النموذج
+        self.assertEqual(log.count("فوز بالمرحلة"), 1)
+        rows = [json.loads(ln) for ln in (Path(self.tmp.name) / "levels.jsonl").read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(rows[0]["start"][0]["blocked"], "plaster")
+
+    def test_missed_cast_appears_as_new_tube(self):
+        """قالب لم تقرأه الرؤية (في مرحلة جبس: من المرحلة 100): حين ينكسر تظهر قارورة جديدة قبل القديمة (الفهارس تنزاح)؛ استمرار
+        بلا إعادة، والسجل يقول جبس."""
+        game, bot, log = self.play(False, n=100)
+        self.assertEqual((game.wins, bot.levels_done), (1, 1), log[-3000:])
+        self.assertEqual(game.broken, [0])
+        self.assertIn("الجبس انكسر في المرحلة 100 (القارورة 0 جديدة (قالب لم يُقرأ؟))", log)
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertEqual(log.count("فوز بالمرحلة"), 1)
+
+    def play_delayed(self, delay, priced, until):
+        game = DelayedPlasterGame([delayed_plaster_level()], random.Random(3), self.clock, delay)
+        d = Path(self.tmp.name) / ("d%g_%s" % (delay, "priced" if priced else "owned"))
+        out = driver.Out(d, 600, quiet=True)
+        dev = FakeDevice(game)
+        keys = []                              # مفاتيح قبل الفوز (بعده تضغط الحلقة الرجوع في الواجهة المتكرّرة)
+        dev.key = lambda code: keys.append(code) if not game.wins else None
+        vis = (PricedVision if priced else FakeVisionModule)(game)
+        bot = driver.Bot(dev, driver.Vision(vis, out), out, 600, git=False)
+        bot.level_hint = 100
+        log = ""
+        for _ in range(40):
+            bot.run(max_iters=20)
+            log = (d / "log.txt").read_text(encoding="utf-8")
+            if until(game, log):
+                break
+        return game, bot, log, keys
+
+    def test_delayed_break_waits_without_boosters(self):
+        """الجبس ينكسر بعد 7 أو 9 ث من اكتمال جارته واللوح بلا حركة قانونية حتى ينكسر: انتظار وإعادة تصوير، لا «قارورة إضافية»
+        ولا حركة عشوائية ولا رجوع («إعادة المرحلة»)، ثم الفوز. (كانت الأداة تضيع، أو يُضغط الرجوع حين نفدت الأدوات.)"""
+        for delay, priced in ((7.0, False), (9.0, True)):
+            game, bot, log, keys = self.play_delayed(delay, priced, lambda g, _l: g.wins)
+            self.assertEqual((game.wins, game.broken), (1, [0]), log[-3000:])
+            self.assertEqual((game.boosters_used, keys), ([], []), log[-3000:])
+            self.assertIn("تكمل جارة الجبس؛ انتظار انكساره", log)
+            self.assertIn("وجارة الجبس مكتملة ولم ينكسر بعد: انتظار وإعادة التصوير بلا أدوات (1)", log)
+            self.assertIn("الجبس انكسر في المرحلة 100: القارورة 0", log)
+            for bad in ("عالقة", "أداة:", "حركة عشوائية", "لا حركة قانونية", "أُعيدت من البداية"):
+                self.assertNotIn(bad, log)
+
+    def test_wait_is_bounded_when_cast_never_breaks(self):
+        """قالب لا ينكسر (نموذج الجيران خطأ): ست إعادات تصوير فقط ثم مسار «عالقة» المعتاد، فلا انتظار بلا نهاية."""
+        game, bot, log, keys = self.play_delayed(1e9, False, lambda g, _l: g.boosters_used)
+        self.assertEqual(game.boosters_used[:1], ["add"], log[-3000:])
+        self.assertEqual(log.count("انتظار وإعادة التصوير بلا أدوات"), 6, log[-3000:])
+        self.assertIn("عالقة (لا خطة)", log)
+
+
 class ScriptVision:
     """رؤية مزيّفة بنصّ يكتبه الاختبار في `now` (لا تنظر إلى الصورة)."""
 
@@ -1095,6 +1300,343 @@ class TestRun7Policies(unittest.TestCase):
             self.assertIn("عدّادات ما قبل التحديث", self.log())
         finally:
             driver.STATE_FILE = old_sf
+
+
+class StallVision(TabScriptVision):
+    """ومعها الإعلانان (الأسود والأبيض التجريبي) وزرّ إغلاقه وشعار «MAGIC SORT» وسهم التعليم كما يكتبها الاختبار."""
+
+    def is_ad(self, arr):
+        return bool(self.now.get("black_ad"))
+
+    def is_white_ad(self, arr):
+        return bool(self.now.get("white_ad"))
+
+    def find_ad_close(self, arr):
+        return self.now.get("ad_close")
+
+    def is_logo_overlay(self, arr):
+        return bool(self.now.get("logo"))
+
+    def find_tutorial_arrow(self, arr):
+        return self.now.get("arrow")
+
+
+class DriverCase(unittest.TestCase):
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cfg = dict(driver.CFG)
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        self.tmp.cleanup()
+
+    def make(self, vision_cls=StallVision):
+        sv = vision_cls()
+        dev = TapDevice()
+        dev.stops = []
+        dev.force_stop = lambda: dev.stops.append(self.clock.time())
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(dev, driver.Vision(sv, out), out, 600, git=False)
+        bot.loading_hashes, bot.daily_hashes, bot.nonet_hashes = [], [], []
+        return bot, sv, dev
+
+    def log(self):
+        p = Path(self.tmp.name) / "log.txt"
+        return p.read_text(encoding="utf-8") if p.exists() else ""
+
+
+class TestPlasterDriver(DriverCase):
+    """انكسار الجبس في on_level مباشرة: القالب يصير قارورة ظاهرة في خانته (العدد نفسه)، والذاكرة بفهارسها."""
+
+    @staticmethod
+    def board():
+        return {"tubes": [T(100, 336, [], blocked=True, cover="plaster"), T(168, 330, ["red", "red", "red"], clay=True),
+                          T(236, 336, [], blocked=True, cover="plaster"), T(304, 330, ["?", "blue", "red"]),
+                          T(133, 537, ["?", "blue"]), T(201, 537, [])]}
+
+    def start(self, bot, st, n=108):
+        lv = driver.LevelCtx(n, st, self.clock.time())
+        lv.badge = "normal"
+        bot.lv = lv
+        bot.expect_new = False
+        return lv
+
+    def test_break_in_place_keeps_attempt_and_memory(self):
+        bot, sv, dev = self.make()
+        st = self.board()
+        lv = self.start(bot, st)
+        lv.memory = {(3, 0): "green", (4, 0): "purple"}
+        lv.moves = 5
+        stp = driver.with_memory(st, lv.memory)
+        self.assertTrue(solver.breaker_completed(stp, 3, 1))
+        sv.now.update(kind="level", state=st, level=108)
+        bot.do_move(stp, 3, 1)                       # الأحمر يكمل الكاسرة؛ ينتظر السائق انكسار الجبس
+        self.assertIn("تكمل جارة الجبس", self.log())
+        after = {"tubes": [T(100, 336, ["?", "?", "yellow", "yellow"]), T(168, 330, ["red"] * 4),
+                           T(236, 336, ["pink", "?", "cyan"]), T(304, 330, ["?", "blue"]), T(133, 537, ["?", "blue"]),
+                           T(201, 537, [])]}
+        sv.now.update(state=after)
+        bot.on_level(bot.grab())
+        log = self.log()
+        self.assertIs(bot.lv, lv)
+        self.assertEqual((lv.moves, lv.fails, lv.plasters_broken, bot.levels_done), (6, 0, 2, 0), log)
+        self.assertIn("الجبس انكسر في المرحلة 108: القارورة 0 (100،336) ← [?,?,yellow,yellow]، القارورة 2", log)
+        self.assertIn("باقٍ 0 قالب", log)
+        self.assertNotIn("تختلف عن المتوقَّع", log)
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertEqual(lv.memory, {(3, 0): "green", (4, 0): "purple"})   # الفهارس لم تتغيّر
+        self.assertFalse(lv.maybe_won)
+
+    def test_missed_cast_remaps_memory_by_position(self):
+        """قالب لم تقرأه الرؤية (يسار الكاسرة) وآخر مقروء: اكتمال الأحمر يكسرهما معاً فتكبر اللوحة وتنزاح الفهارس؛ استمرار المحاولة
+        نفسها والذاكرة تنتقل بالموضع (slot_map) إلى فهارسها الجديدة، بلا «إعادة» ولا «فوز»."""
+        bot, sv, dev = self.make()
+        old = {"tubes": [T(168, 330, ["red", "red", "red"], clay=True), T(236, 336, [], blocked=True, cover="plaster"),
+                         T(304, 330, ["?", "blue", "red"]), T(133, 537, ["?", "blue"]), T(201, 537, [])]}
+        lv = self.start(bot, old)
+        lv.memory = {(2, 0): "green", (3, 0): "purple"}
+        stp = driver.with_memory(old, lv.memory)
+        sv.now.update(kind="level", state=old, level=108)
+        bot.do_move(stp, 2, 0)
+        new = {"tubes": [T(100, 336, ["?", "?", "yellow", "yellow"]), T(168, 330, ["red"] * 4),
+                         T(236, 336, ["pink", "?", "cyan"]), T(304, 330, ["?", "blue"]), T(133, 537, ["?", "blue"]),
+                         T(201, 537, [])]}
+        sv.now.update(state=new)
+        fr = bot.grab()
+        for _ in range(4):
+            fr = bot.on_level(fr) or bot.grab()
+            if lv.plasters_broken:
+                break
+        log = self.log()
+        self.assertIs(bot.lv, lv, log)
+        self.assertEqual(lv.memory, {(3, 0): "green", (4, 0): "purple"}, log)
+        self.assertIn("الجبس انكسر في المرحلة 108 (القارورة 2 في خانة قالب، القارورة 0 جديدة (قالب لم يُقرأ؟))", log)
+        self.assertEqual((lv.moves, bot.levels_done, lv.plasters_broken), (1, 0, 2), log)
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertNotIn("فوز", log)
+
+    def test_sorted_board_with_sealed_tubes_waits(self):
+        """الظاهر مرتّب (قوارير مكتملة) والجبس قائم وجاره كاسرة فارغة: المكتملة مسدودة بسدادة ذهبية فلا تُصبّ في الكاسرة (كانت
+        خطة «plaster» تصبّها فترفضها اللعبة)؛ لا لمس ولا أداة، والبوت ينتظر (طريق مسدود: «No Available Moves» في اللعبة)."""
+        bot, sv, dev = self.make()
+        st = {"tubes": [T(100, 336, [], blocked=True, cover="plaster"), T(168, 330, [], clay=True), T(236, 330, ["blue"] * 4),
+                        T(304, 330, ["red"] * 4)]}
+        lv = self.start(bot, st)
+        sv.now.update(kind="level", state=st, level=103)
+        bot.on_level(bot.grab())
+        log = self.log()
+        self.assertIsNone(lv.pending, log)
+        self.assertEqual(dev.taps, [], log)
+        self.assertIsNotNone(lv.solved_since)
+        self.assertFalse(lv.maybe_won)
+        self.assertNotIn("تكمل جارة الجبس", log)
+
+    def test_curtain_lifted_in_place_keeps_shared_memory(self):
+        """ستارة انزاحت في خانتها (العدد نفسه): ذاكرة المحاولة تبقى قاموس memory_by_sig نفسه، فما ينكشف بعدها يبقى للمحاولة التالية
+        بعد «Give Up» (كانت تُنسخ إلى قاموس منفصل فيضيع)."""
+        bot, sv, dev = self.make()
+        start = {"tubes": [T(100, 330, ["?", "blue"]), T(168, 330, ["blue", "blue"]),
+                           T(236, 336, [], blocked=True, cover="curtain", cover_color="green"), T(304, 330, []),
+                           T(100, 537, ["?", "red"]), T(168, 537, ["red", "red"])]}
+        sv.now.update(kind="level", state=start, level=94)
+        bot.new_level(bot.grab(), start)
+        lv = bot.lv
+        shared = bot.memory_by_sig[lv.start_sig]
+        bot.do_move(start, 0, 1)                      # الأزرق إلى 1 يكشف أخضر في قاع 0
+        s1 = {"tubes": [T(100, 330, ["green"]), T(168, 330, ["blue"] * 3), start["tubes"][2], T(304, 330, []),
+                        T(100, 537, ["?", "red"]), T(168, 537, ["red", "red"])]}
+        sv.now.update(state=s1)
+        bot.on_level(bot.grab())
+        self.assertEqual(shared, {(0, 0): "green"}, self.log())
+        lv.pending = None
+        s2 = dict(s1, tubes=s1["tubes"][:2] + [T(236, 330, ["green"] * 3)] + s1["tubes"][3:])   # الستارة انزاحت
+        sv.now.update(state=s2)
+        bot.on_level(bot.grab())
+        self.assertIs(lv.memory, shared, self.log())
+        lv.pending = None
+        bot.do_move(s2, 4, 5)                         # الأحمر إلى 5 يكشف أصفر في قاع 4
+        s3 = dict(s2, tubes=s2["tubes"][:4] + [T(100, 537, ["yellow"]), T(168, 537, ["red"] * 3)])
+        sv.now.update(state=s3)
+        bot.on_level(bot.grab())
+        self.assertIs(lv.memory, shared, self.log())
+        self.assertEqual(shared, {(0, 0): "green", (4, 0): "yellow"}, self.log())
+
+    def test_extra_empty_tube_is_not_a_cover(self):
+        """قارورة فارغة جديدة (أداة «قارورة إضافية» أو «Play On») في مسار الأبواب: سطر «قوارير جديدة» كما كان، لا «قارورة مغطّاة
+        عادت إلى القراءة» بملخّص فارغ."""
+        bot, sv, dev = self.make()
+        old = {"tubes": [T(100, 375, ["red", "blue"]), T(200, 375, ["blue", "red"]), T(300, 375, [])]}
+        new = {"tubes": [T(90, 375, ["red", "blue"]), T(180, 375, ["blue", "red"]), T(270, 375, []), T(360, 375, [])]}
+        lv = self.start(bot, old, n=42)
+        lv.extra_tubes = 1
+        bot.door_opened(new, *bot.door_ref(new))
+        self.assertIn("المرحلة 42: قوارير جديدة (باب انفتح؟ 3 → 4 قارورة", self.log())
+        self.assertNotIn("قارورة مغطّاة عادت", self.log())
+
+    def test_plaster_tag_only_for_casts(self):
+        """«الجبس انكسر» لقالب لم يُقرأ في مرحلة جبس فقط: لا لقارورة فاتت قراءتها ثم عادت بجوار مكتملة في المرحلة 40، ولا لباب
+        مفتاح انفتح في مرحلة فيها قالب قائم."""
+        bot, sv, dev = self.make()
+        old = {"tubes": [T(100, 375, ["red"] * 4), T(300, 375, ["green", "blue"]), T(400, 375, [])]}
+        new = {"tubes": [T(100, 375, ["red"] * 4), T(200, 375, ["blue", "green"]), T(300, 375, ["green", "blue"]),
+                         T(400, 375, [])]}
+        self.start(bot, old, n=40)
+        bot.door_opened(new, *bot.door_ref(new))
+        self.assertIn("المرحلة 40: قوارير جديدة (باب انفتح؟", self.log())
+        self.start(bot, old, n=108)
+        bot.door_opened(new, *bot.door_ref(new))
+        self.assertIn("الجبس انكسر في المرحلة 108 (القارورة 1 جديدة (قالب لم يُقرأ؟))", self.log())
+        keyed = {"tubes": [T(100, 336, [], blocked=True, cover="plaster"), T(168, 330, ["red", "red"], clay=True),
+                           T(236, 330, ["blue", "yellow", "yellow"], keys=[0]), T(304, 330, [])]}
+        opened = {"tubes": keyed["tubes"] + [T(372, 330, ["pink", "pink"])]}
+        self.start(bot, keyed, n=112)
+        bot.door_opened(opened, *bot.door_ref(opened))
+        log = self.log()
+        self.assertIn("المرحلة 112: قوارير جديدة (باب انفتح؟ 4 → 5 قارورة", log)
+        self.assertNotIn("الجبس انكسر في المرحلة 40", log)
+        self.assertNotIn("الجبس انكسر في المرحلة 112", log)
+
+    def test_cast_flicker_is_not_a_break(self):
+        """قالب فاتته الرؤية في لقطة ثم عاد: لا «الجبس انكسر» ولا «إعادة»، والمحاولة نفسها مستمرة."""
+        bot, sv, dev = self.make()
+        st = self.board()
+        lv = self.start(bot, st)
+        sv.now.update(kind="level", state={"tubes": st["tubes"][1:]}, level=108)
+        self.feedn(bot, 3)
+        sv.now.update(state=st)
+        self.feedn(bot, 3)
+        log = self.log()
+        self.assertIs(bot.lv, lv, log)
+        self.assertEqual(len(lv.last_state["tubes"]), 6, log)
+        self.assertNotIn("الجبس انكسر", log)
+        self.assertNotIn("أُعيدت من البداية", log)
+        self.assertIn("قارورة مغطّاة عادت إلى القراءة (جبس 1", log)
+
+    def feedn(self, bot, n):
+        fr = bot.grab()
+        for _ in range(n):
+            fr = bot.on_level(fr) or bot.grab()
+
+    def test_l108_pipeline_with_real_vision(self):
+        """اللقطة الحقيقية لبداية المرحلة 108 عبر Vision.parse في السائق ("box" يصل إلى الحلّال): أول حركة تكمل الأخضر."""
+        import vision as real_vision
+        out = driver.Out(Path(self.tmp.name), 10, quiet=True)
+        vis = driver.Vision(real_vision, out)
+        st = vis.parse(driver.Frame(Image.open(Path(driver.HERE) / "testdata" / "L108_plaster.jpg")))
+        self.assertEqual(sum(1 for t in st["tubes"] if t.get("cover") == "plaster"), 6)
+        self.assertTrue(all(len(t["box"]) == 4 for t in st["tubes"]))
+        self.assertTrue(driver.covered(st))
+        self.assertEqual(driver.cover_summary(st), "جبس 6")
+        info = {}
+        mv = solver.plan(st, info=info)
+        self.assertEqual(info["mode"], "plaster")
+        self.assertTrue(solver.breaker_completed(st, *mv[0]))
+        self.assertEqual(st["tubes"][mv[0][1]]["layers"], ["green", "green"])
+        self.assertFalse(driver.suspicious_counts(st))        # المغطّاة طبقات مجهولة: لا «إعادة تصوير» بلا داعٍ
+
+
+class TestStalls(DriverCase):
+    """شاشات توقّف البوت في التشغيل التاسع: الإعلان التجريبي الأبيض، وشعار «MAGIC SORT» فوق لوحة معتمة، والإعلان الأسود."""
+
+    def drive(self, bot, sv, seconds, change=None):
+        """يكرّر on_unknown حتى يمرّ الوقت المطلوب (الساعة الافتراضية)، ويعيد [(الوقت، النقرة)] و[(الوقت، المفتاح)]."""
+        dev = bot.dev
+        taps, keys = [], []
+        t0 = self.clock.time()
+        n_t, n_k = len(dev.taps), len(dev.keys)
+        while self.clock.time() - t0 < seconds:
+            if change:
+                change(self.clock.time() - t0)
+            bot.on_unknown(bot.grab(), "unknown")
+            taps += [(self.clock.time() - t0, p) for p in dev.taps[n_t:]]
+            keys += [(self.clock.time() - t0, k) for k in dev.keys[n_k:]]
+            n_t, n_k = len(dev.taps), len(dev.keys)
+        return taps, keys
+
+    def test_white_ad_waits_countdown_then_back_then_relaunch(self):
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", white_ad=True, ad_close=None, arrow=(236, 650), greens=[{"box": (300, 900, 440, 980)}])
+        taps, keys = self.drive(bot, sv, 60)
+        log = self.log()
+        self.assertEqual(taps, [], log)                       # لا «Install» ولا وسط الإعلان ولا «سهم»
+        self.assertTrue(keys and all(t >= driver.CFG["ad_wait_sec"] for t, _ in keys), keys)
+        self.assertTrue(all(k == 4 for _, k in keys))
+        self.assertTrue(all(b - a >= 5 for (a, _), (b, _) in zip(keys, keys[1:])), keys)
+        self.assertEqual(len(dev.stops), 1, log)              # إعادة تشغيل واحدة بعد المهلة
+        self.assertIn("إعلان تجريبي أبيض (AppLovin)", log)
+        self.assertIn("الإعلان التجريبي الأبيض باقٍ منذ", log)
+        self.assertGreaterEqual(dev.launched, 1)
+
+    def test_white_ad_taps_corner_close(self):
+        """X ظاهر في زاوية علوية (انتهى العدّ): يُلمس هو لا الرجوع، ولا شيء غيره ولا قبل ثانيتين من ظهور الإعلان."""
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", white_ad=True, ad_close=(440, 38))
+        taps, keys = self.drive(bot, sv, 20)
+        self.assertTrue(taps, self.log())
+        self.assertTrue(all(near(p, (440, 38)) and t >= 2 for t, p in taps), taps)
+        self.assertTrue(all(b - a >= 5 for (a, _), (b, _) in zip(taps, taps[1:])), taps)
+        self.assertEqual(keys, [])
+        self.assertIn("زرّ الإغلاق X في الزاوية", self.log())
+
+    def test_new_ad_resets_timer(self):
+        """إعلان ثانٍ بعد ساعة لا يُعاد تشغيل اللعبة له فوراً (مهلته من أول ظهوره هو)."""
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", white_ad=True)
+        self.drive(bot, sv, 5)
+        sv.now.update(white_ad=False)
+        self.clock.sleep(3600)
+        sv.now.update(white_ad=True)
+        taps, keys = self.drive(bot, sv, 8)
+        self.assertEqual((taps, keys, dev.stops), ([], [], []), self.log())
+
+    def test_logo_waits_then_back_then_relaunch(self):
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", logo=True, arrow=(338, 705))    # «سهم» كاذب على الحروف الصفراء
+        t0 = self.clock.time()
+        taps, keys = self.drive(bot, sv, 70)
+        log = self.log()
+        self.assertEqual(taps, [], log)
+        self.assertEqual(len(keys), 1, keys)
+        self.assertGreaterEqual(keys[0][0], driver.CFG["logo_wait_sec"])
+        self.assertEqual(len(dev.stops), 1, log)
+        self.assertGreaterEqual(dev.stops[0] - t0, driver.CFG["logo_wait_sec"] + driver.CFG["logo_back_sec"])
+        self.assertLess(dev.stops[0] - t0, driver.CFG["logo_wait_sec"] + driver.CFG["logo_back_sec"] + 5)
+        self.assertIn("شعار «MAGIC SORT» فوق لوحة معتمة", log)
+        self.assertIn("رجوع مرة واحدة", log)
+        self.assertIn("إعادة تشغيل اللعبة", log)
+        self.assertNotIn("سهم تعليم", log)
+        self.assertNotIn("3 دقائق", log)
+
+    def test_logo_gone_quickly_no_action(self):
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", logo=True, arrow=(338, 705))
+        taps, keys = self.drive(bot, sv, 4)
+        self.assertEqual((taps, keys, dev.stops), ([], [], []))
+
+    def test_black_ad_unchanged_then_capped(self):
+        """الإعلان الأسود كما كان (رجوع ثم زاويتا الإغلاق)، ومهلة تعيد اللعبة بدل 25 دقيقة من الرجوع (التشغيل التاسع)."""
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", black_ad=True)
+        taps, keys = self.drive(bot, sv, 20)
+        self.assertEqual(keys[0][1], 4)
+        self.assertTrue(set(p for _, p in taps) <= {(455, 18), (18, 18)}, taps)
+        self.assertEqual(dev.stops, [])
+        self.drive(bot, sv, 80)
+        self.assertEqual(len(dev.stops), 1, self.log())
+        self.assertIn("الإعلان الأسود باقٍ منذ", self.log())
+
+    def test_journey_claim_arrow_still_tapped(self):
+        """«Journey Rewards — Tap to Claim» (ليست إعلاناً ولا شعاراً): لمسة «السهم» التي استلمتها في التشغيل التاسع باقية."""
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", arrow=(302, 234))
+        taps, keys = self.drive(bot, sv, 8)
+        self.assertTrue(taps and near(taps[0][1], (302, 234)), (taps, self.log()))
+        self.assertIn("سهم تعليم: لمس الهدف (302, 234)", self.log())
 
 
 FAKE_ADB = r"""#!/usr/bin/env python3

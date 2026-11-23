@@ -31,6 +31,10 @@
   * القوارير المغطّاة ("blocked": True، تحت ستارة من المرحلة 33 تقريباً أو كيس من 80) محتواها مجهول ولا يُصبّ منها ولا فيها:
     لا يراها الحلّال أبداً (تُحذف قبل البحث وتُعاد الفهارس الأصلية)، ولا تدخل في state_key ولا is_solved ولا الحركات
     القانونية؛ وحين تنكشف تصير قارورة عادية في القراءة التالية.
+  * الجبس (من المرحلة 100، "cover": "plaster"): قالب يغلّف قارورة وينكسر حين تكتمل (تمتلئ بلون واحد) قارورة ظاهرة في خانة
+    مجاورة له في صفّه، يميناً أو يساراً («كاسراته»: plaster_breakers بالمواضع). اللغز الظاهر وحده ناقص (ألوانه الباقية داخل
+    الجبس، وترتيبه «محلولاً» ليس فوزاً)، فما دام جبس قائم بكاسرة لم تكتمل يُبحث أولاً عن أقصر تسلسل آمن يكمل كاسرة (مثل
+    المفاتيح)، وإلا تميل بحوث الكشف والتقدّم والعيّنات إلى ملء الكاسرات. بلا جبس لا يتغيّر شيء (A* كما كان).
 """
 from __future__ import annotations
 
@@ -43,7 +47,7 @@ INF = float("inf")
 
 __all__ = [
     "plan", "apply_move", "is_solved", "legal_moves", "state_key",
-    "describe", "key_freed", "HIDDEN",
+    "describe", "key_freed", "plaster_breakers", "breaker_completed", "HIDDEN",
 ]
 
 
@@ -122,11 +126,17 @@ class _Enc:
 # قوارير «الطين» في الحالة الجارية (من المرحلة 40): يُصبّ فيها ولا يُصبّ منها حتى تكتمل؛
 # يضبطها plan() طوال البحث فقط (البوت خيط واحد)
 _NOSRC = frozenset()
+# كاسرات الجبس (من المرحلة 100): كل قارورة ظاهرة تكسر بامتلائها جبساً مجاوراً. ليست متماثلة مع غيرها، والصبّ فيها من
+# قارورة أحادية اللون غير مكتملة (إلى فارغة، أو جزء منها) ليس عبثاً (لا عكس له حين لا يُصبّ منها: فتات الجبس طين). أما المكتملة
+# فلا يُصبّ منها أبداً (تُسدّ بسدادة ذهبية: حركات التشغيلين الرابع والسادس منها كلها «لا تقدّم»). يضبطها plan() فقط
+_FILL = frozenset()
 
 
 def _key(s, caps):
     """مفتاح قانوني: مجموعة (السعة، المحتوى) بلا ترتيب القوارير (تماثل). قارورة الطين
-    لا تماثل قارورة عادية بالمحتوى نفسه (لا يُصبّ منها)."""
+    لا تماثل قارورة عادية بالمحتوى نفسه (لا يُصبّ منها)، وكاسرة الجبس لا تماثل أي قارورة أخرى."""
+    if _FILL:
+        return tuple(sorted((caps[k], k in _NOSRC, k if k in _FILL else -1, s[k]) for k in range(len(s))))
     if _NOSRC:
         return tuple(sorted((caps[k], k in _NOSRC, s[k]) for k in range(len(s))))
     return tuple(sorted(zip(caps, s)))
@@ -172,12 +182,15 @@ def _gen_moves(s, caps, exclude=None):
                 if u[-1] != top:
                     continue
                 amt = run if run <= space else space
-                if mono and amt < run:    # صبّ جزئي من أحادية اللون: عبث
+                # صبّ جزئي من أحادية اللون: عبث (إلا من غير مكتملة في كاسرة جبس؛ المكتملة مسدودة)
+                if mono and amt < run and (j not in _FILL or L >= caps[i]):
                     continue
             else:
-                if mono:                  # نقل قارورة أحادية إلى فارغة: عبث
+                # نقل قارورة أحادية إلى فارغة: عبث (إلا غير مكتملة إلى كاسرة جبس؛ المكتملة مسدودة)
+                if mono and (j not in _FILL or L >= caps[i]):
                     continue
-                cj = (caps[j], j in _NOSRC)  # فارغة الطين لا تماثل الفارغة العادية
+                # فارغة الطين لا تماثل الفارغة العادية، وكاسرة الجبس لا تماثل غيرها
+                cj = (caps[j], j in _NOSRC, j if j in _FILL else -1)
                 if empty_caps is None:
                     empty_caps = {cj}
                 elif cj in empty_caps:    # الفارغات المتماثلة: واحدة تكفي
@@ -426,6 +439,226 @@ def _bury_moves(s, caps, exclude):
     return {(i, j) for (i, j, amt) in _gen_moves(s, caps, exclude) if _key_depth(_apply(s, i, j, amt)) > d0}
 
 
+# ---------------------------------------------------------------- الجبس
+_PLASTER = ()       # كاسرات الجبس القائم التي لم تكتمل بعد (فهارس الحالة المرمّزة)؛ يضبطها plan() طوال البحث فقط
+
+
+def _is_plaster(t) -> bool:
+    return bool(t.get("blocked")) and t.get("cover") == "plaster"
+
+
+def _slot_geometry(tubes):
+    """(خطوة الخانات، أسفل كل قارورة أو None). الخطوة الربع الأدنى لأقرب فرق أفقي بين قارورتين غير طويلتين في الصف نفسه
+    (نقطتاهما على ارتفاع واحد تقريباً): صفّ تتخلّله قوارير طويلة أو خانات فارغة يعطي ضعفها (المرحلة 102: 137 بدل 68). الأسفل من
+    "box" إن وُجد (الرؤية)، وإلا تقدير: نقطة العادية والمغطّاة وسط صندوقها وارتفاعها نحو 2.6 خطوة، والطويلة تمتدّ صفّين (سعة
+    حتى 12) أو ثلاثة."""
+    pts = []
+    for t in tubes:
+        try:
+            pts.append((float(t["x"]), float(t["y"])))
+        except (KeyError, TypeError, ValueError):
+            pts.append(None)
+    gaps = []
+    for i, a in enumerate(tubes):
+        if pts[i] is None or a.get("tall"):
+            continue
+        best = None
+        for j, b in enumerate(tubes):
+            if i == j or pts[j] is None or b.get("tall") or abs(pts[i][1] - pts[j][1]) > 40:
+                continue
+            d = abs(pts[i][0] - pts[j][0])
+            if d >= 20 and (best is None or d < best):
+                best = d
+        if best is not None:
+            gaps.append(best)
+    px = sorted(gaps)[len(gaps) // 4] if gaps else 70.0
+    bottoms = []
+    for k, t in enumerate(tubes):
+        b = t.get("box")
+        try:
+            if b is not None and len(b) == 4:
+                bottoms.append(float(b[3]))
+                continue
+        except (TypeError, ValueError):
+            pass
+        if pts[k] is None:
+            bottoms.append(None)
+        elif t.get("tall"):
+            try:
+                rows = 2 if int(t.get("cap") or 10) <= 12 else 3
+            except (TypeError, ValueError):
+                rows = 2
+            bottoms.append(pts[k][1] + 1.45 * px * rows)
+        else:
+            bottoms.append(pts[k][1] + 1.3 * px)
+    return px, bottoms
+
+
+def plaster_breakers(state):
+    """{فهرس قالب الجبس: [فهارس كاسراته]} بفهارس الحالة الأصلية. كاسرة الجبس القارورة الظاهرة (غير المغطّاة) في الخانة المجاورة
+    له مباشرة يميناً أو يساراً في صفّه (بين نصف خطوة وخطوة ونصف)؛ واكتمالها (امتلاؤها بلون واحد) يكسره (المراحل 100..110).
+    الصفّ بالأسفل لا بالنقطة: القارورة الطويلة الممتدّة على صفّين تكسر جبس صفّ قاعدتها (المرحلة 110: قاعدتها فتات جبس مثل
+    الكاسرات العادية). جبس جاره جبس آخر أو ستارة لا كاسرة له من تلك الجهة حتى ينكشف الجار (يُعاد الحساب في كل قراءة)."""
+    tubes = (state or {}).get("tubes") or []
+    plasters = [k for k, t in enumerate(tubes) if _is_plaster(t)]
+    if not plasters:
+        return {}
+    px, bottoms = _slot_geometry(tubes)
+    out = {}
+    for p in plasters:
+        if bottoms[p] is None:
+            continue
+        try:
+            xp = float(tubes[p]["x"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        side = {}
+        for k, t in enumerate(tubes):
+            if k == p or bottoms[k] is None or abs(bottoms[k] - bottoms[p]) > 0.9 * px:
+                continue
+            try:
+                dx = float(t["x"]) - xp
+            except (KeyError, TypeError, ValueError):
+                continue
+            if 0.5 * px <= abs(dx) <= 1.5 * px:
+                s = dx > 0
+                if s not in side or abs(dx) < side[s][0]:
+                    side[s] = (abs(dx), k)
+        out[p] = sorted(k for _d, k in side.values() if not tubes[k].get("blocked"))
+    return out
+
+
+def _breaker_indices(state, keep):
+    """فهارس الكاسرات في الحالة بلا المغطّاة (keep: فهارسها الأصلية بالترتيب، أو None)."""
+    br = plaster_breakers(state)
+    ks = {k for v in br.values() for k in v}
+    if keep is None:
+        return sorted(ks)
+    inv = {k: i for i, k in enumerate(keep)}
+    return sorted(inv[k] for k in ks if k in inv)
+
+
+def _complete(t, cap) -> bool:
+    """القارورة ممتلئة بلون واحد معروف (هكذا تكتمل الكاسرة فينكسر الجبس)."""
+    return len(t) >= cap and t[0] >= 0 and all(x == t[0] for x in t)
+
+
+def _bottom_run(t) -> int:
+    if not t or t[0] < 0:
+        return 0
+    b = 1
+    while b < len(t) and t[b] == t[0]:
+        b += 1
+    return b
+
+
+def _fill_need(t, cap, nosrc) -> float:
+    """كم طبقة تحتاج الكاسرة t حتى تكتمل: الفارغة سعتها، والأحادية ما بقي من سعتها، والمختلطة ما فوق كتلتها السفلية (يُصبّ
+    خارجها) وما ينقصها بعده؛ والمختلطة التي لا يُصبّ منها (فتات الجبس طين) لا تكتمل أبداً (INF)."""
+    b = _bottom_run(t)
+    if b == len(t):
+        return float(cap - len(t))
+    if nosrc:
+        return INF
+    return float((len(t) - b) + (cap - b))
+
+
+def _fill_moves(t, cap, nosrc) -> float:
+    """حدّ أدنى لعدد الحركات حتى تكتمل الكاسرة: صبّة واحدة على الأقل، وقبلها حركة لكل كتلة فوق قاعدتها."""
+    if _complete(t, cap):
+        return 0
+    b = _bottom_run(t)
+    if b == len(t):
+        return 1
+    if nosrc:
+        return INF
+    runs, prev = 0, None
+    for x in t[b:]:
+        if x != prev or x < 0:
+            runs += 1
+        prev = x
+    return runs + 1
+
+
+def _plaster_need(s, caps) -> float:
+    """أقل نقص بين كاسرات الجبس القائم (0 = اكتملت إحداها في النموذج؛ INF = لا تكتمل أيّ منها)."""
+    best = INF
+    for k in _PLASTER:
+        n = 0.0 if _complete(s[k], caps[k]) else _fill_need(s[k], caps[k], k in _NOSRC)
+        if n < best:
+            best = n
+    return best
+
+
+def _plaster_search(start, caps, budget, avoid, exclude, max_len=10):
+    """أقصر تسلسل آمن يكمل كاسرة جبس (فينكسر الجبس المجاور وتظهر قارورته)، بعقوبة لاستهلاك الفارغات ولزيادة الفوضى ولدفن
+    المفاتيح، مثل _key_search: الحالات بلا تماثل (أيّ قارورة تكتمل يهمّ). يعيد (حركات [(i, j)]، الدرجة) أو (None, None)."""
+    targets = [k for k in _PLASTER if not _complete(start[k], caps[k])]
+    if not targets:
+        return None, None
+    tset = set(targets)
+
+    def hval(s):
+        return min(_fill_moves(s[k], caps[k], k in _NOSRC) for k in targets)
+
+    h_start = hval(start)
+    if h_start == INF:
+        return None, None
+    e0, h0, m0 = _empties(start), _h(start), _misplaced(start)
+    kd0 = _key_depth(start) if _KEYS else 0
+    cnt = itertools.count()
+    gbest = {start: 0}
+    parent = {start: None}
+    heap = [(h_start, 0, next(cnt), start)]
+    best = None   # (score, state)
+    while heap:
+        f, g, _, s = heapq.heappop(heap)
+        if best is not None and f >= best[0]:
+            break
+        if g > gbest.get(s, INF):
+            continue
+        if not budget.tick():
+            break
+        if g >= max_len:
+            continue
+        g1 = g + 1
+        for (i, j, amt) in _gen_moves(s, caps, exclude if g == 0 else None):
+            c = _apply(s, i, j, amt)
+            if c in gbest and g1 >= gbest[c]:
+                continue
+            if j in tset and _complete(c[j], caps[j]):          # اكتملت كاسرة: ينكسر الجبس
+                e = _empties(c)
+                sc = float(g1)
+                if e < e0:
+                    sc += 1.0 * (e0 - e)
+                if e == 0 and e0 > 0:
+                    sc += 2.0
+                sc += 0.04 * (_h(c) - h0) + 0.03 * (_misplaced(c) - m0)
+                if _KEYS:
+                    sc += 0.5 * (_key_depth(c) - kd0)
+                if best is None or sc < best[0]:
+                    gbest[c] = g1
+                    parent[c] = (s, (i, j))
+                    best = (sc, c)
+                continue
+            if _key(c, caps) in avoid:
+                continue
+            hc = hval(c)
+            if hc == INF:
+                continue
+            gbest[c] = g1
+            parent[c] = (s, (i, j))
+            heapq.heappush(heap, (g1 + hc, g1, next(cnt), c))
+    if best is None:
+        return None, None
+    moves, x = [], best[1]
+    while parent.get(x) is not None:
+        x, mv = parent[x]
+        moves.append(mv)
+    moves.reverse()
+    return moves, best[0]
+
+
 # ---------------------------------------------------------------- إعادة بناء المسار
 def _derive_moves(start, caps, key_chain, exclude_first=None):
     """يحوّل سلسلة مفاتيح قانونية إلى حركات فعلية على الترتيب الحقيقي للقوارير."""
@@ -581,6 +814,7 @@ def _reveal_search(start, caps, budget, avoid, exclude):
     h0 = _h(start)
     m0 = _misplaced(start)
     kd0 = _key_depth(start) if _KEYS else 0
+    pn0 = min(_plaster_need(start, caps), 8.0) if _PLASTER else 0.0
     cnt = itertools.count()
     k0 = _key(start, caps)
     gbest = {k0: 0}
@@ -610,6 +844,8 @@ def _reveal_search(start, caps, budget, avoid, exclude):
                 sc -= 0.01 * sum(1 for x in src if x == HIDDEN)   # الأعمق أولاً
                 if _KEYS:
                     sc += 0.5 * (_key_depth(c) - kd0)              # لا تدفن المفاتيح
+                if _PLASTER:
+                    sc += 0.3 * (min(_plaster_need(c, caps), 8.0) - pn0)   # والكشف الذي يقرّب كاسرة جبس من امتلائها أولاً
                 if best is None or sc < best[0]:
                     kc = _key(c, caps)
                     best = (sc, _chain(parent, k) + [kc])
@@ -644,6 +880,8 @@ def _progress_search(start, caps, budget, avoid, exclude, max_len=8):
             v += 0.5 * hr
         if _KEYS:
             v += 0.8 * _key_depth(s)            # الحفر نحو المفاتيح، لا دفنها
+        if _PLASTER:
+            v += 0.6 * min(_plaster_need(s, caps), 8.0)   # ملء كاسرات الجبس (اكتمال واحدة يكشف قارورة جديدة)
         return v
 
     v0 = value(start)
@@ -804,7 +1042,8 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
         reveal = 1 if (src_after and src_after[-1] == HIDDEN) else 0
         e_loss = max(0, _empties(s) - _empties(_apply(s, i, j, amt)))
         kp = (_key_depth(s) - _key_depth(_apply(s, i, j, amt))) if _KEYS else 0
-        score = (ok / tested, kp, reveal, -e_loss, votes.get(km, 0))
+        pp = (min(_plaster_need(s, caps), 8.0) - min(_plaster_need(_apply(s, i, j, amt), caps), 8.0)) if _PLASTER else 0
+        score = (ok / tested, kp, pp, reveal, -e_loss, votes.get(km, 0))
         if best is None or score > best[0]:
             best = (score, (i, j))
         if time.perf_counter() > deadline:
@@ -818,19 +1057,24 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
 def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
          info=None, seed=None):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
-    قوارير الطين ("clay": True) لا يُصبّ منها، والمغطّاة ("blocked": True) لا تُلمس أبداً. انظر _plan."""
-    global _NOSRC, _KEYS
+    قوارير الطين ("clay": True) لا يُصبّ منها، والمغطّاة ("blocked": True) لا تُلمس أبداً، وكاسرات الجبس (plaster_breakers)
+    يُسعى إلى إكمالها أولاً. انظر _plan."""
+    global _NOSRC, _KEYS, _FILL, _PLASTER
     vis, keep = _visible(state)
     if keep is not None:                  # الفهارس الأصلية <-> فهارس الحالة بلا المغطّاة
         inv = {k: i for i, k in enumerate(keep)}
         bad_moves = [(inv[m[0]], inv[m[1]]) for m in (bad_moves or ()) if m[0] in inv and m[1] in inv]
     _NOSRC = frozenset(k for k, t in enumerate((vis or {}).get("tubes") or []) if t.get("clay"))
     _KEYS = ()
+    _FILL = frozenset(_breaker_indices(state, keep)) if keep is not None else frozenset()
+    _PLASTER = ()
     try:
         moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed)
     finally:
         _NOSRC = frozenset()
         _KEYS = ()
+        _FILL = frozenset()
+        _PLASTER = ()
     if keep is not None:
         moves = [(keep[i], keep[j]) for (i, j) in moves]
     return moves
@@ -850,7 +1094,11 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
     if info is None:
         info = {}
     info.update(mode="solved", nodes=0, ms=0.0)
-    if not s or _solved(s, caps):
+    global _PLASTER
+    # كاسرات الجبس القائم التي لم تكتمل: الظاهر «مرتّباً» ليس نهاية ما دامت إحداها تكتمل (طويلة أحادية غير مكتملة تُصبّ في كاسرة
+    # فارغة؛ المكتملة مسدودة لا يُصبّ منها)
+    _PLASTER = tuple(k for k in sorted(_FILL) if k < len(s) and not _complete(s[k], caps[k]))
+    if not s or (_solved(s, caps) and not _PLASTER):
         return []
     budget = _Budget(max_nodes, t0 + time_limit)
     exclude = set(tuple(m) for m in (bad_moves or ()))
@@ -882,6 +1130,19 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         allm = {(i, j) for (i, j, _a) in _gen_moves(s, caps, exclude)}
         if bury and allm - bury:
             exclude = exclude | bury
+
+    # ---- الجبس: اللغز الظاهر ناقص (ألوانه الباقية داخل الجبس، وترتيبه «محلولاً» ليس فوزاً)، فإكمال كاسرة أولاً
+    if _PLASTER:
+        info["breakers"] = len(_PLASTER)
+        pb = _Budget(int(max_nodes * 0.5), t0 + time_limit * 0.6)
+        mv, _ = _plaster_search(s, caps, pb, av, exclude)
+        if mv is None and av:
+            mv, _ = _plaster_search(s, caps, pb, set(), exclude)
+        if mv:
+            info["mode"] = "plaster"
+            info["nodes"] = pb.nodes
+            info["ms"] = round((time.perf_counter() - t0) * 1000, 1)
+            return mv
 
     hidden = any(c < 0 for t in s for c in t)
     chain = None
@@ -1018,6 +1279,24 @@ def key_freed(state, i, j) -> bool:
     return False
 
 
+def breaker_completed(state, i, j) -> bool:
+    """هل تكمل الحركة (i, j) كاسرة جبس قائم (تمتلئ القارورة j بلون واحد)؟ السائق ينتظر بعدها انكسار الجبس قبل اللقطة
+    (التشغيل التاسع: الجبس ينكسر بعد امتلاء الكاسرة بثوانٍ، فكانت اللقطة الأولى تُظهره قائماً)."""
+    try:
+        br = plaster_breakers(state)
+        if not any(j in ks for ks in br.values()):
+            return False
+        after = apply_move(state, i, j)
+        if after is None:
+            return False
+        vis, keep = _visible(after)
+        jj = keep.index(j) if keep is not None else j
+        enc = _Enc(vis)
+        return _complete(enc.start[jj], enc.caps[jj])
+    except (ValueError, IndexError, KeyError, TypeError):
+        return False
+
+
 def is_solved(state) -> bool:
     """هل القوارير الظاهرة مرتّبة؟ (المغطّاة لا تُحسب: السائق لا يعدّها فوزاً ما بقيت مغطّاة.)"""
     enc = _Enc(_visible(state)[0])
@@ -1025,11 +1304,11 @@ def is_solved(state) -> bool:
 
 
 def describe(state) -> str:
-    """وصف نصي قصير للحالة (للسجل). المغطّاة: [#ستارة:لونها] أو [#كيس]."""
+    """وصف نصي قصير للحالة (للسجل). المغطّاة: [#ستارة:لونها] أو [#كيس] أو [#جبس]."""
     parts = []
     for t in (state or {}).get("tubes") or []:
         if t.get("blocked"):
-            kind = {"curtain": "ستارة", "bag": "كيس"}.get(t.get("cover"), "غطاء")
+            kind = {"curtain": "ستارة", "bag": "كيس", "plaster": "جبس"}.get(t.get("cover"), "غطاء")
             parts.append("[#%s%s]" % (kind, (":" + t["cover_color"]) if t.get("cover_color") else ""))
             continue
         layers = t.get("layers") or []

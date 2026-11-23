@@ -19,7 +19,10 @@
     read_coins(img)        -> رصيد العملات من الحبّة أعلى اليسار (النوافذ والواجهة) أو None
     find_lives_popup(img)  -> {"refill", "close", "price", "timer"} لنافذة «More Lives» أو None
     find_give_up(img)      -> (x, y) «Give Up» في نافذة «No Available Moves»؛ find_play_on -> (x, y, الثمن) لـ «Play On»
-    find_covers(img)       -> الستائر والأكياس التي تغطي قوارير (تصير في parse_level قوارير "blocked")
+    find_covers(img)       -> الستائر والأكياس وقوالب الجبس التي تغطي قوارير (تصير في parse_level قوارير "blocked")
+    is_white_ad(img)       -> الإعلان التجريبي الأبيض (AppLovin MAX)؛ is_ad للإعلان الأسود
+    find_ad_close(img)     -> (x, y) زرّ X صغير في زاوية علوية من إعلان (بعد عدّه التنازلي) أو None؛ لا يبحث في الأسفل («Install»)
+    is_logo_overlay(img)   -> شعار «MAGIC SORT» فوق لوحة معتمة (احتفال الفوز؛ قد تتوقف اللعبة عنده)
     analyze(img)           -> {"kind", "level", ثم "state"+"boosters" أو "button" أو "close"}
     state_key(state)       -> مفتاح لمقارنة حالتين (تحقّق الاستقرار بين لقطتين)
     to_device(x, y)        -> إحداثيات الشاشة الحقيقية 1080×2280
@@ -36,6 +39,9 @@
     ملوّن تخفي قوارير (لا تُعدّ قوارير). يحرّر المفتاحَ كشفُ طبقته (لا شيء بلون آخر فوقها) فيُفتح بابه.
     الستائر (من المرحلة 33 تقريباً) والأكياس (من 80 تقريباً) تغطي قارورة في خانتها: تُقرأ قارورة {"blocked": True، "cover": "curtain"|"bag"،
     "cover_color": لون أيقونة الستارة، "layers": []} بترتيب القراءة نفسه، فتبقى فهارس القوارير الأخرى حين تنكشف.
+    والجبس (من المرحلة 100: قالب أبيض متشقّق بحجم قارورة) مثلها بـ "cover": "plaster": ينكسر حين تكتمل قارورة ظاهرة في الخانة
+    المجاورة له في صفّه (يميناً أو يساراً؛ قاعدتها فتات جبس يُقرأ "clay")، وقاعدة الكسر في solver.plaster_breakers.
+    "box" = [x0, أعلى، x1، أسفل] لكل قارورة (ومنها المغطّاة): منه يعرف الحلّال صفّ القارورة الطويلة وجاراتها.
 
 القارورة الطويلة على حامل: قاعها مخفيّ، فيُقاس «الفراغ» (cap - عدد الطبقات) من قمة السائل
 بدقة (هذا ما يحتاجه الحلّال)، والطبقات المرئية تقدير حتى الحامل. في المراحل 10..14 قيس
@@ -664,10 +670,46 @@ def bag_mask(a):
     return (B > 150) & (B - G > 90) & (R - G > 45) & (R > 85) & (G < 120)
 
 
+def plaster_mask(a):
+    """الجبس الأبيض الكريمي المتشقّق (من المرحلة 100) يغلّف قارورة في خانتها: قنواته الثلاث متقاربة وأدفأ قليلاً من الرمادي
+    (وسيطه نحو 212/203/189: R-G≈10 وG-B≈12). قماش الستارة الوردي أحمره أعلى بكثير من أخضره (R-G≈40) وأزرقه فوق أخضره،
+    والخشب وشظايا الطين أحمرها أبعد عن أزرقها، فلا تملأ صندوقاً بحجم قارورة. (حافة الجبس اليسرى البنفسجية خارج القناع:
+    يُصحَّح عرضه بـ _plaster_box.)"""
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return ((R > 140) & (G > 110) & (B > 100) & (R - G >= -6) & (R - G <= 28) & (G - B >= -4)
+            & (R - B >= 0) & (R - B <= 50))
+
+
+def _plaster_box(a, box):
+    """حدّا قالب الجبس الأفقيان الحقيقيان: في الأسطر الوسطى من الصندوق (بلا العنق والقاعدة) يمتدّ كل سطر يساراً ويميناً ما
+    دامت البكسلات فاتحة (الخلفية كحلية داكنة)، والوسيط يعطي الحدّين. القناع يفوّت حافته اليسرى البنفسجية (نحو 7 بكسلات) فكان
+    مركزه يميل 5 بكسلات عن مركز الخانة."""
+    x0, y0, x1, y1 = box
+    H, W = a.shape[:2]
+    h = y1 - y0 + 1
+    light = a[max(0, y0 + int(0.35 * h)):min(H, y0 + int(0.80 * h)) + 1].max(axis=2) > 120
+    if light.shape[0] == 0:
+        return box
+    lim = max(4, int(0.25 * (x1 - x0 + 1)))
+    ls, rs = [], []
+    for row in light:
+        L = x0
+        while L > 0 and x0 - L < lim and row[L - 1]:
+            L -= 1
+        R = x1
+        while R < W - 1 and R - x1 < lim and row[R + 1]:
+            R += 1
+        ls.append(L)
+        rs.append(R)
+    return int(np.median(ls)), y0, int(np.median(rs)), y1
+
+
 def find_covers(img, tubes=None):
     """قوارير مغطّاة لا تُرى محتوياتها: ستارة قماش وردية عليها أيقونة قارورة بلون (تنزاح حين يكتمل ذلك اللون)، وكيس بنفسجي
-    مربوط ببطاقة رقم (ينفجر بعد ذلك العدد من القوارير المرتّبة). كلاهما بحجم قارورة في خانتها (عرض 0.13 وارتفاع 0.17
-    تقريباً من الشاشة). يعيد [{"kind": "curtain"|"bag"، x0, y0, x1, y1، "color": لون أيقونة الستارة أو None}].
+    مربوط ببطاقة رقم (ينفجر بعد ذلك العدد من القوارير المرتّبة)، وقالب جبس أبيض متشقّق (من المرحلة 100؛ ينكسر حين تكتمل
+    قارورة ظاهرة في الخانة المجاورة له في صفّه). كلها بحجم قارورة في خانتها (عرض 0.13 وارتفاع 0.17 تقريباً من الشاشة).
+    يعيد [{"kind": "curtain"|"bag"|"plaster"، x0, y0, x1, y1، "color": لون أيقونة الستارة أو None}].
     tubes: القوارير الخام (detect_tubes) لاستبعاد صناديقها (سائل وردي أو بنفسجي داخل الزجاج)."""
     a = load(img)
     H, W = a.shape[:2]
@@ -676,11 +718,16 @@ def find_covers(img, tubes=None):
     for t in (tubes if tubes is not None else detect_tubes(a)):
         keep[max(0, int(t["y0"]) - 3):int(t["y1"]) + 4, max(0, int(t["x0"]) - 3):int(t["x1"]) + 4] = False
     out = []
-    for kind, mask in (("curtain", cloth_mask(a)), ("bag", bag_mask(a))):
+    for kind, mask in (("curtain", cloth_mask(a)), ("bag", bag_mask(a)), ("plaster", plaster_mask(a))):
         for b in _rect_blobs(mask & keep, W, H, 0.004):
             if not (0.09 * W <= b["w"] <= 0.17 * W and 0.12 * H <= b["h"] <= 0.23 * H and b["fill"] >= 0.6):
                 continue
             x0, y0, x1, y1 = b["box"]
+            if kind == "plaster":
+                x0, y0, x1, y1 = _plaster_box(a, (x0, y0, x1, y1))
+            if any(min(x1, c["x1"]) - max(x0, c["x0"]) > 0.5 * (x1 - x0) and min(y1, c["y1"]) - max(y0, c["y0"]) > 0.5 * (y1 - y0)
+                   for c in out):
+                continue                        # الخانة نفسها قُرئت غطاءً من نوع آخر
             w, h = x1 - x0 + 1, y1 - y0 + 1
             color = None
             if kind == "curtain":
@@ -691,7 +738,7 @@ def find_covers(img, tubes=None):
                 sel = (~cloth_mask(sub[None])[0]) & ((mx - mn) > 0.45 * np.maximum(mx, 1)) & (mx > 60)
                 if sel.sum() >= 15:
                     color = color_name(np.median(sub[sel].astype(np.float64), axis=0))
-            elif _gold_mask(a[y0:y1 + 1, x0:x1 + 1]).mean() < 0.01:
+            elif kind == "bag" and _gold_mask(a[y0:y1 + 1, x0:x1 + 1]).mean() < 0.01:
                 continue                        # كيس بلا بطاقته الذهبية: ليس كيساً
             out.append({"kind": kind, "x0": int(x0), "y0": int(y0), "x1": int(x1), "y1": int(y1), "color": color})
     out.sort(key=lambda c: (c["y0"], c["x0"]))
@@ -1068,6 +1115,95 @@ def is_ad(img) -> bool:
         return False
     bottom = a[int(0.86 * H):int(0.98 * H)]
     return 0.02 < float((bottom.max(axis=2) > 150).mean()) < 0.4
+
+
+def is_white_ad(img) -> bool:
+    """الإعلان التجريبي الأبيض (AppLovin MAX: «Congrats! You're seeing a test ad.»، مثلث وردي بإبهام، «MAX by APPLOVIN»، حلقة عدّ
+    تنازلي، وزرّ «Install» أخضر أسفل اليمين): شريط علوي أسود ومساحة بيضاء كبيرة (نصف الشاشة أو أكثر في كل نسخه المرئية من
+    التشغيلات 5..9) ومعها المثلث الوردي أو نصّ MAX الفيروزي الداكن. (is_ad للإعلان الأسود؛ شاشات اللعبة ملوّنة أو كحلية،
+    وسطح مكتب Android الوردي بلا شريط أسود.)"""
+    a = load(img)
+    H, W = a.shape[:2]
+    ai = _i16(a)
+    mx, mn = ai.max(axis=2), ai.min(axis=2)
+    if float((mx[:int(0.06 * H)] < 30).mean()) < 0.85 or float((mn > 215).mean()) < 0.35:
+        return False
+    R, G, B = ai[..., 0], ai[..., 1], ai[..., 2]
+    pink = (R > 215) & (G > 140) & (G < 205) & (B > 140) & (B < 205) & (R - G > 35)
+    teal = (R < 70) & (G > 40) & (G < 110) & (B > 60) & (B < 130) & (B - R > 25)
+    return float(pink.mean()) >= 0.01 or float(teal.mean()) >= 0.004
+
+
+def find_ad_close(img):
+    """زرّ إغلاق صغير على شكل X في زاوية علوية من إعلان بملء الشاشة (يظهر بعد العدّ التنازلي): رمز فاتح على خلفية داكنة أو داكن
+    على فاتحة، مربّع تقريباً (8..45 بكسل)، خطّاه القطريان ممتلئان وما بينهما فارغ (لا مثلث «▶ Google Play» ولا «+» ولا قرص
+    ممتلئ؛ والدائرة حول X مقبولة). يعيد (x, y) مركزه أو None. لا يبحث خارج الزاويتين العلويتين أبداً («Install» في الأسفل)."""
+    a = load(img)
+    H, W = a.shape[:2]
+    lum = _i16(a).max(axis=2)
+    for xa, xb in ((0, int(0.2 * W)), (int(0.8 * W), W)):
+        ya, yb = 0, int(0.2 * H)
+        reg = lum[ya:yb, xa:xb]
+        rh, rw = reg.shape
+        # الرمز فاتح على داكن (شريط الإعلان الأسود) أو داكن على فاتح (مساحته البيضاء): الخلفية حوله تُفحص محلياً
+        for glyph, bg in ((reg > 150, reg < 100), (reg < 110, reg > 170)):
+            for c in _components(glyph):
+                bw, bh = c["x1"] - c["x0"] + 1, c["y1"] - c["y0"] + 1
+                if not (8 <= bw <= 45 and 8 <= bh <= 45 and 0.6 <= bw / float(bh) <= 1.6):
+                    continue
+                fill = c["n"] / float(bw * bh)
+                if not 0.12 <= fill <= 0.7:
+                    continue
+                y0, y1, x0, x1 = max(0, c["y0"] - 5), min(rh, c["y1"] + 6), max(0, c["x0"] - 5), min(rw, c["x1"] + 6)
+                frame = np.ones((y1 - y0, x1 - x0), dtype=bool)
+                frame[c["y0"] - y0:c["y1"] - y0 + 1, c["x0"] - x0:c["x1"] - x0 + 1] = False
+                if frame.sum() == 0 or float(bg[y0:y1, x0:x1][frame].mean()) < 0.7:
+                    continue
+                sub = glyph[c["y0"]:c["y1"] + 1, c["x0"]:c["x1"] + 1]
+
+                def hit(fx, fy, sub=sub, bw=bw, bh=bh):
+                    x, y = int(round(fx * (bw - 1))), int(round(fy * (bh - 1)))
+                    return bool(sub[max(0, y - 1):y + 2, max(0, x - 1):x + 2].any())
+                ts = (0.15, 0.3, 0.4, 0.6, 0.7, 0.85)
+                diag = sum(hit(t, t) for t in ts) + sum(hit(t, 1 - t) for t in ts)
+                off = sum(hit(fx, fy) for fx, fy in ((0.5, 0.22), (0.5, 0.78), (0.22, 0.5), (0.78, 0.5)))
+                if diag < 11 or off > 1 or not hit(0.5, 0.5):
+                    continue
+                # X متناظر يميناً ويساراً وأعلى وأسفل (أيقونات شريط الحالة وحروف النصّ ليست كذلك)
+                sym = min(float((sub & f).sum()) / max(1, (sub | f).sum()) for f in (sub[:, ::-1], sub[::-1, :]))
+                if sym >= 0.45:
+                    return int(round(xa + (c["x0"] + c["x1"]) / 2.0)), int(round(ya + (c["y0"] + c["y1"]) / 2.0))
+    return None
+
+
+def is_logo_overlay(img) -> bool:
+    """شعار «MAGIC SORT» (قِدر بنفسجي وحروف بيضاء وصفراء بحدّ أزرق ملكي) فوق لوحة معتمة: جزء من احتفال الفوز يزول عادة في ثوانٍ،
+    وقد يبقى فتتوقف اللعبة عنده (التشغيل التاسع: مرتان حتى إعادة التشغيل بعد 3 دقائق، مع لمسات «سهم» كاذبة على الحروف الصفراء).
+    يُعرف بالعتمة حول وسط الشاشة، وحدّ الحروف الأزرق الملكي (أحمره شبه صفر، نحو 6/55/190: 1.6% من وسط الشاشة فأكثر في كل
+    إطاراته، و0.7% أو أقل في كل شاشة معتمة أخرى من التشغيلات 2..9 كـ «Your Cards» و«Tap to Claim»)، وحروف فاتحة، ووسطه أفقياً."""
+    a = load(img)
+    H, W = a.shape[:2]
+    if booster_bar(a):
+        return False
+    ai = _i16(a)
+    mx = ai.max(axis=2)
+    cy0, cy1, cx0, cx1 = int(0.30 * H), int(0.60 * H), int(0.10 * W), int(0.90 * W)
+    outside = np.ones((H, W), dtype=bool)
+    outside[cy0:cy1, cx0:cx1] = False
+    if float((mx[outside] < 70).mean()) < 0.85:
+        return False
+    c = ai[cy0:cy1, cx0:cx1]
+    R, G, B = c[..., 0], c[..., 1], c[..., 2]
+    blue = (B > 150) & (R < 40) & (G > 25) & (G < 105) & (B - G > 90)
+    if float(blue.mean()) < 0.012:
+        return False
+    letters = ((R > 215) & (G > 205) & (B > 195)) | ((R > 220) & (G > 150) & (B < 110) & (R - B > 130))
+    if float(letters.mean()) < 0.04:
+        return False
+    # الوسط الأفقي للشعار كله (القِدر البنفسجي والحروف وحدّها): في إطار «M» يقع الحرف وحدّه الأزرق يسار القِدر
+    purple = (B > 140) & (R > 90) & (G < 100) & (B - G > 80) & (R - G > 40)
+    xs = np.nonzero(blue | letters | purple)[1]
+    return abs(cx0 + float(xs.mean()) - W / 2.0) < 0.12 * W
 
 
 def find_give_up(img):

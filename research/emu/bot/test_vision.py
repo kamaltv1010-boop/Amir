@@ -717,6 +717,182 @@ class TestRun7Vision(unittest.TestCase):
             fn()
 
 
+# ---------------------------------------------------------------- التشغيل التاسع (المراحل 100..110)
+# لقطات حقيقية من التشغيل التاسع. الجبس (من المرحلة 100): قالب أبيض متشقّق في خانة قارورة يُقرأ قارورة محجوبة
+# {"blocked": True, "cover": "plaster", "layers": []} بترتيب القراءة؛ وقراءات القوارير الظاهرة هي نفسها قبل كشف الجبس (قورنت
+# بالكود السابق على 1138 لقطة: لا فرق في أي قارورة غير جبس). جاراته بفتات جبس في قاعدتها تُقرأ "clay" كما كانت.
+# (x, y, "plaster") للجبس، و(x, y, السعة، "طبقات من الأسفل"، {خيارات}) للظاهرة، و(x, y, "curtain", لون الأيقونة) للستارة.
+PLASTER_LEVELS = {
+    "L100_plaster": [
+        (40, 375, 4, "orange red blue blue"), (118, 375, 4, "blue blue", {"clay"}), (198, 381, "plaster"),
+        (276, 381, "plaster"), (353, 375, 4, "yellow yellow", {"clay"}), (432, 381, "plaster"),
+        (42, 642, "plaster"), (118, 637, 4, "red red", {"clay"}), (198, 642, "plaster"), (276, 642, "plaster"),
+        (353, 637, 4, "green green", {"clay"}), (431, 636, 4, "orange purple green green"),
+    ],
+    "L104_plaster_hard": [
+        (66, 336, "plaster"), (133, 332, 4, "purple purple", {"clay"}), (202, 336, "plaster"), (271, 336, "plaster"),
+        (338, 332, 4, "blue blue", {"clay"}), (408, 336, "plaster"),
+        (66, 542, "plaster"), (133, 536, 4, "pink pink", {"clay"}), (201, 538, 4, "lavender darkgreen orange blue"),
+        (270, 537, 4, "red cyan darkgreen brown"), (339, 536, 4, "plum plum", {"clay"}), (408, 542, "plaster"),
+        (201, 743, 4, "lavender cyan green orange"), (270, 743, 4, "orange cyan lavender blue"),
+    ],
+    "L108_plaster": [
+        (100, 336, "plaster"), (168, 330, 4, "cyan cyan", {"clay"}), (237, 336, "plaster"),
+        (304, 330, 4, "yellow yellow", {"clay"}), (374, 336, "plaster"),
+        (100, 542, "plaster"), (167, 537, 4, "green green", {"clay"}), (237, 542, "plaster"),
+        (304, 536, 4, "orange orange", {"clay"}), (374, 542, "plaster"),
+        (133, 743, 4, "yellow yellow lavender"), (201, 743, 4, "red green green"), (270, 743, 4, "pink purple cyan"),
+        (339, 743, 4, "orange orange red"),
+    ],
+    # المرحلة 108 بعد اكتمال الأخضر (السدادة الذهبية): انكسر الجبس عن جارتيه في الصف الثاني فظهرتا بطبقاتهما (ومنها مخفي)
+    "L108_plaster_broken": [
+        (100, 336, "plaster"), (167, 330, 4, "cyan cyan cyan", {"clay"}), (237, 336, "plaster"),
+        (304, 330, 4, "yellow yellow", {"clay"}), (374, 336, "plaster"),
+        (98, 537, 4, "? ? blue blue"), (167, 537, 4, "green green green green"), (236, 537, 4, "pink cyan darkgreen"),
+        (304, 536, 4, "orange orange", {"clay"}), (374, 542, "plaster"),
+        (133, 743, 4, "yellow yellow lavender"), (201, 743, 4, "pink"), (270, 743, 4, "pink purple"),
+        (339, 743, 4, "orange orange red red"),
+    ],
+    # الصعبة جداً: ستائر وجبس معاً (القماش الوردي والجبس الأبيض لا يختلطان)
+    "L109_plaster_curtains": [
+        (168, 315, "curtain", "red"), (236, 315, "curtain", "darkgreen"), (304, 315, "curtain", "green"),
+        (98, 521, "curtain", "blue"), (168, 542, "plaster"), (236, 536, 4, "plum plum", {"clay"}), (306, 542, "plaster"),
+        (372, 521, "curtain", "red"),
+        (64, 743, 4, "darkgreen red green"), (133, 743, 4, "lavender purple cyan"), (201, 743, 4, "purple orange purple"),
+        (270, 743, 4, "plum purple red"), (339, 743, 4, "red red green"), (408, 743, 4, "darkgreen cyan plum"),
+    ],
+    # قارورة طويلة على صفّين بقاعدة من فتات الجبس بين قالبين في صفّ قاعدتها
+    "L110_plaster_tall": [
+        (40, 375, 4, "? ? ? blue"), (118, 499, 10, "blue blue blue blue", {"tall"}), (196, 374, 4, "? ? ? brown"),
+        (276, 381, "plaster"), (353, 374, 4, "pink pink", {"clay"}), (432, 381, "plaster"),
+        (42, 642, "plaster"), (198, 642, "plaster"), (274, 636, 4, "pink purple blue blue"),
+        (353, 636, 4, "blue purple purple pink"), (431, 636, 4, "purple blue brown blue"),
+    ],
+}
+NO_PLASTER = ["L101_door_no_plaster", "L105_hidden_no_plaster", "L107_bags_no_plaster"]
+WHITE_ADS = ["ad_applovin_test", "ad_applovin_letterbox"]           # إعلان AppLovin التجريبي الأبيض بنسختيه
+LOGOS = ["logo_cauldron_m", "logo_magic_sort", "005_d_3s"]           # شعار «MAGIC SORT» فوق لوحة معتمة (ومنه الألعاب النارية)
+# شاشات التشغيل التاسع التي مرّ بها البوت كما يجب: (التصنيف، نقطة الزرّ أو X أو هدف «السهم» التي يلمسها السائق)
+RUN9_SCREENS = {
+    "journey_tap_to_claim": ("unknown", "arrow", (302, 234)),   # «Journey Rewards — Tap to Claim»: لمسة «السهم» تستلمها
+    "continue_streak": ("close", "close", (428, 215)),          # «Continue?» بعد «Give Up»: X لا «Play On 900»
+    "continue_life": ("close", "close", (428, 215)),
+    "level_failed_try_again": ("button", "button", (236, 652)),  # «Level Failed!»: «Try Again»
+    "broom_streak": ("close", "close", (412, 74)),
+    "race_jetpack": ("close", "close", (411, 76)),
+    "race_lost_continue": ("button", "button", (236, 916)),
+    "superhard_intro": ("button", "button", (236, 652)),
+    "journey_page": ("close", "close", (408, 96)),
+}
+
+
+def _x_glyph(a, cx, cy, size, color, width=3, ring=False, kind="x"):
+    """يرسم رمزاً صغيراً على نسخة من الصورة: X (ومعه دائرة اختيارياً)، أو مثلث «▶» ممتلئ، أو «+»."""
+    from PIL import Image, ImageDraw
+    im = Image.fromarray(a.copy())
+    d = ImageDraw.Draw(im)
+    h = size // 2
+    if kind == "x":
+        d.line([(cx - h, cy - h), (cx + h, cy + h)], fill=color, width=width)
+        d.line([(cx - h, cy + h), (cx + h, cy - h)], fill=color, width=width)
+        if ring:
+            r = int(h * 1.45)
+            d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=color, width=2)
+    elif kind == "play":
+        d.polygon([(cx - h, cy - h), (cx - h, cy + h), (cx + h, cy)], fill=color)
+    elif kind == "plus":
+        d.line([(cx, cy - h), (cx, cy + h)], fill=color, width=width)
+        d.line([(cx - h, cy), (cx + h, cy)], fill=color, width=width)
+    import numpy as np
+    return np.asarray(im)
+
+
+class TestRun9Vision(unittest.TestCase):
+    def test_plaster_tubes(self):
+        """قوالب الجبس قوارير محجوبة في خاناتها (العدد والمواضع)، والقوارير الظاهرة كما كانت تُقرأ، بلا تحذيرات."""
+        for name, exp in PLASTER_LEVELS.items():
+            st = vision.parse_level(_path(name))
+            got = st["tubes"]
+            self.assertEqual(len(got), len(exp), name)
+            self.assertFalse(st.get("warnings"), (name, st.get("warnings")))
+            for k, (e, t) in enumerate(zip(exp, got)):
+                self.assertTrue(_near((t["x"], t["y"]), e[:2]), (name, k, (t["x"], t["y"]), e))
+                if e[2] in ("plaster", "curtain"):
+                    self.assertTrue(t.get("blocked"), (name, k))
+                    self.assertEqual(t["cover"], e[2], (name, k))
+                    self.assertEqual(t["layers"], [], (name, k))
+                    self.assertEqual(t["cap"], 4, (name, k))
+                    self.assertEqual(len(t["box"]), 4, (name, k))
+                    if e[2] == "curtain":
+                        self.assertEqual(t["cover_color"], e[3], (name, k))
+                else:
+                    opt = e[4] if len(e) > 4 else set()
+                    self.assertFalse(t.get("blocked"), (name, k))
+                    self.assertEqual((t["cap"], t["layers"]), (e[2], e[3].split()), (name, k))
+                    self.assertEqual((bool(t.get("tall")), bool(t.get("clay"))), ("tall" in opt, "clay" in opt), (name, k))
+            n = sum(1 for e in exp if e[2] == "plaster")
+            self.assertEqual(sum(1 for t in got if t.get("cover") == "plaster"), n, name)
+
+    def test_no_plaster_elsewhere(self):
+        """لا جبس في لوحات بلا جبس (أبواب، مخفي، أكياس وقوارير طويلة بقاعدة فتات، ستائر، طين، مفاتيح)."""
+        names = NO_PLASTER + list(LEVELS) + list(KEY_LEVELS) + list(RUN7_COVERS)
+        for name in names:
+            st = vision.parse_level(_path(name))
+            self.assertFalse([t for t in st["tubes"] if t.get("cover") == "plaster"], name)
+        st = vision.parse_level(_path("L107_bags_no_plaster"))
+        self.assertEqual([t["cover"] for t in st["tubes"] if t.get("blocked")], ["bag"] * 4)
+
+    def test_white_ad(self):
+        """إعلان AppLovin التجريبي الأبيض (بنسختيه) إعلانٌ لا شاشة مجهولة عادية؛ ولا شيء آخر (ولا الإعلان الأسود) يُقرأ كذلك."""
+        for name in WHITE_ADS:
+            self.assertTrue(vision.is_white_ad(_path(name)), name)
+            self.assertEqual(vision.classify(_path(name)), "unknown", name)
+            self.assertFalse(vision.is_ad(_path(name)), name)
+        for name in _all_testdata():
+            if name not in WHITE_ADS:
+                self.assertFalse(vision.is_white_ad(_path(name)), name)
+
+    def test_ad_close_corner_x(self):
+        """زرّ X صغير في زاوية علوية (فاتح على الشريط الأسود، أو داكن على الأبيض، أو داخل دائرة) يُعرف بمركزه؛ ولا «▶» ولا «+»
+        ولا أي شيء في لقطة حقيقية (لا X فيها: لا لمسة إلا على X حقيقي، و«Install» في الأسفل خارج البحث)."""
+        for name in _all_testdata():
+            self.assertIsNone(vision.find_ad_close(_path(name)), name)
+        a = vision.load(_path("ad_applovin_test"))
+        b = vision.load(_path("ad_applovin_letterbox"))
+        for img, cx, cy, col, ring in ((a, 440, 38, (235, 235, 235), False), (a, 36, 130, (90, 90, 90), False),
+                                       (b, 40, 45, (220, 220, 220), True), (b, 432, 120, (240, 240, 240), False)):
+            p = vision.find_ad_close(_x_glyph(img, cx, cy, 22, col, ring=ring))
+            self.assertIsNotNone(p, (cx, cy, ring))
+            self.assertTrue(abs(p[0] - cx) <= 4 and abs(p[1] - cy) <= 4, (p, cx, cy))
+        for kind in ("play", "plus"):
+            self.assertIsNone(vision.find_ad_close(_x_glyph(a, 440, 38, 22, (235, 235, 235), kind=kind)), kind)
+        self.assertIsNone(vision.find_ad_close(_x_glyph(a, 236, 960, 22, (235, 235, 235))))   # أسفل الشاشة: لا يُبحث
+
+    def test_logo_overlay(self):
+        """شعار «MAGIC SORT» فوق لوحة معتمة (إطار القِدر والحرف M، والكلمتان، ومع الألعاب النارية) يُعرف؛ وما عداه لا (ومنه
+        «Journey Rewards — Tap to Claim» ووضع الخلط المعتم ونوافذ «Continue?»)، فلا تُلمس حروفه الصفراء «سهماً»."""
+        for name in LOGOS:
+            self.assertTrue(vision.is_logo_overlay(_path(name)), name)
+            self.assertEqual(vision.classify(_path(name)), "unknown", name)
+        for name in _all_testdata():
+            if name not in LOGOS:
+                self.assertFalse(vision.is_logo_overlay(_path(name)), name)
+
+    def test_run9_screens_unchanged(self):
+        """شاشات التشغيل التاسع (الرحلة، السباق، «Continue?»، «Level Failed!»، سلسلة المكنسة، مقدّمة الصعبة جداً) تُصنَّف وتُلمس
+        كما مرّ بها البوت؛ ولا واحدة منها إعلان أو شعار أو «لا حركات» أو نافذة أرواح."""
+        for name, (cls, how, pt) in RUN9_SCREENS.items():
+            p = _path(name)
+            self.assertEqual(vision.classify(p), cls, name)
+            got = {"arrow": vision.find_tutorial_arrow, "close": vision.find_close, "button": vision.find_button}[how](p)
+            self.assertTrue(_near(got, pt), (name, got, pt))
+            self.assertFalse(vision.is_ad(p) or vision.is_white_ad(p) or vision.is_logo_overlay(p), name)
+            self.assertIsNone(vision.find_give_up(p), name)
+            self.assertIsNone(vision.find_lives_popup(p), name)
+        for name in ("continue_streak", "continue_life"):          # زرّها الأخضر «Play On 900» يصرف العملات: ليس زرّاً رئيسياً
+            self.assertIsNone(vision.find_button(_path(name)), name)
+
+
 if __name__ == "__main__":
     total_t = total_te = total_l = total_le = 0
     failed = False

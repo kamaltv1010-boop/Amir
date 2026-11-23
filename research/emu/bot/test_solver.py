@@ -556,6 +556,159 @@ class TestSpeed(unittest.TestCase):
             self.assertLess(dt / 1000, LIMIT_S)
 
 
+class TestPlaster(unittest.TestCase):
+    """الجبس (من المرحلة 100): قالب محجوب ("cover": "plaster") ينكسر حين تكتمل (تمتلئ بلون واحد) قارورة ظاهرة في خانة مجاورة له
+    في صفّه. المواضع والصناديق بإحداثيات لقطات التشغيل التاسع (خطوة الخانات 68 أو 78)."""
+
+    @staticmethod
+    def tb(x, y, layers, box_bottom=None, cap=4, **kw):
+        d = {"x": x, "y": y, "cap": cap, "layers": list(layers)}
+        if box_bottom is not None:
+            d["box"] = [x - 31, box_bottom - 176, x + 31, box_bottom]
+        d.update(kw)
+        return d
+
+    def pl(self, x, y, box_bottom=None):
+        return self.tb(x, y, [], box_bottom, blocked=True, cover="plaster")
+
+    def l108(self):
+        """بداية المرحلة 108 كما تقرؤها الرؤية: ستة قوالب في الصفّين الأعلى بينها أربع كاسرات طين، وأربع قوارير تحتها؛ لا فارغة
+        ولا حلّ للظاهر وحده (الخزامي والوردي والبنفسجي طبقة واحدة)."""
+        tb, pl = self.tb, self.pl
+        return {"tubes": [
+            pl(100, 336, 424), tb(168, 330, ["cyan"] * 2, 418, clay=True), pl(237, 336, 424),
+            tb(304, 330, ["yellow"] * 2, 418, clay=True), pl(374, 336, 424),
+            pl(100, 542, 630), tb(167, 537, ["green"] * 2, 625, clay=True), pl(237, 542, 630),
+            tb(304, 536, ["orange"] * 2, 624, clay=True), pl(374, 542, 630),
+            tb(133, 743, ["yellow", "yellow", "lavender"], 831), tb(201, 743, ["red", "green", "green"], 831),
+            tb(270, 743, ["pink", "purple", "cyan"], 831), tb(339, 743, ["orange", "orange", "red"], 831)]}
+
+    def test_breakers_by_position(self):
+        """كاسرة الجبس جارته الظاهرة يميناً أو يساراً في صفّه؛ جار جبسٌ أو ستارة ليس كاسرة؛ والقارورة الطويلة على صفّين (المرحلة
+        110) تكسر جبس صفّ قاعدتها لا صفّ قمّتها."""
+        self.assertEqual(solver.plaster_breakers(self.l108()),
+                         {0: [1], 2: [1, 3], 4: [3], 5: [6], 7: [6, 8], 9: [8]})
+        tb, pl = self.tb, self.pl
+        l110 = {"tubes": [
+            tb(40, 375, ["?", "?", "?", "blue"], 476), tb(118, 499, ["blue"] * 4, cap=10, tall=True,
+                                                         box=[84, 300, 154, 698]),
+            tb(196, 374, ["?", "?", "?", "brown"], 475), pl(276, 381, 481), tb(353, 374, ["pink"] * 2, 475, clay=True),
+            pl(432, 381, 481), pl(42, 642, 742), pl(198, 642, 742), tb(274, 636, ["pink", "purple", "blue", "blue"], 737),
+            tb(353, 636, ["blue", "purple", "purple", "pink"], 737), tb(431, 636, ["purple", "blue", "brown", "blue"], 737)]}
+        self.assertEqual(solver.plaster_breakers(l110), {3: [2, 4], 5: [4], 6: [1], 7: [1, 8]})
+        # بلا "box" (حالة مصطنعة): الصفّ من نقطة القارورة، والنتيجة نفسها في لوحة بسيطة
+        bare = {"tubes": [pl(100, 336), tb(168, 330, ["red"]), pl(236, 336), tb(304, 330, [], blocked=True, cover="curtain"),
+                          pl(372, 336), tb(100, 537, ["blue"]), tb(168, 537, ["blue"])]}
+        self.assertEqual(solver.plaster_breakers(bare), {0: [1], 2: [1], 4: []})
+        self.assertEqual(solver.plaster_breakers(mk([(4, ["red"]), (4, [])])), {})
+
+    def test_l108_plan_completes_breaker_first(self):
+        """المرحلة 108: الحلّ الظاهر مستحيل (كان البوت يتقدّم بلا هدف ثم «Give Up»)؛ الخطة الآن تكمل الأخضر أولاً (فينكسر الجبس عن
+        جارتيه) ولا تلمس قالباً."""
+        st = self.l108()
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "plaster", info)
+        self.assertEqual(mv, [(11, 6)])
+        self.assertTrue(solver.breaker_completed(st, 11, 6))
+        self.assertFalse({0, 2, 4, 5, 7, 9} & {k for m in mv for k in m})
+        end = run_moves(st, mv)
+        self.assertEqual(end["tubes"][6]["layers"], ["green"] * 4)
+
+    def test_breaker_needs_digging(self):
+        """الكاسرة (طين) تحتاج الأصفر المدفون تحت الخزامي: يُنقل الخزامي إلى الفارغة ثم يُصبّ الأصفر فيها فتكتمل (خطة «plaster»
+        تنتهي بإكمالها)، ولا يُصبّ من الكاسرة أبداً."""
+        tb, pl = self.tb, self.pl
+        st = {"tubes": [pl(100, 336, 424), tb(168, 330, ["yellow", "yellow"], 418, clay=True), pl(236, 336, 424),
+                        tb(133, 537, ["yellow", "yellow", "lavender"], 625), tb(201, 537, ["red", "lavender", "red"], 625),
+                        tb(270, 537, [], 625)]}
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "plaster")
+        self.assertTrue(mv and len(mv) <= 3, mv)
+        self.assertTrue(solver.breaker_completed(run_moves(st, mv[:-1]), *mv[-1]), mv)
+        self.assertTrue(all(i != 1 for i, _ in mv))
+
+    def test_mono_pours_into_breaker(self):
+        """في كاسرة الجبس لا يُعدّ عبثاً صبّ قارورة أحادية اللون غير مكتملة في فارغة (المرحلة 103: كاسرة فارغة بفتات) ولا صبّ جزء
+        منها؛ أما المكتملة فمسدودة بسدادة ذهبية لا يُصبّ منها أبداً (حركات التشغيلين الرابع والسادس منها كلها «لا تقدّم»)."""
+        tb, pl = self.tb, self.pl
+        st = {"tubes": [pl(100, 336, 424), tb(168, 330, [], 418, clay=True), tb(236, 330, ["blue"] * 3, 418),
+                        tb(304, 330, ["green", "blue"], 418), tb(372, 330, ["red", "green"], 418)]}
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertEqual(info["mode"], "plaster", info)
+        self.assertIn(mv, ([(2, 1), (3, 1)], [(3, 1), (2, 1)]))
+        self.assertEqual(run_moves(st, mv)["tubes"][1]["layers"], ["blue"] * 4)
+        st2 = {"tubes": [pl(100, 336, 424), tb(168, 330, ["red", "red"], 418, clay=True), tb(236, 330, ["red"] * 3, 418),
+                         tb(304, 330, ["blue", "green"], 418), tb(372, 330, ["green", "blue"], 418)]}
+        mv2, _ = timed_plan(st2)
+        self.assertEqual(mv2[:1], [(2, 1)])
+        self.assertEqual(run_moves(st2, mv2[:1])["tubes"][1]["layers"], ["red"] * 4)
+        # المكتملة (الأزرق ×4، الأحمر ×4) لا تُصبّ كلها في كاسرة فارغة ولا جزءاً منها في كاسرة من لونها
+        st3 = {"tubes": [pl(100, 336, 424), tb(168, 330, [], 418, clay=True), tb(236, 330, ["blue"] * 4, 418),
+                         tb(304, 330, ["red", "green"], 418)]}
+        mv3, _ = timed_plan(st3)
+        self.assertFalse(any(i == 2 for i, _ in mv3), mv3)
+        st4 = {"tubes": [pl(100, 336, 424), tb(168, 330, ["red", "red"], 418, clay=True), tb(236, 330, ["red"] * 4, 418),
+                         tb(304, 330, ["blue", "green"], 418), tb(372, 330, ["green", "blue"], 418), tb(440, 330, [], 418)]}
+        mv4, _ = timed_plan(st4)
+        self.assertFalse(any(i == 2 for i, _ in mv4), mv4)
+
+    def test_sorted_board_with_empty_breaker(self):
+        """الظاهر مرتّب (كل لون في قارورة مكتملة) والجبس قائم وجاره كاسرة فارغة: المكتملة مسدودة فلا حركة (طريق مسدود حقيقي، تعرض
+        له اللعبة «No Available Moves»). وطويلة أحادية غير مكتملة تملأ الكاسرة الفارغة: خطة «plaster» من لوح «محلول»."""
+        tb, pl = self.tb, self.pl
+        st = {"tubes": [pl(100, 336, 424), tb(168, 330, [], 418, clay=True), tb(236, 330, ["blue"] * 4, 418),
+                        tb(304, 330, ["red"] * 4, 418)]}
+        self.assertTrue(solver.is_solved(st))
+        self.assertEqual(timed_plan(st)[0], [])
+        st2 = {"tubes": [pl(100, 336, 424), pl(168, 336, 424), tb(236, 330, ["blue"] * 4, 418), tb(304, 330, [], 418)]}
+        self.assertEqual(timed_plan(st2)[0], [])
+        st3 = {"tubes": [pl(100, 336, 424), tb(168, 330, [], 418, clay=True), tb(236, 330, ["blue"] * 6, 418, cap=10, tall=True),
+                         tb(304, 330, ["red"] * 4, 418)]}
+        self.assertTrue(solver.is_solved(st3))
+        info = {}
+        mv, _ = timed_plan(st3, info=info)
+        self.assertEqual((mv, info["mode"]), ([(2, 1)], "plaster"))
+        self.assertTrue(solver.breaker_completed(st3, 2, 1))
+
+    def test_breaker_completed(self):
+        st = self.l108()
+        self.assertTrue(solver.breaker_completed(st, 11, 6))      # الأخضر الثالث والرابع: تكتمل الكاسرة
+        self.assertFalse(solver.breaker_completed(st, 12, 1))     # سماوي واحد: لا تكتمل
+        self.assertFalse(solver.breaker_completed(st, 13, 8))     # أحمر فوق البرتقالي: غير قانونية
+        self.assertFalse(solver.breaker_completed(st, 0, 1))      # القالب لا يُصبّ منه
+        self.assertFalse(solver.breaker_completed(mk([(4, ["red"] * 3), (4, ["red"])]), 1, 0))   # بلا جبس
+
+    def test_fallback_with_hidden_layers(self):
+        """لا تسلسل يكمل كاسرة (لونها مخفي): يعود الحلّال إلى طرقه المعتادة بلا لمس القوالب ولا أثر بعده."""
+        tb, pl = self.tb, self.pl
+        st = {"tubes": [pl(100, 336, 424), tb(168, 330, ["plum"], 418, clay=True), pl(236, 336, 424),
+                        tb(133, 537, ["?", "?", "red", "blue"], 625), tb(201, 537, ["?", "blue", "red"], 625),
+                        tb(270, 537, [], 625), tb(338, 537, ["red", "blue"], 625)]}
+        info = {}
+        mv, _ = timed_plan(st, info=info)
+        self.assertIn(info["mode"].split("-")[0], ("pimc", "reveal", "progress"), info)
+        self.assertTrue(mv)
+        self.assertFalse({0, 2} & {k for m in mv for k in m})
+        self.assertEqual((solver._FILL, solver._PLASTER), (frozenset(), ()))
+
+    def test_plain_levels_unchanged(self):
+        """بلا جبس لا يتغيّر شيء: خطط مسجّلة من الحلّال قبل الجبس (ألغاز ثابتة، ومنها قارورة طين) تطابق حرفاً بحرف."""
+        cases = [((5, 2, 11), None, [(0, 5), (1, 5), (1, 6), (2, 0), (1, 2), (4, 6), (0, 1), (0, 6), (0, 1), (3, 1),
+                                      (3, 5), (3, 6), (2, 3), (2, 4)]),
+                 ((6, 1, 15), None, [(3, 6), (0, 3), (4, 6), (5, 6), (2, 5), (2, 4), (3, 2), (1, 3)]),
+                 ((6, 2, 21), 6, [(0, 6), (0, 7), (1, 0), (1, 7), (2, 0), (2, 6), (3, 1), (3, 6), (4, 6), (3, 4), (0, 3),
+                                  (4, 0), (4, 7), (2, 4), (5, 7), (5, 0), (1, 5), (1, 4)])]
+        for (ncol, nempty, seed), clay, want in cases:
+            st = random_puzzle(ncol, nempty, seed)
+            if clay is not None:
+                st["tubes"][clay]["clay"] = True
+            mv, _ = timed_plan(st, max_nodes=40000, time_limit=5.0)
+            self.assertEqual(mv, want, (ncol, nempty, seed))
+
+
 def _summary():
     print("\n[solver tests] calls=%d max_plan_ms=%.0f plain=%s one_empty=%s tall8=%s hidden=%s"
           % (STATS["calls"], STATS["max_ms"], STATS.get("plain"), STATS.get("one_empty"),
