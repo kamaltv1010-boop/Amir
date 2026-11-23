@@ -326,3 +326,37 @@
 [03:28:26] خطة المرحلة 107: 1 حركة (reveal، 43.4 ms)
 [03:28:29] خطة المرحلة 107: 2 حركة (reveal، 96.9 ms)
 [03:28:37] خطة المرحلة 107: 6 حركة (reveal، 60.4 ms)
+[03:28:58] خطة المرحلة 107: 2 حركة (progress، 0.4 ms)
+[03:29:06] خطة المرحلة 107: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[03:29:06] المرحلة 107 عالقة (لا خطة): [yellow,pink,purple,purple]/4 [pink]/4 [red,red,red,red]/4 [brown,brown,brown,brown,brown,brown,brown,brown]/10 [orange,orange]/4 [blue,cyan,blue,blue]/4 [purple,cyan]/4 [green,green,green]/4 [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/10 [#كيس] [#كيس] [#كيس] [#كيس]
+[03:29:06] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[03:29:06] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[03:29:09] شاشة جديدة لم تُرَ من قبل: new_042_unknown.jpg
+[03:29:09] انتهى التحميل بعد 132 ثانية
+[03:29:09] نافذة «No Available Moves» في المرحلة 107: «Give Up» (الرصيد 430 أقل من 900)
+[03:29:13] شاشة جديدة لم تُرَ من قبل: new_043_close.jpg
+[03:29:20] شاشة جديدة لم تُرَ من قبل: new_044_close.jpg
+[03:29:23] شاشة جديدة لم تُرَ من قبل: new_045_button.jpg
+[03:29:31] بداية المرحلة 107: 10 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0، مغطّاة 4 (ستارة/كيس)
+[03:29:31] حالة المرحلة 107: [{"x": 64, "y": 624, "cap": 10, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["green", "brown", "brown", "brown"], "keys": [0]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "cyan", "blue", "brown"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["orange", "blue", "pink", "purple"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["purple", "green", "purple", "green"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:29:31] خطة المرحلة 107: 1 حركة (key، 0.1 ms)
+[03:29:32] الحركة (1, 5) تحرّر مفتاحاً؛ انتظار الباب
+[03:29:38] المرحلة 107: قوارير جديدة (باب انفتح؟ 10 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[03:29:38] حالة المرحلة 107 بعد الباب: [{"x": 168, "y": 332, "cap": 4, "layers": ["cyan", "pink", "?", "blue"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "cyan", "blue", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["green", "lavender", "?", "yellow"]}, {"x": 64, "y": 624, "cap": 10, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "cyan", "blue", "brown"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["orange", "blue", "pink", "purple"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["purple", "green", "purple", "green"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:29:39] خطة المرحلة 107: 2 حركة (reveal، 595.1 ms)
+[03:29:47] خطة المرحلة 107: 4 حركة (reveal، 201.1 ms)
+[03:30:01] خطة المرحلة 107: 3 حركة (progress، 9.5 ms)
+[03:30:12] شاشة جديدة لم تُرَ من قبل: new_046_unknown.jpg
+[03:30:16] شاشة جديدة لم تُرَ من قبل: new_047_unknown.jpg
+[03:30:16] نافذة «No Available Moves» في المرحلة 107: «Give Up» (الرصيد 430 أقل من 900)
+[03:30:20] شاشة جديدة لم تُرَ من قبل: new_048_close.jpg
+[03:30:32] بداية المرحلة 107: 10 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0، مغطّاة 4 (ستارة/كيس)
+[03:30:32] حالة المرحلة 107: [{"x": 64, "y": 624, "cap": 10, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["purple", "brown", "brown", "purple"], "keys": [0]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange", "purple"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["orange", "purple", "pink", "yellow"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:30:32] خطة المرحلة 107: 3 حركة (key، 0.2 ms)
+[03:30:40] الحركة (1, 0) تحرّر مفتاحاً؛ انتظار الباب
+[03:30:52] المرحلة 107: لوحة أكبر لا تطابق ما قبلها تماماً (طوبقت 10 من 10 قارورة بالمحتوى والخانة)
+[03:30:52] المرحلة 107: قوارير جديدة (باب انفتح؟ 10 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[03:30:52] حالة المرحلة 107 بعد الباب: [{"x": 168, "y": 332, "cap": 4, "layers": ["red", "green", "?", "yellow"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "green", "red", "lavender"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["cyan", "lavender", "?", "green"]}, {"x": 64, "y": 642, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["purple"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange", "purple"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["purple"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["orange", "purple", "pink", "yellow"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["?", "yellow", "?", "lavender"]}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:31:27] خطة المرحلة 107: 3 حركة (progress، 5.5 ms)
+[03:31:48] نافذة «No Available Moves» في المرحلة 107: «Give Up» (الرصيد 430 أقل من 900)
+[03:32:04] شاشة جديدة لم تُرَ من قبل: new_049_unknown.jpg

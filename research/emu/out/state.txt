@@ -1,10 +1,10 @@
 done 39
 الحالة: يلعب
 مراحل مكتملة: 8
-الوقت: 80 دقيقة من 300
-آخر شاشة: level
-الشاشات: {'button': 29, 'unknown': 900, 'level': 445, 'close': 9}
-صور محفوظة: 83/900، شاشات جديدة: 41
-المرحلة الحالية: 107 (حركات 9، مخفي 1، إخفاقات 0، أدوات -، 0.6 دقيقة)
-الحالة المقروءة: [yellow,pink,purple,purple]/4 [?,blue,green,orange]/4 [red,red,green]/4 [brown,brown,brown,brown,brown,brown,brown,brown]/10 []/4 [blue,cyan,blue,orange]/4 [purple,cyan,red,red]/4 [green]/4 [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/10 [#كيس] [#كيس] [#كيس] [#كيس]
-العملات: 1050، «Give Up» لكل مرحلة: {99: 1}
+الوقت: 85 دقيقة من 300
+آخر شاشة: unknown
+الشاشات: {'button': 32, 'unknown': 939, 'level': 496, 'close': 14}
+صور محفوظة: 97/900، شاشات جديدة: 49
+المرحلة الحالية: 107 (حركات 10، مخفي 1، إخفاقات 0، أدوات -، 3.3 دقيقة)
+الحالة المقروءة: [red,green,green,green]/4 [?,green,red]/4 [cyan,lavender,blue]/4 [brown,brown,brown,brown,brown,brown,brown,brown,brown,brown]/10 [lavender,lavender]/4 [orange,orange,orange]/4 [purple,purple,purple]/4 [orange,purple,pink,yellow]/4 [yellow,yellow,yellow,yellow,yellow,yellow,yellow]/10 [cyan]/4 [#كيس] [#كيس] [#كيس]
+العملات: 430، «Give Up» لكل مرحلة: {99: 1, 107: 3}
