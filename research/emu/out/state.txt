@@ -1,10 +1,10 @@
 done 40
 الحالة: يلعب
 مراحل مكتملة: 10
-الوقت: 180 دقيقة من 188
-آخر شاشة: unknown
-الشاشات: {'unknown': 278, 'button': 169, 'level': 275, 'close': 7, 'lives': 14}
-صور محفوظة: 43/900، شاشات جديدة: 60
-المرحلة الحالية: 109 صعبة جداً (حركات 10، مخفي 2، إخفاقات 0، أدوات -، 33.2 دقيقة)
-الحالة المقروءة: [#ستارة:pink] [orange,brown,green]/4 [#ستارة:purple] [#ستارة:blue] [?,red,cyan,cyan]/4 [lavender,lavender,lavender,lavender]/4 [?,yellow,yellow]/4 [#ستارة:pink] [plum,plum,plum,plum]/4 [darkgreen,orange]/4 [green,green]/4 [blue,blue,blue]/4 [darkgreen,purple,pink,pink]/4 [pink,yellow,cyan]/4
+الوقت: 185 دقيقة من 188
+آخر شاشة: level
+الشاشات: {'unknown': 305, 'button': 170, 'level': 314, 'close': 7, 'lives': 14}
+صور محفوظة: 44/900، شاشات جديدة: 60
+المرحلة الحالية: 109 صعبة جداً (حركات 30، مخفي 0، إخفاقات 0، أدوات -، 2.2 دقيقة)
+الحالة المقروءة: [darkgreen,darkgreen,darkgreen]/4 [darkgreen]/4 [blue,blue,blue,blue]/4 [#ستارة:brown] [brown,brown,brown,brown]/4 [green,green,green,green]/4 [purple,purple,purple]/4 [plum,plum,plum]/4 [cyan,cyan,cyan,cyan]/4 [red,red,red]/4 [yellow,yellow,yellow]/4 [lavender,lavender,lavender,lavender]/4 [pink,pink,pink,pink]/4 [orange,orange,orange,orange]/4
 العملات: 470، «Give Up» لكل مرحلة: {99: 1, 107: 6, 108: 1, 109: 2}
