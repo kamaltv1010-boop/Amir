@@ -1,10 +1,10 @@
 done 42
 الحالة: يلعب
 مراحل مكتملة: 15
-الوقت: 187 دقيقة من 300
+الوقت: 192 دقيقة من 300
 آخر شاشة: button
-الشاشات: {'close': 27, 'button': 62, 'unknown': 926, 'level': 1113, 'lives': 2}
+الشاشات: {'close': 27, 'button': 66, 'unknown': 926, 'level': 1113, 'lives': 2}
 صور محفوظة: 128/900، شاشات جديدة: 58
-المرحلة الحالية: 124 صعبة (حركات 8، مخفي 2، إخفاقات 0، أدوات -، 8.7 دقيقة)
+المرحلة الحالية: 124 صعبة (حركات 8، مخفي 2، إخفاقات 0، أدوات -، 13.8 دقيقة)
 الحالة المقروءة: [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
-العملات: 70، «Give Up» لكل مرحلة: {114: 1, 117: 1, 122: 1, 123: 1, 124: 7}، انتظار الأرواح 7 دقيقة
+العملات: 70، «Give Up» لكل مرحلة: {114: 1, 117: 1, 122: 1, 123: 1, 124: 7}، انتظار الأرواح 1 دقيقة
