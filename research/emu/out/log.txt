@@ -408,3 +408,7 @@
 [00:09:28] المرحلة 99: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
 [00:09:28] حالة المرحلة 99 بعد الباب: [{"x": 99, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "green"}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "purple", "?", "plum"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "brown", "lavender", "lavender"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["red", "lavender", "green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "orange", "orange"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["yellow", "blue", "darkgreen", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "red", "mint"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "?", "yellow", "pink"], "keys": [2]}, {"x": 236, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "orange", "cyan"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["?", "mint", "plum", "green"]}]
 [00:09:28] خطة المرحلة 99: 1 حركة (key، 0.5 ms)
+[00:09:29] الحركة (9, 5) تحرّر مفتاحاً؛ انتظار الباب
+[00:09:35] انتهى التحميل بعد 528 ثانية
+[00:09:35] نافذة «No Available Moves» في المرحلة 99: «Give Up» (الرصيد 150 أقل من 900)
+[00:09:47] نافذة «More Lives» (الرصيد 150 أقل من 900): إغلاق بـ X وانتظار 5.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
