@@ -452,3 +452,19 @@
 [04:48:33] شاشة جديدة لم تُرَ من قبل: new_053_lives.jpg
 [04:48:33] نافذة «More Lives» (الرصيد 430 أقل من 900): إغلاق بـ X وانتظار 9.6 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
 [04:53:41] انتظار الأرواح: باقي 4 دقيقة قبل زرّ المرحلة
+[04:58:19] بداية المرحلة 107: 10 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0، مغطّاة 4 (ستارة/كيس)
+[04:58:19] حالة المرحلة 107: [{"x": 64, "y": 624, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["pink", "purple", "lavender", "lavender"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["lavender", "pink", "lavender", "blue"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["pink", "purple", "lavender", "purple"], "keys": [1]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "blue", "lavender", "purple"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[04:58:19] خطة المرحلة 107: 3 حركة (key، 0.2 ms)
+[04:58:28] الحركة (3, 5) تحرّر مفتاحاً؛ انتظار الباب
+[04:58:36] المرحلة 107: قوارير جديدة (باب انفتح؟ 10 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[04:58:36] حالة المرحلة 107 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["brown", "red", "?", "orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "green", "green", "yellow"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["orange", "yellow", "?", "yellow"]}, {"x": 64, "y": 624, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["pink", "purple", "purple"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["lavender", "pink", "lavender", "blue"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["pink", "purple"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "blue", "lavender", "purple"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[04:59:08] خطة المرحلة 107: 5 حركة (reveal، 11.3 ms)
+[04:59:18] الحالة بعد (7, 8) تختلف عن المتوقَّع؛ إعادة التخطيط
+[04:59:33] الحالة بعد (6, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
+[05:00:40] الحالة بعد (0, 10) تختلف عن المتوقَّع؛ إعادة التخطيط
+[05:02:18] خطة المرحلة 107: 1 حركة (astar، 0.9 ms)
+[05:02:27] فوز بالمرحلة 107 (unknown): 38 حركة في 248 ث، أدوات -
+[05:02:27] انتهى التحميل بعد 897 ثانية
+[05:02:31] سهم تعليم: لمس الهدف (338, 705)
+[05:02:37] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{535609c u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
+[05:03:05] شاشة التحميل: انتظار بلا نقر
