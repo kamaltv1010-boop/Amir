@@ -570,3 +570,19 @@
 [06:18:29] شاشة التحميل: انتظار بلا نقر
 [06:22:50] انتظار الأرواح: باقي 0 دقيقة قبل زرّ المرحلة
 [06:23:00] نافذة «More Lives» (الرصيد 470 أقل من 900): إغلاق بـ X وانتظار 5.2 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
+[06:28:08] انتظار الأرواح: باقي 0 دقيقة قبل زرّ المرحلة
+[06:28:21] بداية المرحلة 109 (صعبة جداً): 12 قارورة، سعات [(4, 7)]، مخفي 0، مغطّاة 5 (ستارة/كيس)
+[06:28:21] حالة المرحلة 109: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 304, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 236, "y": 537, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 373, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 64, "y": 743, "cap": 4, "layers": ["plum", "plum", "lavender"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["darkgreen", "orange", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green", "pink", "lavender"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["cyan", "plum", "plum"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["darkgreen", "purple", "pink"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["pink", "yellow", "cyan"]}]
+[06:28:21] خطة المرحلة 109: 5 حركة (progress، 2.8 ms)
+[06:28:33] المرحلة 109: قوارير جديدة (باب انفتح؟ 12 → 14 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[06:28:33] حالة المرحلة 109 بعد الباب: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 304, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "red", "?", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "yellow", "?", "blue"]}, {"x": 373, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 64, "y": 743, "cap": 4, "layers": ["plum", "plum"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["darkgreen", "orange", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green", "pink"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["cyan", "plum", "plum"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["darkgreen", "purple", "pink"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["pink", "yellow", "cyan"]}]
+[06:28:33] خطة المرحلة 109: 1 حركة (reveal، 86.8 ms)
+[06:28:37] خطة المرحلة 109: 3 حركة (reveal، 36.0 ms)
+[06:28:45] الحالة بعد (11, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:28:45] خطة المرحلة 109: 1 حركة (reveal، 81.4 ms)
+[06:28:49] خطة المرحلة 109: 5 حركة (progress، 37.5 ms)
+[06:29:11] شاشة جديدة لم تُرَ من قبل: new_059_unknown.jpg
+[06:29:11] انتهى التحميل بعد 642 ثانية
+[06:29:15] شاشة جديدة لم تُرَ من قبل: new_060_unknown.jpg
+[06:29:15] نافذة «No Available Moves» في المرحلة 109: «Give Up» (الرصيد 470 أقل من 900)
+[06:29:27] نافذة «More Lives» (الرصيد 470 أقل من 900): إغلاق بـ X وانتظار 5.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
