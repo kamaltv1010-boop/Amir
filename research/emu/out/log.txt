@@ -726,3 +726,31 @@
 [21:21:34] انتظار الأرواح: باقي 1 دقيقة قبل زرّ المرحلة
 [21:22:22] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 7.5 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
 [21:27:30] انتظار الأرواح: باقي 2 دقيقة قبل زرّ المرحلة
+[21:30:04] المرحلة 124 أُعيدت من البداية (العنوان نفسه، ذاكرة 2 طبقة مكشوفة)
+[21:30:13] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[21:30:13] حالة المرحلة 124: [{"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "purple", "pink", "pink"], "keys": [0]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[21:30:13] خطة المرحلة 124: 3 حركة (key، 0.2 ms)
+[21:30:24] الحركة (2, 3) تحرّر مفتاحاً؛ انتظار الباب
+[21:30:34] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[21:30:34] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum", "?", "pink"], "keys": [1]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "purple"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[21:30:34] خطة المرحلة 124: 1 حركة (key، 0.2 ms)
+[21:30:39] خطة المرحلة 124: 1 حركة (key، 0.2 ms)
+[21:30:41] الحركة (0, 4) تحرّر مفتاحاً؛ انتظار الباب
+[21:30:51] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[21:30:51] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "?", "?", "green"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "purple"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[21:30:51] خطة المرحلة 124: 3 حركة (key، 0.2 ms)
+[21:31:04] الحركة (8, 5) تحرّر مفتاحاً؛ انتظار الباب
+[21:31:13] المرحلة 124: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[21:31:13] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "?", "?", "lavender"], "keys": [0]}, {"x": 168, "y": 538, "cap": 4, "layers": ["orange", "green", "lavender", "pink"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "?", "?", "green"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["purple", "darkgreen"]}]
+[21:31:13] خطة المرحلة 124: 2 حركة (key، 0.3 ms)
+[21:31:23] خطة المرحلة 124: 1 حركة (key، 0.2 ms)
+[21:31:27] خطة المرحلة 124: 3 حركة (reveal، 81.5 ms)
+[21:31:42] خطة المرحلة 124: 5 حركة (key، 0.6 ms)
+[21:32:11] الحركة (2, 9) تحرّر مفتاحاً؛ انتظار الباب
+[21:32:26] المرحلة 124: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[21:32:26] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "plum", "lavender", "green"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "red", "?", "red"], "keys": [1]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["orange", "green", "green"]}, {"x": 236, "y": 642, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["orange", "?", "darkgreen", "darkgreen"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}]
+[21:32:26] خطة المرحلة 124: 2 حركة (key، 0.8 ms)
+[21:33:10] خطة المرحلة 124: 1 حركة (progress، 8.3 ms)
+[21:33:15] انتهى التحميل بعد 1732 ثانية
+[21:33:19] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[21:33:35] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
