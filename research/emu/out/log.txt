@@ -327,3 +327,19 @@
 [19:18:26] انتهى التحميل بعد 55 ثانية
 [19:18:26] إعلان بملء الشاشة: رجوع (1)
 [19:19:04] شاشة التحميل: انتظار بلا نقر
+[19:20:58] انتهى التحميل بعد 114 ثانية
+[19:21:10] بداية المرحلة 118: 6 قارورة، سعات [(4, 4), (16, 2)]، مخفي 0
+[19:21:10] حالة المرحلة 118: [{"x": 65, "y": 524, "cap": 16, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 406, "y": 533, "cap": 16, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["red", "blue", "brown", "pink"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "brown", "orange", "pink"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["red", "pink", "cyan", "brown"], "keys": [1]}, {"x": 338, "y": 540, "cap": 4, "layers": ["brown", "cyan", "cyan", "orange"]}]
+[19:21:10] خطة المرحلة 118: 3 حركة (key، 0.2 ms)
+[19:21:23] الحركة (4, 1) تحرّر مفتاحاً؛ انتظار الباب
+[19:21:30] المرحلة 118: قوارير جديدة (باب انفتح؟ 6 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[19:21:30] حالة المرحلة 118 بعد الباب: [{"x": 65, "y": 524, "cap": 16, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 406, "y": 533, "cap": 16, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["red", "blue", "brown", "brown"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "brown", "orange", "pink"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["red", "pink"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["brown", "cyan", "cyan", "orange"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["yellow", "purple", "purple", "purple"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["green", "orange", "blue", "pink"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["yellow", "lavender", "cyan", "blue"]}, {"x": 338, "y": 745, "cap": 4, "layers": ["purple", "cyan", "lavender", "red"], "keys": [1]}]
+[19:21:30] خطة المرحلة 118: 6 حركة (key، 1.6 ms)
+[19:21:45] الحالة بعد (7, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[19:21:45] خطة المرحلة 118: 3 حركة (key، 0.7 ms)
+[19:21:57] الحركة (9, 8) تحرّر مفتاحاً؛ انتظار الباب
+[19:22:08] المرحلة 118: قوارير جديدة (باب انفتح؟ 10 → 14 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[19:22:08] حالة المرحلة 118 بعد الباب: [{"x": 65, "y": 524, "cap": 17, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["green", "pink", "red", "blue"]}, {"x": 202, "y": 335, "cap": 4, "layers": ["green", "yellow", "orange", "pink"]}, {"x": 270, "y": 335, "cap": 4, "layers": ["green", "cyan", "lavender", "pink"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["lavender", "yellow", "cyan", "pink"]}, {"x": 406, "y": 533, "cap": 16, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["red", "blue", "brown", "brown"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "brown", "orange", "pink"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["red", "red"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["brown", "cyan", "cyan", "orange"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["yellow", "purple", "purple", "purple"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["green", "orange", "blue", "blue"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["yellow", "lavender", "lavender"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["purple", "cyan"]}]
+[19:22:08] خطة المرحلة 118: 30 حركة (astar، 6.3 ms)
+[19:22:29] الحالة بعد (3, 5) تختلف عن المتوقَّع؛ إعادة التخطيط
+[19:22:29] خطة المرحلة 118: 26 حركة (astar، 3.9 ms)
