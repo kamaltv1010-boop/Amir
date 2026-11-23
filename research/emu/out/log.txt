@@ -122,3 +122,14 @@
 [18:20:52] بداية المرحلة 112: 11 قارورة، سعات [(4, 6), (11, 1)]، مخفي 0، مغطّاة 4 (ستارة 4)
 [18:20:52] حالة المرحلة 112: [{"x": 40, "y": 362, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 118, "y": 362, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 196, "y": 380, "cap": 4, "layers": ["pink", "green", "green"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["blue", "yellow", "green", "green"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["blue", "brown", "yellow", "yellow"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["green", "green", "green", "green", "green"]}, {"x": 40, "y": 623, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 118, "y": 623, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 197, "y": 640, "cap": 4, "layers": ["red", "blue", "pink"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["brown", "brown", "yellow", "green"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["purple", "blue", "purple", "pink"]}]
 [18:20:52] خطة المرحلة 112: 16 حركة (astar، 1.3 ms)
+[18:21:34] الحالة بعد (9, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[18:22:01] الحالة بعد (6, 10) تختلف عن المتوقَّع؛ إعادة التخطيط
+[18:23:13] خطة المرحلة 112: 8 حركة (astar، 0.8 ms)
+[18:24:22] شاشة جديدة لم تُرَ من قبل: new_015_unknown.jpg
+[18:24:22] فوز بالمرحلة 112 (unknown): 31 حركة في 210 ث، أدوات -
+[18:24:22] انتهى التحميل بعد 327 ثانية
+[18:24:23] شعار «MAGIC SORT» فوق لوحة معتمة (بعد الفوز): انتظار حتى 40 ثانية بلا لمس
+[18:24:25] شاشة جديدة لم تُرَ من قبل: new_016_unknown.jpg
+[18:24:29] سهم تعليم: لمس الهدف (338, 705)
+[18:24:36] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{2f13a9 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncher): لا لمس، تشغيلها
+[18:25:16] شاشة التحميل: انتظار بلا نقر
