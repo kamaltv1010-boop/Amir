@@ -468,3 +468,19 @@
 [05:02:31] سهم تعليم: لمس الهدف (338, 705)
 [05:02:37] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{535609c u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
 [05:03:05] شاشة التحميل: انتظار بلا نقر
+[05:04:13] بداية المرحلة 108: 8 قارورة، سعات [(4, 8)]، مخفي 0
+[05:04:13] حالة المرحلة 108: [{"x": 168, "y": 331, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 331, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 167, "y": 537, "cap": 4, "layers": ["green", "green"]}, {"x": 304, "y": 537, "cap": 4, "layers": ["orange", "orange"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["yellow", "yellow", "lavender"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["red", "green", "green"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["pink", "purple", "cyan"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["orange", "orange", "red"]}]
+[05:04:13] خطة المرحلة 108: 7 حركة (astar، 0.3 ms)
+[05:04:21] المرحلة 108: قوارير جديدة (باب انفتح؟ 8 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[05:04:21] حالة المرحلة 108 بعد الباب: [{"x": 168, "y": 331, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 331, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["pink", "cyan", "darkgreen", "blue"]}, {"x": 304, "y": 537, "cap": 4, "layers": ["orange", "orange"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["yellow", "yellow", "lavender"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["red"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["pink", "purple", "cyan"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["orange", "orange", "red"]}]
+[05:04:21] خطة المرحلة 108: 2 حركة (reveal، 38.7 ms)
+[05:04:29] خطة المرحلة 108: 2 حركة (progress، 1.6 ms)
+[05:04:37] خطة المرحلة 108: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[05:04:37] المرحلة 108 عالقة (لا خطة): [cyan,cyan,cyan]/4 [yellow,yellow]/4 [?,?,blue,blue]/4 [green,green,green,green]/4 [pink,cyan,darkgreen]/4 [orange,orange]/4 [yellow,yellow,lavender]/4 [pink]/4 [pink,purple]/4 [orange,orange,red,red]/4
+[05:04:37] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[05:04:37] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[05:04:41] شاشة جديدة لم تُرَ من قبل: new_054_unknown.jpg
+[05:04:41] انتهى التحميل بعد 96 ثانية
+[05:04:41] نافذة «No Available Moves» في المرحلة 108: «Give Up» (الرصيد 450 أقل من 900)
+[05:04:46] شاشة جديدة لم تُرَ من قبل: new_055_close.jpg
+[05:04:56] نافذة «More Lives» (الرصيد غير مقروء): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
