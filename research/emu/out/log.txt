@@ -48,3 +48,24 @@
 [10:06:18] المرحلة 109: لوحة أكبر لا تطابق ما قبلها تماماً (طوبقت 12 من 12 قارورة بالمحتوى والخانة)
 [10:06:18] المرحلة 109: قوارير جديدة (باب انفتح؟ 12 → 14 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
 [10:06:18] حالة المرحلة 109 بعد الباب: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "plum", "?", "cyan"]}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "yellow", "?", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "brown", "?", "orange"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["cyan", "pink", "darkgreen", "pink"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["yellow", "blue", "blue"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "lavender", "lavender", "lavender"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["orange", "orange", "orange"]}]
+[10:06:31] خطة المرحلة 109: 2 حركة (progress، 3.3 ms)
+[10:06:35] الحالة بعد (7, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:06:35] خطة المرحلة 109: 2 حركة (progress، 6.4 ms)
+[10:06:45] شاشة جديدة لم تُرَ من قبل: new_007_unknown.jpg
+[10:06:45] انتهى التحميل بعد 164 ثانية
+[10:06:45] نافذة «No Available Moves» في المرحلة 109: «Give Up» (الرصيد 470 أقل من 900)
+[10:07:07] بداية المرحلة 109 (صعبة جداً): 12 قارورة، سعات [(4, 7)]، مخفي 0، مغطّاة 5 (ستارة/كيس)
+[10:07:07] حالة المرحلة 109: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 304, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 236, "y": 537, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 373, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 64, "y": 743, "cap": 4, "layers": ["plum", "plum", "lavender"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["darkgreen", "orange", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green", "pink", "lavender"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["cyan", "plum", "plum"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["darkgreen", "purple", "pink"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["pink", "yellow", "cyan"]}]
+[10:07:07] خطة المرحلة 109: 5 حركة (progress، 4.9 ms)
+[10:07:23] المرحلة 109: قوارير جديدة (باب انفتح؟ 12 → 14 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[10:07:23] حالة المرحلة 109 بعد الباب: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 304, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "red", "?", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "yellow", "?", "blue"]}, {"x": 373, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "pink"}, {"x": 64, "y": 743, "cap": 4, "layers": ["plum", "plum"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["darkgreen", "orange", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["cyan", "plum", "plum"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["darkgreen", "purple", "pink", "pink"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["pink", "yellow", "cyan"]}]
+[10:07:23] خطة المرحلة 109: 1 حركة (reveal، 38.1 ms)
+[10:07:27] خطة المرحلة 109: 3 حركة (reveal، 17.7 ms)
+[10:07:36] الحالة بعد (11, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:07:36] خطة المرحلة 109: 1 حركة (reveal، 105.7 ms)
+[10:07:40] خطة المرحلة 109: 4 حركة (progress، 59.4 ms)
+[10:07:57] شاشة جديدة لم تُرَ من قبل: new_008_unknown.jpg
+[10:08:02] شاشة جديدة لم تُرَ من قبل: new_009_unknown.jpg
+[10:08:02] نافذة «No Available Moves» في المرحلة 109: «Give Up» (الرصيد 470 أقل من 900)
+[10:08:15] شاشة جديدة لم تُرَ من قبل: new_010_lives.jpg
+[10:08:15] نافذة «More Lives» (الرصيد 470 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
