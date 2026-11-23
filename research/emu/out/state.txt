@@ -1,10 +1,10 @@
 done 39
 الحالة: يلعب
-مراحل مكتملة: 0
-الوقت: 8 دقيقة من 300
-آخر شاشة: level
-الشاشات: {'button': 2, 'unknown': 54, 'level': 7}
-صور محفوظة: 7/900، شاشات جديدة: 2
-المرحلة الحالية: 99 صعبة جداً (حركات 4، مخفي 0، إخفاقات 0، أدوات -، 0.3 دقيقة)
-الحالة المقروءة: [brown,brown]/4 [brown,brown,lavender,lavender]/4 [red,lavender,green]/4 []/4 [blue,orange,green]/4 [yellow,blue,darkgreen,darkgreen]/4
-العملات: ?، «Give Up» لكل مرحلة: -
+مراحل مكتملة: 1
+الوقت: 13 دقيقة من 300
+آخر شاشة: unknown
+الشاشات: {'button': 3, 'unknown': 68, 'level': 76, 'close': 1}
+صور محفوظة: 18/900، شاشات جديدة: 9
+المرحلة الحالية: 99 صعبة جداً (حركات 42، مخفي 0، إخفاقات 0، أدوات ['playon']، 4.0 دقيقة)
+الحالة المقروءة: [mint,mint,mint,mint]/4 [green,green,green,green]/4 []/4 [yellow,yellow,yellow,yellow]/4 []/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [red,red,red,red]/4 [purple,purple,purple,purple]/4 [pink,pink,pink,pink]/4 [lavender,lavender,lavender,lavender]/4 [blue,blue,blue,blue]/4 [brown,brown,brown,brown]/4 []/4 [cyan,cyan,cyan,cyan]/4 [plum,plum,plum,plum]/4 [orange,orange,orange,orange]/4
+العملات: 1050، «Give Up» لكل مرحلة: {99: 1}
