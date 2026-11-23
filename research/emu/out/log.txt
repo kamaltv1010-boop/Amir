@@ -592,3 +592,40 @@
 [20:26:58] الإعلان التجريبي: رجوع (4)
 [20:27:04] الإعلان التجريبي: رجوع (5)
 [20:27:11] الإعلان التجريبي الأبيض باقٍ منذ 45 ثانية؛ إعادة تشغيل اللعبة
+[20:27:55] شاشة التحميل: انتظار بلا نقر
+[20:29:54] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[20:29:54] حالة المرحلة 124: [{"x": 236, "y": 624, "cap": 10, "layers": ["purple", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "blue"], "keys": [0]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "pink", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"], "keys": [0]}]
+[20:29:54] خطة المرحلة 124: 1 حركة (key، 0.1 ms)
+[20:29:56] الحركة (4, 0) تحرّر مفتاحاً؛ انتظار الباب
+[20:30:06] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[20:30:06] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "lavender", "?", "orange"], "keys": [1]}, {"x": 168, "y": 332, "cap": 4, "layers": ["darkgreen", "green", "darkgreen", "brown"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "blue"], "keys": [0]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "pink", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue"]}]
+[20:30:06] خطة المرحلة 124: 1 حركة (key، 0.1 ms)
+[20:30:07] الحركة (3, 6) تحرّر مفتاحاً؛ انتظار الباب
+[20:30:17] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[20:30:17] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "lavender", "?", "orange"], "keys": [1]}, {"x": 168, "y": 332, "cap": 4, "layers": ["darkgreen", "green", "darkgreen", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["pink", "?", "?", "purple"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "yellow", "yellow", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "pink", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "blue"]}]
+[20:30:17] خطة المرحلة 124: 1 حركة (key، 0.1 ms)
+[20:30:22] خطة المرحلة 124: 1 حركة (key، 0.2 ms)
+[20:30:27] خطة المرحلة 124: 2 حركة (key، 0.3 ms)
+[20:30:37] خطة المرحلة 124: 2 حركة (progress، 4.6 ms)
+[20:30:45] شاشة جديدة لم تُرَ من قبل: new_055_unknown.jpg
+[20:30:45] انتهى التحميل بعد 171 ثانية
+[20:30:51] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[20:31:13] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[20:31:13] حالة المرحلة 124: [{"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "purple", "pink", "pink"], "keys": [0]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[20:31:13] خطة المرحلة 124: 3 حركة (key، 0.2 ms)
+[20:31:25] الحركة (2, 3) تحرّر مفتاحاً؛ انتظار الباب
+[20:31:35] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[20:31:35] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum", "?", "pink"], "keys": [1]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "purple"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[20:31:35] خطة المرحلة 124: 1 حركة (key، 0.2 ms)
+[20:31:39] خطة المرحلة 124: 1 حركة (key، 0.3 ms)
+[20:31:41] الحركة (0, 4) تحرّر مفتاحاً؛ انتظار الباب
+[20:31:51] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:31:51] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "?", "?", "green"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "purple"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[20:31:51] خطة المرحلة 124: 3 حركة (key، 0.3 ms)
+[20:32:03] الحركة (8, 5) تحرّر مفتاحاً؛ انتظار الباب
+[20:32:13] المرحلة 124: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:32:13] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "?", "?", "lavender"], "keys": [0]}, {"x": 168, "y": 538, "cap": 4, "layers": ["orange", "green", "lavender", "pink"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "?", "?", "green"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["purple", "darkgreen"]}]
+[20:32:13] خطة المرحلة 124: 2 حركة (key، 0.7 ms)
+[20:32:22] خطة المرحلة 124: 1 حركة (key، 0.3 ms)
+[20:32:27] خطة المرحلة 124: 3 حركة (reveal، 72.6 ms)
+[20:32:41] خطة المرحلة 124: 5 حركة (key، 0.5 ms)
