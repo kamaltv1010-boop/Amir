@@ -1887,5 +1887,119 @@ class TestPlanBoost(unittest.TestCase):
         self.assertEqual(driver.plan_boost("unknown", -3), 1.0)       # عدّاد غريب لا يُنقص
 
 
+class FlakyDevice(FakeDevice):
+    """جهاز تفشل لقطاته عدداً من المرات (المحاكي مات أو انقطع adb) ثم تعود؛ يسجّل ما فعله حارس المحاكي."""
+
+    def __init__(self, game, fails, boot="1"):
+        super().__init__(game)
+        self.fails = fails
+        self.boot = boot
+        self.adb_restarts = 0
+        self.states = 0
+
+    def screencap(self):
+        if self.fails > 0:
+            self.fails -= 1
+            return None
+        return super().screencap()
+
+    def adb_state(self):
+        self.states += 1
+        return ""
+
+    def restart_adb(self):
+        self.adb_restarts += 1
+
+    def installed(self):
+        return True
+
+    def sh(self, cmd, timeout=30):
+        return self.boot if "sys.boot_completed" in cmd else ""
+
+
+class TestEmulatorWatchdog(unittest.TestCase):
+    """حارس المحاكي (recover_device): adb عند 3 لقطات فاشلة، والمحاكي عند 6 و9، والتوقف عند 12 (التشغيل العاشر)."""
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cfg = dict(driver.CFG)
+        self._kill, self._start = driver.kill_emulators, driver.start_emulator
+        self.started = 0
+        self.start_ok = True
+        driver.kill_emulators = lambda: None
+
+        def fake_start(log_path="/tmp/emulator_restart.log"):
+            self.started += 1
+            return self.start_ok
+        driver.start_emulator = fake_start
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        driver.kill_emulators, driver.start_emulator = self._kill, self._start
+        self.tmp.cleanup()
+
+    def make(self, fails, boot="1"):
+        rng = random.Random(3)
+        game = FakeGame([make_level(rng, 4, 2)], rng)
+        dev = FlakyDevice(game, fails, boot)
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(dev, driver.Vision(FakeVisionModule(game), out), out, 600, git=False)
+        return game, dev, bot
+
+    def log(self):
+        return (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+
+    def test_short_glitch_needs_no_recovery(self):
+        game, dev, bot = self.make(2)
+        bot.run(max_iters=40)
+        self.assertEqual(dev.adb_restarts, 0)
+        self.assertEqual(self.started, 0)
+        self.assertEqual(bot.cap_fails, 0)
+        self.assertFalse(bot.stop)
+
+    def test_adb_restart_after_three_failures(self):
+        game, dev, bot = self.make(4)
+        bot.run(max_iters=40)
+        self.assertEqual(dev.adb_restarts, 1, self.log()[-1500:])
+        self.assertEqual(self.started, 0)
+        self.assertIn("إعادة تشغيل خادم adb", self.log())
+        self.assertEqual(bot.cap_fails, 0)
+
+    def test_emulator_restart_then_play_continues(self):
+        game, dev, bot = self.make(7)
+        launched = dev.launched
+        bot.run(max_iters=80)
+        self.assertEqual(self.started, 1, self.log()[-2000:])
+        self.assertEqual(bot.emu_restarts, 1)
+        self.assertGreater(dev.launched, launched)
+        self.assertIn("عاد المحاكي وشُغّلت اللعبة من جديد", self.log())
+        self.assertFalse(bot.stop)
+        for _ in range(20):
+            bot.run(max_iters=100)
+            if game.wins:
+                break
+        self.assertEqual(game.wins, 1, self.log()[-2000:])
+
+    def test_gives_up_after_restarts_are_exhausted(self):
+        self.start_ok = False
+        game, dev, bot = self.make(10 ** 6)
+        bot.run(max_iters=60)
+        self.assertEqual(self.started, 2, self.log()[-2000:])
+        self.assertTrue(bot.stop)
+        self.assertIn("إيقاف البوت لينتهي التشغيل", self.log())
+
+    def test_boot_that_never_completes_counts_as_failed_restart(self):
+        game, dev, bot = self.make(10 ** 6, boot="0")
+        bot.run(max_iters=60)
+        self.assertEqual(self.started, 2)
+        self.assertTrue(bot.stop)
+        self.assertIn("لم يكمل إقلاعه", self.log())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

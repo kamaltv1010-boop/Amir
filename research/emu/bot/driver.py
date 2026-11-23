@@ -96,6 +96,10 @@ CFG = {
     "fail_plan_step": _env("BOT_FAIL_PLAN_STEP", 0.75, float),
     "fail_plan_max": _env("BOT_FAIL_PLAN_MAX", 4.0, float),
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
+    # حارس المحاكي: اسم AVD الذي يشغّله reactivecircus/android-emulator-runner وخياراته (كما في emu-bot.yml)، وأقصى إعادات له
+    "emu_avd": _env("BOT_AVD", "test"),
+    "emu_options": _env("BOT_EMU_OPTIONS", "-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan"),
+    "emu_restarts": _env("BOT_EMU_RESTARTS", 2, int),
     # بعد حركة تكمل جارة جبس: ينكسر الجبس بعد ثوانٍ (التشغيل التاسع: يظهر مكسوراً بعد 6..7 ث من النقر، وقائماً بعد 4 ث)
     "plaster_wait": _env("BOT_PLASTER_WAIT", 4.0, float),
     "plaster_grace": _env("BOT_PLASTER_GRACE", 10.0, float),  # «عالقة» قبل هذا بعد إكمال الجارة: انتظار الجبس لا الأدوات
@@ -251,6 +255,26 @@ class Device:
     def sh(self, cmd, timeout=30) -> str:
         rc, out = self.run(["shell", cmd], timeout=timeout)
         return out.strip()
+
+    def adb_state(self) -> str:
+        """حالة الجهاز في «adb devices»: device أو offline أو unauthorized، أو "" إن لم يكن موجوداً."""
+        try:
+            p = subprocess.run([self.adb, "devices"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=20)
+        except (subprocess.TimeoutExpired, OSError):
+            return ""
+        for line in p.stdout.decode("utf-8", "replace").splitlines()[1:]:
+            parts = line.split()
+            if len(parts) >= 2 and (self.serial is None or parts[0] == self.serial):
+                return parts[1]
+        return ""
+
+    def restart_adb(self):
+        """إعادة تشغيل خادم adb (يفقد الاتصال بالمحاكي أحياناً فتفشل كل لقطة)."""
+        for args in (["kill-server"], ["start-server"]):
+            try:
+                subprocess.run([self.adb] + args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30)
+            except (subprocess.TimeoutExpired, OSError):
+                pass
 
     def to_dev(self, x, y):
         s = self.H / float(STD_H)
@@ -836,6 +860,33 @@ class LevelCtx:
         return set(self.bad.get(key, set())) | self.ban
 
 
+def kill_emulators():
+    """يقتل عملية المحاكي العالقة (qemu) ومشغّلها، إن وُجدا."""
+    for pat in ("qemu-system", "emulator -avd"):
+        try:
+            subprocess.run(["pkill", "-9", "-f", pat], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=20)
+        except (subprocess.TimeoutExpired, OSError):
+            pass
+
+
+def start_emulator(log_path="/tmp/emulator_restart.log") -> bool:
+    """يشغّل المحاكي من جديد في الخلفية بالـ AVD والخيارات نفسها التي يستعملها emu-bot.yml (بياناته باقية: -no-snapshot لا يمحوها،
+    فاللعبة وتقدّمها في مكانهما). False إن لم يوجد الأمر emulator."""
+    sdk = os.environ.get("ANDROID_SDK_ROOT") or os.environ.get("ANDROID_HOME") or ""
+    exe = os.path.join(sdk, "emulator", "emulator") if sdk else ""
+    if not (exe and os.path.exists(exe)):
+        exe = shutil.which("emulator") or ""
+    if not exe:
+        return False
+    args = [exe, "-avd", CFG["emu_avd"]] + CFG["emu_options"].split()
+    try:
+        log = open(log_path, "ab")
+        subprocess.Popen(args, stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
+    except OSError:
+        return False
+    return True
+
+
 # ============================================================== المحرّك
 class Bot:
     def __init__(self, dev: Device, vis: Vision, out: Out, minutes: float, git=True):
@@ -849,6 +900,8 @@ class Bot:
         self.lv: LevelCtx | None = None
         self.expect_new = True
         self.unknown_streak = 0
+        self.cap_fails = 0             # لقطات فاشلة متتالية (حارس المحاكي: recover_device)
+        self.emu_restarts = 0          # إعادات تشغيل المحاكي في هذا التشغيل
         self.warn_retries = 0
         self.unknown_since = 0.0
         self.unknown_acts = 0
@@ -1552,10 +1605,14 @@ class Bot:
                 if fr is None:
                     fr = self.grab()
                 if fr is None:
-                    self.log("فشلت اللقطة؛ إعادة المحاولة")
+                    self.cap_fails += 1
+                    self.log("فشلت اللقطة؛ إعادة المحاولة (%d)" % self.cap_fails)
+                    if self.recover_device():
+                        continue
                     self.dev.run(["wait-for-device"], timeout=60)
                     time.sleep(3)
                     continue
+                self.cap_fails = 0
                 if self.is_nonet(fr):
                     self.kinds["nonet"] += 1
                     self.handle_nonet(fr)
@@ -2286,6 +2343,72 @@ class Bot:
         else:
             time.sleep(1.0)
         return None
+
+    def recover_device(self) -> bool:
+        """حارس المحاكي، على عدد اللقطات الفاشلة المتتالية (cap_fails؛ كل واحدة نحو دقيقة بانتظار wait-for-device): عند 3 يُعاد
+        تشغيل خادم adb؛ وعند 6 ثم 9 يُعاد تشغيل المحاكي نفسه (emu_restarts مرة على الأكثر في التشغيل) ثم اللعبة؛ وبعد استنفادها
+        يتوقف البوت عند 12 فينتهي التشغيل وتُنشر النتائج بدل الدوران ساعات. (التشغيل العاشر: مات المحاكي في 10:37 بعد الفوز
+        بالمرحلة 109، وبقي البوت يعيد المحاولة كل دقيقة أكثر من ساعتين.) True إن فعل شيئاً يستحق إعادة التصوير فوراً."""
+        n = self.cap_fails
+        if n == 3:
+            state = self.dev.adb_state()
+            self.log("الجهاز لا يردّ (حالة adb: %s)؛ إعادة تشغيل خادم adb" % (state or "غائب"))
+            self.dev.restart_adb()
+            self.dev.run(["wait-for-device"], timeout=60)
+            return True
+        if n >= 6 and n % 3 == 0:
+            if self.emu_restarts < CFG["emu_restarts"]:
+                self.emu_restarts += 1
+                ok = self.restart_emulator()
+                if ok:
+                    self.cap_fails = 0
+                return True
+            if n >= 12:
+                self.log("المحاكي لا يعود بعد %d إعادات؛ إيقاف البوت لينتهي التشغيل وتُنشر النتائج" % self.emu_restarts)
+                self.stop = True
+                return True
+        return False
+
+    def restart_emulator(self) -> bool:
+        """يقتل المحاكي العالق ويشغّله من جديد (start_emulator)، وينتظر إقلاعه، ويعيد إعدادات الشاشة، ثم يشغّل اللعبة (وتثبّتها
+        مع استعادة الحفظ إن غابت). True إن عاد الجهاز وشُغّلت اللعبة."""
+        d = self.dev
+        self.log("إعادة تشغيل المحاكي (المرة %d من %d)..." % (self.emu_restarts, CFG["emu_restarts"]))
+        kill_emulators()
+        time.sleep(3)
+        if not start_emulator():
+            self.log("تعذّر تشغيل المحاكي: لم يُعثر على الأمر emulator")
+            return False
+        d.restart_adb()
+        d.run(["wait-for-device"], timeout=300)
+        booted = False
+        for _ in range(150):
+            if d.sh("getprop sys.boot_completed", timeout=10) == "1":
+                booted = True
+                break
+            time.sleep(2)
+        if not booted:
+            self.log("المحاكي لم يكمل إقلاعه بعد إعادة تشغيله")
+            return False
+        for c in ("settings put global window_animation_scale 0", "settings put global transition_animation_scale 0",
+                  "settings put global animator_duration_scale 0",
+                  "settings put secure immersive_mode_confirmations confirmed",
+                  "settings put system screen_off_timeout 2147483647", "svc power stayon true", "input keyevent 82"):
+            d.sh(c)
+        d.raw_ok = True
+        try:
+            d.start_logcat("/tmp/bot_logcat.txt")
+        except Exception:                               # noqa: BLE001
+            pass
+        if not d.installed():
+            self.log("اللعبة غير مثبّتة بعد إعادة المحاكي: تثبيتها واستعادة الحفظ")
+            self.install_game()
+            self.restore_app()
+        d.launch()
+        self.unknown_streak = 0
+        self.log("عاد المحاكي وشُغّلت اللعبة من جديد")
+        time.sleep(25)
+        return True
 
     def relaunch(self, why):
         """إيقاف اللعبة ثم تشغيلها (تُفتح المرحلة الجارية نفسها أو الواجهة)."""
