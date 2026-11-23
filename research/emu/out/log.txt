@@ -133,3 +133,20 @@
 [18:24:29] سهم تعليم: لمس الهدف (338, 705)
 [18:24:36] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{2f13a9 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncher): لا لمس، تشغيلها
 [18:25:16] شاشة التحميل: انتظار بلا نقر
+[18:27:10] انتهى التحميل بعد 114 ثانية
+[18:27:19] بداية المرحلة 113: 12 قارورة، سعات [(4, 6)]، مخفي 0، مغطّاة 6 (كيس 6)
+[18:27:19] حالة المرحلة 113: [{"x": 40, "y": 375, "cap": 4, "layers": ["lavender", "brown", "yellow", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["orange", "blue", "brown", "orange"]}, {"x": 197, "y": 375, "cap": 4, "layers": []}, {"x": 275, "y": 375, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 353, "y": 375, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 432, "y": 375, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 40, "y": 636, "cap": 4, "layers": ["brown", "blue", "blue", "purple"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["purple", "brown", "purple", "purple"]}, {"x": 197, "y": 636, "cap": 4, "layers": []}, {"x": 275, "y": 636, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 353, "y": 636, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 432, "y": 636, "cap": 4, "layers": [], "blocked": "bag"}]
+[18:27:19] خطة المرحلة 113: 12 حركة (astar، 0.6 ms)
+[18:27:48] الحالة بعد (7, 8) تختلف عن المتوقَّع؛ إعادة التخطيط
+[18:28:12] نسخة احتياطية لبيانات اللعبة: 59735 ك.ب (4 مرحلة مكتملة)
+[18:28:14] إعلان بملء الشاشة: رجوع (1)
+[18:28:54] شاشة التحميل: انتظار بلا نقر
+[18:30:54] انتهى التحميل بعد 120 ثانية
+[18:31:00] المرحلة 113 أُعيدت من البداية (العنوان نفسه، ذاكرة 2 طبقة مكشوفة)
+[18:31:06] بداية المرحلة 113: 12 قارورة، سعات [(4, 6)]، مخفي 0، مغطّاة 6 (كيس 6)
+[18:31:06] حالة المرحلة 113: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "red", "pink", "purple"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["brown", "lavender", "red", "red"]}, {"x": 197, "y": 375, "cap": 4, "layers": []}, {"x": 275, "y": 375, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 353, "y": 375, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 432, "y": 375, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 40, "y": 636, "cap": 4, "layers": ["purple", "pink", "pink", "purple"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["yellow", "green", "blue", "pink"]}, {"x": 197, "y": 636, "cap": 4, "layers": []}, {"x": 275, "y": 636, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 353, "y": 636, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 432, "y": 636, "cap": 4, "layers": [], "blocked": "bag"}]
+[18:31:06] خطة المرحلة 113: 7 حركة (progress، 7.0 ms)
+[18:31:35] خطة المرحلة 113: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[18:31:35] المرحلة 113 عالقة (لا خطة): [yellow,red,red,red]/4 [brown,lavender]/4 []/4 [#كيس] [#كيس] [#كيس] [purple,purple,purple]/4 [yellow,green,blue]/4 [pink,pink,pink,pink]/4 [#كيس] [#كيس] [#كيس]
+[18:31:35] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:31:35] حركة عشوائية (1, 2) (1)
