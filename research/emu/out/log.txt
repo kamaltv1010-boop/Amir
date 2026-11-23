@@ -416,3 +416,11 @@
 [04:06:14] خطة المرحلة 107: 1 حركة (reveal، 47.4 ms)
 [04:06:18] خطة المرحلة 107: 2 حركة (reveal، 116.1 ms)
 [04:06:25] خطة المرحلة 107: 6 حركة (reveal، 60.5 ms)
+[04:06:47] خطة المرحلة 107: 2 حركة (progress، 0.4 ms)
+[04:06:54] خطة المرحلة 107: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[04:06:54] المرحلة 107 عالقة (لا خطة): [yellow,pink,purple,purple]/4 [pink]/4 [red,red,red,red]/4 [brown,brown,brown,brown,brown,brown,brown,brown]/10 [orange,orange]/4 [blue,cyan,blue,blue]/4 [purple,cyan]/4 [green,green,green]/4 [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/10 [#كيس] [#كيس] [#كيس] [#كيس]
+[04:06:54] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[04:06:54] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[04:06:57] انتهى التحميل بعد 125 ثانية
+[04:06:57] نافذة «No Available Moves» في المرحلة 107: «Give Up» (الرصيد 430 أقل من 900)
+[04:07:09] نافذة «More Lives» (الرصيد 430 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
