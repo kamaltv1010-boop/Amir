@@ -313,3 +313,16 @@
 [03:23:28] شاشة جديدة لم تُرَ من قبل: new_041_unknown.jpg
 [03:23:28] فوز بالمرحلة 106 (unknown): 38 حركة في 170 ث، أدوات -
 [03:23:35] سهم تعليم: لمس الهدف (338, 705)
+[03:23:42] سهم تعليم: لمس الهدف (338, 705)
+[03:23:48] سهم تعليم: لمس الهدف (338, 705)
+[03:26:29] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[03:26:57] شاشة التحميل: انتظار بلا نقر
+[03:28:06] بداية المرحلة 107: 10 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0، مغطّاة 4 (ستارة/كيس)
+[03:28:06] حالة المرحلة 107: [{"x": 64, "y": 624, "cap": 10, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["purple", "yellow", "brown", "green"], "keys": [1]}, {"x": 201, "y": 538, "cap": 4, "layers": ["blue", "cyan", "blue", "orange"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["purple", "cyan", "red", "brown"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "yellow", "brown"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:28:06] خطة المرحلة 107: 4 حركة (key، 0.2 ms)
+[03:28:18] الحركة (1, 0) تحرّر مفتاحاً؛ انتظار الباب
+[03:28:26] المرحلة 107: قوارير جديدة (باب انفتح؟ 10 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[03:28:26] حالة المرحلة 107 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["yellow", "pink", "?", "brown"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "blue", "green", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["red", "red", "?", "red"]}, {"x": 64, "y": 624, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["purple", "yellow"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["blue", "cyan", "blue", "orange"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["purple", "cyan", "red", "brown"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:28:26] خطة المرحلة 107: 1 حركة (reveal، 43.4 ms)
+[03:28:29] خطة المرحلة 107: 2 حركة (reveal، 96.9 ms)
+[03:28:37] خطة المرحلة 107: 6 حركة (reveal، 60.4 ms)
