@@ -553,3 +553,42 @@
 [20:21:57] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
 [20:21:57] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "lavender"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "orange", "cyan", "cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}, {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "darkgreen"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "plum", "plum"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}]
 [20:21:57] خطة المرحلة 124: 2 حركة (key، 0.4 ms)
+[20:22:13] خطة المرحلة 124: 1 حركة (progress، 6.8 ms)
+[20:22:19] خطة المرحلة 124: 0 حركة (progress-none، 2.3 ms) — لا حركة مفيدة
+[20:22:19] المرحلة 124 عالقة (لا خطة): [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
+[20:22:19] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[20:22:19] حركة عشوائية (6, 0) (1)
+[20:22:24] شاشة جديدة لم تُرَ من قبل: new_050_unknown.jpg
+[20:22:24] انتهى التحميل بعد 180 ثانية
+[20:22:24] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 970 لا يُبقي بعد ثمنه 900 احتياطي ملء الأرواح 900)
+[20:22:29] شاشة جديدة لم تُرَ من قبل: new_051_close.jpg
+[20:22:50] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[20:22:50] حالة المرحلة 124: [{"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "lavender", "purple", "purple"], "keys": [0]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "lavender", "lavender"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "lavender", "lavender", "pink"], "keys": [0]}]
+[20:22:50] خطة المرحلة 124: 2 حركة (key، 0.2 ms)
+[20:22:57] الحركة (2, 3) تحرّر مفتاحاً؛ انتظار الباب
+[20:23:08] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:23:08] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "yellow", "?", "yellow"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["orange", "green", "blue", "lavender"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "lavender", "lavender", "pink"], "keys": [0]}]
+[20:23:08] خطة المرحلة 124: 3 حركة (key، 0.4 ms)
+[20:23:19] الحركة (6, 2) تحرّر مفتاحاً؛ انتظار الباب
+[20:23:28] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:23:28] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "yellow", "?", "yellow"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["orange", "green", "blue", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["cyan", "darkgreen", "orange", "pink"], "keys": [2]}, {"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue"]}]
+[20:23:28] خطة المرحلة 124: 2 حركة (key، 0.3 ms)
+[20:23:35] الحركة (3, 6) تحرّر مفتاحاً؛ انتظار الباب
+[20:23:45] المرحلة 124: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[20:23:45] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "yellow", "?", "yellow"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["orange", "green", "blue", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["cyan", "darkgreen", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "yellow", "brown", "pink"], "keys": [0]}, {"x": 373, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "yellow"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["orange", "green", "pink", "pink"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["pink"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue"]}]
+[20:25:15] خطة المرحلة 124: 1 حركة (reveal، 22.6 ms)
+[20:25:24] خطة المرحلة 124: 1 حركة (reveal، 23.4 ms)
+[20:25:33] خطة المرحلة 124: 2 حركة (reveal، 18.9 ms)
+[20:25:50] خطة المرحلة 124: 1 حركة (progress، 2.6 ms)
+[20:25:57] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 970 لا يُبقي بعد ثمنه 900 احتياطي ملء الأرواح 900)
+[20:26:03] شاشة جديدة لم تُرَ من قبل: new_052_close.jpg
+[20:26:07] شاشة جديدة لم تُرَ من قبل: new_053_button.jpg
+[20:26:12] شاشة جديدة لم تُرَ من قبل: new_054_lives.jpg
+[20:26:12] نافذة «More Lives»: ملء الأرواح بـ 900 عملة (الرصيد 970، المرة 1)
+[20:26:25] إعلان تجريبي أبيض (AppLovin): انتظار عدّه التنازلي ثم زرّ الإغلاق أو الرجوع (لا «Install» أبداً)
+[20:26:38] الإعلان التجريبي: رجوع (1)
+[20:26:45] الإعلان التجريبي: رجوع (2)
+[20:26:51] الإعلان التجريبي: رجوع (3)
+[20:26:58] الإعلان التجريبي: رجوع (4)
+[20:27:04] الإعلان التجريبي: رجوع (5)
+[20:27:11] الإعلان التجريبي الأبيض باقٍ منذ 45 ثانية؛ إعادة تشغيل اللعبة
