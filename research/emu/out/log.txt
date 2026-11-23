@@ -6,3 +6,26 @@
 [23:01:43] استعادة بيانات اللعبة من save/game_backup.ab (59772 ك.ب): تمت
 [23:01:44] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
 [23:03:13] أول شاشة: button
+[23:03:16] شاشة جديدة لم تُرَ من قبل: new_001_button.jpg
+[23:03:26] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[23:03:26] حالة المرحلة 124: [{"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "cyan", "cyan"], "keys": [0]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]
+[23:03:26] خطة المرحلة 124: 1 حركة (key، 0.1 ms)
+[23:03:28] الحركة (3, 0) تحرّر مفتاحاً؛ انتظار الباب
+[23:03:39] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 3)؛ استمرار بلا إعادة
+[23:03:39] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}, {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]
+[23:03:39] خطة المرحلة 124: 3 حركة (key، 0.2 ms)
+[23:03:49] الحركة (6, 3) تحرّر مفتاحاً؛ انتظار الباب
+[23:04:00] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[23:04:00] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "lavender"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "orange", "cyan", "cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}, {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "darkgreen"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "plum", "plum"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}]
+[23:04:00] خطة المرحلة 124: 2 حركة (key، 0.2 ms)
+[23:04:13] خطة المرحلة 124: 1 حركة (progress، 2.3 ms)
+[23:04:17] خطة المرحلة 124: 0 حركة (progress-none، 1.1 ms) — لا حركة مفيدة
+[23:04:17] المرحلة 124 عالقة (لا خطة): [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
+[23:04:17] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[23:04:17] حركة عشوائية (6, 0) (1)
+[23:04:22] شاشة جديدة لم تُرَ من قبل: new_002_unknown.jpg
+[23:04:22] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[23:04:26] شاشة جديدة لم تُرَ من قبل: new_003_close.jpg
+[23:04:30] شاشة جديدة لم تُرَ من قبل: new_004_button.jpg
+[23:04:35] شاشة جديدة لم تُرَ من قبل: new_005_lives.jpg
+[23:04:35] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
