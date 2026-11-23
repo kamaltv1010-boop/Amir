@@ -287,3 +287,24 @@
 [19:08:24] نسخة احتياطية لبيانات اللعبة: 59735 ك.ب (8 مرحلة مكتملة)
 [19:08:26] انتهى التحميل بعد 66 ثانية
 [19:08:26] إعلان بملء الشاشة: رجوع (1)
+[19:09:08] شاشة التحميل: انتظار بلا نقر
+[19:11:01] انتهى التحميل بعد 112 ثانية
+[19:11:12] بداية المرحلة 117: 9 قارورة، سعات [(4, 5)]، مخفي 0، مغطّاة 4 (ستارة 4)
+[19:11:12] حالة المرحلة 117: [{"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 202, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 270, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue", "cyan"]}, {"x": 167, "y": 538, "cap": 4, "layers": []}, {"x": 236, "y": 538, "cap": 4, "layers": ["cyan", "purple", "blue", "purple"]}, {"x": 304, "y": 538, "cap": 4, "layers": []}, {"x": 372, "y": 538, "cap": 4, "layers": ["cyan", "cyan", "lavender", "purple"]}]
+[19:11:12] خطة المرحلة 117: 7 حركة (astar، 0.3 ms)
+[19:11:50] خطة المرحلة 117: 1 حركة (key، 0.2 ms)
+[19:12:00] المرحلة 117: قوارير جديدة (باب انفتح؟ 9 → 12 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[19:12:00] حالة المرحلة 117 بعد الباب: [{"x": 133, "y": 332, "cap": 4, "layers": ["?", "orange", "orange"]}, {"x": 202, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 270, "y": 332, "cap": 4, "layers": ["pink", "yellow", "yellow", "brown"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "red"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["red"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["lavender"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["?", "brown", "?", "yellow"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["brown", "orange", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["?", "red", "?", "green"]}]
+[19:12:46] خطة المرحلة 117: 1 حركة (progress، 3.3 ms)
+[19:12:52] شاشة جديدة لم تُرَ من قبل: new_030_unknown.jpg
+[19:12:52] نافذة «No Available Moves» في المرحلة 117: «Give Up» (الرصيد غير مقروء)
+[19:12:57] شاشة جديدة لم تُرَ من قبل: new_031_close.jpg
+[19:13:06] شاشة جديدة لم تُرَ من قبل: new_032_close.jpg
+[19:13:16] شاشة جديدة لم تُرَ من قبل: new_033_button.jpg
+[19:13:26] بداية المرحلة 117: 9 قارورة، سعات [(4, 5)]، مخفي 0، مغطّاة 4 (ستارة 4)
+[19:13:26] حالة المرحلة 117: [{"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 202, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 270, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 98, "y": 538, "cap": 4, "layers": ["orange", "brown", "orange", "orange"]}, {"x": 167, "y": 538, "cap": 4, "layers": []}, {"x": 236, "y": 538, "cap": 4, "layers": ["brown", "brown", "brown", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": []}, {"x": 373, "y": 538, "cap": 4, "layers": ["red", "cyan", "yellow", "red"]}]
+[19:13:26] خطة المرحلة 117: 4 حركة (progress، 4.7 ms)
+[19:13:44] الحالة بعد (4, 5) تختلف عن المتوقَّع؛ إعادة التخطيط
+[19:13:44] خطة المرحلة 117: 1 حركة (key، 0.2 ms)
+[19:13:49] الحالة بعد (0, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[19:13:49] خطة المرحلة 117: 1 حركة (reveal، 94.8 ms)
