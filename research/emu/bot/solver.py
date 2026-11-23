@@ -441,6 +441,7 @@ def _bury_moves(s, caps, exclude):
 
 # ---------------------------------------------------------------- الجبس
 _PLASTER = ()       # كاسرات الجبس القائم التي لم تكتمل بعد (فهارس الحالة المرمّزة)؛ يضبطها plan() طوال البحث فقط
+_KEYS_FIRST = True          # بحث «المفاتيح أولاً» (plan(keys_first=False) يتركه لتنويع المحاولات)
 
 
 def _is_plaster(t) -> bool:
@@ -1055,11 +1056,12 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
 
 # ---------------------------------------------------------------- الواجهة العامة
 def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
-         info=None, seed=None):
+         info=None, seed=None, keys_first=True):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
     قوارير الطين ("clay": True) لا يُصبّ منها، والمغطّاة ("blocked": True) لا تُلمس أبداً، وكاسرات الجبس (plaster_breakers)
-    يُسعى إلى إكمالها أولاً. انظر _plan."""
-    global _NOSRC, _KEYS, _FILL, _PLASTER
+    يُسعى إلى إكمالها أولاً. keys_first=False يترك بحث «المفاتيح أولاً» (فتح الأبواب بأسرع طريق) لتختار بحوث الكشف والتقدّم
+    متى تُفتح الأبواب (مع بقاء منع دفن المفاتيح وقيمة عمقها): تنويع في المراحل التي يتكرّر فشلها (المرحلة 124). انظر _plan."""
+    global _NOSRC, _KEYS, _FILL, _PLASTER, _KEYS_FIRST
     vis, keep = _visible(state)
     if keep is not None:                  # الفهارس الأصلية <-> فهارس الحالة بلا المغطّاة
         inv = {k: i for i, k in enumerate(keep)}
@@ -1068,6 +1070,7 @@ def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
     _KEYS = ()
     _FILL = frozenset(_breaker_indices(state, keep)) if keep is not None else frozenset()
     _PLASTER = ()
+    _KEYS_FIRST = bool(keys_first)
     try:
         moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed)
     finally:
@@ -1075,6 +1078,7 @@ def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         _KEYS = ()
         _FILL = frozenset()
         _PLASTER = ()
+        _KEYS_FIRST = True
     if keep is not None:
         moves = [(keep[i], keep[j]) for (i, j) in moves]
     return moves
@@ -1117,15 +1121,18 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
     _KEYS = enc.keys
     if _KEYS:
         info["keys"] = len(_KEYS)
-        kb = _Budget(int(max_nodes * 0.5), t0 + time_limit * 0.45)
-        mv, _ = _key_search(s, caps, kb, av, exclude)
-        if mv is None and av:
-            mv, _ = _key_search(s, caps, kb, set(), exclude)
-        if mv:
-            info["mode"] = "key"
-            info["nodes"] = kb.nodes
-            info["ms"] = round((time.perf_counter() - t0) * 1000, 1)
-            return mv
+        if _KEYS_FIRST:
+            kb = _Budget(int(max_nodes * 0.5), t0 + time_limit * 0.45)
+            mv, _ = _key_search(s, caps, kb, av, exclude)
+            if mv is None and av:
+                mv, _ = _key_search(s, caps, kb, set(), exclude)
+            if mv:
+                info["mode"] = "key"
+                info["nodes"] = kb.nodes
+                info["ms"] = round((time.perf_counter() - t0) * 1000, 1)
+                return mv
+        else:
+            info["keys_first"] = False
         bury = _bury_moves(s, caps, exclude)
         allm = {(i, j) for (i, j, _a) in _gen_moves(s, caps, exclude)}
         if bury and allm - bury:

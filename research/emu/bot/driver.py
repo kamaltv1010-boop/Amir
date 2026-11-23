@@ -1948,9 +1948,14 @@ class Bot:
             info = {}
             # الصعبة جداً: ثلاثة أضعاف الوقت والعقد (البوت ينتظر الأرواح أكثر مما يفكّر، والمرحلة 99 تنسدّ في آخر كل محاولة)،
             # وكل «Give Up» في المرحلة نفسها يزيده (plan_boost)
-            boost = plan_boost(lv.badge, self.level_fails.get(lv.n, 0))
+            fails = self.level_fails.get(lv.n, 0)
+            boost = plan_boost(lv.badge, fails)
+            # بعد 3 «Give Up» في المرحلة نفسها: محاولة بـ «المفاتيح أولاً» وأخرى بدونه بالتناوب (المرحلة 124: فتح الأبواب
+            # بأسرع طريق ثم الانسداد في كل محاولة)
+            keys_first = not (fails >= 3 and fails % 2 == 1)
             lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), avoid=lv.visited,
-                                  time_limit=CFG["plan_sec"] * boost, max_nodes=int(40000 * boost), info=info)
+                                  time_limit=CFG["plan_sec"] * boost, max_nodes=int(40000 * boost), info=info,
+                                  keys_first=keys_first)
             lv.plan_key = key
             if lv.moves == 0 or not lv.plan or info.get("mode") not in ("pimc",):
                 self.log("خطة المرحلة %d: %d حركة (%s، %s ms)%s"

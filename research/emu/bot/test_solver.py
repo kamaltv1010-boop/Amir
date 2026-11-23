@@ -484,6 +484,19 @@ class TestSpeed(unittest.TestCase):
         self.assertEqual(after["tubes"][0]["layers"], ["green", "red"])     # طبقة المفتاح في القمة
         self.assertTrue(solver.key_freed(st, *mv[-1]) or len(mv) > 1)
 
+    def test_keys_first_can_be_turned_off(self):
+        """keys_first=False: لا بحث «المفاتيح أولاً» (تنويع المحاولات المتكرّرة)، والحالة نفسها تُخطَّط بغيره بلا دفن المفتاح."""
+        st = self._mkk([(4, ["green", "red", "pink", "pink"]), (4, ["blue", "blue", "yellow"]),
+                        (4, ["yellow", "yellow"]), (4, ["red", "pink"]), (4, ["blue", "green"]), (4, [])], {0: [1]})
+        info = {}
+        mv = solver.plan(st, info=info, keys_first=False, time_limit=2.0)
+        self.assertNotEqual(info.get("mode"), "key")
+        self.assertIs(info.get("keys_first"), False)
+        self.assertTrue(mv)
+        info2 = {}
+        solver.plan(st, info=info2, time_limit=2.0)
+        self.assertEqual(info2["mode"], "key")          # القيمة الافتراضية كما كانت، والعلَم يعود بعد الاستدعاء
+
     def test_key_dig_through_hidden(self):
         """المرحلة 74: [?، أحمر بمفتاح، ?، أزرق] — يُصبّ الأزرق أولاً لينكشف المخفي فوق المفتاح."""
         st = self._mkk([(4, ["?", "red", "?", "blue"]), (4, ["orange", "blue"]), (4, ["red", "red", "red"]),
