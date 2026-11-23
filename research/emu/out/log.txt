@@ -256,3 +256,16 @@
 [18:56:48] سهم تعليم: لمس الهدف (338, 705)
 [18:56:54] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{2daf16b u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
 [18:57:35] شاشة التحميل: انتظار بلا نقر
+[18:58:29] نسخة احتياطية لبيانات اللعبة: 59727 ك.ب (7 مرحلة مكتملة)
+[18:58:31] انتهى التحميل بعد 56 ثانية
+[18:58:31] إعلان بملء الشاشة: رجوع (1)
+[18:59:10] شاشة التحميل: انتظار بلا نقر
+[19:01:01] شاشة جديدة لم تُرَ من قبل: new_027_close.jpg
+[19:01:14] بداية المرحلة 116: 13 قارورة، سعات [(4, 6)]، مخفي 0، مغطّاة 7 (جبس 2، ستارة 5)
+[19:01:14] جبس المرحلة 116: القالب 5 ينكسر بامتلاء القارورة 6؛ القالب 7 ينكسر بامتلاء القارورة 6
+[19:01:14] حالة المرحلة 116: [{"x": 98, "y": 332, "cap": 4, "layers": ["darkgreen", "yellow", "orange"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "purple"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["pink", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "purple", "darkgreen"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["blue", "green", "darkgreen"]}, {"x": 168, "y": 544, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 236, "y": 538, "cap": 4, "layers": ["purple", "purple"]}, {"x": 306, "y": 544, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 99, "y": 729, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 168, "y": 729, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 236, "y": 729, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 304, "y": 729, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 373, "y": 729, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}]
+[19:01:14] خطة المرحلة 116: 3 حركة (plaster، 0.2 ms)
+[19:01:25] الحركة (3, 6) تكمل جارة الجبس؛ انتظار انكساره
+[19:01:32] الحالة بعد (3, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[19:01:32] الجبس انكسر في المرحلة 116: القارورة 5 (168،538) ← [blue,green,green,brown]، القارورة 7 (304،538) ← [cyan,cyan,red,yellow]؛ باقٍ 0 قالب، استمرار المحاولة نفسها بلا إعادة
+[19:02:15] الحالة بعد (9, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
