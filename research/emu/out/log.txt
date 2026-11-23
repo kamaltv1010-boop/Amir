@@ -541,3 +541,25 @@
 [06:00:41] انتهى التحميل بعد 1694 ثانية
 [06:03:43] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
 [06:04:12] شاشة التحميل: انتظار بلا نقر
+[06:05:14] بداية المرحلة 109 (صعبة جداً): 12 قارورة، سعات [(4, 7)]، مخفي 0، مغطّاة 5 (ستارة/كيس)
+[06:05:14] حالة المرحلة 109: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 304, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "green"}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 236, "y": 537, "cap": 4, "layers": ["plum", "plum"]}, {"x": 373, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 64, "y": 743, "cap": 4, "layers": ["darkgreen", "red", "green"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["lavender", "purple", "cyan"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "orange", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["plum", "purple", "red"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["red", "red", "green"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["darkgreen", "cyan", "plum"]}]
+[06:05:14] خطة المرحلة 109: 8 حركة (progress، 12.1 ms)
+[06:05:46] الحالة بعد (8, 9) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:05:46] خطة المرحلة 109: 5 حركة (reveal، 7.9 ms)
+[06:05:54] الحالة بعد (7, 5) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:05:54] خطة المرحلة 109: 1 حركة (reveal، 23.8 ms)
+[06:05:57] خطة المرحلة 109: 1 حركة (reveal، 34.3 ms)
+[06:06:02] خطة المرحلة 109: 2 حركة (reveal، 92.5 ms)
+[06:06:10] خطة المرحلة 109: 5 حركة (progress، 8.7 ms)
+[06:06:33] المرحلة 109: قوارير جديدة (باب انفتح؟ 12 → 14 قارورة، ذاكرة 2 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[06:06:33] حالة المرحلة 109 بعد الباب: [{"x": 166, "y": 332, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "yellow", "blue", "blue"]}, {"x": 99, "y": 521, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 168, "y": 538, "cap": 4, "layers": ["?", "darkgreen", "?", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["plum", "plum", "plum", "plum"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "pink", "?", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["brown"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["lavender", "purple", "purple", "purple"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["darkgreen", "darkgreen", "darkgreen"]}]
+[06:06:33] خطة المرحلة 109: 1 حركة (progress، 1.6 ms)
+[06:06:37] خطة المرحلة 109: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[06:06:37] المرحلة 109 عالقة (لا خطة): [cyan,cyan,cyan,cyan]/4 [#ستارة:brown] [?,yellow,blue,blue]/4 [#ستارة:blue] [?,darkgreen,?,blue]/4 [plum,plum,plum,plum]/4 [?,pink,?,yellow]/4 [brown]/4 [green,green,green,green]/4 [lavender]/4 [purple,purple,purple,purple]/4 [orange,orange,orange]/4 [red,red,red,red]/4 [darkgreen,darkgreen,darkgreen]/4
+[06:06:37] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[06:06:37] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[06:06:41] شاشة جديدة لم تُرَ من قبل: new_057_unknown.jpg
+[06:06:41] انتهى التحميل بعد 149 ثانية
+[06:06:41] نافذة «No Available Moves» في المرحلة 109: «Give Up» (الرصيد 470 أقل من 900)
+[06:06:48] شاشة جديدة لم تُرَ من قبل: new_058_close.jpg
+[06:06:55] نافذة «More Lives» (الرصيد 470 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
