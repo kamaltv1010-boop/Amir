@@ -360,3 +360,14 @@
 [03:31:27] خطة المرحلة 107: 3 حركة (progress، 5.5 ms)
 [03:31:48] نافذة «No Available Moves» في المرحلة 107: «Give Up» (الرصيد 430 أقل من 900)
 [03:32:04] شاشة جديدة لم تُرَ من قبل: new_049_unknown.jpg
+[03:35:01] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[03:35:30] شاشة التحميل: انتظار بلا نقر
+[03:36:37] بداية المرحلة 107: 10 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0، مغطّاة 4 (ستارة/كيس)
+[03:36:37] حالة المرحلة 107: [{"x": 64, "y": 624, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["pink", "purple", "lavender", "lavender"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["lavender", "pink", "lavender", "blue"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["pink", "purple", "lavender", "purple"], "keys": [1]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "blue", "lavender", "purple"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:36:37] خطة المرحلة 107: 3 حركة (key، 0.1 ms)
+[03:36:46] الحركة (3, 5) تحرّر مفتاحاً؛ انتظار الباب
+[03:36:53] المرحلة 107: قوارير جديدة (باب انفتح؟ 10 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[03:36:53] حالة المرحلة 107 بعد الباب: [{"x": 167, "y": 332, "cap": 4, "layers": ["brown", "red", "?", "orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "green", "green", "yellow"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["orange", "yellow", "?", "yellow"]}, {"x": 64, "y": 624, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["pink", "purple", "purple"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["lavender", "pink", "lavender", "blue"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["pink", "purple"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["pink", "blue", "lavender", "purple"]}, {"x": 406, "y": 625, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 133, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 202, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 270, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 339, "y": 743, "cap": 4, "layers": [], "blocked": "bag"}]
+[03:37:26] خطة المرحلة 107: 5 حركة (reveal، 9.1 ms)
+[03:37:36] الحالة بعد (7, 8) تختلف عن المتوقَّع؛ إعادة التخطيط
+[03:37:51] الحالة بعد (6, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
