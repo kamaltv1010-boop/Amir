@@ -70,3 +70,25 @@
 [02:21:16] خطة المرحلة 99: 1 حركة (astar، 1.0 ms)
 [02:21:25] فوز بالمرحلة 99 (unknown): 42 حركة في 208 ث، أدوات ['playon']
 [02:21:29] شاشة جديدة لم تُرَ من قبل: new_009_unknown.jpg
+[02:24:28] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[02:24:56] شاشة التحميل: انتظار بلا نقر
+[02:25:53] شاشة جديدة لم تُرَ من قبل: new_010_close.jpg
+[02:26:02] نافذة قبل المرحلة 100 (ميزة جديدة؟): feat_L100.jpg
+[02:26:02] بداية المرحلة 100: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[02:26:02] حالة المرحلة 100: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange", "red", "blue", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["red", "red"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["green", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "purple", "green", "green"]}]
+[02:26:02] خطة المرحلة 100: 3 حركة (progress، 0.3 ms)
+[02:26:13] المرحلة 100: قوارير جديدة (باب انفتح؟ 6 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[02:26:13] حالة المرحلة 100 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["orange", "brown", "lavender"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["green", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "purple", "green", "green"]}]
+[02:26:13] خطة المرحلة 100: 1 حركة (progress، 0.2 ms)
+[02:26:17] خطة المرحلة 100: 0 حركة (progress-none، 0.1 ms) — لا حركة مفيدة
+[02:26:17] المرحلة 100 عالقة (لا خطة): [orange]/4 [blue,blue,blue,blue]/4 [orange,brown,lavender]/4 [yellow,yellow]/4 [red,red,red]/4 [green,green,green,green]/4 [orange,purple]/4
+[02:26:17] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[02:26:22] المرحلة 100: قوارير جديدة (باب انفتح؟ 7 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[02:26:22] حالة المرحلة 100 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["orange", "brown", "lavender"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["pink", "red", "yellow"]}, {"x": 353, "y": 637, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "purple"]}]
+[02:26:22] خطة المرحلة 100: 2 حركة (progress، 0.3 ms)
+[02:26:30] خطة المرحلة 100: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[02:26:30] المرحلة 100 عالقة (لا خطة): [orange]/4 [blue,blue,blue,blue]/4 [orange,brown,lavender]/4 [yellow,yellow,yellow]/4 [red,red,red,red]/4 [pink]/4 [green,green,green,green]/4 [orange,purple]/4
+[02:26:30] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[02:26:36] المرحلة 100: قوارير جديدة (باب انفتح؟ 8 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[02:26:36] حالة المرحلة 100 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["orange"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["orange", "brown", "lavender"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["pink", "purple", "lavender"]}, {"x": 118, "y": 637, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["yellow", "pink", "brown", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["pink"]}, {"x": 353, "y": 637, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "purple"]}]
+[02:26:36] خطة المرحلة 100: 12 حركة (astar، 0.6 ms)
