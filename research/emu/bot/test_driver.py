@@ -1918,7 +1918,7 @@ class FlakyDevice(FakeDevice):
 
 
 class TestEmulatorWatchdog(unittest.TestCase):
-    """حارس المحاكي (recover_device): adb عند 3 لقطات فاشلة، والمحاكي عند 6 و9، والتوقف عند 12 (التشغيل العاشر)."""
+    """حارس المحاكي (recover_device): adb عند 3 لقطات فاشلة، والمحاكي عند 4 ثم كل 4، والتوقف بعد emu_restarts إعادة (التشغيل العاشر)."""
 
     def setUp(self):
         self.clock = FakeClock()
@@ -1954,6 +1954,10 @@ class TestEmulatorWatchdog(unittest.TestCase):
     def log(self):
         return (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
 
+    def test_defaults(self):
+        self.assertEqual(self.cfg["emu_restarts"], 8)
+        self.assertEqual(self.cfg["backup_win_min"], 10.0)
+
     def test_short_glitch_needs_no_recovery(self):
         game, dev, bot = self.make(2)
         bot.run(max_iters=40)
@@ -1963,7 +1967,7 @@ class TestEmulatorWatchdog(unittest.TestCase):
         self.assertFalse(bot.stop)
 
     def test_adb_restart_after_three_failures(self):
-        game, dev, bot = self.make(4)
+        game, dev, bot = self.make(3)
         bot.run(max_iters=40)
         self.assertEqual(dev.adb_restarts, 1, self.log()[-1500:])
         self.assertEqual(self.started, 0)
@@ -1989,14 +1993,14 @@ class TestEmulatorWatchdog(unittest.TestCase):
         self.start_ok = False
         game, dev, bot = self.make(10 ** 6)
         bot.run(max_iters=60)
-        self.assertEqual(self.started, 2, self.log()[-2000:])
+        self.assertEqual(self.started, driver.CFG["emu_restarts"], self.log()[-2000:])
         self.assertTrue(bot.stop)
         self.assertIn("إيقاف البوت لينتهي التشغيل", self.log())
 
     def test_boot_that_never_completes_counts_as_failed_restart(self):
         game, dev, bot = self.make(10 ** 6, boot="0")
         bot.run(max_iters=60)
-        self.assertEqual(self.started, 2)
+        self.assertEqual(self.started, driver.CFG["emu_restarts"])
         self.assertTrue(bot.stop)
         self.assertIn("لم يكمل إقلاعه", self.log())
 

@@ -44,6 +44,7 @@ import json
 import os
 import queue
 import random
+import re
 import shutil
 import struct
 import subprocess
@@ -99,7 +100,9 @@ CFG = {
     # حارس المحاكي: اسم AVD الذي يشغّله reactivecircus/android-emulator-runner وخياراته (كما في emu-bot.yml)، وأقصى إعادات له
     "emu_avd": _env("BOT_AVD", "test"),
     "emu_options": _env("BOT_EMU_OPTIONS", "-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan"),
-    "emu_restarts": _env("BOT_EMU_RESTARTS", 2, int),
+    "emu_restarts": _env("BOT_EMU_RESTARTS", 8, int),
+    # نسخة احتياطية بعد فوز جديد إن مضت هذه الدقائق على آخر نسخة (المحاكي قد يموت فجأة فيضيع تقدّم ما بعد آخر نسخة)
+    "backup_win_min": _env("BOT_BACKUP_WIN_MIN", 10.0, float),
     # بعد حركة تكمل جارة جبس: ينكسر الجبس بعد ثوانٍ (التشغيل التاسع: يظهر مكسوراً بعد 6..7 ث من النقر، وقائماً بعد 4 ث)
     "plaster_wait": _env("BOT_PLASTER_WAIT", 4.0, float),
     "plaster_grace": _env("BOT_PLASTER_GRACE", 10.0, float),  # «عالقة» قبل هذا بعد إكمال الجارة: انتظار الجبس لا الأدوات
@@ -947,6 +950,7 @@ class Bot:
         self.logo_last = None
         self.logo_backs = 0
         self.last_backup = time.time()  # آخر نسخة احتياطية لبيانات اللعبة (backup_app)
+        self.backup_levels = 0         # عدد المراحل المكتملة عند آخر نسخة احتياطية ناجحة
         self.final_backup_done = False
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
         self.start_probe_tries = 0
@@ -1398,6 +1402,7 @@ class Bot:
         if size > 2048 and size < 90 * 1024 * 1024:
             shutil.copy2(tmp, self.out.dir / "game_backup.ab")
             self.log("نسخة احتياطية لبيانات اللعبة: %d ك.ب (%d مرحلة مكتملة)" % (size // 1024, self.levels_done))
+            self.backup_levels = self.levels_done
         else:
             self.log("لم تُحفظ النسخة الاحتياطية (الحجم %d بايت، التأكيد %s)" % (size, ok))
         time.sleep(2)
@@ -1585,9 +1590,13 @@ class Bot:
             if max_iters is not None and iters > max_iters:
                 return                         # للاختبارات: بلا إنهاء
             self.run_commands()
-            # نسخة احتياطية لتقدّم اللعبة كل 45 دقيقة وقبل النهاية بـ 6 دقائق (يكمل منها التشغيل التالي)
+            # نسخة احتياطية لتقدّم اللعبة (يكمل منها التشغيل التالي): بعد فوز جديد إن مضت backup_win_min دقيقة على آخر نسخة،
+            # وكل 45 دقيقة، وقبل النهاية بـ 6 دقائق. (التشغيل العاشر: مات المحاكي ثلاث مرات ولم تُحفظ نسخة بعد المرحلة 109، فيعيد
+            # التشغيل التالي المراحل 109-112.)
             if self.git_enabled and self.levels_done > 0 and (
                     time.time() - self.last_backup > 45 * 60
+                    or (self.levels_done > self.backup_levels
+                        and time.time() - self.last_backup > CFG["backup_win_min"] * 60)
                     or (self.deadline - time.time() < 6 * 60 and not self.final_backup_done)):
                 if self.deadline - time.time() < 6 * 60:
                     self.final_backup_done = True
@@ -1609,7 +1618,7 @@ class Bot:
                     self.log("فشلت اللقطة؛ إعادة المحاولة (%d)" % self.cap_fails)
                     if self.recover_device():
                         continue
-                    self.dev.run(["wait-for-device"], timeout=60)
+                    self.dev.run(["wait-for-device"], timeout=20)
                     time.sleep(3)
                     continue
                 self.cap_fails = 0
@@ -2345,29 +2354,42 @@ class Bot:
         return None
 
     def recover_device(self) -> bool:
-        """حارس المحاكي، على عدد اللقطات الفاشلة المتتالية (cap_fails؛ كل واحدة نحو دقيقة بانتظار wait-for-device): عند 3 يُعاد
-        تشغيل خادم adb؛ وعند 6 ثم 9 يُعاد تشغيل المحاكي نفسه (emu_restarts مرة على الأكثر في التشغيل) ثم اللعبة؛ وبعد استنفادها
-        يتوقف البوت عند 12 فينتهي التشغيل وتُنشر النتائج بدل الدوران ساعات. (التشغيل العاشر: مات المحاكي في 10:37 بعد الفوز
+        """حارس المحاكي، على عدد اللقطات الفاشلة المتتالية (cap_fails؛ كل واحدة نحو 25 ثانية بانتظار wait-for-device): عند 3 يُعاد
+        تشغيل خادم adb؛ وعند 4 ثم كل 4 يُعاد تشغيل المحاكي نفسه (emu_restarts مرة على الأكثر في التشغيل) ثم اللعبة؛ وبعد استنفادها
+        يتوقف البوت فينتهي التشغيل وتُنشر النتائج بدل الدوران ساعات. (التشغيل العاشر: مات المحاكي في 10:37 بعد الفوز
         بالمرحلة 109، وبقي البوت يعيد المحاولة كل دقيقة أكثر من ساعتين.) True إن فعل شيئاً يستحق إعادة التصوير فوراً."""
         n = self.cap_fails
         if n == 3:
             state = self.dev.adb_state()
             self.log("الجهاز لا يردّ (حالة adb: %s)؛ إعادة تشغيل خادم adb" % (state or "غائب"))
             self.dev.restart_adb()
-            self.dev.run(["wait-for-device"], timeout=60)
+            self.dev.run(["wait-for-device"], timeout=30)
             return True
-        if n >= 6 and n % 3 == 0:
+        if n >= 4 and n % 4 == 0:
             if self.emu_restarts < CFG["emu_restarts"]:
                 self.emu_restarts += 1
+                self.log_host_oom()
                 ok = self.restart_emulator()
                 if ok:
                     self.cap_fails = 0
                 return True
-            if n >= 12:
-                self.log("المحاكي لا يعود بعد %d إعادات؛ إيقاف البوت لينتهي التشغيل وتُنشر النتائج" % self.emu_restarts)
-                self.stop = True
-                return True
+            self.log("المحاكي لا يعود بعد %d إعادات؛ إيقاف البوت لينتهي التشغيل وتُنشر النتائج" % self.emu_restarts)
+            self.stop = True
+            return True
         return False
+
+    def log_host_oom(self):
+        """تشخيص: هل قتل نظام المضيف عملية المحاكي لنفاد الذاكرة؟ (dmesg بـ sudo -n إن سُمح؛ أي خطأ يُهمل)."""
+        try:
+            p = subprocess.run(["sudo", "-n", "dmesg"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=15)
+            lines = [l for l in p.stdout.decode("utf-8", "replace").splitlines()
+                     if re.search(r"oom|killed process|qemu", l, re.I)]
+            if lines:
+                self.log("سجلّ المضيف (dmesg): " + " | ".join(l.strip()[-160:] for l in lines[-3:]))
+            else:
+                self.log("سجلّ المضيف (dmesg): لا أثر لنفاد الذاكرة")
+        except (subprocess.TimeoutExpired, OSError):
+            pass
 
     def restart_emulator(self) -> bool:
         """يقتل المحاكي العالق ويشغّله من جديد (start_emulator)، وينتظر إقلاعه، ويعيد إعدادات الشاشة، ثم يشغّل اللعبة (وتثبّتها
