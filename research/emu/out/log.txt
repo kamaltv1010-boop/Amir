@@ -773,3 +773,11 @@
 [22:00:43] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
 [22:00:43] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "lavender"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "orange", "cyan", "cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}, {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "darkgreen"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "plum", "plum"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}]
 [22:00:43] خطة المرحلة 124: 2 حركة (key، 0.8 ms)
+[22:00:57] خطة المرحلة 124: 1 حركة (progress، 9.5 ms)
+[22:01:02] خطة المرحلة 124: 0 حركة (progress-none، 1.7 ms) — لا حركة مفيدة
+[22:01:02] المرحلة 124 عالقة (لا خطة): [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
+[22:01:03] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[22:01:03] حركة عشوائية (6, 0) (1)
+[22:01:07] انتهى التحميل بعد 657 ثانية
+[22:01:07] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[22:01:22] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 5.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
