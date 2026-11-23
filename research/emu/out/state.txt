@@ -1,0 +1,10 @@
+done 40
+الحالة: يلعب
+مراحل مكتملة: 0
+الوقت: 9 دقيقة من 300
+آخر شاشة: level
+الشاشات: {'close': 4, 'button': 5, 'level': 40, 'unknown': 25}
+صور محفوظة: 14/900، شاشات جديدة: 6
+المرحلة الحالية: 109 صعبة جداً (حركات 9، مخفي 6، إخفاقات 0، أدوات -، 0.7 دقيقة)
+الحالة المقروءة: [#ستارة:blue] [#ستارة:orange] [?,plum,?,cyan]/4 [#ستارة:brown] [?,yellow,?,blue]/4 [green,green,green,green]/4 [?,brown,?,orange]/4 [cyan,pink,darkgreen,pink]/4 [cyan,cyan]/4 [red,red,red]/4 [yellow,blue,blue]/4 [lavender]/4 [yellow,lavender,lavender,lavender]/4 [orange,orange,orange]/4
+العملات: 470، «Give Up» لكل مرحلة: {109: 3}
