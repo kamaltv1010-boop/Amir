@@ -1,10 +1,10 @@
 done 42
 الحالة: يلعب
 مراحل مكتملة: 3
-الوقت: 30 دقيقة من 300
-آخر شاشة: close
-الشاشات: {'close': 4, 'button': 7, 'unknown': 137, 'level': 165}
-صور محفوظة: 23/900، شاشات جديدة: 14
-المرحلة الحالية: 111 (حركات 31، مخفي 0، إخفاقات 0، أدوات -، 5.2 دقيقة)
-الحالة المقروءة: []/4 []/4 []/4 [orange,orange,orange,orange]/4 [brown,brown,brown,brown]/4 [purple,purple,purple,purple]/4 [yellow,yellow,yellow,yellow]/4 [pink,pink,pink,pink]/4 [blue,blue,blue,blue]/4 [red,red,red,red]/4 [lavender,lavender,lavender,lavender]/4 [green,green,green,green]/4
+الوقت: 35 دقيقة من 300
+آخر شاشة: level
+الشاشات: {'close': 4, 'button': 8, 'unknown': 179, 'level': 170}
+صور محفوظة: 26/900، شاشات جديدة: 14
+المرحلة الحالية: 112 (حركات 2، مخفي 0، إخفاقات 0، أدوات -، 0.2 دقيقة)
+الحالة المقروءة: [#ستارة:yellow] [#ستارة:pink] [pink]/4 [blue,yellow]/4 [blue,brown,yellow,yellow]/4 [green,green,green,green,green,green,green,green,green]/11 [#ستارة:yellow] [#ستارة:yellow] [red,blue,pink]/4 [brown,brown,yellow,green]/4 [purple,blue,purple,pink]/4
 العملات: ?، «Give Up» لكل مرحلة: -
