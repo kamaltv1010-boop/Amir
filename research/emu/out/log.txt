@@ -71,3 +71,59 @@
 [21:29:18] إعادة تشغيل المحاكي (المرة 1 من 8)...
 [21:29:51] عاد المحاكي وشُغّلت اللعبة من جديد
 [21:30:40] شاشة التحميل: انتظار بلا نقر
+[21:32:06] انتهى التحميل بعد 86 ثانية
+[21:32:17] بداية المرحلة 144 (صعبة): 15 قارورة، سعات [(4, 6)]، مخفي 0، مغطّاة 9 (ستارة 9)
+[21:32:17] وسوم المرحلة 144 («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): القارورة 7: purple، القارورة 8: purple، القارورة 9: brown
+[21:32:17] حالة المرحلة 144: [{"x": 64, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "mint"}, {"x": 202, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 270, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 407, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "mint"}, {"x": 64, "y": 538, "cap": 4, "layers": ["mint", "mint", "mint", "purple"]}, {"x": 133, "y": 538, "cap": 4, "layers": [], "accept": "purple"}, {"x": 201, "y": 538, "cap": 4, "layers": ["mint", "purple", "purple", "purple"], "accept": "purple"}, {"x": 270, "y": 538, "cap": 4, "layers": ["red", "blue", "darkgreen", "brown"], "accept": "brown"}, {"x": 338, "y": 538, "cap": 4, "layers": []}, {"x": 407, "y": 538, "cap": 4, "layers": ["pink", "cyan", "orange", "orange"]}, {"x": 168, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 236, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 304, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "mint"}]
+[21:32:17] خطة المرحلة 144: 3 حركة (progress، 2.2 ms)
+[21:32:25] خطة المرحلة 144: 2 حركة (progress، 4.0 ms)
+[21:32:31] الحالة بعد (6, 8) تختلف عن المتوقَّع؛ إعادة التخطيط
+[21:32:31] خطة المرحلة 144: 8 حركة (progress، 89.7 ms)
+[21:32:53] نسخة احتياطية لبيانات اللعبة: 75782 ك.ب (2 مرحلة مكتملة)
+[21:32:55] إعلان بملء الشاشة: رجوع (1)
+[21:33:28] شاشة التحميل: انتظار بلا نقر
+[21:34:56] انتهى التحميل بعد 88 ثانية
+[21:35:03] المرحلة 144 أُعيدت من البداية (العنوان نفسه، ذاكرة 0 طبقة مكشوفة)
+[21:35:11] بداية المرحلة 144 (صعبة): 15 قارورة، سعات [(4, 6)]، مخفي 0، مغطّاة 9 (ستارة 9)
+[21:35:11] وسوم المرحلة 144 («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): القارورة 7: darkgreen، القارورة 8: darkgreen، القارورة 9: lavender
+[21:35:11] حالة المرحلة 144: [{"x": 64, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 202, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 270, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 407, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 64, "y": 538, "cap": 4, "layers": ["darkgreen", "darkgreen", "plum", "plum"]}, {"x": 133, "y": 538, "cap": 4, "layers": [], "accept": "darkgreen"}, {"x": 201, "y": 538, "cap": 4, "layers": ["mint", "darkgreen", "plum", "darkgreen"], "accept": "darkgreen"}, {"x": 270, "y": 538, "cap": 4, "layers": ["blue", "green", "lavender", "lavender"], "accept": "lavender"}, {"x": 338, "y": 538, "cap": 4, "layers": []}, {"x": 407, "y": 538, "cap": 4, "layers": ["cyan", "yellow", "pink", "plum"]}, {"x": 168, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 236, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 304, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}]
+[21:35:11] خطة المرحلة 144: 5 حركة (progress، 6.8 ms)
+[21:35:19] خطة المرحلة 144: 3 حركة (progress، 3.7 ms)
+[21:35:30] ذاكرة الوسوم: 1 قارورة لم يُقرأ وسمها في هذه اللقطة فأُعيد إليها وسم خانتها
+[21:35:30] الحالة بعد (8, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[21:35:30] خطة المرحلة 144: 1 حركة (progress، 0.3 ms)
+[21:35:34] ذاكرة الوسوم: 1 قارورة لم يُقرأ وسمها في هذه اللقطة فأُعيد إليها وسم خانتها
+[21:35:34] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:35:34] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [#ستارة:plum] [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:35:34] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:35:34] حركة عشوائية (6, 7) (1)
+[21:35:38] ذاكرة الوسوم: 1 قارورة لم يُقرأ وسمها في هذه اللقطة فأُعيد إليها وسم خانتها
+[21:35:38] الحالة بعد (6, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
+[21:35:38] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:35:38] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [blue,yellow,cyan,lavender]/4 [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:35:38] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:35:38] حركة عشوائية (6, 7) (2)
+[21:35:45] لا تقدّم بعد الحركة (6, 7) (إخفاق 1)
+[21:35:45] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:35:45] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [blue,yellow,cyan,lavender]/4 [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:35:45] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:35:45] حركة عشوائية (6, 7) (3)
+[21:35:51] لا تقدّم بعد الحركة (6, 7) (إخفاق 1)
+[21:35:51] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:35:51] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [blue,yellow,cyan,lavender]/4 [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:35:51] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:35:51] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:35:55] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:35:55] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [blue,yellow,cyan,lavender]/4 [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:35:55] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:35:55] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:35:59] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:35:59] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [blue,yellow,cyan,lavender]/4 [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:35:59] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:35:59] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:36:03] خطة المرحلة 144: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[21:36:03] المرحلة 144 عالقة (لا خطة): [mint,orange,blue,lavender]/4 [#ستارة:brown] [blue,yellow,cyan,lavender]/4 [#ستارة:red] [#ستارة:brown] [#ستارة:brown] [darkgreen,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:darkgreen} [mint]/4{وسم:mint} [blue,green,lavender,lavender]/4{وسم:lavender} [plum,plum,plum,plum]/4 [cyan,yellow,pink]/4 [#ستارة:brown] [#ستارة:brown] [#ستارة:brown]
+[21:36:03] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[21:36:03] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[21:36:03] الرجوع لم يُعِد المرحلة 144 (4 محاولات)؛ إعادة تشغيل اللعبة
+[21:36:40] شاشة التحميل: انتظار بلا نقر
