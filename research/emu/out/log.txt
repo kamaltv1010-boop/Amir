@@ -1003,3 +1003,12 @@
 [18:26:45] نسخة احتياطية لبيانات اللعبة: 75772 ك.ب (11 مرحلة مكتملة)
 [18:26:48] انتهى التحميل بعد 99 ثانية
 [18:26:48] إعلان بملء الشاشة: رجوع (1)
+[18:27:23] شاشة التحميل: انتظار بلا نقر
+[18:29:09] بداية المرحلة 141: 14 قارورة، سعات [(4, 5), (10, 1)]، مخفي 0، مغطّاة 8 (ستارة 8)
+[18:29:09] حالة المرحلة 141: [{"x": 168, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 304, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 64, "y": 623, "cap": 10, "layers": ["pink"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["red", "purple", "pink"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["pink", "blue", "pink", "brown"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["darkgreen", "purple", "brown"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["blue", "pink", "purple", "pink"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["pink", "purple", "brown"]}, {"x": 133, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 202, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 270, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 338, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}, {"x": 407, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "purple"}]
+[18:29:09] خطة المرحلة 141: 17 حركة (astar، 8.0 ms)
+[18:29:15] لا تقدّم بعد الحركة (3, 4) (إخفاق 1)
+[18:29:15] القارورة 4 مرفوعة؛ نقرة لإنزالها
+[18:29:17] خطة المرحلة 141: 14 حركة (astar، 0.7 ms)
+[18:31:05] الحالة بعد (12, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[18:32:07] خطة المرحلة 141: 8 حركة (astar، 1.3 ms)
