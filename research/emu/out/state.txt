@@ -1,10 +1,10 @@
 done 43
 الحالة: يلعب
 مراحل مكتملة: 2
-الوقت: 219 دقيقة من 300
-آخر شاشة: unknown
-الشاشات: {'button': 211, 'unknown': 270, 'level': 295, 'close': 7, 'lives': 14}
-صور محفوظة: 50/900، شاشات جديدة: 23
-المرحلة الحالية: 129 صعبة جداً (حركات 20، مخفي 1، إخفاقات 0، أدوات -، 26.0 دقيقة)
-الحالة المقروءة: [orange,?,brown,brown]/4 [plum,plum,plum]/4 [#ستارة:plum] [brown]/4 [red,darkgreen,darkgreen,darkgreen]/4 [yellow,cyan,red]/4 [mint,mint,mint,mint]/4 [blue,blue,blue]/4 [purple,purple,purple]/4 [pink,pink,pink]/4 [darkgreen,yellow,yellow,yellow]/4 [#ستارة:brown] [brown,lavender,lavender,lavender]/4 [green,green,green,green]/4 [#ستارة:purple]
-العملات: 210، «Give Up» لكل مرحلة: {127: 1, 129: 5}
+الوقت: 225 دقيقة من 300
+آخر شاشة: button
+الشاشات: {'button': 215, 'unknown': 308, 'level': 311, 'close': 9, 'lives': 15}
+صور محفوظة: 54/900، شاشات جديدة: 26
+المرحلة الحالية: 129 صعبة جداً (حركات 9، مخفي 2، إخفاقات 0، أدوات -، 2.1 دقيقة)
+الحالة المقروءة: [mint,?,mint]/4 [orange,green,orange,orange]/4 [#ستارة:brown] [green,lavender]/4 [lavender,?,brown,cyan]/4 [purple,purple,purple,purple]/4 [blue]/4 [green,cyan,brown]/4 [lavender,red,red]/4 [brown,pink,pink,pink]/4 [pink,yellow,red,red]/4 [#ستارة:brown] [lavender,darkgreen,darkgreen,darkgreen]/4
+العملات: 210، «Give Up» لكل مرحلة: {127: 1, 129: 6}، انتظار الأرواح 15 دقيقة
