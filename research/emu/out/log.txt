@@ -152,3 +152,6 @@
 [01:02:24] المرحلة 124 عالقة (لا خطة): [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
 [01:02:24] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
 [01:02:24] حركة عشوائية (6, 0) (1)
+[01:02:29] انتهى التحميل بعد 114 ثانية
+[01:02:29] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[01:02:42] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
