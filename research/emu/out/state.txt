@@ -1,10 +1,10 @@
 done 44
-الحالة: يلعب
+الحالة: انتهى
 مراحل مكتملة: 6
-الوقت: 41 دقيقة من 256
+الوقت: 46 دقيقة من 256
 آخر شاشة: button
 الشاشات: {'level': 66, 'unknown': 48, 'button': 7, 'close': 1}
 صور محفوظة: 11/900، شاشات جديدة: 20
-المرحلة الحالية: 147 (حركات 31، مخفي 0، إخفاقات 0، أدوات -، 35.6 دقيقة)
+المرحلة الحالية: 147 (حركات 31، مخفي 0، إخفاقات 0، أدوات -، 40.7 دقيقة)
 الحالة المقروءة: [green,green,green,green]/4 [purple,purple,purple,purple]/4 [cyan,cyan,cyan,cyan]/4 [brown,brown,brown,brown]/4 [red,red,red,red]/4 [orange,orange,orange,orange]/4 [yellow,yellow,yellow,yellow]/4 []/4 []/4 [blue,blue,blue,blue]/4 [lavender,lavender,lavender,lavender]/4 [pink,pink,pink,pink]/4
 العملات: ?، «Give Up» لكل مرحلة: -
