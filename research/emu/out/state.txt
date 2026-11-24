@@ -1,10 +1,10 @@
 done 43
 الحالة: يلعب
 مراحل مكتملة: 1
-الوقت: 290 دقيقة من 300
+الوقت: 295 دقيقة من 300
 آخر شاشة: button
-الشاشات: {'button': 288, 'level': 192, 'unknown': 165, 'close': 5, 'lives': 20}
+الشاشات: {'button': 293, 'level': 192, 'unknown': 165, 'close': 5, 'lives': 20}
 صور محفوظة: 37/900، شاشات جديدة: 15
-المرحلة الحالية: 130 (حركات 0، مخفي 0، إخفاقات 0، أدوات ['shuffle']، 19.4 دقيقة)
+المرحلة الحالية: 130 (حركات 0، مخفي 0، إخفاقات 0، أدوات ['shuffle']، 24.6 دقيقة)
 الحالة المقروءة: [blue,red,pink,blue]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,yellow,orange,red]/4 [orange,yellow,purple,orange]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,lavender,purple,red]/4 [green,purple,yellow,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,orange,red,pink]/4 [blue,green,blue,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [pink,yellow,pink,purple]/4
-العملات: 310، «Give Up» لكل مرحلة: {129: 4}، انتظار الأرواح 10 دقيقة
+العملات: 310، «Give Up» لكل مرحلة: {129: 4}، انتظار الأرواح 5 دقيقة
