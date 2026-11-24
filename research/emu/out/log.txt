@@ -205,3 +205,33 @@
 [06:48:40] انتظار الأرواح: باقي 0 دقيقة قبل زرّ المرحلة
 [06:49:13] نافذة «More Lives» (الرصيد 210 أقل من 900): إغلاق بـ X وانتظار 10.7 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
 [06:54:21] انتظار الأرواح: باقي 6 دقيقة قبل زرّ المرحلة
+[06:59:26] انتظار الأرواح: باقي 0 دقيقة قبل زرّ المرحلة
+[07:00:08] بداية المرحلة 129 (صعبة جداً): 6 قارورة، سعات [(4, 6)]، مخفي 0
+[07:00:08] حالة المرحلة 129: [{"x": 64, "y": 538, "cap": 4, "layers": ["brown", "plum", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["cyan", "blue", "green"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "red", "green"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["red", "blue", "blue"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "orange", "darkgreen"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["green", "mint", "plum"]}]
+[07:00:08] خطة المرحلة 129: 2 حركة (progress، 0.4 ms)
+[07:00:16] خطة المرحلة 129: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[07:00:16] المرحلة 129 عالقة (لا خطة): [brown,plum,brown]/4 [cyan]/4 [orange,red,green,green]/4 [red,blue,blue,blue]/4 [lavender,orange,darkgreen]/4 [green,mint,plum]/4
+[07:00:16] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[07:00:21] المرحلة 129: قوارير جديدة (باب انفتح؟ 6 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، تعذّر نسب الباب إلى مفتاح (لا مفتاح محرَّر في اللوحة السابقة): لم يُسجَّل
+[07:00:21] حالة المرحلة 129 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["orange", "?", "yellow", "pink"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["red", "brown", "green"]}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["purple", "?", "pink", "cyan"], "keys": [2]}, {"x": 64, "y": 538, "cap": 4, "layers": ["brown", "plum", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["cyan"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "red", "green", "green"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "orange", "darkgreen"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["green", "mint", "plum"]}]
+[07:00:21] خطة المرحلة 129: 1 حركة (key، 0.2 ms)
+[07:00:22] الحركة (4, 6) تحرّر مفتاحاً؛ انتظار الباب
+[07:00:32] المرحلة 129: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (372،332 طبقة 2) ← 1 قارورة (جديد)
+[07:00:32] حالة المرحلة 129 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["orange", "?", "yellow", "pink"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["red", "brown", "green"]}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "red", "yellow"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["purple", "?", "pink"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["brown", "plum", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "red", "green", "green"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "orange", "darkgreen"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["green", "mint", "plum"]}, {"x": 133, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 201, "y": 743, "cap": 4, "layers": ["lavender", "?", "darkgreen", "yellow"], "keys": [2]}]
+[07:00:32] خطة المرحلة 129: 1 حركة (key، 0.5 ms)
+[07:00:33] الحركة (12, 3) تحرّر مفتاحاً؛ انتظار الباب
+[07:00:42] المرحلة 129: قوارير جديدة (باب انفتح؟ 13 → 15 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (201،743 طبقة 2) ← 1 قارورة (جديد)
+[07:00:42] حالة المرحلة 129 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["orange", "?", "yellow", "pink"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["red", "brown", "green"]}, {"x": 236, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "red"}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "red", "yellow", "yellow"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["purple", "?", "pink"]}, {"x": 64, "y": 538, "cap": 4, "layers": ["brown", "plum", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange", "red", "green", "green"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["lavender", "orange", "darkgreen"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["green", "mint", "plum"]}, {"x": 133, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 201, "y": 743, "cap": 4, "layers": ["lavender", "?", "darkgreen"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["mint", "?", "cyan", "cyan"]}, {"x": 338, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}]
+[07:00:42] خطة المرحلة 129: 1 حركة (reveal، 259.3 ms)
+[07:00:49] الحالة بعد (13, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:00:49] خطة المرحلة 129: 1 حركة (reveal، 444.2 ms)
+[07:00:53] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[07:00:53] خطة المرحلة 129: 1 حركة (progress، 16.2 ms)
+[07:00:58] خطة المرحلة 129: 0 حركة (progress-none، 5.5 ms) — لا حركة مفيدة
+[07:00:58] المرحلة 129 عالقة (لا خطة): [orange,?,yellow]/4 [red,brown,green]/4 [#ستارة:red] [brown,red,yellow,yellow]/4 [purple,?,pink,pink]/4 [brown,plum,brown]/4 [cyan,cyan,cyan,cyan]/4 [orange,red,green,green]/4 [red,blue,blue,blue]/4 [lavender,orange,darkgreen,darkgreen]/4 [green,mint,plum]/4 [#ستارة:yellow] [lavender,lavender]/4 [mint,purple]/4 [plum,yellow,?,darkgreen]/4
+[07:00:58] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:00:58] حركة عشوائية (7, 1) (1)
+[07:01:02] انتهى التحميل بعد 789 ثانية
+[07:01:02] نافذة «No Available Moves» في المرحلة 129: «Give Up» (الرصيد 210 أقل من 900)
+[07:01:02] المرحلة 129: طريق مسدود محفوظ لهذه البداية (3 حالة جديدة، بعد آخر باب انفتح، 3 محفوظة، محاولاتها الفاشلة 1، أبواب معروفة 2)
+[07:01:16] نافذة «More Lives» (الرصيد 210 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
