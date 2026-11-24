@@ -42,6 +42,8 @@
     والجبس (من المرحلة 100: قالب أبيض متشقّق بحجم قارورة) مثلها بـ "cover": "plaster": ينكسر حين تكتمل قارورة ظاهرة في الخانة
     المجاورة له في صفّه (يميناً أو يساراً؛ قاعدتها فتات جبس يُقرأ "clay")، وقاعدة الكسر في solver.plaster_breakers.
     "box" = [x0, أعلى، x1، أسفل] لكل قارورة (ومنها المغطّاة): منه يعرف الحلّال صفّ القارورة الطويلة وجاراتها.
+    «Tag!» (من المرحلة 130): قارورة بشريط معقود حول عنقها وبطاقة ورقية يمين العنق عليها قارورة صغيرة بلون: لا يُصبّ فيها إلا
+    ذلك اللون. تُقرأ "accept" = اسم اللون (من اللوحة) و"tag_box" = صندوق البطاقة، وطبقاتها تُقرأ كالعادة بنافذة يسار البطاقة.
 
 القارورة الطويلة على حامل: قاعها مخفيّ، فيُقاس «الفراغ» (cap - عدد الطبقات) من قمة السائل
 بدقة (هذا ما يحتاجه الحلّال)، والطبقات المرئية تقدير حتى الحامل. في المراحل 10..14 قيس
@@ -356,11 +358,12 @@ def _tube_geometry(m, c):
     return float(x0 + li), float(x0 + ri)
 
 
-def _profile(a, cx, w, ya, yb):
-    """وسيط الألوان أفقياً في نافذة وسطى من القارورة لكل سطر بين ya و yb."""
+def _profile(a, cx, w, ya, yb, kx=(0.14, 0.20)):
+    """وسيط الألوان أفقياً في نافذة وسطى من القارورة لكل سطر بين ya و yb (kx: امتداد النافذة يساراً ويميناً بعرض القارورة؛
+    القارورة الموسومة تأخذ نافذة يسار المحور: بطاقتها يمين العنق)."""
     H, W = a.shape[:2]
-    xa = int(round(cx - 0.14 * w))
-    xb = int(round(cx + 0.20 * w)) + 1
+    xa = int(round(cx - kx[0] * w))
+    xb = int(round(cx + kx[1] * w)) + 1
     xa, xb = max(0, xa), min(W, xb)
     ya, yb = max(0, int(ya)), min(H, int(yb))
     if yb <= ya or xb <= xa:
@@ -368,12 +371,16 @@ def _profile(a, cx, w, ya, yb):
     return np.median(a[ya:yb, xa:xb].astype(np.float64), axis=1)
 
 
-def _sample(a, cx, w, yc, h):
+_SAMPLE_WINS = ((0.15, 0.19), (0.30, 0.30))
+_SAMPLE_WINS_LEFT = ((0.28, 0.02), (0.38, 0.04))     # يسار المحور: طبقة بجانب بطاقة «Tag!»
+
+
+def _sample(a, cx, w, yc, h, wins=_SAMPLE_WINS):
     """لون نافذة الطبقة (الوسيط): عرض نحو ثلث القارورة حول المركز وارتفاع ±0.22h.
     تُستبعد بكسلات «اليد» البيضاء في مراحل التعليم؛ إن غطّت أكثر النافذة يُوسَّع
     العرض، وإن بقيت مغطاة تُعاد None (طبقة محجوبة)."""
     H, W = a.shape[:2]
-    for kx0, kx1 in ((0.15, 0.19), (0.30, 0.30)):
+    for kx0, kx1 in wins:
         xa = max(0, int(round(cx - kx0 * w)))
         xb = min(W, int(round(cx + kx1 * w)) + 1)
         ya = max(0, int(round(yc - 0.22 * h)))
@@ -857,6 +864,84 @@ def _key_layer(a, cx, w, yc, h):
     return None
 
 
+# ---------------------------------------------------------------- «Tag!» (من المرحلة 130)
+# قارورة موسومة: شريط معقود حول عنقها وبطاقة ورقية معلّقة يمين العنق عليها قارورة صغيرة بلون السائل الوحيد الذي يُصبّ فيها
+# («Bottle with TAG can only be filled with the same colored water!»). تبدأ فارغة. البطاقة كانت تقع في نافذة العمود الأوسط
+# (_profile حتى cx+0.20w) تحت قمة السائل الممكنة، فيعدّها _first_content «محتوى» عند السطر top+0.5w فتُقرأ القارورة ممتلئة
+# أربع طبقات، وعيّنة كل طبقة داخل الزجاج الفارغ الكحلي الداكن (3، 8، 46) ليس في اللوحة فيُسمّى c_23_7_1 (التشغيل 14).
+
+def paper_mask(a):
+    """ورق البطاقة الكريمي الخوخي (إطارها وظهرها؛ داخلها فاتح أبيض): أحمر > أخضر > أزرق بفرق معتدل. السائل الأصفر أزرقه منخفض،
+    والوردي أخضره منخفض، والجبس أحمره قريب من أزرقه (R-B ≤ 50 مع G-B صغير)، فلا تكوّن بطاقة بشكلها وموضعها."""
+    a = _i16(a)
+    R, G, B = a[..., 0], a[..., 1], a[..., 2]
+    return (R > 200) & (G > 165) & (B > 130) & (R - B >= 15) & (R - B <= 110) & (R >= G) & (G >= B - 10)
+
+
+def _palette_vote(px, max_de=25.0, min_n=6):
+    """أكثر لون من اللوحة بين البكسلات px (n×3) بفرق ΔE ≤ max_de، أو None إن قلّت عن min_n."""
+    if len(px) == 0:
+        return None
+    lab = _srgb_to_lab(px.astype(np.float64))
+    d = np.sqrt(((lab[:, None, :] - _PAL_LAB[None, :, :]) ** 2).sum(-1))
+    nn, dm = d.argmin(axis=1), d.min(axis=1)
+    cnt = np.bincount(nn[dm <= max_de], minlength=len(_PAL_NAMES))
+    k = int(np.argmax(cnt))
+    return _PAL_NAMES[k] if cnt[k] >= min_n else None
+
+
+def _find_tag(a, cx, w, top):
+    """بطاقة «Tag!» لقارورة عنقها على top ومركزها cx: مكوّن ورقي كبير يمين العنق (يبدأ قرب المحور ويتجاوز نصف العرض يميناً) بين
+    top+0.2w وtop+1.3w. يعيد {"box": [x0، y0، x1، y1]، "accept": لون القارورة الصغيرة في البطاقة (أو لون الشريط احتياطاً)،
+    "ribbon": لون الشريط أو None} أو None. القارورة الصغيرة في النصف السفلي من البطاقة (أعلاها ثقب يمرّ فيه الشريط)."""
+    H, W = a.shape[:2]
+    xa, xb = max(0, int(round(cx - 0.10 * w))), min(W, int(round(cx + 0.80 * w)))
+    ya, yb = max(0, int(round(top + 0.15 * w))), min(H, int(round(top + 1.35 * w)))
+    if xb - xa < 8 or yb - ya < 8:
+        return None
+    pm = paper_mask(a[ya:yb, xa:xb])
+    if pm.sum() < 0.04 * w * w:
+        return None
+    # إطار البطاقة حلقة قد تنقطع (داخلها أبيض والقارورة الصغيرة): صندوق كل القطع الورقية غير الصغيرة معاً
+    parts = [c for c in _components(_shift_or(pm, 1)) if c["n"] >= 0.012 * w * w]
+    if not parts:
+        return None
+    bx0, bx1 = min(c["x0"] for c in parts), max(c["x1"] for c in parts)
+    by0, by1 = min(c["y0"] for c in parts), max(c["y1"] for c in parts)
+    x0, x1, y0, y1 = xa + bx0, xa + bx1, ya + by0, ya + by1
+    bw, bh = x1 - x0 + 1, y1 - y0 + 1
+    npaper = int(pm[by0:by1 + 1, bx0:bx1 + 1].sum())
+    if not (npaper >= 0.05 * w * w and 0.35 * w <= bw <= 0.85 * w and 0.45 * w <= bh <= 1.1 * w
+            and x0 > cx - 0.08 * w and x1 > cx + 0.45 * w and (x0 + x1) / 2 > cx + 0.15 * w):
+        return None
+    # القارورة الصغيرة: البكسلات غير الورقية في الثلثين السفليين من البطاقة الأقرب إلى لون من اللوحة
+    # (إطار القارورة الصغيرة الزجاجي أزرق فاتح قريب من الخزامي: بفرق ΔE ≤ 25 كان يقارب السائل البنفسجي 97 مقابل 120، وبفرق ≤ 12
+    # يبقى 20 مقابل 73؛ فالتصويت بعتبة ضيّقة أولاً ثم أوسع إن قلّ العدد)
+    sub = a[y0 + int(0.35 * bh):y1 + 1, x0:x1 + 1]
+    px = sub.reshape(-1, 3)[~paper_mask(sub).reshape(-1)]
+    accept = None
+    for thr in (12.0, 18.0, 25.0):
+        accept = _palette_vote(px, max_de=thr, min_n=max(6, int(0.006 * w * w)))
+        if accept is not None:
+            break
+    # الشريط حول العنق (بلون البطاقة نفسه، أفتح ومجدول) في الشريحة top+0.2w..top+0.45w؛ فوقها غطاء العنق الزجاجي وهو نفسه
+    # قريب من الخزامي (lavender) فلا يدخل التصويت. حتى في القارورة غير الموسومة يعطي زجاج الشريحة نحو 0.06w² «خزامياً»، فالشريط
+    # احتياط للون (حين لا تُقرأ القارورة الصغيرة) لا شرط للكشف: البطاقة بشكلها وموضعها هي الحاسمة
+    ra, rb = max(0, int(round(top + 0.20 * w))), min(H, int(round(top + 0.45 * w)))
+    rxa, rxb = max(0, int(round(cx - 0.55 * w))), min(W, int(round(cx + 0.45 * w)))
+    ribbon = _palette_vote(a[ra:rb, rxa:rxb].reshape(-1, 3), max_de=30.0, min_n=int(0.04 * w * w)) if rb > ra else None
+    if accept is None:
+        sat = px.max(axis=1).astype(np.float64) - px.min(axis=1)
+        sel = (sat > 0.35 * np.maximum(px.max(axis=1), 1)) & (px.max(axis=1) > 60)
+        if ribbon is not None:
+            accept = ribbon
+        elif sel.sum() >= 6:
+            accept = color_name(np.median(px[sel].astype(np.float64), axis=0))
+    if accept is None:
+        return None
+    return {"box": [int(x0), int(y0), int(x1), int(y1)], "accept": accept, "ribbon": ribbon}
+
+
 def _cover_tube(t):
     """قارورة تحت ستارة أو كيس: محجوبة ("blocked") لا يُصبّ منها ولا فيها ومحتواها مجهول (طبقات فارغة لا تعني فارغة)."""
     c = t["cover"]
@@ -870,6 +955,24 @@ def _read_tube(a, t, h, e, warnings, bg=None):
     cx = t["cx"]
     top = t["top"]
     x0, x1 = t["x0"], t["x1"]
+    # «Tag!» (من المرحلة 130): البطاقة يمين العنق خارج قراءة السائل (نافذة العمود يسار المحور، وعيّنات الطبقات المجاورة لها كذلك)
+    tag = _find_tag(a, cx, w, top)
+    pkx = (0.26, 0.0) if tag else (0.14, 0.20)
+    # الشريط حول العنق وظلّه الداكن ينتهيان نحو top+0.41..0.47w؛ و`top` في الموسومة مقدَّر من القاع وحده (الشريط يخفي
+    # زجاج العنق) فيهتزّ بكسلاً أو اثنين: تبدأ النافذة بعد الحافة العليا للبطاقة المقيسة (الشريط ينتهي قبلها + 3 بكسلات)
+    py0 = top + 0.40 * w if not tag else max(top + 0.43 * w, tag["box"][1] + 0.12 * w)
+
+    def near_tag(yc):
+        return tag is not None and yc - 0.40 * h <= tag["box"][3] + 2 and yc + 0.40 * h >= tag["box"][1] - 2
+
+    def tag_info(out):
+        if tag:
+            out["accept"] = tag["accept"]       # اللون الوحيد الذي يُصبّ فيها
+            out["tag_box"] = list(tag["box"])
+            # (لا تحذير حين يخالف لونُ الشريط القارورةَ الصغيرة: الشريط الأزرق الداكن يُقرأ بنفسجياً — zz_final في التشغيل 14)
+            if str(tag["accept"]).startswith("c_"):
+                warnings.append("unknown tag color %s at x=%d" % (tag["accept"], cx))
+        return out
     if not t["tall"] or t["stand"] < 0.08:
         # قاع القارورة ظاهر (العادية، أو الطويلة بعد اكتمالها وتحطّم حاملها)
         B = t["y1"] - K_BOT * w                 # قاع السائل في العمود الأوسط
@@ -885,8 +988,8 @@ def _read_tube(a, t, h, e, warnings, bg=None):
             yc0 = _clay_top(a, cx, w, B - 2.2 * h, t["y1"])
             if yc0 is not None:
                 yend = min(yend, yc0 - 2)
-        prof = _profile(a, cx, w, top + 0.40 * w, yend)
-        ytop = _first_content(prof, top + 0.40 * w, bg_lab=bg)
+        prof = _profile(a, cx, w, py0, yend, pkx)
+        ytop = _first_content(prof, py0, bg_lab=bg)
         if ytop is None:
             n = 0
         else:
@@ -899,9 +1002,10 @@ def _read_tube(a, t, h, e, warnings, bg=None):
         keys, key_colors = [], []
         for k in range(n):
             yc = B - (k + 0.5) * h
-            rgb = _sample(a, cx, w, yc, h)
+            rgb = _sample(a, cx, w, yc, h, _SAMPLE_WINS_LEFT if near_tag(yc) else _SAMPLE_WINS)
             c = color_name(rgb) if rgb is not None else None
-            if c is not None and c != HIDDEN and not t["tall"]:   # الطويلة بلا حامل: شظايا الاحتفال تشبه الملصق
+            # الطويلة بلا حامل: شظايا الاحتفال تشبه الملصق؛ وبجانب بطاقة «Tag!» قارورتها الصغيرة تشبهه أيضاً
+            if c is not None and c != HIDDEN and not t["tall"] and not near_tag(yc):
                 kl = _key_layer(a, cx, w, yc, h)
                 if kl is not None:
                     c = kl[0]
@@ -921,12 +1025,12 @@ def _read_tube(a, t, h, e, warnings, bg=None):
         if keys:
             out["keys"] = keys                  # مواضع طبقات المفاتيح (من الأسفل)
             out["key_colors"] = key_colors
-        return out
+        return tag_info(out)
     # ---- القارورة الطويلة على حامل: القاع مخفيّ خلف الحامل
     T = top + K_TOP * w
     ystand = t["y1"]
-    prof = _profile(a, cx, w, top + 0.40 * w, ystand + 0.35 * w)
-    ytop = _first_content(prof, top + 0.40 * w, bg_lab=bg)
+    prof = _profile(a, cx, w, py0, ystand + 0.35 * w, pkx)
+    ytop = _first_content(prof, py0, bg_lab=bg)
     # أين يبدأ الحامل في العمود الأوسط؟
     sm = stand_mask(a)
     xa, xb = int(cx - 0.15 * w), int(cx + 0.2 * w)
@@ -952,7 +1056,7 @@ def _read_tube(a, t, h, e, warnings, bg=None):
             yc = fill + (j + 0.5) * h
             if yc + 0.22 * h > yst:
                 break
-            rgb = _sample(a, cx, w, yc, h)
+            rgb = _sample(a, cx, w, yc, h, _SAMPLE_WINS_LEFT if near_tag(yc) else _SAMPLE_WINS)
             vis.append(color_name(rgb) if rgb is not None else None)
         if not vis:
             rgb = _sample(a, cx, w, (ytop + e + yst) / 2, h)
@@ -963,10 +1067,10 @@ def _read_tube(a, t, h, e, warnings, bg=None):
             layers.insert(0, layers[0])
     cap = n + max(0, free)
     ytap = (top + ystand) / 2
-    return {"x": int(round(cx)), "y": int(round(ytap)), "cap": int(cap), "layers": layers,
-            "tall": True, "lifted": False,
-            "box": [int(x0), int(round(top)), int(x1), int(ystand)],
-            "_ytop": ytop, "_yst": yst, "_h": h, "_e": e}
+    return tag_info({"x": int(round(cx)), "y": int(round(ytap)), "cap": int(cap), "layers": layers,
+                     "tall": True, "lifted": False,
+                     "box": [int(x0), int(round(top)), int(x1), int(ystand)],
+                     "_ytop": ytop, "_yst": yst, "_h": h, "_e": e})
 
 
 # ---------------------------------------------------------------- الأزرار وتصنيف الشاشة
@@ -1752,6 +1856,10 @@ def debug_draw(img, state=None, scale: float = 1.6):
         col = (255, 60, 60) if t.get("lifted") else ((255, 200, 0) if t.get("tall") else (0, 255, 120))
         if bx:
             d.rectangle([bx[0] * s, bx[1] * s, bx[2] * s, bx[3] * s], outline=col, width=2)
+        tb = t.get("tag_box")
+        if tb:                                  # بطاقة «Tag!» ولونها المقبول
+            d.rectangle([tb[0] * s, tb[1] * s, tb[2] * s, tb[3] * s], outline=(255, 160, 220), width=1)
+            d.text((tb[0] * s, tb[3] * s + 2), "=" + str(t.get("accept"))[:8], fill=(255, 160, 220))
         x, y = t["x"] * s, t["y"] * s
         d.ellipse([x - 5, y - 5, x + 5, y + 5], fill=(255, 0, 255), outline=(255, 255, 255))
         h = t.get("_h")
@@ -1782,7 +1890,8 @@ def summarize(state) -> str:
     parts = []
     for t in state.get("tubes", []):
         s = "".join(_SHORT.get(c, "*") for c in t["layers"]) or "-"
-        parts.append("%s/%d%s" % (s, t["cap"], "^" if t.get("lifted") else ""))
+        tag = "{%s}" % _SHORT.get(t["accept"], "*") if t.get("accept") else ""    # قارورة موسومة («Tag!»): لونها المقبول
+        parts.append("%s/%d%s%s" % (s, t["cap"], tag, "^" if t.get("lifted") else ""))
     return " ".join(parts)
 
 

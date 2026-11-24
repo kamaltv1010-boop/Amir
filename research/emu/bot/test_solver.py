@@ -57,7 +57,11 @@ def reference_solvable(state, limit=300000):
     """مرجع مستقل: بحث عمقي بلا أي تقليم (كل الحركات القانونية). True/False/None."""
     enc = solver._Enc(state)
     s0, caps = enc.start, enc.caps
-    seen = {solver._key(s0, caps)}
+    acc = enc.accept                     # «Tag!»: لا يُصبّ في الموسومة إلا لونها
+
+    def rkey(s):
+        return tuple(sorted((caps[k], acc.get(k, -1), s[k]) for k in range(len(s))))
+    seen = {rkey(s0)}
     stack = [s0]
     n = 0
     while stack:
@@ -76,10 +80,10 @@ def reference_solvable(state, limit=300000):
                 run += 1
             for j, u in enumerate(s):
                 sp = caps[j] - len(u)
-                if i == j or sp <= 0 or (u and u[-1] != top):
+                if i == j or sp <= 0 or (u and u[-1] != top) or acc.get(j, top) != top:
                     continue
                 c = solver._apply(s, i, j, min(run, sp))
-                k = solver._key(c, caps)
+                k = rkey(c)
                 if k not in seen:
                     seen.add(k)
                     stack.append(c)
@@ -889,6 +893,246 @@ class TestDoors(unittest.TestCase):
                     firsts.add((seed, tuple(mv[:3])))
         self.assertGreater(len(firsts), 5)
         self.assertIsNone(solver._TIE)                          # يعود بعد الاستدعاء
+
+
+GOLDEN_UNTAGGED = {   # (ألوان، فارغات، بذرة random_puzzle، vary) -> خطة الحلّال قبل «Tag!» (e24ec61)
+    (5, 2, 7101, 0): [(0, 5), (1, 6), (2, 6), (2, 5), (3, 1), (0, 3), (0, 2), (3, 0), (3, 6), (0, 3), (4, 2), (1, 0), (1, 5), (0, 1), (4, 1), (4, 6), (2, 4)],
+    (5, 2, 7101, 1): [(0, 5), (2, 6), (2, 5), (1, 6), (3, 1), (0, 3), (2, 0), (4, 0), (3, 2), (3, 6), (2, 3), (1, 2), (4, 2), (1, 5), (1, 2), (4, 6), (0, 4), (0, 3)],
+    (7, 2, 7102, 0): [(0, 7), (0, 8), (1, 8), (2, 0), (2, 8), (3, 2), (4, 7), (4, 8), (5, 7), (3, 5), (2, 3), (5, 2), (4, 5), (2, 4), (6, 5), (6, 1), (6, 7), (5, 6), (3, 5), (0, 3)],
+    (7, 2, 7102, 1): [(5, 7), (0, 7), (4, 7), (1, 0), (4, 8), (6, 4), (6, 1), (6, 7), (4, 6), (5, 4), (0, 8), (5, 6), (3, 5), (2, 0), (2, 8), (3, 4), (3, 5), (0, 3), (2, 5), (2, 4)],
+    (9, 2, 7103, 0): [(6, 9), (0, 10), (0, 6), (1, 10), (2, 1), (4, 0), (5, 4), (5, 9), (5, 10), (0, 5), (8, 5), (7, 8), (0, 7), (8, 0), (8, 9), (8, 10), (1, 8), (3, 1), (3, 0), (3, 9), (3, 8), (2, 3), (4, 2), (4, 0), (6, 3), (6, 1), (4, 6), (7, 6), (7, 1), (3, 7)],
+    (9, 2, 7103, 1): [(7, 9), (8, 10), (4, 10), (5, 4), (6, 5), (8, 9), (5, 8), (1, 5), (2, 1), (0, 5), (0, 6), (10, 0), (8, 10), (5, 8), (0, 5), (7, 0), (3, 7), (3, 9), (3, 10), (1, 3), (7, 1), (2, 7), (4, 2), (6, 7), (4, 9), (0, 4), (6, 1), (4, 6)],
+    (10, 3, 7104, 0): [(0, 10), (6, 0), (7, 10), (0, 11), (0, 6), (4, 0), (8, 4), (9, 8), (7, 9), (7, 0), (6, 7), (3, 6), (1, 3), (2, 1), (5, 6), (1, 12), (1, 10), (6, 1), (4, 6), (3, 4), (3, 10), (3, 12), (2, 3), (2, 7), (2, 6), (9, 3), (9, 0), (3, 9), (5, 2), (5, 12), (5, 11), (8, 2), (8, 11), (2, 8)],
+    (10, 3, 7104, 1): [(7, 10), (0, 10), (6, 0), (6, 11), (5, 6), (3, 6), (9, 5), (9, 7), (4, 9), (8, 4), (1, 3), (2, 1), (7, 12), (2, 12), (7, 9), (2, 7), (4, 2), (7, 11), (3, 4), (3, 10), (1, 3), (1, 10), (6, 1), (2, 6), (0, 2), (0, 11), (9, 0), (9, 12), (5, 7), (5, 3), (8, 7), (2, 5), (8, 5), (7, 8)],
+    (6, 1, 7105, 0): [(1, 6), (4, 1), (6, 4), (3, 6), (0, 3), (5, 6), (5, 0), (6, 5)],
+    (6, 1, 7105, 1): [(1, 6), (4, 1), (6, 4), (3, 6), (0, 3), (5, 6), (5, 0), (6, 5)],
+    (12, 2, 7106, 0): [(1, 12), (2, 13), (6, 12), (2, 6), (2, 12), (7, 2), (0, 7), (10, 13), (1, 10), (3, 1), (3, 13), (0, 3), (0, 12), (8, 0), (8, 13), (4, 8), (2, 4), (3, 2), (4, 3), (0, 4), (8, 0), (5, 8), (5, 2), (6, 5), (9, 6), (9, 5), (1, 9), (6, 1), (6, 8), (9, 6), (8, 9), (7, 8), (7, 6), (4, 7), (11, 8), (11, 1), (11, 0), (10, 11), (8, 10)],
+    (12, 2, 7106, 1): [(6, 12), (4, 13), (1, 12), (7, 4), (11, 7), (9, 11), (6, 9), (11, 6), (13, 11), (9, 13), (3, 9), (2, 3), (2, 13), (2, 12), (2, 4), (10, 2), (1, 10), (1, 9), (3, 2), (6, 1), (5, 6), (5, 3), (5, 13), (9, 5), (6, 9), (11, 6), (10, 11), (0, 10), (7, 10), (7, 5), (8, 7), (8, 2), (8, 6), (8, 9), (0, 8), (0, 12), (3, 8), (0, 7), (4, 3), (4, 7)],
+}
+
+
+def mk_tags(tubes):
+    """tubes: [(cap, [layers...], لون الوسم أو None), ...] -> حالة فيها قوارير موسومة («Tag!»)."""
+    st = mk([(c, l) for c, l, _a in tubes])
+    for t, (_c, _l, a) in zip(st["tubes"], tubes):
+        if a:
+            t["accept"] = a
+    return st
+
+
+# بداية المرحلة 130 كما تقرؤها الرؤية (testdata/L130_tags.jpg): أربع قوارير فارغة موسومة ولا فارغة عادية
+L130 = [(4, ["pink", "yellow", "yellow", "blue"], None), (4, [], "lavender"), (4, ["yellow", "red", "orange", "pink"], None),
+        (4, ["green", "red", "red", "yellow"], None), (4, [], "purple"), (4, ["lavender", "green", "lavender", "green"], None),
+        (4, ["blue", "purple", "purple", "lavender"], None), (4, [], "red"), (4, ["orange", "orange", "orange", "blue"], None),
+        (4, ["red", "purple", "green", "purple"], None), (4, [], "pink"), (4, ["lavender", "pink", "blue", "pink"], None)]
+
+
+def tag_ok(state, moves):
+    """كل حركة في الخطة قانونية بقيد الوسوم (apply_move يرفض غيرها)، والحالة النهائية."""
+    cur = state
+    for i, j in moves:
+        t = cur["tubes"][j]
+        if t.get("accept") and cur["tubes"][i]["layers"][-1] != t["accept"]:
+            return False, cur
+        cur = solver.apply_move(cur, i, j)
+        if cur is None:
+            return False, cur
+    return True, cur
+
+
+class TestTags(unittest.TestCase):
+    """«Tag!» (من المرحلة 130): لا يُصبّ في القارورة الموسومة إلا لون وسمها (ويُصبّ منها كالعادة)."""
+
+    def test_wrong_color_into_tagged_is_illegal(self):
+        st = mk_tags([(4, ["blue", "red"], None), (4, ["red", "blue"], None), (4, [], "blue"), (4, [], None)])
+        self.assertIsNone(solver.apply_move(st, 0, 2))                  # الأزرق فقط في الموسومة الزرقاء
+        self.assertIsNotNone(solver.apply_move(st, 1, 2))
+        self.assertIsNotNone(solver.apply_move(st, 0, 3))               # الفارغة العادية تقبل كل لون
+        lm = solver.legal_moves(st)
+        self.assertNotIn((0, 2), lm)
+        self.assertIn((1, 2), lm)
+        mv = solver.plan(st)
+        ok, end = tag_ok(st, mv)
+        self.assertTrue(ok and solver.is_solved(end), mv)
+        # موسومة غير فارغة: يُصبّ فيها لونها، والصبّ منها حرّ (إلى فارغة عادية)
+        st = mk_tags([(4, ["red"], "red"), (4, ["blue", "red"], None), (4, ["blue", "blue", "red", "red"], None), (4, [], None)])
+        self.assertIsNotNone(solver.apply_move(st, 1, 0))
+        self.assertIsNotNone(solver.apply_move(st, 0, 3))
+
+    def test_full_tagged_tube_is_complete(self):
+        st = mk_tags([(4, ["red"] * 4, "red"), (4, ["blue"] * 4, None), (4, [], "green"), (4, [], None)])
+        self.assertTrue(solver.is_solved(st))
+        self.assertEqual(solver.plan(st), [])
+
+    def test_l130_start_has_plan_with_constraint(self):
+        st = mk_tags(L130)
+        self.assertEqual(len(solver.legal_moves(st)), 4)                # كان 0: الموسومة قُرئت ممتلئة بلون مجهول
+        self.assertIs(reference_solvable(st), True)
+        info = {}
+        mv, dt = timed_plan(st, info=info)
+        self.assertEqual(info.get("tags"), 4)
+        ok, end = tag_ok(st, mv)
+        self.assertTrue(ok, mv)
+        self.assertTrue(solver.is_solved(end), solver.describe(end))
+        self.assertLess(dt / 1000, LIMIT_S)
+        # بلا الوسوم (الحالة نفسها) تُحلّ بخطة أخرى تخالف القيد غالباً: الوسوم تغيّر البحث فعلاً
+        plain = mk([(c, l) for c, l, _a in L130])
+        self.assertFalse(tag_ok(st, solver.plan(plain))[0])
+
+    def test_random_tagged_puzzles(self):
+        """ألغاز عشوائية بفارغة موسومة أو اثنتين (وأحياناً فارغة عادية): كل خطة تحترم القيد، وما يحلّه المرجع المستقل يُحلّ."""
+        solved = total = 0
+        for seed in range(40):
+            rnd = random.Random(9100 + seed)
+            ncol = rnd.randint(4, 8)
+            base = random_puzzle(ncol, 0, 9100 + seed)
+            tubes = [(4, t["layers"], None) for t in base["tubes"]]
+            cols = rnd.sample(COLORS[:ncol], 2)
+            tubes += [(4, [], cols[0]), (4, [], cols[1] if seed % 3 else None)]
+            st = mk_tags(tubes)
+            ref = reference_solvable(st, limit=200000)
+            mv, _dt = timed_plan(st, time_limit=1.6)
+            ok, end = tag_ok(st, mv)
+            self.assertTrue(ok, (seed, mv))
+            if ref:
+                total += 1
+                cur, steps = st, 0
+                while not solver.is_solved(cur) and steps < 6:          # كما يعيد السائق التخطيط
+                    ok, cur = tag_ok(cur, mv)
+                    self.assertTrue(ok)
+                    if solver.is_solved(cur):
+                        break
+                    mv = solver.plan(cur, time_limit=1.6)
+                    if not mv:
+                        break
+                    steps += 1
+                solved += solver.is_solved(cur)
+        self.assertGreater(total, 10)
+        self.assertGreaterEqual(solved, total - 1)
+
+    def test_mono_into_tagged_empty_is_generated(self):
+        """نقل قارورة أحادية غير مكتملة إلى موسومة بلونها ليس عبثاً (يحرّر قارورة تقبل كل لون)؛ ومن موسومة إلى فارغة عادية عبث."""
+        st = mk_tags([(4, ["red", "red"], None), (4, [], "red"), (4, ["blue"] * 4, None)])
+        enc = solver._Enc(st)
+        solver._ACCEPT = dict(enc.accept)
+        try:
+            ms = {(i, j) for i, j, _a in solver._gen_moves(enc.start, enc.caps)}
+        finally:
+            solver._ACCEPT = {}
+        self.assertIn((0, 1), ms)
+        st = mk_tags([(4, ["red", "red"], "red"), (4, [], None), (4, ["blue"] * 4, None)])
+        enc = solver._Enc(st)
+        solver._ACCEPT = dict(enc.accept)
+        try:
+            ms = {(i, j) for i, j, _a in solver._gen_moves(enc.start, enc.caps)}
+        finally:
+            solver._ACCEPT = {}
+        self.assertNotIn((0, 1), ms)
+
+    def test_state_key_and_avoid(self):
+        """state_key: الموسومة بلون وسمها عنصراً ثالثاً (لا تماثل فارغة عادية)، وغير الموسومة كما كانت تماماً؛ وavoid يعمل بها."""
+        st = mk_tags([(4, ["red", "blue"], None), (4, ["blue", "red"], None), (4, [], "blue"), (4, [], None)])
+        sk = solver.state_key(st)
+        self.assertIn((4, (), "blue"), sk)
+        self.assertIn((4, ()), sk)
+        plain = mk([(4, ["red", "blue"]), (4, ["blue", "red"]), (4, []), (4, [])])
+        self.assertEqual(solver.state_key(plain), tuple(sorted([(4, ("red", "blue")), (4, ("blue", "red")), (4, ()), (4, ())])))
+        self.assertNotEqual(solver.state_key(plain), sk)
+        mv = solver.plan(st)
+        first = solver.apply_move(st, *mv[0])
+        mv2 = solver.plan(st, avoid={solver.state_key(first)})
+        self.assertTrue(mv2)
+        self.assertNotEqual(solver.state_key(solver.apply_move(st, *mv2[0])), solver.state_key(first))
+        self.assertEqual(solver._ACCEPT, {})                            # يعود بعد الاستدعاء
+        self.assertIn("{وسم:blue}", solver.describe(st))
+
+    def test_tags_with_covers_and_pimc(self):
+        """المغطّاة تُحذف قبل البحث (الفهارس تتغيّر) والوسم يتبع قارورته؛ ومع طبقات مخفية (PIMC) لا حركة تخالف القيد."""
+        st = mk_tags([(4, ["red", "blue", "red", "blue"], None), (4, [], None), (4, ["blue", "red", "blue", "red"], None),
+                      (4, [], "red")])
+        st["tubes"].insert(1, {"x": 0, "y": 0, "cap": 4, "layers": [], "blocked": True, "cover": "curtain"})
+        mv = solver.plan(st)
+        ok, _end = tag_ok(st, mv)
+        self.assertTrue(ok and mv, mv)
+        self.assertTrue(all(i != 1 and j != 1 for i, j in mv))
+        for seed in range(6):
+            base = random_puzzle(5, 0, 9300 + seed)
+            tubes = [(4, ["?"] + t["layers"][1:], None) for t in base["tubes"]]
+            st = mk_tags(tubes + [(4, [], "red"), (4, [], None)])
+            info = {}
+            mv = solver.plan(st, info=info, seed=seed)
+            self.assertEqual(info["mode"] in ("pimc", "reveal", "progress", "progress-none"), True, info)
+            for i, j in mv:
+                self.assertIn((i, j), solver.legal_moves(st))
+
+    def test_tagged_door_tube(self):
+        """قارورة باب موسومة في ذاكرة الأبواب: بحث المسألة الممتدّة يحترم وسمها (ولا يبقى _ACCEPT بعده)."""
+        base = [["green", "yellow", "blue", "yellow"], ["yellow", "red", "blue", "red"], ["blue", "blue", "red", "red"], []]
+        st = mk([(4, l) for l in base])
+        st["tubes"][0]["keys"] = [2]
+        door = [{"key": (0, 2), "tubes": [{"x": 0, "y": 0, "cap": 4, "layers": ["green", "green", "green"], "accept": "green"}]}]
+        P = solver._Doors(st, door)
+        self.assertEqual(P.enc.accept, {4: P.enc.idx["green"]})
+        b = solver._Budget(40000, time.perf_counter() + 3)
+        mv, res, nd = solver._door_search(st, door, b, None, set())
+        self.assertEqual(solver._ACCEPT, {})
+        self.assertEqual((res, nd), ("doors-full", 1))
+        # الخط الكامل في المسألة الممتدّة (قارورة الباب بالفهرس 4) يحترم الوسم الأخضر ويحلّها
+        ext = {"tubes": [dict(t) for t in st["tubes"]] + [dict(door[0]["tubes"][0])]}
+        ok, end = tag_ok(ext, [m for m, _opened in solver._DOOR_LINE])
+        self.assertTrue(ok)
+        self.assertTrue(solver.is_solved(end), solver.describe(end))
+        self.assertTrue(any(j == 4 for (_i, j), _o in solver._DOOR_LINE))          # الأخضر يُكمَل في قارورة الباب الموسومة
+        self.assertTrue(all(i < 4 and j < 4 for i, j in mv))
+
+    def test_tagged_empty_door_tube_is_respected(self):
+        """قارورة باب فارغة موسومة بالأزرق: الحلّ بلا قيد يصبّ فيها الأحمر (طفرة تُهمل وسوم المسألة الممتدّة في _door_search
+        تمرّ على الاختبار السابق لأن الأخضر هناك لون الوسم أصلاً)؛ بالقيد كل صبّ فيها أزرق والخط يحلّ المسألة."""
+        base = [["blue", "green", "red", "green"], ["blue", "blue", "red", "green"], ["blue", "red", "green", "red"], []]
+        st = mk([(4, l) for l in base])
+        st["tubes"][0]["keys"] = [3]
+        door = [{"key": (0, 3), "tubes": [{"x": 0, "y": 0, "cap": 4, "layers": [], "accept": "blue"}]}]
+        b = solver._Budget(40000, time.perf_counter() + 3)
+        solver._DOOR_LINE[:] = []
+        mv, res, nd = solver._door_search(st, door, b, None, set())
+        self.assertEqual((res, nd), ("doors-full", 1))
+        self.assertEqual(solver._ACCEPT, {})
+        rows = [list(t["layers"]) for t in st["tubes"]] + [[]]
+        into = []
+        for (i, j), _o in solver._DOOR_LINE:                 # محاكاة مباشرة للطبقات (قارورة الباب بالفهرس 4)
+            top = rows[i][-1]
+            run = 1
+            while run < len(rows[i]) and rows[i][-1 - run] == top:
+                run += 1
+            amt = min(run, 4 - len(rows[j]))
+            self.assertGreater(amt, 0, (i, j))
+            if j == 4:
+                into.append(top)
+            rows[j] += [top] * amt
+            del rows[i][-amt:]
+        self.assertTrue(into)
+        self.assertEqual(set(into), {"blue"})
+        self.assertTrue(all(len(set(r)) <= 1 and len(r) in (0, 4) for r in rows), rows)
+
+    def test_pimc_samples_model_hidden_tag_color(self):
+        """لون وسم كل طبقاته مخفية: عيّنات PIMC تضعه في الطبقات المخفية بفهرس الوسم (كانت تخترع لوناً جديداً مكانه فلا تقبل
+        الموسومة في العيّنة لوناً موجوداً: 7 عيّنات قابلة للحل من 24)."""
+        st = mk_tags([(4, [], "pink")] + [(4, ["?", "?", "?", c], None) for c in ("red", "blue", "green", "yellow", "red")]
+                     + [(4, [], None)])
+        for seed in (0, 1):
+            info = {}
+            mv = solver.plan(st, info=info, seed=seed)
+            self.assertTrue(mv)
+            self.assertEqual(info.get("mode"), "pimc")
+            self.assertEqual(info["solvable"], info["samples"], info)
+        self.assertEqual(solver._ACCEPT, {})
+
+    def test_untagged_plans_unchanged(self):
+        """انحدار: بلا وسوم لا يتغيّر شيء. خطط محسوبة بالحلّال قبل «Tag!» (‏e24ec61) لألغاز ثابتة، مع التنويع وبدونه."""
+        for (ncol, ne, seed, vary), exp in GOLDEN_UNTAGGED.items():
+            st = random_puzzle(ncol, ne, seed)
+            got = solver.plan(st, time_limit=20, max_nodes=20000, seed=1 if not vary else 5, vary=vary)
+            self.assertEqual(got, exp, (ncol, ne, seed, vary))
 
 
 def _summary():

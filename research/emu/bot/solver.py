@@ -39,6 +39,11 @@
     مجاورة له في صفّه، يميناً أو يساراً («كاسراته»: plaster_breakers بالمواضع). اللغز الظاهر وحده ناقص (ألوانه الباقية داخل
     الجبس، وترتيبه «محلولاً» ليس فوزاً)، فما دام جبس قائم بكاسرة لم تكتمل يُبحث أولاً عن أقصر تسلسل آمن يكمل كاسرة (مثل
     المفاتيح)، وإلا تميل بحوث الكشف والتقدّم والعيّنات إلى ملء الكاسرات. بلا جبس لا يتغيّر شيء (A* كما كان).
+  * «Tag!» (من المرحلة 130، "accept": اسم لون في القارورة): قارورة موسومة لا يُصبّ فيها إلا لونها (ويُصبّ منها كالعادة)، وتكتمل
+    ممتلئة بلونها كأي قارورة. القيد في توليد الحركات نفسه (_gen_moves عبر _ACCEPT) فيسري على كل البحوث والعيّنات وذاكرة الأبواب
+    والمغطّاة، وفي legal_moves وapply_move (ومنها key_freed). الموسومة لا تماثل غير الموسومة (المفتاح القانوني والفارغات)، ونقل
+    قارورة أحادية غير مكتملة إلى موسومة بلونها ليس عبثاً (يحرّر قارورة عادية تقبل كل لون). state_key يضيف لون الوسم عنصراً ثالثاً
+    للموسومة وحدها، فلا يتغيّر شيء في المراحل بلا وسوم.
 """
 from __future__ import annotations
 
@@ -82,6 +87,7 @@ class _Enc:
         self.names: list[str] = []
         idx: dict[str, int] = {}
         caps, enc = [], []
+        accept: dict[int, int] = {}
         for t in tubes:
             layers = list(t.get("layers") or [])
             try:
@@ -102,6 +108,15 @@ class _Enc:
                     row.append(k)
             caps.append(cap)
             enc.append(tuple(row))
+            # لون الوسم («Tag!»): يُرمَّز بعد طبقات قارورته (فترميز قوارير الحالة واحد في _Enc الحالة و_Enc المسألة الممتدّة)
+            acc = t.get("accept")
+            if isinstance(acc, str) and not _is_hidden(acc):
+                k = idx.get(acc)
+                if k is None:
+                    k = len(self.names)
+                    idx[acc] = k
+                    self.names.append(acc)
+                accept[len(enc) - 1] = k
         # سعة القارورة الطويلة المقروءة من الصورة قد تكون أقل من الحقيقة: القارورة
         # الطويلة تتّسع لكل طبقات لونها (تصميم اللعبة)، فتُرفع سعتها إلى عددها الظاهر
         if caps:
@@ -114,6 +129,7 @@ class _Enc:
         self.caps = tuple(caps)
         self.start = tuple(enc)
         self.idx = idx
+        self.accept = accept              # {قارورة: اللون الوحيد الذي يُصبّ فيها} («Tag!»)
         # المفاتيح العالقة: (قارورة، موضع) لطبقات معروفة اللون عليها مفتاح
         keys = []
         for k, t in enumerate(tubes):
@@ -134,16 +150,42 @@ _NOSRC = frozenset()
 # قارورة أحادية اللون غير مكتملة (إلى فارغة، أو جزء منها) ليس عبثاً (لا عكس له حين لا يُصبّ منها: فتات الجبس طين). أما المكتملة
 # فلا يُصبّ منها أبداً (تُسدّ بسدادة ذهبية: حركات التشغيلين الرابع والسادس منها كلها «لا تقدّم»). يضبطها plan() فقط
 _FILL = frozenset()
+# القوارير الموسومة («Tag!»، من المرحلة 130): {فهرس: اللون الوحيد الذي يُصبّ فيها}؛ يضبطها _plan (و_door_search للمسألة الممتدّة)
+_ACCEPT = {}
 
 
 def _key(s, caps):
     """مفتاح قانوني: مجموعة (السعة، المحتوى) بلا ترتيب القوارير (تماثل). قارورة الطين
-    لا تماثل قارورة عادية بالمحتوى نفسه (لا يُصبّ منها)، وكاسرة الجبس لا تماثل أي قارورة أخرى."""
+    لا تماثل قارورة عادية بالمحتوى نفسه (لا يُصبّ منها)، وكاسرة الجبس لا تماثل أي قارورة أخرى،
+    والموسومة لا تماثل إلا موسومة بلونها: عنصر ثالث بلون وسمها (بصيغة state_key، فتعمل avoid)."""
+    if _ACCEPT:
+        if _FILL or _NOSRC:
+            return tuple(sorted((caps[k], k in _NOSRC, k if k in _FILL else -1, s[k], _ACCEPT.get(k, -1))
+                                for k in range(len(s))))
+        return tuple(sorted((caps[k], s[k]) if k not in _ACCEPT else (caps[k], s[k], _ACCEPT[k]) for k in range(len(s))))
     if _FILL:
         return tuple(sorted((caps[k], k in _NOSRC, k if k in _FILL else -1, s[k]) for k in range(len(s))))
     if _NOSRC:
         return tuple(sorted((caps[k], k in _NOSRC, s[k]) for k in range(len(s))))
     return tuple(sorted(zip(caps, s)))
+
+
+def _avoid_keys(avoid, idx):
+    """مفاتيح avoid بأسماء الألوان (state_key: (سعة، طبقات) أو (سعة، طبقات، لون الوسم)) -> مفاتيح بالأعداد بصيغة _key.
+    حالة فيها لون غير موجود الآن لا يمكن بلوغها فتُترك."""
+    av = set()
+    for a in (avoid or ()):
+        try:
+            rows = []
+            for e in a:
+                row = (e[0], tuple(HIDDEN if c == "?" else idx[c] for c in e[1]))
+                if len(e) > 2:
+                    row = row + (idx[e[2]],)
+                rows.append(row)
+            av.add(tuple(sorted(rows)))
+        except (KeyError, TypeError, ValueError, IndexError):
+            continue
+    return av
 
 
 # ---------------------------------------------------------------- الحركات
@@ -174,6 +216,7 @@ def _gen_moves(s, caps, exclude=None):
         while run < L and t[L - 1 - run] == top:
             run += 1
         mono = run == L                   # قارورة أحادية اللون (تشمل المنتهية)
+        acc_i = _ACCEPT.get(i, -1) if _ACCEPT else -1
         empty_caps = None
         for j in range(n):
             if j == i:
@@ -182,19 +225,26 @@ def _gen_moves(s, caps, exclude=None):
             space = caps[j] - len(u)
             if space <= 0:
                 continue
+            # «Tag!»: لا يُصبّ في الموسومة إلا لونها. ونقل أحادية غير مكتملة إليها (أو جزء منها) من قارورة ليست موسومة بلونها
+            # ليس عبثاً: يحرّر قارورة تقبل كل لون مكان قارورة لا تقبل إلا هذا اللون
+            tag_ok = False
+            if _ACCEPT and j in _ACCEPT:
+                if _ACCEPT[j] != top:
+                    continue
+                tag_ok = acc_i != top and L < caps[i]
             if u:
                 if u[-1] != top:
                     continue
                 amt = run if run <= space else space
                 # صبّ جزئي من أحادية اللون: عبث (إلا من غير مكتملة في كاسرة جبس؛ المكتملة مسدودة)
-                if mono and amt < run and (j not in _FILL or L >= caps[i]):
+                if mono and amt < run and (j not in _FILL or L >= caps[i]) and not tag_ok:
                     continue
             else:
                 # نقل قارورة أحادية إلى فارغة: عبث (إلا غير مكتملة إلى كاسرة جبس؛ المكتملة مسدودة)
-                if mono and (j not in _FILL or L >= caps[i]):
+                if mono and (j not in _FILL or L >= caps[i]) and not tag_ok:
                     continue
-                # فارغة الطين لا تماثل الفارغة العادية، وكاسرة الجبس لا تماثل غيرها
-                cj = (caps[j], j in _NOSRC, j if j in _FILL else -1)
+                # فارغة الطين لا تماثل الفارغة العادية، وكاسرة الجبس لا تماثل غيرها، والموسومة لا تماثل إلا موسومة بلونها
+                cj = (caps[j], j in _NOSRC, j if j in _FILL else -1, _ACCEPT.get(j, -1) if _ACCEPT else -1)
                 if empty_caps is None:
                     empty_caps = {cj}
                 elif cj in empty_caps:    # الفارغات المتماثلة: واحدة تكفي
@@ -949,12 +999,18 @@ def _make_samples(s, caps, rng, k):
     from collections import Counter
     base = Counter(caps).most_common(1)[0][0]
     vis, tot = _color_totals(s, caps, base)
+    # «Tag!»: لون وسم لم تظهر له طبقة بعد (كل طبقاته مخفية) لون موجود حتماً بفهرس الوسم، فيدخل الناقص قبل الألوان المخترعة؛
+    # والمخترع لا يأخذ فهرس وسم (كان يُخترع لون جديد مكانه فلا تقبل الموسومة في العيّنة لوناً موجوداً)
+    acc = set(_ACCEPT.values()) if _ACCEPT else set()
+    for a in acc:
+        if a >= 0 and a not in vis:
+            tot[a] = base
     pos = [(ti, p) for ti, t in enumerate(s) for p, c in enumerate(t) if c < 0]
     H = len(pos)
     missing = []
     for c, n in tot.items():
         missing += [c] * max(0, n - vis.get(c, 0))
-    nxt = max(list(vis) + [-1]) + 1
+    nxt = max(list(vis) + list(acc) + [-1]) + 1
     while len(missing) < H:                   # ألوان لم تظهر بعد
         missing += [nxt] * base
         nxt += 1
@@ -1173,9 +1229,11 @@ class _Doors:
         return [m for m in _gen_moves(s, self.caps_eff(mask), exclude) if m[0] not in lk]
 
     def view_key(self, s, mask):
-        """مفتاح الجزء الظاهر (القوارير غير المقفلة) بصيغة avoid."""
+        """مفتاح الجزء الظاهر (القوارير غير المقفلة) بصيغة avoid (والموسومة بلون وسمها عنصراً ثالثاً، كما في state_key)."""
         lk = self.locked(mask)
-        return tuple(sorted((self.caps[k], s[k]) for k in range(len(s)) if k not in lk))
+        acc = self.enc.accept
+        return tuple(sorted((self.caps[k], s[k]) if k not in acc else (self.caps[k], s[k], acc[k])
+                            for k in range(len(s)) if k not in lk))
 
 
 _DOOR_LINE = []      # الخط الكامل لآخر بحث أبواب [(حركة بفهارس المسألة الممتدّة، هل فتحت باباً)] (للسجل والاختبارات)
@@ -1197,12 +1255,17 @@ def _door_search(state, doors, budget, avoid_names, exclude, w=3.0):
     if not P.complete(m0):
         return None, "hidden", len(P.specs)
     enc = P.enc
-    av = set()
-    for a in (avoid_names or ()):
-        try:
-            av.add(tuple(sorted((cap, tuple(HIDDEN if c == "?" else enc.idx[c] for c in layers)) for cap, layers in a)))
-        except (KeyError, TypeError, ValueError):
-            continue
+    global _ACCEPT
+    acc_prev = _ACCEPT
+    _ACCEPT = dict(enc.accept)                  # الوسوم بفهارس المسألة الممتدّة (قوارير الأبواب بعد قوارير الحالة)
+    try:
+        return _door_search_run(P, s0, caps, n, m0, enc, budget, avoid_names, exclude, w)
+    finally:
+        _ACCEPT = acc_prev
+
+
+def _door_search_run(P, s0, caps, n, m0, enc, budget, avoid_names, exclude, w):
+    av = _avoid_keys(avoid_names, enc.idx)
     av.discard(P.view_key(s0, m0))
 
     def hval(s, mask):
@@ -1271,7 +1334,7 @@ def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
     doors: ما خلف الأبواب كما رآه السائق في محاولة سابقة للبداية نفسها ([{"key": (قارورة، موضع)، "tubes": [...]}]، انظر _Doors):
     يُبحث أولاً في المسألة المعروفة كلها (_door_search) إن عُرفت كلها، وإلا (أو بلا حلّ) فالمنطق المعتاد كما هو.
     vary > 0: كسر تعادل عشوائي (بالبذرة seed) ووزن A* آخر: محاولة أخرى للبداية نفسها لا تكرّر طريق سابقتها."""
-    global _NOSRC, _KEYS, _FILL, _PLASTER, _KEYS_FIRST, _TIE
+    global _NOSRC, _KEYS, _FILL, _PLASTER, _KEYS_FIRST, _TIE, _ACCEPT
     vis, keep = _visible(state)
     if keep is not None:                  # الفهارس الأصلية <-> فهارس الحالة بلا المغطّاة
         inv = {k: i for i, k in enumerate(keep)}
@@ -1301,6 +1364,7 @@ def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         _PLASTER = ()
         _KEYS_FIRST = True
         _TIE = None
+        _ACCEPT = {}
     if keep is not None:
         moves = [(keep[i], keep[j]) for (i, j) in moves]
     return moves
@@ -1345,7 +1409,10 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
     if info is None:
         info = {}
     info.update(mode="solved", nodes=0, ms=0.0)
-    global _PLASTER
+    global _PLASTER, _ACCEPT
+    _ACCEPT = dict(enc.accept)            # «Tag!»: يمسحه plan() بعد البحث
+    if _ACCEPT:
+        info["tags"] = len(_ACCEPT)
     # كاسرات الجبس القائم التي لم تكتمل: الظاهر «مرتّباً» ليس نهاية ما دامت إحداها تكتمل (طويلة أحادية غير مكتملة تُصبّ في كاسرة
     # فارغة؛ المكتملة مسدودة لا يُصبّ منها)
     _PLASTER = tuple(k for k in sorted(_FILL) if k < len(s) and not _complete(s[k], caps[k]))
@@ -1353,14 +1420,7 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         return []
     budget = _Budget(max_nodes, t0 + time_limit)
     exclude = set(tuple(m) for m in (bad_moves or ()))
-    av = set()
-    for a in (avoid or ()):           # مفاتيح بأسماء الألوان -> مفاتيح بالأعداد
-        try:
-            av.add(tuple(sorted(
-                (cap, tuple(HIDDEN if c == "?" else enc.idx[c] for c in layers))
-                for cap, layers in a)))
-        except (KeyError, TypeError, ValueError):
-            continue                  # لون غير موجود الآن: حالة لا يمكن بلوغها
+    av = _avoid_keys(avoid, enc.idx)  # مفاتيح بأسماء الألوان -> مفاتيح بالأعداد
     av.discard(_key(s, caps))
 
     # ---- ذاكرة الأبواب: ما خلف أبواب المفاتيح العالقة معروف من محاولة سابقة للبداية نفسها، فيُبحث في المسألة كلها أولاً
@@ -1465,8 +1525,18 @@ def state_key(state):
             cap = int(t.get("cap") or 4)
         except (TypeError, ValueError):
             cap = 4
-        out.append((max(cap, len(layers), 1), layers))
+        acc = _accept_of(t)
+        if acc is None:
+            out.append((max(cap, len(layers), 1), layers))
+        else:
+            out.append((max(cap, len(layers), 1), layers, acc))   # الموسومة: لون وسمها عنصر ثالث
     return tuple(sorted(out))
+
+
+def _accept_of(t):
+    """لون وسم القارورة («Tag!») أو None."""
+    acc = t.get("accept")
+    return acc if isinstance(acc, str) and not _is_hidden(acc) else None
 
 
 def legal_moves(state):
@@ -1484,6 +1554,8 @@ def legal_moves(state):
                 continue
             if u and u[-1] != t[-1]:
                 continue
+            if j in enc.accept and enc.accept[j] != t[-1]:
+                continue                      # «Tag!»: لا يُصبّ في الموسومة إلا لونها
             out.append((i, j))
     if keep is not None:
         out = [(keep[i], keep[j]) for (i, j) in out]
@@ -1510,6 +1582,9 @@ def apply_move(state, i, j):
     top = src[-1]
     if space <= 0 or (dst and dst[-1] != top):
         return None
+    acc = _accept_of(tubes[j])
+    if acc is not None and acc != top:
+        return None                       # «Tag!»: لا يُصبّ في الموسومة إلا لونها
     run = 1
     while run < len(src) and src[-1 - run] == top:
         run += 1
@@ -1582,5 +1657,7 @@ def describe(state) -> str:
             parts.append("[#%s%s]" % (kind, (":" + t["cover_color"]) if t.get("cover_color") else ""))
             continue
         layers = t.get("layers") or []
-        parts.append("[" + ",".join(str(c) for c in layers) + "]/%s" % t.get("cap", "?"))
+        acc = _accept_of(t)
+        parts.append("[" + ",".join(str(c) for c in layers) + "]/%s" % t.get("cap", "?")
+                     + ("{وسم:%s}" % acc if acc is not None else ""))
     return " ".join(parts)

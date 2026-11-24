@@ -893,6 +893,107 @@ class TestRun9Vision(unittest.TestCase):
             self.assertIsNone(vision.find_button(_path(name)), name)
 
 
+# «Tag!» (المرحلة 130، التشغيل 14): (x, y, "طبقات من الأسفل", لون الوسم أو None)
+TAG_LEVELS = {
+    "L130_tags": [
+        (40, 375, 'pink yellow yellow blue', None), (118, 377, '', 'lavender'), (196, 375, 'yellow red orange pink', None),
+        (274, 375, 'green red red yellow', None), (352, 377, '', 'purple'), (431, 374, 'lavender green lavender green', None),
+        (40, 636, 'blue purple purple lavender', None), (118, 638, '', 'red'), (196, 636, 'orange orange orange blue', None),
+        (274, 636, 'red purple green purple', None), (352, 638, '', 'pink'), (431, 636, 'lavender pink blue pink', None),
+    ],
+    "L130_tags_b": [   # بداية أخرى للمرحلة نفسها بعد إعادتها (zz_final): الوسم الأزرق وشريطه الأزرق الداكن
+        (40, 375, 'purple orange pink orange', None), (118, 376, '', 'lavender'), (196, 374, 'red pink lavender red', None),
+        (274, 375, 'yellow green blue purple', None), (352, 376, '', 'purple'), (431, 374, 'yellow red orange green', None),
+        (40, 636, 'blue orange pink green', None), (118, 636, '', 'blue'), (196, 636, 'blue purple blue yellow', None),
+        (275, 636, 'lavender red yellow lavender', None), (352, 637, '', 'red'), (431, 636, 'purple green pink lavender', None),
+    ],
+}
+
+
+class TestTagVision(unittest.TestCase):
+    """«Tag!» (من المرحلة 130): قارورة فارغة بشريط حول عنقها وبطاقة ورقية يمين العنق عليها قارورة صغيرة بلون. كانت البطاقة في
+    نافذة العمود الأوسط فتُقرأ القارورة ممتلئة بلون الزجاج الفارغ الداكن c_23_7_1 (أربع قوارير × 4 طبقات) فلا حركة قانونية أبداً."""
+
+    def test_l130_tagged_bottles(self):
+        for name, exp in TAG_LEVELS.items():
+            st = vision.parse_level(_path(name))
+            self.assertFalse(st.get("warnings"), (name, st.get("warnings")))
+            self.assertEqual(len(st["tubes"]), len(exp), name)
+            for t, (x, y, layers, acc) in zip(st["tubes"], exp):
+                self.assertTrue(_near((t["x"], t["y"]), (x, y)), (name, t["x"], t["y"], x, y))
+                self.assertEqual(t["cap"], 4, name)
+                self.assertEqual(t["layers"], layers.split(), (name, x, y))
+                self.assertEqual(t.get("accept"), acc, (name, x, y))
+                self.assertFalse(any(c.startswith("c_") for c in t["layers"]), (name, t["layers"]))
+                if acc:
+                    x0, y0, x1, y1 = t["tag_box"]
+                    self.assertTrue(t["x"] < x0 + 12 and x1 > t["x"] + 25, (name, t["tag_box"]))   # يمين العنق
+                    self.assertTrue(t["box"][1] < y0 < y1 < t["box"][1] + 90, (name, t["tag_box"]))
+                else:
+                    self.assertNotIn("tag_box", t)
+            self.assertIn("-/4{L}", vision.summarize(st))
+
+    def test_tagged_bottle_with_liquid(self):
+        """سائل يُصبّ في الموسومة (مرسوم في الصورة خلف البطاقة وتحت الشريط، لا فوقه): يُقرأ بلونه وعدده، والوسم باقٍ (عيّنات
+        الطبقات بجانب البطاقة من يسار المحور). على اللقطتين: في L130_tags_b هامش الشريط فوق النافذة بكسل واحد قبل الإصلاح."""
+        import numpy as np
+        for name in TAG_LEVELS:
+            a = vision.load(_path(name)).copy()
+            st = vision.parse_level(a, debug=True)
+            g = st["_geom"]
+            raw = vision.detect_tubes(a)
+            for idx, n in ((1, 3), (4, 4), (7, 2), (10, 4)):
+                t = st["tubes"][idx]
+                col = t["accept"]
+                r = [u for u in raw if abs(u["cx"] - t["x"]) < 5 and abs(u["y1"] - t["box"][3]) < 20][0]
+                x0, y0, x1, y1 = t["tag_box"]
+                # الشريط وظلّه ينتهيان قبل الحافة العليا للبطاقة + 3 بكسلات: السائل يُرسم تحتهما فقط
+                ys = np.arange(max(int(t["_B"] - n * g["h"] - g["e"]), y0 + 4), int(t["_B"]) + 2)
+                xs = np.arange(int(r["xl"]) + 4, int(r["xr"]) - 3)
+                yy, xx = np.meshgrid(ys, xs, indexing="ij")
+                keep = ~((xx >= x0) & (xx <= x1) & (yy >= y0) & (yy <= y1))     # البطاقة أمام الزجاج
+                a[yy[keep], xx[keep]] = vision.PALETTE[col]
+            st2 = vision.parse_level(a)
+            bad = [w for w in st2.get("warnings", []) if "appears" not in w]      # (عدد كل لون يتغيّر بما رُسم)
+            self.assertFalse(bad, (name, bad))
+            for idx, n in ((1, 3), (4, 4), (7, 2), (10, 4)):
+                acc = st["tubes"][idx]["accept"]
+                self.assertEqual((st2["tubes"][idx]["layers"], st2["tubes"][idx].get("accept")), ([acc] * n, acc),
+                                 (name, idx))
+
+    def test_tagged_bottles_survive_geometry_jitter(self):
+        """`top` الموسومة مقدَّر من القاع وحده (الشريط يخفي زجاج العنق): اهتزاز بنصف بكسل في العرض أو بكسل في القاع كان يُدخل
+        الشريط وظلّه نافذة العمود فتُقرأ الفارغة ممتلئة c_23_7_1 (خطأ التشغيل 14 نفسه). النافذة تبدأ بعد البطاقة المقيسة."""
+        orig = vision.detect_tubes
+
+        def jitter(dw, dy):
+            def f(a, diag=None):
+                out = orig(a, diag)
+                for t in out:
+                    t["w"] += dw
+                    t["y1"] += dy
+                return out
+            return f
+        for name, exp in TAG_LEVELS.items():
+            for dw, dy in ((0.5, 0), (0, -1), (0.5, -1), (1.0, -2), (-0.5, 1)):
+                vision.detect_tubes = jitter(dw, dy)
+                try:
+                    st = vision.parse_level(_path(name))
+                finally:
+                    vision.detect_tubes = orig
+                tagged = [(t["layers"], t.get("accept")) for t in st["tubes"] if t.get("accept")]
+                self.assertEqual(tagged, [([], acc) for (_, _, _, acc) in exp if acc], (name, dw, dy))
+                self.assertFalse([w for w in st.get("warnings", []) if "c_" in w], (name, dw, dy, st.get("warnings")))
+
+    def test_no_tags_elsewhere(self):
+        """لا وسم في أي لقطة لغز أخرى (أبواب، جبس، أكياس، ستائر، طين، طويلة، مفاتيح...): البطاقة الورقية بشكلها وموضعها وحدها."""
+        for name in _all_testdata():
+            if name in TAG_LEVELS or vision.classify(_path(name)) != "level":
+                continue
+            st = vision.parse_level(_path(name))
+            self.assertFalse([t for t in st["tubes"] if t.get("accept")], name)
+
+
 if __name__ == "__main__":
     total_t = total_te = total_l = total_le = 0
     failed = False

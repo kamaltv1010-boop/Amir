@@ -2516,5 +2516,151 @@ class TestDoorMemorySim(DriverCase):
         self.assertEqual(rec["doors"][0]["tubes"][0]["layers"], ["blue", "blue", "blue", "yellow"])
 
 
+class TagGame(FakeGame):
+    """«Tag!» (المرحلة 130): levels[k][3] = {قارورة: لون وسمها}؛ لا يُصبّ في الموسومة إلا لونها (اللعبة ترفض غيره ويُحسب خطأً).
+    flicker: أول لقطة بعد كل صبّة في موسومة لا يُقرأ فيها وسمها (البطاقة يحجبها الصبّ) فتعيده ذاكرة الوسوم بالموضع."""
+
+    def __init__(self, levels, rng, flicker=False):
+        self.flicker = flicker
+        self.bad_pours = 0
+        self.flickers = 0
+        self.hide_tag = None
+        super().__init__(levels, rng)
+
+    def load(self, k):
+        super().load(k)
+        lvl = self.levels[k]
+        self.tags = dict(lvl[3]) if len(lvl) > 3 else {}
+
+    def visible(self):
+        st = super().visible()
+        for k, acc in self.tags.items():
+            if k == self.hide_tag:
+                self.flickers += 1
+                continue
+            st["tubes"][k]["accept"] = acc
+        self.hide_tag = None
+        return st
+
+    def pour(self, i, j):
+        if j in self.tags and self.truth[i] and self.truth[i][-1] != self.tags[j]:
+            self.bad_pours += 1
+            return False
+        ok = super().pour(i, j)
+        if ok and self.flicker and j in self.tags:
+            self.hide_tag = j
+        return ok
+
+
+class TestTags(DriverCase):
+    """«Tag!» في السائق: الوسم يصل من الرؤية إلى الحلّال، ويُحفظ بالموضع، ويدخل مفاتيح الحالات وسجلّات الأبواب والطريق المسدود."""
+    L130 = [["pink", "yellow", "yellow", "blue"], [], ["yellow", "red", "orange", "pink"], ["green", "red", "red", "yellow"], [],
+            ["lavender", "green", "lavender", "green"], ["blue", "purple", "purple", "lavender"], [],
+            ["orange", "orange", "orange", "blue"], ["red", "purple", "green", "purple"], [], ["lavender", "pink", "blue", "pink"]]
+    L130_TAGS = {1: "lavender", 4: "purple", 7: "red", 10: "pink"}
+
+    def test_l130_played_end_to_end(self):
+        """بداية المرحلة 130 الحقيقية (أربع فارغات موسومة ولا فارغة عادية) ثم لغز بفارغة موسومة وأخرى عادية: يُحلّان بلا صبّة
+        مرفوضة واحدة، ومع وسم يغيب عن لقطة بعد كل صبّة فيه (ذاكرة الوسوم)."""
+        lv2 = [["red", "blue", "red", "blue"], ["blue", "red", "blue", "red"], ["green", "green", "yellow", "yellow"],
+               ["yellow", "yellow", "green", "green"], [], []]
+        levels = [([4] * 12, self.L130, [[False] * len(t) for t in self.L130], self.L130_TAGS),
+                  ([4] * 6, lv2, [[False] * len(t) for t in lv2], {4: "green"})]
+        game = TagGame(levels, random.Random(3), flicker=True)
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(FakeDevice(game), driver.Vision(FakeVisionModule(game), out), out, 600, git=False)
+        for _ in range(30):
+            bot.run(max_iters=100)
+            if game.wins >= 2:
+                break
+        log = self.log()
+        self.assertEqual((game.wins, bot.levels_done), (2, 2), log[-3000:])
+        self.assertEqual(game.bad_pours, 0, log[-3000:])
+        self.assertGreater(game.flickers, 0)
+        self.assertIn("وسوم المرحلة 1", log)
+        self.assertIn("القارورة 1: lavender، القارورة 4: purple، القارورة 7: red، القارورة 10: pink", log)
+        self.assertIn("ذاكرة الوسوم:", log)
+        self.assertIn('"accept": "lavender"', log)
+        self.assertNotIn("لا حركة قانونية", log)
+
+    def test_parse_keeps_accept_with_real_vision(self):
+        import vision as real_vision
+        out = driver.Out(Path(self.tmp.name), 10, quiet=True)
+        vis = driver.Vision(real_vision, out)
+        st = vis.parse(driver.Frame(Image.open(Path(driver.HERE) / "testdata" / "L130_tags.jpg")))
+        self.assertEqual({k: t["accept"] for k, t in enumerate(st["tubes"]) if t.get("accept")}, self.L130_TAGS)
+        self.assertEqual([t["layers"] for t in st["tubes"]], self.L130)
+        self.assertFalse(st["warnings"])
+        self.assertFalse(driver.suspicious_counts(st))
+        mv = solver.plan(st)
+        self.assertTrue(mv)
+        cur = st
+        for i, j in mv:
+            cur = solver.apply_move(cur, i, j)
+            self.assertIsNotNone(cur)
+        self.assertTrue(solver.is_solved(cur))
+        self.assertEqual(driver.compact_state(st)[1], {"x": st["tubes"][1]["x"], "y": st["tubes"][1]["y"], "cap": 4,
+                                                       "layers": [], "accept": "lavender"})
+
+    def test_remember_tags(self):
+        tags = []
+        st = {"tubes": [T(118, 377, [], accept="red"), T(196, 375, ["red", "blue"]), T(352, 377, [], accept="pink")]}
+        out, n = driver.remember_tags(st, tags)
+        self.assertEqual((n, sorted(a for _x, _y, a in tags)), (0, ["pink", "red"]))
+        # الوسم غاب عن لقطة: يعود بالموضع ما دامت القارورة فارغة أو كل طبقاتها بلونه
+        st2 = {"tubes": [T(118, 377, ["red", "red"]), T(196, 375, ["red", "blue"]), T(352, 377, ["blue"])]}
+        out, n = driver.remember_tags(st2, tags)
+        self.assertEqual(n, 1)
+        self.assertEqual([t.get("accept") for t in out["tubes"]], ["red", None, None])   # الزرقاء في خانة الوردي: ليست هي
+        self.assertNotIn("accept", st2["tubes"][0])                                        # لا تتغيّر الحالة الأصلية
+        self.assertEqual(driver.remember_tags({"tubes": [T(40, 375, [])]}, tags), ({"tubes": [T(40, 375, [])]}, 0))
+
+    def test_tags_follow_tubes_when_the_board_changes(self):
+        """قارورة إضافية أو «Play On» تعيد ترتيب الصفّ السفلي (المرحلة 121 بمواضع 130: سبع قوارير، 352→304 و431→372): ذاكرة
+        الوسوم تتبع قواريرها بالمطابقة، ولا يقع مدخل الوردي القديم (352) على القارورة العادية التي صارت على 372 (بُعدها 20)."""
+        top = [T(x, 375, ["red", "blue", "green", "yellow"]) for x in (40, 118, 196, 274, 352, 431)]
+        old = {"tubes": top + [T(40, 636, ["blue", "purple"]), T(118, 638, [], accept="red"), T(196, 636, ["orange"]),
+                               T(274, 636, ["green", "purple"]), T(352, 638, [], accept="pink"), T(431, 636, ["pink", "pink"])]}
+        tags = []
+        driver.remember_tags(old, tags)
+        new = {"tubes": top + [T(x, 636, L) for x, L in ((36, ["blue", "purple"]), (104, []), (172, ["orange"]),
+                                                          (240, ["green", "purple"]), (304, []), (372, ["pink", "pink"]),
+                                                          (440, []))]}
+        # بلا نقل: المدخل القديم يعطي العادية على 372 وسماً خطأً (الخطأ الذي يُحرس)
+        _out, bad = driver.remember_tags(new, [list(r) for r in tags])
+        self.assertEqual([t["x"] for t in _out["tubes"] if t.get("accept") == "pink"], [372])
+        driver.rebase_tags(tags, old, new, driver.slot_map(old, new))
+        self.assertEqual(sorted(tags), [[104, 636, "red"], [304, 636, "pink"]])
+        out, n = driver.remember_tags(new, tags)
+        got = {t["x"]: t.get("accept") for t in out["tubes"][6:]}
+        self.assertEqual(got, {36: None, 104: "red", 172: None, 240: None, 304: "pink", 372: None, 440: None})
+        self.assertEqual(n, 2)
+
+    def test_keys_and_records_carry_accept(self):
+        a, b = T(118, 377, [], accept="red"), T(118, 377, [], accept="blue")
+        self.assertFalse(driver._same_tube(a, b))
+        self.assertTrue(driver._same_tube(a, T(118, 377, [])))
+        st = {"tubes": [T(40, 375, ["red", "blue"]), a, T(196, 375, ["blue", "?"])]}
+        tc = driver.compact_tubes(st)
+        self.assertEqual(tc[1], [118, 377, 4, [], "red"])
+        self.assertEqual(len(tc[0]), 4)                                   # غير الموسومة كما كانت
+        know = [(196, 375, 4, 1, "red")]
+        filled = driver.fill_known(tc, know)
+        self.assertEqual(solver.state_key(filled), solver.state_key(
+            {"tubes": [T(40, 375, ["red", "blue"]), a, T(196, 375, ["blue", "red"])]}))
+        rec = {"n": 130, "dead": [json.loads(json.dumps(solver.state_key(st)))], "dead_st": [json.loads(json.dumps(tc))],
+               "doors": [{"keys": [[40, 375, 0]], "tubes": [{"x": 300, "y": 375, "cap": 4, "layers": ["red"], "accept": "red"}]}]}
+        clean = driver.clean_sig_rec(json.loads(json.dumps(rec)))
+        self.assertEqual(clean["dead"], [solver.state_key(st)])
+        self.assertEqual(clean["dead_st"], [tc])
+        self.assertEqual(clean["doors"][0]["tubes"][0]["accept"], "red")
+        # باب ظهرت خلفه قارورة موسومة: يُسجَّل وسمها
+        ref = {"tubes": [dict(T(40, 375, ["green", "red"]), keys=[0])]}
+        new = {"tubes": [T(40, 375, ["green"]), T(300, 375, ["red"], accept="red")]}
+        freed, tubes = driver.door_record(ref, new, {0: 0})
+        self.assertEqual(tubes[0]["accept"], "red")
+        self.assertIn("{وسم:red}", solver.describe(new))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

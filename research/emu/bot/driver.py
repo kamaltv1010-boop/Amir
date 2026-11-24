@@ -397,10 +397,13 @@ class Vision:
                     d["keys"] = ks
                     if t.get("key_colors"):
                         d["key_colors"] = [str(c) for c in t["key_colors"]]
+                if isinstance(t.get("accept"), str) and t["accept"]:
+                    d["accept"] = t["accept"]            # «Tag!» (من المرحلة 130): لا يُصبّ فيها إلا هذا اللون
                 if t.get("blocked"):                     # تحت ستارة أو كيس أو جبس: محتواها مجهول ولا تُلمس
                     d["blocked"] = True
                     d["layers"] = []
                     d.pop("keys", None)
+                    d.pop("accept", None)
                     if t.get("cover"):
                         d["cover"] = str(t["cover"])
                     if t.get("cover_color"):
@@ -581,6 +584,55 @@ def with_memory(st, memory):
     return out
 
 
+def remember_tags(st, tags):
+    """ذاكرة الوسوم بالموضع («Tag!»، من المرحلة 130): `tags` = [[س، ص، لون]] لكل قارورة موسومة رُئيت في هذه المحاولة (تُحدَّث
+    هنا). قارورة في خانة وسم معروف لم يُقرأ وسمها في هذه اللقطة (بطاقة حجبها صبّ أو حركة) يُعاد إليها وسمها ما دامت فارغة أو
+    كل طبقاتها بلونه (وإلا فليست هي). يعيد (الحالة، عدد القوارير التي أُعيد وسمها)."""
+    for t in st["tubes"]:
+        if t.get("accept") and not t.get("blocked"):
+            for r in tags:
+                if _pos_near(r[0], r[1], t):
+                    r[0], r[1], r[2] = t["x"], t["y"], t["accept"]
+                    break
+            else:
+                tags.append([t["x"], t["y"], t["accept"]])
+    filled = 0
+    tubes = []
+    for t in st["tubes"]:
+        if not t.get("accept") and not t.get("blocked"):
+            for x, y, acc in tags:
+                if _pos_near(x, y, t) and all(c == acc for c in t["layers"]):
+                    t = dict(t, accept=acc)
+                    filled += 1
+                    break
+        tubes.append(t)
+    if not filled:
+        return st, 0
+    out = dict(st)
+    out["tubes"] = tubes
+    return out, filled
+
+
+def rebase_tags(tags, ref, st, mp):
+    """ذاكرة الوسوم بمواضع اللوحة الجديدة حين تتغيّر المواضع (باب، قارورة إضافية، «Play On»: الصفّ يُعاد ترتيبه): تُبنى من
+    القوارير الموسومة في `ref` (تحمل `accept` من الرؤية أو من remember_tags) بالمطابقة `mp` {فهرس في ref: فهرس في st}، وتُحذف
+    المداخل القديمة كلها (مدخل بموضع قديم قد يقع على قارورة عادية أو على القارورة الإضافية الفارغة فيعطيها وسماً خطأً).
+    تُعدَّل `tags` في مكانها وتُعاد."""
+    tubes = st["tubes"]
+    new = []
+    for k, t in enumerate(ref["tubes"]):
+        j = mp.get(k)
+        if t.get("accept") and j is not None and 0 <= j < len(tubes):
+            new.append([tubes[j]["x"], tubes[j]["y"], t["accept"]])
+    tags[:] = new
+    return tags
+
+
+def tags_summary(st) -> str:
+    """«القارورة 1: lavender، القارورة 4: purple» للقوارير الموسومة (للسجل)، أو ""."""
+    return "، ".join("القارورة %d: %s" % (k, t["accept"]) for k, t in enumerate(st["tubes"]) if t.get("accept"))
+
+
 def color_counts(st):
     return Counter(c for t in st["tubes"] for c in t["layers"])
 
@@ -701,6 +753,8 @@ def compact_state(st):
         d = {"x": t["x"], "y": t["y"], "cap": t["cap"], "layers": t["layers"]}
         if t.get("keys"):
             d["keys"] = t["keys"]
+        if t.get("accept"):
+            d["accept"] = t["accept"]
         if t.get("blocked"):
             d["blocked"] = t.get("cover") or True
             if t.get("cover_color"):
@@ -714,6 +768,8 @@ def _same_tube(a, b) -> bool:
     المغطّاة تطابق المغطّاة فقط (لا قارورة فارغة)."""
     if bool(a.get("blocked")) != bool(b.get("blocked")):
         return False
+    if a.get("accept") and b.get("accept") and a["accept"] != b["accept"]:
+        return False                                # وسمان مختلفان («Tag!»): قارورتان مختلفتان ولو تشابهت طبقاتهما
     la, lb = a["layers"], b["layers"]
     if len(la) != len(lb):
         return False
@@ -847,8 +903,14 @@ def new_sig_rec(n):
 
 
 def _sk_tuple(x):
-    """state_key من JSON (قوائم) إلى صفوف كما يعيدها solver.state_key."""
-    return tuple((int(c), tuple(str(v) for v in layers)) for c, layers in x)
+    """state_key من JSON (قوائم) إلى صفوف كما يعيدها solver.state_key (والقارورة الموسومة بلون وسمها عنصراً ثالثاً)."""
+    out = []
+    for e in x:
+        if len(e) not in (2, 3):
+            raise ValueError(e)
+        row = (int(e[0]), tuple(str(v) for v in e[1]))
+        out.append(row + (str(e[2]),) if len(e) == 3 else row)
+    return tuple(out)
 
 
 def clean_sig_rec(d):
@@ -876,7 +938,8 @@ def clean_sig_rec(d):
     rec["dead"] = rec["dead"][-SIG_DEAD_MAX:]
     for ds in d.get("dead_st") or ():
         try:
-            rec["dead_st"].append([[int(x), int(y), int(c), [str(v) for v in layers]] for x, y, c, layers in ds])
+            rec["dead_st"].append([[int(r[0]), int(r[1]), int(r[2]), [str(v) for v in r[3]]] + ([str(r[4])] if len(r) > 4 else [])
+                                   for r in ds])
         except (TypeError, ValueError):
             continue
     rec["dead_st"] = rec["dead_st"][-SIG_DEAD_MAX:]
@@ -888,6 +951,8 @@ def clean_sig_rec(d):
                 tt = {"x": int(t["x"]), "y": int(t["y"]), "cap": int(t["cap"]), "layers": [str(c) for c in t["layers"]]}
                 if t.get("keys"):
                     tt["keys"] = [int(p) for p in t["keys"]]
+                if isinstance(t.get("accept"), str) and t["accept"]:
+                    tt["accept"] = t["accept"]
                 tubes.append(tt)
             if keys and tubes:
                 rec["doors"].append({"keys": keys, "tubes": tubes})
@@ -944,6 +1009,8 @@ def door_record(ref, st, mp, vanished=None):
         d = {"x": int(round(t["x"])), "y": int(round(t["y"])), "cap": int(t["cap"]), "layers": list(t["layers"])}
         if t.get("keys"):
             d["keys"] = [int(p) for p in t["keys"]]
+        if t.get("accept"):
+            d["accept"] = t["accept"]                # قارورة باب موسومة: القيد نفسه في بحث الأبواب
         tubes.append(d)
     if not freed and vanished:
         freed = [list(k) for k in vanished]
@@ -994,6 +1061,8 @@ def merge_door(doors, keys, tubes):
                 r["keys"] = [int(p) for p in t["keys"]]
             else:
                 r.pop("keys", None)
+            if t.get("accept"):
+                r["accept"] = t["accept"]
         return "known"
     over = [d for d in doors if any(_pos_near(t["x"], t["y"], r) for t in tubes for r in d["tubes"])]
     for d in over:
@@ -1077,8 +1146,9 @@ def known_doors(st, doors):
 
 
 def compact_tubes(st):
-    """الحالة مختصرة لحفظ «الطريق المسدود»: [[س، ص، سعة، [طبقات]]] للقوارير غير المغطّاة (كما في state_key)."""
-    return [[int(round(t["x"])), int(round(t["y"])), int(t["cap"]), list(t["layers"])]
+    """الحالة مختصرة لحفظ «الطريق المسدود»: [[س، ص، سعة، [طبقات]]] للقوارير غير المغطّاة (كما في state_key)؛ والموسومة
+    («Tag!») بلون وسمها عنصراً خامساً."""
+    return [[int(round(t["x"])), int(round(t["y"])), int(t["cap"]), list(t["layers"])] + ([t["accept"]] if t.get("accept") else [])
             for t in st["tubes"] if not t.get("blocked")]
 
 
@@ -1086,7 +1156,8 @@ def fill_known(tubes_c, know):
     """حالة مختصرة تُملأ «?» فيها بما عُرف بالموضع `know` = [(س، ص، سعة، طبقة، لون)] (المخفي لا يتحرّك: خانته وطبقته ثابتتان
     ما دام مخفياً). يعيد الحالة (dict لـ state_key)."""
     out = []
-    for x, y, cap, layers in tubes_c:
+    for row in tubes_c:
+        x, y, cap, layers = row[:4]
         L = list(layers)
         for p, c in enumerate(L):
             if c != "?":
@@ -1095,7 +1166,10 @@ def fill_known(tubes_c, know):
                 if kp == p and kc == cap and abs(kx - x) <= 24 and abs(ky - y) <= 45:
                     L[p] = col
                     break
-        out.append({"x": x, "y": y, "cap": cap, "layers": L})
+        d = {"x": x, "y": y, "cap": cap, "layers": L}
+        if len(row) > 4 and row[4]:
+            d["accept"] = row[4]
+        out.append(d)
     return {"tubes": out}
 
 
@@ -1145,6 +1219,8 @@ class LevelCtx:
         self.door_idx = -1             # الفهرس المطلق لأول حالة بعد آخر باب انفتح (لا يدخل الطريق المسدود هي ولا ما قبلها)
         self.vanished = []             # مفاتيح [س، ص، طبقة] اختفت من قواريرها (تحرّرت) منذ آخر باب: لنسبة الباب حين يظهر
         self.sig_id = sig_id(n, self.start_sig)
+        self.tags = []                 # [[س، ص، لون]] القوارير الموسومة («Tag!») التي رُئيت (remember_tags)
+        self.tag_fills = 0             # لقطات أُعيد فيها وسم لم يُقرأ (للسجل)
         self.sig_attempt = 0           # محاولات هذه البداية الفاشلة قبل هذه (منها التناوب والتنويع)
         self.dead_noted = False        # سُجّل «الطريق المسدود» لهذه المحاولة
 
@@ -2081,6 +2157,9 @@ class Bot:
                     sorted(Counter(t["cap"] for t in st["tubes"] if not t.get("blocked")).items()),
                     sum(1 for t in st["tubes"] for c in t["layers"] if c == "?"),
                     "، مغطّاة %d (%s)" % (nb, cover_summary(st)) if nb else ""))
+        remember_tags(st, self.lv.tags)
+        if self.lv.tags:
+            self.log("وسوم المرحلة %d («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): %s" % (n, tags_summary(st)))
         br = solver.plaster_breakers(st)
         if br:
             self.log("جبس المرحلة %d: %s" % (n, "؛ ".join(
@@ -2261,6 +2340,14 @@ class Bot:
             lv = self.lv
         lv.incompat = 0
         lv.active = True
+        if lv.tags and len(lv.last_state["tubes"]) != len(st["tubes"]):
+            # عدد القوارير تغيّر بلا مسار الباب (فرع shifted أدناه): الوسوم بالموضع تُنقل بالمطابقة قبل أن تُطبَّق على غير قواريرها
+            rebase_tags(lv.tags, lv.last_state, st, slot_map(lv.last_state, st))
+        st, nfill = remember_tags(st, lv.tags)
+        if nfill:
+            lv.tag_fills += 1
+            if lv.tag_fills <= 3:
+                self.log("ذاكرة الوسوم: %d قارورة لم يُقرأ وسمها في هذه اللقطة فأُعيد إليها وسم خانتها" % nfill)
         key = solver.state_key(st)
 
         # ---- جبس انكسر (اكتملت جارته): القالب صار قارورة ظاهرة في خانته بالفهرس نفسه، استمرار للمحاولة نفسها
@@ -2455,6 +2542,8 @@ class Bot:
         lv = self.lv
         old_n = len(ref["tubes"])
         mem = remap_memory(lv.memory, mp, st)
+        if lv.tags:
+            rebase_tags(lv.tags, ref, st, mp)  # الوسوم بالموضع تتبع قواريرها (القارورة الإضافية تعيد ترتيب الصفّ)
         lv.memory = mem                        # قاموس جديد: ذاكرة بداية المرحلة (بفهارسها القديمة) تبقى لإعادتها
         lv.doors_opened += 1
         if lv.pending is not None:             # الحركة التي حرّرت المفتاح نجحت
@@ -3306,6 +3395,9 @@ def offline(folder, vis_mod, limit=None, verbose=False, plan_sec=None):
                 line += " رقم=%s نوع=%s قوارير=%d سعات=%s مخفي=%d مغطّاة=%d جبس=%d تحذيرات=%d خطة=%d %s %.0fms%s" % (
                     vis.level_number(fr), vis.badge(fr), len(st["tubes"]), dict(caps), hid, nb, npl,
                     len(st["warnings"]), len(mv), info.get("mode"), ms, sim)
+                ntag = sum(1 for t_ in st["tubes"] if t_.get("accept"))
+                if ntag:
+                    line += " وسوم=%d" % ntag             # «Tag!»: قوارير لا يُصبّ فيها إلا لون بطاقتها
                 if verbose:
                     line += "\n      " + solver.describe(st) + "\n      moves=" + str(mv[:12])
         elif kind == "button":
