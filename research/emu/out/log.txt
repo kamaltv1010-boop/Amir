@@ -184,3 +184,21 @@
 [16:51:11] المرحلة 136: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (407،743 طبقة 1) ← 2 قارورة (جديد)
 [16:51:11] حالة المرحلة 136 بعد الباب: [{"x": 201, "y": 332, "cap": 4, "layers": ["darkgreen", "purple", "pink", "pink"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["purple", "brown", "pink", "green"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "red", "yellow"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green", "red", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "darkgreen", "darkgreen", "darkgreen"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["green", "lavender", "blue"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["?", "red", "?", "brown"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["blue", "lavender", "purple", "lavender"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["green", "yellow", "purple", "brown"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["?", "yellow"]}]
 [16:51:29] خطة المرحلة 136: 21 حركة (astar، 1.7 ms)
+[16:53:04] شاشة جديدة لم تُرَ من قبل: new_019_unknown.jpg
+[16:53:04] فوز بالمرحلة 136 (unknown): 31 حركة في 152 ث، أدوات -
+[16:53:04] انتهى التحميل بعد 257 ثانية
+[16:53:04] شعار «MAGIC SORT» فوق لوحة معتمة (بعد الفوز): انتظار حتى 40 ثانية بلا لمس
+[16:53:16] شاشة جديدة لم تُرَ من قبل: new_020_unknown.jpg
+[16:53:47] إعلان بملء الشاشة: رجوع (1)
+[16:53:50] شاشة جديدة لم تُرَ من قبل: new_021_unknown.jpg
+[16:53:50] شعار «MAGIC SORT» فوق لوحة معتمة (بعد الفوز): انتظار حتى 40 ثانية بلا لمس
+[16:54:32] الشعار باقٍ منذ 42 ثانية: رجوع مرة واحدة
+[16:54:47] الشعار باقٍ منذ 57 ثانية رغم الرجوع؛ إعادة تشغيل اللعبة
+[16:55:28] شاشة التحميل: انتظار بلا نقر
+[16:57:12] بداية المرحلة 137: 13 قارورة، سعات [(4, 6), (17, 1)]، مخفي 6، مغطّاة 6 (ستارة 6)
+[16:57:12] حالة المرحلة 137: [{"x": 100, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 168, "y": 335, "cap": 4, "layers": ["purple", "purple", "cyan", "pink"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["green", "yellow", "red", "orange"]}, {"x": 372, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 99, "y": 539, "cap": 4, "layers": ["red", "orange", "orange", "green"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["cyan", "brown", "pink", "green"]}, {"x": 100, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 168, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 304, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 372, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}]
+[16:57:12] خطة المرحلة 137: 1 حركة (reveal، 13.3 ms)
+[16:57:16] خطة المرحلة 137: 3 حركة (reveal، 9.1 ms)
+[16:57:29] خطة المرحلة 137: 1 حركة (reveal، 7.1 ms)
+[16:57:33] خطة المرحلة 137: 4 حركة (progress، 4.3 ms)
+[16:57:41] الحالة بعد (5, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
