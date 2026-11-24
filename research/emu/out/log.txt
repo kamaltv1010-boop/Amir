@@ -202,3 +202,41 @@
 [16:57:29] خطة المرحلة 137: 1 حركة (reveal، 7.1 ms)
 [16:57:33] خطة المرحلة 137: 4 حركة (progress، 4.3 ms)
 [16:57:41] الحالة بعد (5, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[16:58:08] نسخة احتياطية لبيانات اللعبة: 72283 ك.ب (7 مرحلة مكتملة)
+[16:58:11] انتهى التحميل بعد 163 ثانية
+[16:58:11] إعلان بملء الشاشة: رجوع (1)
+[16:58:44] شاشة التحميل: انتظار بلا نقر
+[17:00:25] المرحلة 137 أُعيدت من البداية (العنوان نفسه، ذاكرة 4 طبقة مكشوفة)
+[17:00:31] بداية المرحلة 137: 13 قارورة، سعات [(4, 6), (17, 1)]، مخفي 6، مغطّاة 6 (ستارة 6)
+[17:00:31] حالة المرحلة 137: [{"x": 100, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 168, "y": 335, "cap": 4, "layers": ["purple", "blue", "cyan", "red"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["green", "blue", "pink", "yellow"]}, {"x": 372, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 99, "y": 539, "cap": 4, "layers": ["yellow", "cyan", "green", "yellow"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["red", "red", "red", "green"]}, {"x": 100, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 168, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 304, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 372, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}]
+[17:00:31] خطة المرحلة 137: 1 حركة (pimc، 27.3 ms)
+[17:01:01] خطة المرحلة 137: 1 حركة (progress، 1.2 ms)
+[17:01:06] خطة المرحلة 137: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[17:01:06] المرحلة 137 عالقة (لا خطة): [#ستارة:yellow] [purple,blue,cyan]/4 [red,red,red,red,red,red,red,red,red,red]/16 [green,blue,pink]/4 [#ستارة:yellow] [yellow,cyan,green,green]/4 [?,?,?,blue]/4 [lavender]/4 [yellow,yellow,yellow]/4 [#ستارة:yellow] [#ستارة:yellow] [#ستارة:yellow] [#ستارة:yellow]
+[17:01:06] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[17:01:06] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[17:01:10] شاشة جديدة لم تُرَ من قبل: new_022_unknown.jpg
+[17:01:10] انتهى التحميل بعد 145 ثانية
+[17:01:10] نافذة «No Available Moves» في المرحلة 137: «Give Up» (الرصيد 540 أقل من 900)
+[17:01:10] المرحلة 137: طريق مسدود محفوظ لهذه البداية (5 حالة جديدة، 5 محفوظة، محاولاتها الفاشلة 1، أبواب معروفة 0)
+[17:01:15] شاشة جديدة لم تُرَ من قبل: new_023_close.jpg
+[17:01:19] شاشة جديدة لم تُرَ من قبل: new_024_button.jpg
+[17:01:28] بداية المرحلة 137: 13 قارورة، سعات [(4, 6), (17, 1)]، مخفي 6، مغطّاة 6 (ستارة 6)
+[17:01:28] حالة المرحلة 137: [{"x": 100, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 168, "y": 335, "cap": 4, "layers": ["lavender", "cyan", "lavender", "orange"]}, {"x": 236, "y": 523, "cap": 17, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["cyan", "orange", "orange", "orange"]}, {"x": 372, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 99, "y": 539, "cap": 4, "layers": ["red", "brown", "red", "yellow"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["?", "?", "?", "cyan"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["?", "?", "?", "cyan"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["green", "brown", "red", "orange"]}, {"x": 100, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 168, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 304, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}, {"x": 372, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "cyan"}]
+[17:01:28] خطة المرحلة 137: 1 حركة (pimc، 123.5 ms)
+[17:01:53] خطة المرحلة 137: 3 حركة (progress، 2.4 ms)
+[17:02:07] شاشة جديدة لم تُرَ من قبل: new_025_unknown.jpg
+[17:02:11] نافذة «No Available Moves» في المرحلة 137: «Give Up» (الرصيد 540 أقل من 900)
+[17:02:11] المرحلة 137: طريق مسدود محفوظ لهذه البداية (5 حالة جديدة، 5 محفوظة، محاولاتها الفاشلة 1، أبواب معروفة 0)
+[17:02:20] شاشة جديدة لم تُرَ من قبل: new_026_button.jpg
+[17:02:29] بداية المرحلة 137: 13 قارورة، سعات [(4, 6), (17, 1)]، مخفي 6، مغطّاة 6 (ستارة 6)
+[17:02:29] حالة المرحلة 137: [{"x": 100, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "brown"}, {"x": 168, "y": 335, "cap": 4, "layers": ["yellow", "red", "red", "red"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["pink", "green", "red", "lavender"]}, {"x": 372, "y": 318, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 99, "y": 539, "cap": 4, "layers": ["cyan", "brown", "brown", "green"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["purple", "orange", "yellow", "yellow"]}, {"x": 100, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 168, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 304, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}, {"x": 372, "y": 728, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "yellow"}]
+[17:02:29] خطة المرحلة 137: 2 حركة (reveal، 6.3 ms)
+[17:02:33] خطة المرحلة 137: 1 حركة (reveal، 3.1 ms)
+[17:02:37] خطة المرحلة 137: 1 حركة (reveal، 2.9 ms)
+[17:02:41] خطة المرحلة 137: 1 حركة (reveal، 3.4 ms)
+[17:02:45] خطة المرحلة 137: 1 حركة (progress، 1.3 ms)
+[17:02:49] خطة المرحلة 137: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[17:02:49] المرحلة 137 عالقة (لا خطة): [#ستارة:brown] [yellow,yellow,yellow,yellow]/4 [red,red,red,red,red,red,red,red]/16 [pink,green,red,lavender]/4 [#ستارة:yellow] [cyan,brown,brown,green]/4 [?,brown,brown]/4 [?,?,blue]/4 [purple,orange]/4 [#ستارة:yellow] [#ستارة:yellow] [#ستارة:yellow] [#ستارة:yellow]
+[17:02:49] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[17:02:49] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
