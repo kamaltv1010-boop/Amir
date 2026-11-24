@@ -1,10 +1,10 @@
 done 43
 الحالة: يلعب
 مراحل مكتملة: 3
-الوقت: 40 دقيقة من 61
-آخر شاشة: unknown
-الشاشات: {'button': 29, 'unknown': 92, 'level': 184, 'lives': 2}
-صور محفوظة: 15/900، شاشات جديدة: 16
-المرحلة الحالية: 126 (حركات 28، مخفي 0، إخفاقات 0، أدوات -، 6.1 دقيقة)
-الحالة المقروءة: [yellow,yellow,yellow,yellow]/4 [orange,orange,orange,orange]/4 [purple,purple,purple,purple]/4 []/4 [blue,blue,blue,blue]/4 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [lavender,lavender,lavender,lavender]/4 [cyan,cyan,cyan,cyan]/4 [red,red,red,red]/4
-العملات: 130، «Give Up» لكل مرحلة: {124: 8}
+الوقت: 45 دقيقة من 61
+آخر شاشة: button
+الشاشات: {'button': 33, 'unknown': 104, 'level': 199, 'lives': 3, 'close': 2}
+صور محفوظة: 20/900، شاشات جديدة: 18
+المرحلة الحالية: 127 (حركات 9، مخفي 3، إخفاقات 0، أدوات -، 4.3 دقيقة)
+الحالة المقروءة: [yellow,darkgreen,?,green]/4 [?,green,lavender,purple]/4 [red,red,red,red,red,red,red,red,red,red,red,red,red,red,red,red,red]/17 [#كيس] [#كيس] [blue,blue,blue]/4 []/4 [blue,pink,pink]/4 [brown,cyan,pink,pink]/4 [#كيس] [brown,brown]/4 [?,purple,brown,lavender]/4 [#كيس]
+العملات: 170، «Give Up» لكل مرحلة: {124: 8, 127: 1}، انتظار الأرواح 13 دقيقة
