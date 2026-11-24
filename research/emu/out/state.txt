@@ -1,0 +1,10 @@
+done 43
+الحالة: يلعب
+مراحل مكتملة: 1
+الوقت: 8 دقيقة من 300
+آخر شاشة: unknown
+الشاشات: {'button': 3, 'level': 31, 'unknown': 38, 'close': 1}
+صور محفوظة: 11/900، شاشات جديدة: 7
+المرحلة الحالية: 130 (حركات 24، مخفي 0، إخفاقات 0، أدوات -، 4.9 دقيقة)
+الحالة المقروءة: [blue,blue,blue,blue]/4 [orange,orange,orange,orange]/4{وسم:orange} [green,green,green,green]/4 []/4 []/4{وسم:red} []/4 [lavender,lavender,lavender,lavender]/4 [yellow,yellow,yellow,yellow]/4{وسم:yellow} [purple,purple,purple,purple]/4 [red,red,red,red]/4 []/4{وسم:lavender} [pink,pink,pink,pink]/4
+العملات: ?، «Give Up» لكل مرحلة: -
