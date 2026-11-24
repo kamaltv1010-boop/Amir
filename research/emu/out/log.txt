@@ -1044,3 +1044,43 @@
 [18:36:29] شاشة جديدة لم تُرَ من قبل: new_040_close.jpg
 [18:36:47] نسخة احتياطية لبيانات اللعبة: 75780 ك.ب (12 مرحلة مكتملة)
 [18:36:50] إعلان بملء الشاشة: رجوع (1)
+[18:37:22] شاشة التحميل: انتظار بلا نقر
+[18:39:16] بداية المرحلة 142: 14 قارورة، سعات [(4, 9)]، مخفي 0، مغطّاة 5 (جبس 5)
+[18:39:16] وسوم المرحلة 142 («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): القارورة 7: darkgreen، القارورة 8: red
+[18:39:16] جبس المرحلة 142: القالب 0 ينكسر بامتلاء القارورة 1؛ القالب 2 ينكسر بامتلاء القارورة 1، القارورة 3؛ القالب 4 ينكسر بامتلاء القارورة 3؛ القالب 11 ينكسر بامتلاء القارورة 12؛ القالب 13 ينكسر بامتلاء القارورة 12
+[18:39:16] حالة المرحلة 142: [{"x": 100, "y": 337, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 167, "y": 332, "cap": 4, "layers": ["purple", "purple"]}, {"x": 237, "y": 337, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 304, "y": 332, "cap": 4, "layers": ["darkgreen", "darkgreen"]}, {"x": 374, "y": 337, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 64, "y": 538, "cap": 4, "layers": ["red", "plum", "red", "darkgreen"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["yellow", "orange", "pink"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["blue", "lavender", "lavender", "darkgreen"], "accept": "darkgreen"}, {"x": 270, "y": 538, "cap": 4, "layers": ["green", "cyan", "cyan", "red"], "accept": "red"}, {"x": 338, "y": 538, "cap": 4, "layers": ["green", "lavender", "purple"]}, {"x": 407, "y": 538, "cap": 4, "layers": ["pink", "yellow", "brown", "blue"]}, {"x": 168, "y": 748, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 236, "y": 744, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 306, "y": 748, "cap": 4, "layers": [], "blocked": "plaster"}]
+[18:39:16] خطة المرحلة 142: 2 حركة (plaster، 0.2 ms)
+[18:39:22] الحركة (7, 3) تكمل جارة الجبس؛ انتظار انكساره
+[18:39:29] الجبس انكسر في المرحلة 142: القارورة 2 (236،332) ← [brown,?,?,pink]، القارورة 4 (373،332) ← [orange,orange,purple,green]؛ باقٍ 3 قالب، استمرار المحاولة نفسها بلا إعادة
+[18:39:29] خطة المرحلة 142: 2 حركة (plaster، 0.3 ms)
+[18:39:33] خطة المرحلة 142: 1 حركة (plaster، 0.2 ms)
+[18:39:35] الحركة (8, 12) تكمل جارة الجبس؛ انتظار انكساره
+[18:39:41] الجبس انكسر في المرحلة 142: القارورة 11 (167،743) ← [red,?,?,pink]، القارورة 13 (304،743) ← [green,?,?,plum]؛ باقٍ 1 قالب، استمرار المحاولة نفسها بلا إعادة
+[18:40:06] خطة المرحلة 142: 3 حركة (plaster، 0.5 ms)
+[18:40:16] الحركة (4, 1) تكمل جارة الجبس؛ انتظار انكساره
+[18:40:22] الجبس انكسر في المرحلة 142: القارورة 0 (98،332) ← [yellow,orange,blue,yellow]؛ باقٍ 0 قالب، استمرار المحاولة نفسها بلا إعادة
+[18:40:32] لا تقدّم بعد الحركة (9, 8) (إخفاق 1)
+[18:40:32] خطة المرحلة 142: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[18:40:32] المرحلة 142 عالقة (لا خطة): [yellow,orange,blue,yellow]/4 [purple,purple,purple,purple]/4 [brown,?,?,pink]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange]/4 [red,plum,red,red]/4 [yellow,orange,pink,pink]/4 [blue,blue,blue]/4{وسم:blue} []/4{وسم:lavender} [green,lavender,lavender,lavender]/4 [pink,yellow,brown,brown]/4 [red,?,plum,plum]/4 [cyan,cyan,cyan,cyan]/4 [green,green,green]/4
+[18:40:32] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:40:32] حركة عشوائية (9, 8) (1)
+[18:40:38] لا تقدّم بعد الحركة (9, 8) (إخفاق 1)
+[18:40:38] خطة المرحلة 142: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:40:38] المرحلة 142 عالقة (لا خطة): [yellow,orange,blue,yellow]/4 [purple,purple,purple,purple]/4 [brown,?,?,pink]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange]/4 [red,plum,red,red]/4 [yellow,orange,pink,pink]/4 [blue,blue,blue]/4{وسم:blue} []/4{وسم:lavender} [green,lavender,lavender,lavender]/4 [pink,yellow,brown,brown]/4 [red,?,plum,plum]/4 [cyan,cyan,cyan,cyan]/4 [green,green,green]/4
+[18:40:38] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:40:38] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:40:42] خطة المرحلة 142: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:40:42] المرحلة 142 عالقة (لا خطة): [yellow,orange,blue,yellow]/4 [purple,purple,purple,purple]/4 [brown,?,?,pink]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange]/4 [red,plum,red,red]/4 [yellow,orange,pink,pink]/4 [blue,blue,blue]/4{وسم:blue} []/4{وسم:lavender} [green,lavender,lavender,lavender]/4 [pink,yellow,brown,brown]/4 [red,?,plum,plum]/4 [cyan,cyan,cyan,cyan]/4 [green,green,green]/4
+[18:40:42] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:40:42] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:40:45] خطة المرحلة 142: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:40:45] المرحلة 142 عالقة (لا خطة): [yellow,orange,blue,yellow]/4 [purple,purple,purple,purple]/4 [brown,?,?,pink]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange]/4 [red,plum,red,red]/4 [yellow,orange,pink,pink]/4 [blue,blue,blue]/4{وسم:blue} []/4{وسم:lavender} [green,lavender,lavender,lavender]/4 [pink,yellow,brown,brown]/4 [red,?,plum,plum]/4 [cyan,cyan,cyan,cyan]/4 [green,green,green]/4
+[18:40:45] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:40:45] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:40:49] خطة المرحلة 142: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:40:49] المرحلة 142 عالقة (لا خطة): [yellow,orange,blue,yellow]/4 [purple,purple,purple,purple]/4 [brown,?,?,pink]/4 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange]/4 [red,plum,red,red]/4 [yellow,orange,pink,pink]/4 [blue,blue,blue]/4{وسم:blue} []/4{وسم:lavender} [green,lavender,lavender,lavender]/4 [pink,yellow,brown,brown]/4 [red,?,plum,plum]/4 [cyan,cyan,cyan,cyan]/4 [green,green,green]/4
+[18:40:49] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:40:49] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[18:40:49] الرجوع لم يُعِد المرحلة 142 (4 محاولات)؛ إعادة تشغيل اللعبة
+[18:41:18] انتهى التحميل بعد 236 ثانية
+[18:41:25] شاشة التحميل: انتظار بلا نقر
