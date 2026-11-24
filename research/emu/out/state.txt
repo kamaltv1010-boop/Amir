@@ -1,10 +1,10 @@
 done 43
 الحالة: يلعب
 مراحل مكتملة: 2
-الوقت: 70 دقيقة من 300
-آخر شاشة: level
-الشاشات: {'button': 57, 'unknown': 144, 'level': 219, 'close': 2, 'lives': 4}
-صور محفوظة: 29/900، شاشات جديدة: 15
-المرحلة الحالية: 129 صعبة جداً (حركات 2، مخفي 2، إخفاقات 0، أدوات -، 0.3 دقيقة)
-الحالة المقروءة: [orange,?,brown,plum]/4 [pink,purple,purple]/4 [#ستارة:plum] [brown,plum,brown]/4 [red,?,plum,mint]/4 [yellow,cyan,red]/4 [mint]/4 [blue,green,green,green]/4 [pink,yellow,yellow]/4 [pink,blue,mint]/4 [darkgreen,yellow,lavender,lavender]/4
-العملات: 210، «Give Up» لكل مرحلة: {127: 1}
+الوقت: 75 دقيقة من 300
+آخر شاشة: button
+الشاشات: {'button': 63, 'unknown': 146, 'level': 225, 'close': 3, 'lives': 5}
+صور محفوظة: 34/900، شاشات جديدة: 18
+المرحلة الحالية: 129 صعبة جداً (حركات 7، مخفي 1، إخفاقات 0، أدوات -، 5.4 دقيقة)
+الحالة المقروءة: [orange,orange]/4 [pink,purple,purple,purple]/4 [#ستارة:plum] [brown,plum,brown,brown]/4 [red,?,plum,plum]/4 [yellow,cyan,red]/4 [mint,mint,mint]/4 [blue,green,green,green]/4 [pink,yellow,yellow]/4 [pink,blue,mint]/4 [darkgreen,yellow,lavender,lavender]/4 [green,darkgreen]/4 [#ستارة:purple]
+العملات: 210، «Give Up» لكل مرحلة: {127: 1, 129: 1}، انتظار الأرواح 12 دقيقة
