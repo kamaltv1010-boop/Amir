@@ -100,3 +100,31 @@
 [00:29:59] سهم تعليم: لمس الهدف (338, 705)
 [00:30:06] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{96ad77c u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
 [00:30:33] شاشة التحميل: انتظار بلا نقر
+[00:31:42] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[00:31:42] حالة المرحلة 124: [{"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "pink"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "purple", "pink", "pink"], "keys": [0]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "pink", "purple", "pink"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[00:31:42] خطة المرحلة 124: 8 حركة (progress، 1.1 ms)
+[00:32:06] الحركة (2, 3) تحرّر مفتاحاً؛ انتظار الباب
+[00:32:15] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[00:32:15] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum", "?", "pink"], "keys": [1]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[00:32:15] خطة المرحلة 124: 1 حركة (reveal، 4.0 ms)
+[00:32:19] خطة المرحلة 124: 3 حركة (progress، 4.1 ms)
+[00:32:21] الحركة (0, 4) تحرّر مفتاحاً؛ انتظار الباب
+[00:32:30] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[00:32:30] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "?", "?", "green"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "darkgreen", "yellow", "cyan"], "keys": [1]}]
+[00:32:30] خطة المرحلة 124: 3 حركة (progress، 4.4 ms)
+[00:32:36] الحركة (8, 5) تحرّر مفتاحاً؛ انتظار الباب
+[00:32:43] المرحلة 124: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة
+[00:32:43] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "blue", "green", "orange"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["brown", "?", "?", "lavender"], "keys": [0]}, {"x": 168, "y": 538, "cap": 4, "layers": ["orange", "green", "lavender", "pink"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["brown", "yellow", "brown", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "?", "?", "green"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["plum", "darkgreen", "yellow", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["purple", "darkgreen"]}]
+[00:32:43] خطة المرحلة 124: 2 حركة (reveal، 53.6 ms)
+[00:32:52] خطة المرحلة 124: 1 حركة (reveal، 145.5 ms)
+[00:32:56] خطة المرحلة 124: 3 حركة (reveal، 60.3 ms)
+[00:33:00] الحالة بعد (5, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[00:33:00] خطة المرحلة 124: 2 حركة (reveal، 14.5 ms)
+[00:33:08] الحالة بعد (3, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[00:33:08] خطة المرحلة 124: 1 حركة (reveal، 31.1 ms)
+[00:33:22] خطة المرحلة 124: 1 حركة (reveal، 49.7 ms)
+[00:33:30] خطة المرحلة 124: 4 حركة (reveal، 101.8 ms)
+[00:34:02] خطة المرحلة 124: 2 حركة (progress، 0.7 ms)
+[00:34:17] انتهى التحميل بعد 224 ثانية
+[00:34:17] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[00:34:31] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
