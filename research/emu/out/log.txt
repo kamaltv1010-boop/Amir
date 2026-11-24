@@ -224,3 +224,21 @@
 [02:26:06] انتظار الأرواح: باقي 4 دقيقة قبل زرّ المرحلة
 [02:30:02] سهم تعليم: لمس الهدف (338, 705)
 [02:30:08] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{96ad77c u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
+[02:30:35] شاشة التحميل: انتظار بلا نقر
+[02:31:39] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[02:31:39] حالة المرحلة 124: [{"x": 236, "y": 624, "cap": 10, "layers": ["purple", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "blue"], "keys": [0]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "pink", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "purple", "purple", "purple"], "keys": [0]}]
+[02:31:39] خطة المرحلة 124: 6 حركة (progress، 0.8 ms)
+[02:31:41] الحركة (4, 0) تحرّر مفتاحاً؛ انتظار الباب
+[02:31:50] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[02:31:50] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "lavender", "?", "orange"], "keys": [1]}, {"x": 168, "y": 332, "cap": 4, "layers": ["darkgreen", "green", "darkgreen", "brown"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "blue"], "keys": [0]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "pink", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue"]}]
+[02:31:50] خطة المرحلة 124: 3 حركة (reveal، 8.2 ms)
+[02:31:52] الحركة (3, 6) تحرّر مفتاحاً؛ انتظار الباب
+[02:32:01] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[02:32:01] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "lavender", "?", "orange"], "keys": [1]}, {"x": 168, "y": 332, "cap": 4, "layers": ["darkgreen", "green", "darkgreen", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["pink", "?", "?", "purple"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["plum", "yellow", "yellow", "orange"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "pink", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["yellow", "cyan", "cyan", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "blue"]}]
+[02:32:01] خطة المرحلة 124: 1 حركة (reveal، 38.7 ms)
+[02:32:05] خطة المرحلة 124: 1 حركة (reveal، 81.4 ms)
+[02:32:10] خطة المرحلة 124: 2 حركة (reveal، 35.2 ms)
+[02:32:19] خطة المرحلة 124: 2 حركة (progress، 2.8 ms)
+[02:32:27] انتهى التحميل بعد 113 ثانية
+[02:32:27] نافذة «No Available Moves» في المرحلة 124: «Give Up» (الرصيد 70 أقل من 900)
+[02:32:41] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
