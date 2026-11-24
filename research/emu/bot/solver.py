@@ -28,6 +28,10 @@
     آمن (عقوبة لاستهلاك الفارغات) يكشف طبقته (لا شيء بلون آخر فوقها: هكذا انفتح الباب في المرحلتين
     63 و74)، أو يكشف الطبقة المخفية التي فوقها؛ ومفتاح مكشوف من البداية (لم يطر) يُصبّ لونه خارجها.
     إن لم يوجد تسلسل: لا تُدفن طبقة مفتاح تحت سائل آخر في الحركة الأولى ما دام بديل.
+  * ذاكرة الأبواب (plan(doors=...)، التشغيل 12): ما خلف الباب ثابت لكل بداية، فإن عرفه السائق من محاولة سابقة كله (كل مفتاح
+    عالق معروف بابه، ولا طبقة مخفية في الحالة ولا خلف الأبواب) يُبحث أولاً في المسألة كلها (_door_search: القوارير المقفلة
+    تُلحق بالحالة ولا تُلمس حتى يتحرّر مفتاح بابها) عن حلّ كامل بكل باب مفتوحاً، والخطة تتوقف عند أول باب ينفتح. ومع معرفة
+    ناقصة أو بلا حلّ في الميزانية فالمنطق المعتاد كما هو. plan(vary>0) يكسر التعادل عشوائياً (تنويع المحاولات المتكرّرة).
   * القوارير المغطّاة ("blocked": True، تحت ستارة من المرحلة 33 تقريباً أو كيس من 80) محتواها مجهول ولا يُصبّ منها ولا فيها:
     لا يراها الحلّال أبداً (تُحذف قبل البحث وتُعاد الفهارس الأصلية)، ولا تدخل في state_key ولا is_solved ولا الحركات
     القانونية؛ وحين تنكشف تصير قارورة عادية في القراءة التالية.
@@ -388,7 +392,7 @@ def _key_search(start, caps, budget, avoid, exclude, max_len=10):
     cnt = itertools.count()
     gbest = {start: 0}
     parent = {start: None}
-    heap = [(hval(start), 0, next(cnt), start)]
+    heap = [(hval(start), 0, _tb(cnt), start)]
     best = None   # (score, state)
     while heap:
         f, g, _, s = heapq.heappop(heap)
@@ -422,7 +426,7 @@ def _key_search(start, caps, budget, avoid, exclude, max_len=10):
                 continue
             gbest[c] = g1
             parent[c] = (s, (i, j))
-            heapq.heappush(heap, (g1 + hval(c), g1, next(cnt), c))
+            heapq.heappush(heap, (g1 + hval(c), g1, _tb(cnt), c))
     if best is None:
         return None, None
     moves, x = [], best[1]
@@ -721,7 +725,7 @@ def _astar(start, caps, budget, avoid, exclude, w=3.0, node_cap=None):
     k0 = _key(start, caps)
     gbest = {k0: 0}
     parent = {k0: None}
-    heap = [(w * _h(start), 0, next(cnt), start, k0)]
+    heap = [(w * _h(start), 0, _tb(cnt), start, k0)]
     local = 0
     while heap:
         f, g, _, s, k = heapq.heappop(heap)
@@ -744,7 +748,7 @@ def _astar(start, caps, budget, avoid, exclude, w=3.0, node_cap=None):
                 continue
             gbest[kc] = g1
             parent[kc] = k
-            heapq.heappush(heap, (g1 + w * _h(c), g1, next(cnt), c, kc))
+            heapq.heappush(heap, (g1 + w * _h(c), g1, _tb(cnt), c, kc))
     return None
 
 
@@ -775,7 +779,10 @@ def _dfs(start, caps, budget, avoid, exclude, max_depth=400):
 
     def children(s, root):
         ms = _gen_moves(s, caps, exclude if root else None)
-        ms.sort(key=lambda m: _order_score(s, caps, *m))
+        if _TIE is None:
+            ms.sort(key=lambda m: _order_score(s, caps, *m))
+        else:
+            ms.sort(key=lambda m: (_order_score(s, caps, *m), _TIE.random()))
         return ms
 
     stack = [(start, k0, iter(children(start, True)))]
@@ -1054,38 +1061,278 @@ def _pimc(s, caps, deadline, avoid, exclude, rng, max_samples=None, info=None):
     return best[1] if best else None
 
 
+# ---------------------------------------------------------------- ذاكرة الأبواب
+# ما خلف الأبواب ثابت لكل بداية (التشغيل 12، المرحلة 124: البداية نفسها تفتح أبوابها عن القوارير نفسها في المواضع نفسها كل مرة)،
+# فالسائق يمرّر ما رآه في محاولة سابقة: doors=[{"key": (قارورة، موضع)، "tubes": [قوارير بابه]}، ...]. القارورة في "key" فهرس في
+# القائمة الممتدّة: قوارير الحالة أولاً ثم قوارير الأبواب بترتيب ورودها (مفتاح داخل قارورة باب يفتح باباً آخر معروفاً). "keys" بدل
+# "key" لباب انفتح مع مفتاحين معاً (لا يُعرف أيهما فتحه: ينفتح حين يتحرّر الاثنان).
+_TIE = None          # مولّد عشوائي لكسر التعادل في البحوث (plan(vary>0): تنويع المحاولات المتكرّرة للبداية نفسها)؛ None = كما كان
+
+
+def _tb(cnt):
+    """كاسر التعادل في طوابير البحث: عدّاد بالترتيب (كما كان)، أو عشوائي في وضع التنويع."""
+    return next(cnt) if _TIE is None else _TIE.random()
+
+
+class _Doors:
+    """المسألة المعروفة كلها: قوارير الحالة + قوارير الأبواب المقفلة. القارورة المقفلة لا يُصبّ منها ولا فيها حتى يتحرّر مفتاح
+    بابها (قاعدة _key_block: لا شيء بلون آخر فوق طبقته، أو خرجت منها؛ والمكشوف لحظة ظهوره لا يطير حتى يُصبّ لونه خارجها).
+    مواصفة مفتاحها غير صالح (خارج قارورته أو على طبقة مخفية) تبقى قواريرها في القائمة (فلا تتغيّر فهارس المواصفات بعدها) لكنها
+    مقفلة أبداً (never)، ومواصفة مفتاحها داخلها لا تنفتح أبداً كذلك (مفتاح في قارورة مقفلة لا يتحرّر)."""
+
+    def __init__(self, state, doors):
+        tubes = list((state or {}).get("tubes") or [])
+        self.n = len(tubes)
+        specs = []
+        for d in doors or ():
+            try:
+                tt = [dict(t) for t in (d.get("tubes") or [])]
+                ks = d.get("keys")
+                if ks is None:
+                    ks = [d["key"]] if d.get("key") is not None else []
+                ks = [(int(a), int(b)) for a, b in ks]
+            except (TypeError, ValueError, KeyError, AttributeError):
+                continue
+            if not tt:
+                continue
+            idx = list(range(len(tubes), len(tubes) + len(tt)))
+            tubes.extend(tt)
+            specs.append((ks, idx))
+        self.enc = _Enc({"tubes": tubes})
+        s0, caps = self.enc.start, self.enc.caps
+        keys = set(self.enc.keys)
+        ok_specs = []
+        never = set()
+        for ks, idx in specs:
+            if ks and all(0 <= k < len(s0) and 0 <= p < len(s0[k]) and s0[k][p] >= 0 for k, p in ks):
+                keys.update(ks)
+                ok_specs.append((ks, idx))
+            else:
+                never.update(idx)                # مواصفة مرفوضة: قواريرها مقفلة أبداً (لا قوارير وهمية مفتوحة)
+        self.never = frozenset(never)
+        self.keylist = sorted(keys)
+        bit = {kp: b for b, kp in enumerate(self.keylist)}
+        self.specs = [(sum(1 << bit[kp] for kp in ks), idx) for ks, idx in ok_specs]
+        known = 0
+        for m, _idx in self.specs:
+            known |= m
+        self.unknown = ((1 << len(self.keylist)) - 1) & ~known      # مفاتيح لا يُعرف ما خلف أبوابها
+        # المكشوف لحظة ظهوره (في البداية أو حين ينفتح باب قارورته) لا يطير حتى يُصبّ لونه خارجها (كما في _key_targets)
+        self.needs_out = [_key_block(s0[k], p) == 0 for k, p in self.keylist]
+        self._locked = {}
+        self._caps = {}
+        self.caps = caps
+        self.s0 = s0
+
+    def complete(self, mask) -> bool:
+        """المسألة الممتدّة معروفة كلها: لا مفتاح عالق لا يُعرف بابه، ولا باب لا ينفتح أبداً، ولا طبقة مخفية."""
+        return (not (self.unknown & ~mask) and not self.never
+                and not any(c < 0 for t in self.s0 for c in t))
+
+    def locked(self, mask):
+        lk = self._locked.get(mask)
+        if lk is None:
+            lk = frozenset(k for m, idx in self.specs if (mask & m) != m for k in idx) | self.never
+            self._locked[mask] = lk
+        return lk
+
+    def caps_eff(self, mask):
+        """السعات الفعلية: المقفلة «ممتلئة» بمحتواها (لا يُصبّ فيها)، ومحتواها لا يتغيّر ما دامت مقفلة."""
+        c = self._caps.get(mask)
+        if c is None:
+            lk = self.locked(mask)
+            c = tuple(len(self.s0[k]) if k in lk else cap for k, cap in enumerate(self.caps))
+            self._caps[mask] = c
+        return c
+
+    def settle(self, s, mask):
+        """المفاتيح التي تتحرّر في الحالة s (وما تفتحه أبوابها من قوارير فيها مفاتيح أخرى)."""
+        changed = True
+        while changed:
+            changed = False
+            lk = self.locked(mask)
+            for b, (k, p) in enumerate(self.keylist):
+                if (mask >> b) & 1 or k in lk:
+                    continue
+                t = s[k]
+                if self.needs_out[b]:
+                    rel = len(t) <= p
+                else:
+                    blk = _key_block(t, p)
+                    rel = blk is None or blk == 0
+                if rel:
+                    mask |= 1 << b
+                    changed = True
+        return mask
+
+    def all_open(self, mask) -> bool:
+        return all((mask & m) == m for m, _idx in self.specs)
+
+    def moves(self, s, mask, exclude=None):
+        lk = self.locked(mask)
+        return [m for m in _gen_moves(s, self.caps_eff(mask), exclude) if m[0] not in lk]
+
+    def view_key(self, s, mask):
+        """مفتاح الجزء الظاهر (القوارير غير المقفلة) بصيغة avoid."""
+        lk = self.locked(mask)
+        return tuple(sorted((self.caps[k], s[k]) for k in range(len(s)) if k not in lk))
+
+
+_DOOR_LINE = []      # الخط الكامل لآخر بحث أبواب [(حركة بفهارس المسألة الممتدّة، هل فتحت باباً)] (للسجل والاختبارات)
+
+
+def _door_search(state, doors, budget, avoid_names, exclude, w=3.0):
+    """بحث في المسألة المعروفة كلها (قوارير الحالة + ما خلف الأبواب المعروفة) عن حلّ كامل: كل لون مكتمل وكل باب معروف مفتوح.
+    لا يعمل إلا والمسألة الممتدّة معروفة كلها (_Doors.complete): مع مفتاح لا يُعرف بابه أو طبقة مخفية (في الحالة أو خلف باب) لا
+    هدف مضموناً، وخطة جشعة نحو «أقرب حدث» كانت تأخذ مكان «المفاتيح أولاً» وPIMC فتخسر مراحل كان يفوز بها (مراجعة التشغيل 12)؛
+    فيُترك للمنطق المعتاد بلا صرف ميزانيته. يعيد (حركات حتى أول باب ينفتح أو حتى الحل، الحالة، عدد الأبواب) والحالة
+    "doors-full" (خطة) | "hidden" (معرفة ناقصة، لم يُبحث) | "none" (لا حلّ في الميزانية). الحركات بفهارس الحالة (تتوقف بعد
+    الحركة التي تفتح باباً: قواريره تظهر فيعيد السائق التخطيط). avoid يقصّ العقد، فإن لم يُعثر على شيء أُعيد البحث بدونه
+    (كبقية البحوث: حالة انفتاح باب في «الطريق المسدود» ممرّ إجباري)."""
+    P = _Doors(state, doors)
+    if not P.specs:
+        return None, "none", 0
+    s0, caps, n = P.s0, P.caps, P.n
+    m0 = P.settle(s0, 0)
+    if not P.complete(m0):
+        return None, "hidden", len(P.specs)
+    enc = P.enc
+    av = set()
+    for a in (avoid_names or ()):
+        try:
+            av.add(tuple(sorted((cap, tuple(HIDDEN if c == "?" else enc.idx[c] for c in layers)) for cap, layers in a)))
+        except (KeyError, TypeError, ValueError):
+            continue
+    av.discard(P.view_key(s0, m0))
+
+    def hval(s, mask):
+        return w * _h(s) + sum(1 for m, _i in P.specs if (mask & m) != m)
+
+    def search(av):
+        cnt = itertools.count()
+        st0 = (s0, m0)
+        gbest = {st0: 0}
+        parent = {st0: None}
+        heap = [(hval(s0, m0), 0, _tb(cnt), s0, m0)]
+        while heap:
+            f, g, _, s, mask = heapq.heappop(heap)
+            if g > gbest.get((s, mask), INF):
+                continue
+            if not budget.tick():
+                return None, parent
+            g1 = g + 1
+            for (i, j, amt) in P.moves(s, mask, exclude if g == 0 else None):
+                c = _apply(s, i, j, amt)
+                m1 = P.settle(c, mask)
+                node = (c, m1)
+                if g1 >= gbest.get(node, INF):
+                    continue
+                if P.all_open(m1) and _solved(c, caps):
+                    parent[node] = ((s, mask), (i, j))
+                    return node, parent
+                if av and P.view_key(c, m1) in av:
+                    continue
+                gbest[node] = g1
+                parent[node] = ((s, mask), (i, j))
+                heapq.heappush(heap, (g1 + hval(c, m1), g1, _tb(cnt), c, m1))
+        return None, parent
+
+    goal, parent = search(av)
+    if goal is None and av and budget.nodes < budget.max_nodes and time.perf_counter() < budget.deadline:
+        goal, parent = search(set())
+    if goal is None:
+        return None, "none", len(P.specs)
+    path, x = [], goal
+    while parent.get(x) is not None:
+        prev, mv = parent[x]
+        path.append((prev, mv, x))
+        x = prev
+    path.reverse()
+    _DOOR_LINE[:] = [(mv, P.locked(cm) != P.locked(pm)) for (ps, pm), mv, (_c, cm) in path]
+    moves = []
+    for (ps, pm), mv, (_c, cm) in path:
+        if mv[0] >= n or mv[1] >= n:
+            break                                   # قارورة باب لم ينفتح بعد على الشاشة (لا يحدث إلا بباب مفتوح من البداية)
+        moves.append(mv)
+        if P.locked(cm) != P.locked(pm):
+            break                                   # انفتح باب: قواريره تظهر الآن، فيُعاد التخطيط بالحالة الحقيقية
+    if not moves:
+        return None, "none", len(P.specs)
+    return moves, "doors-full", len(P.specs)
+
+
 # ---------------------------------------------------------------- الواجهة العامة
 def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
-         info=None, seed=None, keys_first=True):
+         info=None, seed=None, keys_first=True, doors=None, vary=0):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
     قوارير الطين ("clay": True) لا يُصبّ منها، والمغطّاة ("blocked": True) لا تُلمس أبداً، وكاسرات الجبس (plaster_breakers)
     يُسعى إلى إكمالها أولاً. keys_first=False يترك بحث «المفاتيح أولاً» (فتح الأبواب بأسرع طريق) لتختار بحوث الكشف والتقدّم
-    متى تُفتح الأبواب (مع بقاء منع دفن المفاتيح وقيمة عمقها): تنويع في المراحل التي يتكرّر فشلها (المرحلة 124). انظر _plan."""
-    global _NOSRC, _KEYS, _FILL, _PLASTER, _KEYS_FIRST
+    متى تُفتح الأبواب (مع بقاء منع دفن المفاتيح وقيمة عمقها): تنويع في المراحل التي يتكرّر فشلها (المرحلة 124). انظر _plan.
+    doors: ما خلف الأبواب كما رآه السائق في محاولة سابقة للبداية نفسها ([{"key": (قارورة، موضع)، "tubes": [...]}]، انظر _Doors):
+    يُبحث أولاً في المسألة المعروفة كلها (_door_search) إن عُرفت كلها، وإلا (أو بلا حلّ) فالمنطق المعتاد كما هو.
+    vary > 0: كسر تعادل عشوائي (بالبذرة seed) ووزن A* آخر: محاولة أخرى للبداية نفسها لا تكرّر طريق سابقتها."""
+    global _NOSRC, _KEYS, _FILL, _PLASTER, _KEYS_FIRST, _TIE
     vis, keep = _visible(state)
     if keep is not None:                  # الفهارس الأصلية <-> فهارس الحالة بلا المغطّاة
         inv = {k: i for i, k in enumerate(keep)}
         bad_moves = [(inv[m[0]], inv[m[1]]) for m in (bad_moves or ()) if m[0] in inv and m[1] in inv]
+        doors = _remap_doors(doors, inv, len(keep), len((state or {}).get("tubes") or []))
     _NOSRC = frozenset(k for k, t in enumerate((vis or {}).get("tubes") or []) if t.get("clay"))
     _KEYS = ()
     _FILL = frozenset(_breaker_indices(state, keep)) if keep is not None else frozenset()
     _PLASTER = ()
     _KEYS_FIRST = bool(keys_first)
     try:
-        moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed)
+        vary = int(vary or 0)
+    except (TypeError, ValueError):
+        vary = 0
+    if vary > 0:
+        import random as _random
+        _TIE = _random.Random((seed if seed is not None else 0) * 1000003 + vary)
+    t_call = time.perf_counter()
+    try:
+        moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed, doors, vary)
+        if info is not None and doors:
+            info["ms"] = round((time.perf_counter() - t_call) * 1000, 1)   # الوقت كله (بحث الأبواب ثم المعتاد)
     finally:
         _NOSRC = frozenset()
         _KEYS = ()
         _FILL = frozenset()
         _PLASTER = ()
         _KEYS_FIRST = True
+        _TIE = None
     if keep is not None:
         moves = [(keep[i], keep[j]) for (i, j) in moves]
     return moves
 
 
+def _remap_doors(doors, inv, nvis, norig):
+    """فهارس مفاتيح الأبواب (بالحالة الأصلية بمغطّاتها) -> فهارس الحالة بلا المغطّاة؛ قوارير الأبواب بعد القوارير الظاهرة."""
+    if not doors:
+        return doors
+    out = []
+    for d in doors:
+        try:
+            ks = d.get("keys")
+            if ks is None:
+                ks = [d["key"]]
+            nk = []
+            for a, b in ks:
+                a = int(a)
+                if a < norig:
+                    if a not in inv:
+                        raise KeyError(a)
+                    nk.append((inv[a], int(b)))
+                else:
+                    nk.append((a - norig + nvis, int(b)))
+            out.append({"keys": nk, "tubes": d.get("tubes") or []})
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    return out
+
+
 def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
-          info=None, seed=None):
+          info=None, seed=None, doors=None, vary=0):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
 
     bad_moves: حركات (i, j) تُستبعد من الخطوة الأولى (فشلت في هذه الحالة).
@@ -1116,9 +1363,25 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
             continue                  # لون غير موجود الآن: حالة لا يمكن بلوغها
     av.discard(_key(s, caps))
 
-    # ---- المفاتيح أولاً: الأبواب تخفي قوارير، فلا يكتمل اللغز الظاهر قبل فتحها
+    # ---- ذاكرة الأبواب: ما خلف أبواب المفاتيح العالقة معروف من محاولة سابقة للبداية نفسها، فيُبحث في المسألة كلها أولاً
     global _KEYS
     _KEYS = enc.keys
+    if doors and _KEYS:
+        db = _Budget(int(max_nodes * 0.5), t0 + time_limit * 0.5)
+        mv, res, nd = _door_search(state, doors, db, avoid, exclude, w=(3.0, 2.5, 4.0)[vary % 3])
+        info["doors"] = nd
+        info["doors_res"] = res                  # doors-full | hidden (معرفة ناقصة: لم يُبحث) | none (لا حلّ في الميزانية)
+        if mv:
+            info["mode"] = res
+            info["nodes"] = db.nodes
+            info["ms"] = round((time.perf_counter() - t0) * 1000, 1)
+            return mv
+        # لم يُعثر على شيء: المنطق المعتاد كما هو بما بقي من الوقت (لا يقلّ عن ثلثه)
+        used = time.perf_counter() - t0
+        time_limit = max(time_limit * 0.35, time_limit - used)
+        max_nodes = max(int(max_nodes * 0.35), max_nodes - db.nodes)
+        t0 = time.perf_counter()
+        budget = _Budget(max_nodes, t0 + time_limit)
     if _KEYS:
         info["keys"] = len(_KEYS)
         if _KEYS_FIRST:
@@ -1171,7 +1434,7 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
             chain = _progress_search(s, caps, budget, av, exclude)
     else:
         info["mode"] = "astar"
-        chain = _astar(s, caps, budget, av, exclude, w=3.0,
+        chain = _astar(s, caps, budget, av, exclude, w=(3.0, 2.5, 4.0)[vary % 3],
                        node_cap=int(max_nodes * 0.55))
         if chain is None:
             info["mode"] = "dfs"

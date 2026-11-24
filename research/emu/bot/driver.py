@@ -794,27 +794,309 @@ def door_map(old, new):
     no, nn = len(to), len(tn)
     if nn <= no or no == 0:
         return None
-    # أطول تطابق محافظ على الترتيب (LCS)
-    L = [[0] * (nn + 1) for _ in range(no + 1)]
+    # أطول تطابق محافظ على الترتيب (LCS)، وبين التطابقات المتساوية أكثرها في الخانة نفسها: المخفي "?" يطابق أي لون، فقارورة
+    # باب جديدة قد «تطابق» قديمة (المرحلة 124: [darkgreen,?,?,lavender] و[?,brown,?,lavender]) والموضع يحسم (القديمة لا تتحرّك)
+    same = [[_same_tube(to[a], tn[b]) for b in range(nn)] for a in range(no)]
+    L = [[(0, 0)] * (nn + 1) for _ in range(no + 1)]
     for a in range(no - 1, -1, -1):
         for b in range(nn - 1, -1, -1):
-            if _same_tube(to[a], tn[b]):
-                L[a][b] = 1 + L[a + 1][b + 1]
-            else:
-                L[a][b] = max(L[a + 1][b], L[a][b + 1])
-    if L[0][0] < no:
+            v = max(L[a + 1][b], L[a][b + 1])
+            if same[a][b]:
+                m, nr = L[a + 1][b + 1]
+                v = max(v, (m + 1, nr + (1 if _near(to[a], tn[b]) else 0)))
+            L[a][b] = v
+    if L[0][0][0] < no:
         return None
     mp, a, b = {}, 0, 0
     while a < no and b < nn:
-        if _same_tube(to[a], tn[b]) and L[a][b] == 1 + L[a + 1][b + 1]:
-            mp[a] = b
-            a += 1
-            b += 1
-        elif L[a + 1][b] >= L[a][b + 1]:
+        if same[a][b]:
+            m, nr = L[a + 1][b + 1]
+            if L[a][b] == (m + 1, nr + (1 if _near(to[a], tn[b]) else 0)):
+                mp[a] = b
+                a += 1
+                b += 1
+                continue
+        if L[a + 1][b] >= L[a][b + 1]:
             a += 1
         else:
             b += 1
     return mp if len(mp) == no else None
+
+
+# ============================================================== ذاكرة كل بداية (التشغيل 12، المرحلة 124)
+# بعد «Give Up» تعود المرحلة بإحدى بدايات قليلة، والبداية نفسها تفتح أبوابها عن القوارير نفسها في المواضع نفسها كل مرة، والبوت
+# حتمي فكان يعيد الخط الخاسر نفسه. لكل بداية (رقم المرحلة + state_key بدايتها): عدد محاولاتها الفاشلة (منه التناوب والتنويع)،
+# وحالات آخر طريق مسدود (لا يُعاد إليها)، وما خلف كل باب (هوية المفتاح بالموضع: س، ص لقارورته وطبقته).
+SIG_MAX = 40          # أقصى عدد بدايات محفوظة (الأقدم استعمالاً يُحذف)
+SIG_DEAD_MAX = 40     # أقصى عدد حالات «طريق مسدود» لكل بداية (الأحدث يبقى)
+SIG_DOORS_MAX = 16    # أقصى عدد أبواب معروفة لكل بداية
+DEAD_TAIL = 5         # الحالة العالقة الأخيرة والأربع قبلها
+
+
+def sig_id(n, sig) -> str:
+    """معرّف نصّي ثابت لبداية مرحلة (مفتاح JSON): «رقم المرحلة:بصمة state_key بدايتها»."""
+    import hashlib
+    h = hashlib.sha1(json.dumps(sig, ensure_ascii=False).encode("utf-8")).hexdigest()[:16]
+    return "%s:%s" % (n, h)
+
+
+def new_sig_rec(n):
+    # dead: مفاتيح state_key للطريق المسدود كما سُجّلت؛ dead_st: حالاته المختصرة [[س، ص، سعة، [طبقات]]، ...] تُملأ «?» فيها بما
+    # عُرف بعدها (الحلّال يرى الطبقة معروفة فلا يطابق مفتاحها الخام بـ «?»)
+    return {"n": n, "fails": 0, "dead": [], "dead_st": [], "doors": [], "mem": [], "t": time.time()}
+
+
+def _sk_tuple(x):
+    """state_key من JSON (قوائم) إلى صفوف كما يعيدها solver.state_key."""
+    return tuple((int(c), tuple(str(v) for v in layers)) for c, layers in x)
+
+
+def clean_sig_rec(d):
+    """سجلّ بداية مقروء من ملف الحالة بعد التحقق من كل حقل (الحقول الغائبة أو التالفة تعود فارغة: لا يتوقف البوت)."""
+    if not isinstance(d, dict):
+        return None
+    rec = new_sig_rec(d.get("n"))
+    try:
+        rec["n"] = int(d.get("n"))
+    except (TypeError, ValueError):
+        return None
+    try:
+        rec["fails"] = max(0, int(d.get("fails") or 0))
+    except (TypeError, ValueError):
+        pass
+    try:
+        rec["t"] = float(d.get("t") or 0.0)
+    except (TypeError, ValueError):
+        rec["t"] = 0.0
+    for sk in d.get("dead") or ():
+        try:
+            rec["dead"].append(_sk_tuple(sk))
+        except (TypeError, ValueError):
+            continue
+    rec["dead"] = rec["dead"][-SIG_DEAD_MAX:]
+    for ds in d.get("dead_st") or ():
+        try:
+            rec["dead_st"].append([[int(x), int(y), int(c), [str(v) for v in layers]] for x, y, c, layers in ds])
+        except (TypeError, ValueError):
+            continue
+    rec["dead_st"] = rec["dead_st"][-SIG_DEAD_MAX:]
+    for dr in d.get("doors") or ():
+        try:
+            keys = [[int(x), int(y), int(p)] for x, y, p in dr["keys"]]
+            tubes = []
+            for t in dr["tubes"]:
+                tt = {"x": int(t["x"]), "y": int(t["y"]), "cap": int(t["cap"]), "layers": [str(c) for c in t["layers"]]}
+                if t.get("keys"):
+                    tt["keys"] = [int(p) for p in t["keys"]]
+                tubes.append(tt)
+            if keys and tubes:
+                rec["doors"].append({"keys": keys, "tubes": tubes})
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    rec["doors"] = rec["doors"][:SIG_DOORS_MAX]
+    for m in d.get("mem") or ():
+        try:
+            k, p, c = m
+            rec["mem"].append([int(k), int(p), str(c)])
+        except (TypeError, ValueError):
+            continue
+    return rec
+
+
+def _pos_near(x, y, t) -> bool:
+    try:
+        return abs(float(x) - float(t["x"])) <= 24 and abs(float(y) - float(t["y"])) <= 45
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _released(layers, p) -> bool:
+    """قاعدة تحرّر المفتاح (solver._key_block في (None، 0)): خرجت طبقته من القارورة، أو كل ما فوقها بلونها (لا مخفي)."""
+    if p >= len(layers):
+        return True
+    c = layers[p]
+    return c != "?" and all(x == c for x in layers[p:])
+
+
+def door_record(ref, st, mp, vanished=None):
+    """باب انفتح بين `ref` (قبله) و`st` (بعده) بالمطابقة `mp`: ([[س، ص، طبقة] لكل مفتاح تحرّر]، [قوارير جديدة كما قُرئت أول
+    مرة])، أو None إن لم يُعرف المفتاح (قارورة إضافية مثلاً) أو لا قوارير جديدة ذات طبقات. `vanished`: مفاتيح اختفت من قواريرها
+    منذ آخر باب (لقطة بين طيران المفتاح وانفتاح الباب اعتُمدت فصارت ref بلا المفتاح): تُنسب إليها حين لا مفتاح محرَّراً في ref."""
+    rt, nt = ref["tubes"], st["tubes"]
+    freed = []
+    for a, t in enumerate(rt):
+        b = mp.get(a)
+        if b is None or not t.get("keys") or b >= len(nt):
+            continue
+        after = nt[b]
+        for p in t["keys"]:
+            try:
+                p = int(p)
+            except (TypeError, ValueError):
+                continue
+            if p not in (after.get("keys") or ()) and _released(after.get("layers") or [], p):
+                freed.append([int(round(t["x"])), int(round(t["y"])), p])
+    used = set(mp.values())
+    tubes = []
+    for k, t in enumerate(nt):
+        if k in used or t.get("blocked") or not t.get("layers"):
+            continue
+        d = {"x": int(round(t["x"])), "y": int(round(t["y"])), "cap": int(t["cap"]), "layers": list(t["layers"])}
+        if t.get("keys"):
+            d["keys"] = [int(p) for p in t["keys"]]
+        tubes.append(d)
+    if not freed and vanished:
+        freed = [list(k) for k in vanished]
+    if not freed or not tubes:
+        return None
+    return freed, tubes
+
+
+def _key_near(a, b) -> bool:
+    return a[2] == b[2] and abs(a[0] - b[0]) <= 24 and abs(a[1] - b[1]) <= 45
+
+
+def _match_tubes(old, new):
+    """قوارير الباب نفسه بالخانة والسعة (كل قارورة جديدة تطابق قارورة قديمة واحدة، والعدد نفسه): [(قديمة، جديدة)] أو None."""
+    if len(old) != len(new):
+        return None
+    pairs, used = [], set()
+    for t in new:
+        hit = None
+        for i, r in enumerate(old):
+            if i not in used and _pos_near(t["x"], t["y"], r) and int(r["cap"]) == int(t["cap"]):
+                hit = i
+                break
+        if hit is None:
+            return None
+        used.add(hit)
+        pairs.append((old[hit], t))
+    return pairs
+
+
+def merge_door(doors, keys, tubes):
+    """يضيف باباً إلى ذاكرة البداية. هوية الباب خانات قواريره (لا مفاتيحه: ملصق مفتاح لم يُقرأ في لقطة الباب، أو بابان في
+    لقطة واحدة، يعطيان مجموعة مفاتيح أخرى للقوارير نفسها): إن طابقت قواريره سجلاً بالخانة والسعة فهو «معروف»، ومفاتيحه التقاطع
+    بين القراءتين (أو الأحدث إن لم تتقاطعا) وطبقاته الأحدث حيث قُرئت (المخفي "?" لا يمحو لوناً معروفاً). وسجلّ قديم يتداخل معه
+    بالخانة ولا يطابقه يُحذف (القراءة الأحدث تصحّحه). يعيد "new" | "known" | "replaced" | "full"."""
+    for d in doors:
+        pairs = _match_tubes(d["tubes"], tubes)
+        if pairs is None:
+            continue
+        both = [list(k) for k in d["keys"] if any(_key_near(k, q) for q in keys)]
+        d["keys"] = both or [list(k) for k in keys]
+        for r, t in pairs:
+            if len(r["layers"]) == len(t["layers"]):
+                r["layers"] = [n if n != "?" else c for c, n in zip(r["layers"], t["layers"])]
+            else:
+                r["layers"] = list(t["layers"])
+            if t.get("keys"):
+                r["keys"] = [int(p) for p in t["keys"]]
+            else:
+                r.pop("keys", None)
+        return "known"
+    over = [d for d in doors if any(_pos_near(t["x"], t["y"], r) for t in tubes for r in d["tubes"])]
+    for d in over:
+        doors.remove(d)
+    if len(doors) >= SIG_DOORS_MAX:
+        return "full"
+    doors.append({"keys": [list(k) for k in keys], "tubes": [dict(t, layers=list(t["layers"])) for t in tubes]})
+    return "replaced" if over else "new"
+
+
+def _door_tube(doors, t):
+    """قارورة باب معروف في موضع القارورة t (والسعة نفسها)، أو None."""
+    for d in doors:
+        for r in d["tubes"]:
+            if _pos_near(t["x"], t["y"], r) and int(r["cap"]) == int(t["cap"]):
+                return r
+    return None
+
+
+def learn_door_layers(doors, st, revealed) -> int:
+    """طبقات مخفية انكشفت في قوارير أبواب معروفة تُكتب في ذاكرة الأبواب (المخفي لا يتحرّك: موضعه ثابت). يعيد عددها."""
+    n = 0
+    for (k, p, c) in revealed:
+        if not (0 <= k < len(st["tubes"])) or c == "?":
+            continue
+        r = _door_tube(doors, st["tubes"][k])
+        if r is not None and p < len(r["layers"]) and r["layers"][p] == "?":
+            r["layers"][p] = c
+            n += 1
+    return n
+
+
+def fill_from_doors(doors, st, idx, memory) -> int:
+    """قوارير باب انفتح الآن (`idx` بفهارس `st`): الطبقات المخفية التي عُرفت في محاولة سابقة تدخل الذاكرة. يعيد عددها."""
+    n = 0
+    for k in idx:
+        t = st["tubes"][k]
+        r = _door_tube(doors, t)
+        if r is None:
+            continue
+        for p, c in enumerate(r["layers"]):
+            if p < len(t["layers"]) and t["layers"][p] == "?" and c != "?" and (k, p) not in memory:
+                memory[(k, p)] = c
+                n += 1
+    return n
+
+
+def known_doors(st, doors):
+    """ذاكرة الأبواب -> مواصفات solver.plan(doors=...) بفهارس الحالة الحالية (بالموضع: الفهارس تتغيّر حين تنفتح الأبواب).
+    يُعتمد الباب ما دام مفتاحه ظاهراً على قارورته (لم يطر)، ومفتاح داخل قارورة باب مغلق معروف يفتح باباً آخر معروفاً (قوارير
+    الأبواب تُلحق بعد قوارير الحالة بترتيب المواصفات)."""
+    tubes = st["tubes"]
+    ext = [(t.get("x"), t.get("y"), set(t.get("keys") or ()), bool(t.get("blocked"))) for t in tubes]
+    out = []
+    pending = list(doors or ())
+    changed = True
+    while changed and pending:
+        changed = False
+        for d in list(pending):
+            # قارورة باب في خانة قارورة ظاهرة الآن أو قارورة باب قُبل قبله: سجلّ خاطئ أو باب انفتح، لا يدخل المسألة (لا قوارير وهمية)
+            if any(_pos_near(t["x"], t["y"], {"x": tx, "y": ty}) for t in d["tubes"] for tx, ty, _k, _b in ext):
+                pending.remove(d)
+                continue
+            idxs = []
+            for x, y, p in d["keys"]:
+                hit = None
+                for k, (tx, ty, ks, blk) in enumerate(ext):
+                    if not blk and p in ks and _pos_near(x, y, {"x": tx, "y": ty}):
+                        hit = k
+                        break
+                if hit is None:
+                    break
+                idxs.append((hit, p))
+            else:
+                for t in d["tubes"]:
+                    ext.append((t["x"], t["y"], set(t.get("keys") or ()), False))
+                out.append({"keys": idxs, "tubes": [dict(t, layers=list(t["layers"])) for t in d["tubes"]]})
+                pending.remove(d)
+                changed = True
+    return out
+
+
+def compact_tubes(st):
+    """الحالة مختصرة لحفظ «الطريق المسدود»: [[س، ص، سعة، [طبقات]]] للقوارير غير المغطّاة (كما في state_key)."""
+    return [[int(round(t["x"])), int(round(t["y"])), int(t["cap"]), list(t["layers"])]
+            for t in st["tubes"] if not t.get("blocked")]
+
+
+def fill_known(tubes_c, know):
+    """حالة مختصرة تُملأ «?» فيها بما عُرف بالموضع `know` = [(س، ص، سعة، طبقة، لون)] (المخفي لا يتحرّك: خانته وطبقته ثابتتان
+    ما دام مخفياً). يعيد الحالة (dict لـ state_key)."""
+    out = []
+    for x, y, cap, layers in tubes_c:
+        L = list(layers)
+        for p, c in enumerate(L):
+            if c != "?":
+                continue
+            for kx, ky, kc, kp, col in know:
+                if kp == p and kc == cap and abs(kx - x) <= 24 and abs(ky - y) <= 45:
+                    L[p] = col
+                    break
+        out.append({"x": x, "y": y, "cap": cap, "layers": L})
+    return {"tubes": out}
 
 
 class LevelCtx:
@@ -858,6 +1140,13 @@ class LevelCtx:
         self.plaster_seen = False      # قُرئ قالب جبس في هذه المرحلة (وسم «الجبس انكسر» لقارورة جديدة بلا قالب مقروء)
         self.badge = None              # نوع المرحلة من عنوانها: normal | hard | superhard
         self.play_ons = 0              # «Play On» (قارورة بالعملات) في هذه المحاولة
+        self.history = []              # [(state_key، state_key بالذاكرة، compact_tubes)] بالترتيب: آخرها «الطريق المسدود»
+        self.hist_base = 0             # عدد ما حُذف من أول history (الفهارس المطلقة)
+        self.door_idx = -1             # الفهرس المطلق لأول حالة بعد آخر باب انفتح (لا يدخل الطريق المسدود هي ولا ما قبلها)
+        self.vanished = []             # مفاتيح [س، ص، طبقة] اختفت من قواريرها (تحرّرت) منذ آخر باب: لنسبة الباب حين يظهر
+        self.sig_id = sig_id(n, self.start_sig)
+        self.sig_attempt = 0           # محاولات هذه البداية الفاشلة قبل هذه (منها التناوب والتنويع)
+        self.dead_noted = False        # سُجّل «الطريق المسدود» لهذه المحاولة
 
     def bad_for(self, key):
         return set(self.bad.get(key, set())) | self.ban
@@ -923,6 +1212,9 @@ class Bot:
         self.git_lock = threading.Lock()
         self.last_publish = time.time()
         self.memory_by_sig = {}        # ذاكرة الطبقات المكشوفة لكل مرحلة (تبقى بعد إعادتها)
+        self.sig_data = {}             # sig_id -> سجلّ البداية (new_sig_rec: المحاولات، الطريق المسدود، الأبواب، الذاكرة)
+        self.sig_mem = {}              # sig_id -> ذاكرة طبقات بدايتها (القاموس نفسه في memory_by_sig) للحفظ قبل التحديث
+        self.legacy_fail_levels = set()  # مراحل خسرها بوت قبل التحديث بكود بلا "sigs": لا تُعاد محاولته الحتمية الخاسرة
         self.airplane_on = None
         self.level_hint = None         # رقم المرحلة التالية كما قرأته الرؤية من زرّ الواجهة
         self.pub_ok = False
@@ -1326,10 +1618,34 @@ class Bot:
             tmp.write_text(json.dumps({
                 "t": time.time(), "level_fails": {str(k): int(v) for k, v in self.level_fails.items()},
                 "lives_until": float(self.lives_until), "last_refill_tap": float(self.last_refill_tap),
-                "refills": int(self.refills), "coins": self.coins}), encoding="utf-8")
+                "refills": int(self.refills), "coins": self.coins, "sigs": self.sigs_json()}), encoding="utf-8")
             os.replace(tmp, STATE_FILE)
         except (OSError, TypeError, ValueError) as e:
             self.log("تعذّر حفظ العدّادات قبل التحديث: %r" % e)
+
+    def sigs_json(self):
+        """سجلّات البدايات بصيغة JSON (ذاكرة الطبقات من sig_mem: مفاتيحها صفوف)."""
+        out = {}
+        for sid, rec in self.sig_data.items():
+            d = dict(rec)
+            mem = self.sig_mem.get(sid)
+            if mem is not None:
+                d["mem"] = [[k, p, c] for (k, p), c in sorted(mem.items())]
+            out[sid] = d
+        return out
+
+    def load_sigs(self, d) -> int:
+        """سجلّات البدايات من ملف الحالة؛ الملف القديم بلا "sigs" أو سجلّ تالف يُهمل بصمت."""
+        n = 0
+        sigs = d.get("sigs") if isinstance(d, dict) else None
+        if not isinstance(sigs, dict):
+            return 0
+        for sid, raw in list(sigs.items())[:SIG_MAX]:
+            rec = clean_sig_rec(raw)
+            if rec is not None and isinstance(sid, str):
+                self.sig_data[sid] = rec
+                n += 1
+        return n
 
     def load_counters(self, max_age=600.0) -> bool:
         """بعد «update» (--no-setup): عدّادات البوت السابق إن كان ملفها أحدث من 10 دقائق، ثم يُحذف (لا يُقرأ مرتين). أي خطأ
@@ -1356,9 +1672,16 @@ class Bot:
         self.lives_until, self.last_refill_tap, self.refills = lives_until, last_refill, refills
         if coins is not None:
             self.coins = coins
-        self.log("عدّادات ما قبل التحديث: «Give Up» لكل مرحلة %s، انتظار الأرواح %.0f ث، الرصيد %s"
+        try:
+            nsig = self.load_sigs(d)
+        except Exception:                               # noqa: BLE001
+            nsig = 0
+        if not isinstance(d.get("sigs"), dict):
+            # ملف من كود بلا ذاكرة البدايات: أول محاولة لكل بداية في هذه المراحل كانت ستكون الاستدعاء الحتمي نفسه الذي خسر
+            self.legacy_fail_levels = {n for n, v in self.level_fails.items() if v > 0}
+        self.log("عدّادات ما قبل التحديث: «Give Up» لكل مرحلة %s، انتظار الأرواح %.0f ث، الرصيد %s، ذاكرة %d بداية"
                  % (dict(self.level_fails) or "-", max(0.0, self.lives_until - time.time()),
-                    self.coins if self.coins is not None else "?"))
+                    self.coins if self.coins is not None else "?", nsig))
         return True
 
     def confirm_backup_dialog(self, tries=25):
@@ -1738,6 +2061,12 @@ class Bot:
         self.lv = LevelCtx(n, st, time.time())
         self.lv.badge = self.vis.badge(fr)
         self.lv.memory = self.memory_by_sig.setdefault(self.lv.start_sig, {})
+        rec = self.sig_rec(self.lv.sig_id, n)
+        if not self.lv.memory and rec.get("mem"):
+            for k, p, c in rec["mem"]:
+                self.lv.memory[(k, p)] = c
+        self.sig_mem[self.lv.sig_id] = self.lv.memory
+        self.lv.sig_attempt = rec["fails"]
         self.expect_new = False
         if n not in self.saved_starts:
             self.saved_starts.add(n)
@@ -1758,6 +2087,104 @@ class Bot:
                 "القالب %d ينكسر بامتلاء %s" % (p, "، ".join("القارورة %d" % k for k in ks) if ks else "جار لم ينكشف بعد")
                 for p, ks in sorted(br.items()))))
         self.log("حالة المرحلة %d: %s" % (n, json.dumps(compact_state(st), ensure_ascii=False)))
+        if rec["fails"] or rec["doors"]:
+            self.log("المرحلة %d: البداية نفسها للمرة %d (%s، %d حالة طريق مسدود، %d باب معروف، %d طبقة مخفية معروفة)"
+                     % (n, rec["fails"] + 1, "المفاتيح أولاً" if rec["fails"] % 2 == 0 else "بلا «المفاتيح أولاً»",
+                        len(rec["dead"]), len(rec["doors"]), len(self.lv.memory)))
+
+    def plan_params(self, lv, stp):
+        """وسائط solver.plan الخاصة بهذه البداية: keys_first بالتناوب (المحاولة الأولى «المفاتيح أولاً» كما كان)، وavoid = حالات
+        هذه المحاولة + الطريق المسدود المحفوظ، وdoors من ذاكرة الأبواب بفهارس الحالة الآن، وبذرة وتنويع بعدد المحاولات الفاشلة."""
+        rec = self.sig_data.get(lv.sig_id) or {}
+        att = lv.sig_attempt
+        dead = set(rec.get("dead") or ())
+        if rec.get("dead_st"):
+            # «?» في حالات الطريق المسدود صارت معروفة غالباً (طبقات الأبواب، وذاكرة البداية والمحاولة): الحلّال يراها ملوّنة
+            know = self.hidden_knowledge(lv, rec)
+            if know:
+                for tc in rec["dead_st"]:
+                    try:
+                        dead.add(solver.state_key(fill_known(tc, know)))
+                    except (TypeError, ValueError):
+                        continue
+        doors = known_doors(stp, rec["doors"]) if rec.get("doors") else []
+        return {"keys_first": att % 2 == 0,
+                "avoid": (lv.visited | dead) if dead else lv.visited,
+                "doors": doors or None,
+                "seed": None if att == 0 else (int(lv.sig_id.split(":")[1][:8], 16) + 7919 * att) & 0xFFFFFFFF,
+                "vary": att}
+
+    def hidden_knowledge(self, lv, rec):
+        """ما يُعرف من الطبقات المخفية بالموضع [(س، ص، سعة، طبقة، لون)]: ذاكرة البداية (بخانات البداية)، وذاكرة المحاولة (بخانات
+        اللوحة الآن؛ لا بعد الخلط: مواضعها تغيّرت)، وطبقات الأبواب المعروفة."""
+        out = []
+
+        def add(tubes, mem):
+            for (k, p), c in mem.items():
+                if 0 <= k < len(tubes) and c != "?":
+                    t = tubes[k]
+                    out.append((t["x"], t["y"], int(t["cap"]), p, c))
+        try:
+            add(lv.start_state["tubes"], self.memory_by_sig.get(lv.start_sig) or {})
+            if "shuffle" not in lv.boosters:
+                add(lv.last_state["tubes"], lv.memory or {})
+            for d in rec.get("doors") or ():
+                for r in d["tubes"]:
+                    for p, c in enumerate(r["layers"]):
+                        if c != "?":
+                            out.append((r["x"], r["y"], int(r["cap"]), p, c))
+        except (KeyError, TypeError, ValueError):
+            pass
+        return out
+
+    def sig_rec(self, sid, n):
+        """سجلّ البداية (يُنشأ إن لم يوجد)؛ لا تزيد البدايات على SIG_MAX (يُحذف الأقدم استعمالاً)."""
+        rec = self.sig_data.get(sid)
+        if rec is None:
+            rec = self.sig_data[sid] = new_sig_rec(n)
+            if n in self.legacy_fail_levels:
+                # تحديث ساخن من كود بلا "sigs" والمرحلة خسرت قبله: محاولتها السابقة غير محفوظة، فلا يُعاد خطّها الحتمي (المرحلة
+                # 124: البداية السماوية لُعبت ثلاث مرات بـ «المفاتيح أولاً» والبذرة نفسها حتى الانسداد نفسه)
+                rec["fails"] = 1
+                self.log("المرحلة %s: بداية بلا سجلّ بعد التحديث والمرحلة خسرت قبله (%d «Give Up»): تُعدّ محاولتها الثانية"
+                         % (n, self.level_fails.get(n, 0)))
+            while len(self.sig_data) > SIG_MAX:
+                old = min(self.sig_data, key=lambda k: self.sig_data[k].get("t", 0.0))
+                self.sig_data.pop(old, None)
+                self.sig_mem.pop(old, None)
+        rec["t"] = time.time()
+        return rec
+
+    def note_dead_end(self, lv):
+        """«Give Up»: محاولة فاشلة أخرى لهذه البداية، وآخر الحالات قبل الانسداد طريق لا يُعاد إليه في محاولاتها التالية."""
+        if lv.dead_noted:                      # مرة واحدة في المحاولة (النافذة قد تُقرأ مرتين)
+            return
+        lv.dead_noted = True
+        rec = self.sig_rec(lv.sig_id, lv.n)
+        rec["fails"] += 1
+        dead = rec["dead"]
+        dead_st = rec.setdefault("dead_st", [])
+        seen = set(dead)
+        added = 0
+        # الذيل بعد آخر باب انفتح: حالة انفتاح الباب وما قبلها ممرّ إجباري للخط كله (المرحلة 124: الانسداد بعد 4 حركات من الباب
+        # الثاني)، فمنعها يُسقط ذاكرة الأبواب من كل تخطيط قبله
+        h = lv.history
+        start = max(0, len(h) - DEAD_TAIL, lv.door_idx + 1 - lv.hist_base)
+        cut = start > max(0, len(h) - DEAD_TAIL)
+        for entry in h[start:]:
+            new = False
+            for sk in entry[:2]:
+                if sk not in seen:
+                    seen.add(sk)
+                    dead.append(sk)
+                    added += 1
+                    new = True
+            if new and len(entry) > 2 and entry[2] is not None:
+                dead_st.append(entry[2])
+        del dead[:-SIG_DEAD_MAX]
+        del dead_st[:-SIG_DEAD_MAX]
+        self.log("المرحلة %d: طريق مسدود محفوظ لهذه البداية (%d حالة جديدة%s، %d محفوظة، محاولاتها الفاشلة %d، أبواب معروفة %d)"
+                 % (lv.n, added, "، بعد آخر باب انفتح" if cut else "", len(dead), rec["fails"], len(rec["doors"])))
 
     def on_level(self, fr):
         st = self.vis.parse(fr)
@@ -1854,6 +2281,11 @@ class Bot:
             if verdict == "ok":
                 for (k, p, c) in revealed:
                     lv.memory[(k, p)] = c
+                rec = self.sig_data.get(lv.sig_id)
+                # لا بعد الخلط: ما ينكشف في خانة قارورة باب ليس طبقتها المخفية الأصلية (ولا يُصحَّح أبداً)
+                if (revealed and rec and rec["doors"] and "shuffle" not in lv.boosters
+                        and learn_door_layers(rec["doors"], st, revealed)):
+                    self.log("ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)")
             if verdict == "nochange" and retries < 1:
                 lv.pending = (prev, mv, expected, retries + 1)
                 time.sleep(0.6)
@@ -1898,10 +2330,17 @@ class Bot:
                      % (lv.n, "، ".join("القارورة %d (%d،%d) ← [%s]" % (k, st["tubes"][k]["x"], st["tubes"][k]["y"],
                                                                         ",".join(st["tubes"][k]["layers"])) for k in broke),
                         left))
+        self.track_vanished(lv, st)
         lv.last_state = st
         stp = with_memory(st, lv.memory)
         lv.visited.add(key)
         lv.visited.add(solver.state_key(stp))
+        entry = (key, solver.state_key(stp), compact_tubes(st))
+        if not lv.history or lv.history[-1][:2] != entry[:2]:
+            lv.history.append(entry)
+            if len(lv.history) > 64:
+                lv.hist_base += len(lv.history) - 64
+                del lv.history[:-64]
         if lv.badge is None:
             lv.badge = self.vis.badge(fr)
 
@@ -1950,21 +2389,49 @@ class Bot:
             # وكل «Give Up» في المرحلة نفسها يزيده (plan_boost)
             fails = self.level_fails.get(lv.n, 0)
             boost = plan_boost(lv.badge, fails)
-            # بعد 3 «Give Up» في المرحلة نفسها: محاولة بـ «المفاتيح أولاً» وأخرى بدونه بالتناوب (المرحلة 124: فتح الأبواب
-            # بأسرع طريق ثم الانسداد في كل محاولة)
-            keys_first = not (fails >= 3 and fails % 2 == 1)
-            lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), avoid=lv.visited,
-                                  time_limit=CFG["plan_sec"] * boost, max_nodes=int(40000 * boost), info=info,
-                                  keys_first=keys_first)
+            # الاستراتيجية بعدد محاولات هذه البداية الفاشلة (لا المرحلة كلها): «المفاتيح أولاً» وبدونه بالتناوب، وبذرة وكسر تعادل
+            # آخران في كل محاولة، وحالات الطريق المسدود السابق ممنوعة؛ والمحاولة الأولى لكل بداية كما كانت (المرحلة 124: البداية
+            # نفسها لُعبت ثلاث مرات بالخط نفسه وانسدّت في الموضع نفسه)
+            pp = self.plan_params(lv, stp)
+            doors = pp["doors"]
+            lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), time_limit=CFG["plan_sec"] * boost,
+                                  max_nodes=int(40000 * boost), info=info, **pp)
             lv.plan_key = key
             if lv.moves == 0 or not lv.plan or info.get("mode") not in ("pimc",):
-                self.log("خطة المرحلة %d: %d حركة (%s، %s ms)%s"
+                self.log("خطة المرحلة %d: %d حركة (%s، %s ms)%s%s"
                          % (lv.n, len(lv.plan), info.get("mode"), info.get("ms"),
+                            "، أبواب معروفة %d (%s)" % (len(doors), {
+                                "doors-full": "حل كامل", "hidden": "معرفة ناقصة: المنطق المعتاد",
+                                "none": "بحث الأبواب بلا حل: المنطق المعتاد"}.get(info.get("doors_res"), "-"))
+                            if doors else "",
                             "" if lv.plan else " — لا حركة مفيدة"))
         if not lv.plan:
             return self.stuck(fr, st, "لا خطة")
         i, j = lv.plan.pop(0)
         return self.do_move(stp, i, j)
+
+    @staticmethod
+    def track_vanished(lv, st):
+        """مفاتيح اختفت من قواريرها بين اللوحة السابقة وهذه (العدد نفسه والخانة نفسها) وقاعدتها متحقّقة: طارت إلى أقفالها، وقد
+        تُعتمد لقطة قبل انفتاح الباب فتصير الحالة المرجعية بلا المفتاح (door_record يستعملها حينئذ). ومفتاح عاد للقراءة يُحذف."""
+        old = lv.last_state["tubes"]
+        if len(old) != len(st["tubes"]):
+            return
+        for a, t in enumerate(old):
+            b = st["tubes"][a]
+            if not _near(t, b):
+                continue
+            for p in t.get("keys") or ():
+                try:
+                    kk = [int(round(t["x"])), int(round(t["y"])), int(p)]
+                except (TypeError, ValueError):
+                    continue
+                if p not in (b.get("keys") or ()) and _released(b.get("layers") or [], int(p)):
+                    if kk not in lv.vanished:
+                        lv.vanished.append(kk)
+            for p in b.get("keys") or ():
+                kk = [int(round(b["x"])), int(round(b["y"])), int(p)]
+                lv.vanished = [v for v in lv.vanished if not _key_near(v, kk)]
 
     def door_ref(self, st):
         """(الحالة المرجعية، المطابقة) إن كانت `st` هي الحالة السابقة (أو المتوقَّعة بعد الحركة المعلّقة) وقد ظهرت
@@ -1982,7 +2449,7 @@ class Bot:
                 return ref, mp
         return None
 
-    def door_opened(self, st, ref, mp):
+    def door_opened(self, st, ref, mp, record=True):
         """باب انفتح أثناء المحاولة: تُنقل ذاكرة الطبقات المكشوفة إلى الفهارس الجديدة (القوارير الجديدة تُدرج بين
         القديمة)، وتبقى المحاولة (الحركات والأدوات والوقت) بلا «إعادة من البداية»."""
         lv = self.lv
@@ -1999,6 +2466,9 @@ class Bot:
         lv.bad.clear()
         lv.last_state = st
         nk = sum(len(t.get("keys") or ()) for t in st["tubes"])
+        door_note = self.remember_door(ref, st, mp, record)
+        lv.vanished = []
+        lv.door_idx = lv.hist_base + len(lv.history)      # الحالة التالية في history هي ما بعد الباب
         # جبس انكسر وقالبه لم يُقرأ قبل ذلك (قارورة جديدة بين القديمة)، أو انكسر في خانته مع تغيّر آخر في اللوحة
         broke = [mp[k] for k, t in enumerate(ref["tubes"]) if k in mp and t.get("blocked") and t.get("cover") == "plaster"
                  and not st["tubes"][mp[k]].get("blocked")]
@@ -2023,9 +2493,40 @@ class Bot:
             self.log("المرحلة %d: قارورة مغطّاة عادت إلى القراءة (%s، %d → %d قارورة)؛ استمرار بلا إعادة"
                      % (lv.n, cover_summary({"tubes": [st["tubes"][k] for k in newk]}), old_n, len(st["tubes"])))
         else:
-            self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة"
-                     % (lv.n, old_n, len(st["tubes"]), len(mem), nk))
+            self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة%s"
+                     % (lv.n, old_n, len(st["tubes"]), len(mem), nk, door_note))
         self.log("حالة المرحلة %d بعد الباب: %s" % (lv.n, json.dumps(compact_state(st), ensure_ascii=False)))
+
+    def remember_door(self, ref, st, mp, record=True) -> str:
+        """ذاكرة الأبواب لهذه البداية: المفتاح الذي تحرّر (بموضع قارورته وطبقته) -> القوارير الجديدة كما قُرئت أول مرة؛ وطبقات
+        مخفية فيها عُرفت في محاولة سابقة تدخل ذاكرة هذه المحاولة. يعيد ملاحظة للسجل."""
+        lv = self.lv
+        rec = self.sig_data.get(lv.sig_id)
+        if rec is None:
+            return ""
+        if "shuffle" in lv.boosters:
+            return "، ذاكرة الأبواب متوقفة في هذه المحاولة (بعد الخلط)"
+        note = ""
+        try:
+            newk = [k for k in range(len(st["tubes"])) if k not in set(mp.values())]
+            got = door_record(ref, st, mp, lv.vanished) if record else None
+            if not record:
+                note = "، ذاكرة الأبواب: لا يُسجَّل الباب (مطابقة تقريبية)"
+            elif got:
+                keys, tubes = got
+                how = merge_door(rec["doors"], keys, tubes)
+                note = "، ذاكرة الأبواب: المفتاح %s ← %d قارورة (%s)" % (
+                    "، ".join("(%d،%d طبقة %d)" % tuple(k) for k in keys), len(tubes),
+                    {"new": "جديد", "known": "معروف", "replaced": "صحّح سجلاً قديماً", "full": "الذاكرة ممتلئة"}[how])
+            elif any(st["tubes"][k]["layers"] and not st["tubes"][k].get("blocked") for k in newk) and (
+                    ref.get("doors") or any(t.get("keys") for t in ref["tubes"])):
+                note = "، تعذّر نسب الباب إلى مفتاح (لا مفتاح محرَّر في اللوحة السابقة): لم يُسجَّل"
+            filled = fill_from_doors(rec["doors"], st, newk, lv.memory)
+            if filled:
+                note += "، %d طبقة مخفية معروفة من محاولة سابقة" % filled
+        except (KeyError, TypeError, ValueError, IndexError) as e:
+            note = "، تعذّرت ذاكرة الأبواب: %r" % (e,)
+        return note
 
     @staticmethod
     def beside_complete(ref, st, newk) -> bool:
@@ -2052,7 +2553,7 @@ class Bot:
                 ref, mp = lv.last_state, mp2
         self.log("المرحلة %d: لوحة أكبر لا تطابق ما قبلها تماماً (طوبقت %d من %d قارورة بالمحتوى والخانة)"
                  % (lv.n, len(mp), len(ref["tubes"])))
-        self.door_opened(st, ref, mp)
+        self.door_opened(st, ref, mp, record=False)    # المطابقة تقريبية: لا يُسجَّل في ذاكرة الأبواب
 
     def do_move(self, st, i, j):
         lv = self.lv
@@ -2155,7 +2656,9 @@ class Bot:
             reset = True
         elif "shuffle" not in lv.boosters and "shuffle" not in skip:
             lv.boosters.append("shuffle")
-            lv.memory.clear()                  # الخلط يغيّر مواضع الطبقات
+            # الخلط يغيّر مواضع الطبقات: ذاكرة جديدة لهذه المحاولة (ذاكرة البداية المحفوظة تبقى صحيحة لبدايتها ولا يدخلها ما
+            # ينكشف بعد الخلط)
+            lv.memory = {}
             tgt = self.shuffle_target(st)
             self.log("أداة: خلط ثم اختيار القارورة %s" % (tgt,))
             self.tap(bp["shuffle"])
@@ -2564,6 +3067,8 @@ class Bot:
         if n is not None:
             self.level_fails[n] += 1
             self.restart_n = n                 # ستُفتح المرحلة نفسها من جديد
+            if lv is not None and lv.n == n:
+                self.note_dead_end(lv)
             if self.level_fails[n] <= 3:
                 self.out.save_jpg("nomoves_L%03d_%d.jpg" % (n, self.level_fails[n]), fr.pil)
         else:

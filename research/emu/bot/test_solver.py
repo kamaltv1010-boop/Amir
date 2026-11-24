@@ -722,6 +722,175 @@ class TestPlaster(unittest.TestCase):
             self.assertEqual(mv, want, (ncol, nempty, seed))
 
 
+def _released(L, p):
+    return p >= len(L) or all(x == L[p] for x in L[p:])
+
+
+def play_with_door(base, key, door_tubes, use_doors, max_steps=60, tl=0.8):
+    """لعبة بباب واحد: قوارير الباب تظهر (في آخر القائمة) حين يتحرّر المفتاح (قاعدة اللعبة). البوت يخطّط ويطبّق حتى ينفتح
+    الباب أو تنتهي الخطة ثم يعيد التخطيط. use_doors: يعرف ما خلف الباب (محاولة سابقة للبداية نفسها). يعيد (حُلّت؟، الحركات)."""
+    tubes = [list(l) for l in base]
+    opened, visited, steps = False, set(), 0
+    while steps < max_steps:
+        st = mk([(4, l) for l in tubes])
+        if not opened:
+            st["tubes"][key[0]]["keys"] = [key[1]]
+        elif solver.is_solved(st):
+            return True, steps
+        visited.add(solver.state_key(st))
+        doors = None
+        if use_doors and not opened:
+            doors = [{"key": key, "tubes": [{"x": 0, "y": 0, "cap": 4, "layers": list(l)} for l in door_tubes]}]
+        mv, dt = timed_plan(st, avoid=visited, doors=doors, time_limit=tl, max_nodes=20000)
+        if not mv:
+            return False, steps
+        for (i, j) in mv:
+            st = solver.apply_move(st, i, j)
+            if st is None:
+                return False, steps
+            tubes = [list(t["layers"]) for t in st["tubes"]]
+            steps += 1
+            if not opened and _released(tubes[key[0]], key[1]):
+                opened = True
+                tubes += [list(l) for l in door_tubes]
+                break
+    return False, steps
+
+
+class TestDoors(unittest.TestCase):
+    """ذاكرة الأبواب (التشغيل 12، المرحلة 124): ما خلف الباب ثابت لكل بداية، فالمحاولة التالية تعرفه وتبحث في المسألة كلها."""
+    BASE = [["green", "yellow", "blue", "yellow"], ["yellow", "red", "blue", "red"], ["blue", "blue", "red", "red"], []]
+    KEY = (0, 2)
+    DOOR = [["green", "yellow", "green", "green"]]
+
+    def door_spec(self):
+        return [{"key": self.KEY, "tubes": [{"x": 0, "y": 0, "cap": 4, "layers": list(l)} for l in self.DOOR]}]
+
+    def test_doors_aware_plan_solves_where_keys_first_fails(self):
+        """«المفاتيح أولاً» يصبّ الأصفر في الفارغة الوحيدة فينفتح الباب واللغز الكامل بلا حل؛ ومع معرفة ما خلفه يُحلّ."""
+        st = mk([(4, l) for l in self.BASE])
+        st["tubes"][0]["keys"] = [2]
+        info = {}
+        self.assertEqual(solver.plan(st, info=info), [(0, 3)])
+        self.assertEqual(info["mode"], "key")
+        after = solver.apply_move(st, 0, 3)
+        full = mk([(4, t["layers"]) for t in after["tubes"]] + [(4, self.DOOR[0])])
+        self.assertIs(reference_solvable(full), False)          # فتح الباب بأسرع طريق خسارة مؤكّدة
+        ok, _ = play_with_door(self.BASE, self.KEY, self.DOOR, use_doors=False)
+        self.assertFalse(ok)
+        info = {}
+        mv = solver.plan(st, info=info, doors=self.door_spec())
+        self.assertEqual(info["mode"], "doors-full")
+        self.assertNotEqual(mv[0], (0, 3))
+        self.assertTrue(solver._DOOR_LINE[len(mv) - 1][1])     # الخطة تتوقف عند الحركة التي تفتح الباب
+        self.assertTrue(all(i < 4 and j < 4 for i, j in mv))   # بفهارس الحالة الظاهرة
+        ok, steps = play_with_door(self.BASE, self.KEY, self.DOOR, use_doors=True)
+        self.assertTrue(ok)
+        self.assertLessEqual(steps, 15)
+
+    def test_doors_fallback_unchanged(self):
+        """باب بمفتاح غير صالح (طبقة لا توجد): لا بحث أبواب، والمنطق المعتاد كما كان."""
+        st = mk([(4, l) for l in self.BASE])
+        st["tubes"][0]["keys"] = [2]
+        info = {}
+        mv = solver.plan(st, info=info, doors=[{"key": (3, 5), "tubes": [{"x": 0, "y": 0, "cap": 4, "layers": ["red"]}]}])
+        self.assertEqual((mv, info["mode"], info["doors"]), ([(0, 3)], "key", 0))
+        info = {}
+        solver.plan(st, info=info, doors=[])
+        self.assertNotIn("doors", info)
+
+    def test_hidden_layer_behind_door_falls_back(self):
+        """طبقة مخفية في قارورة الباب: المعرفة ناقصة، فلا بحث أبواب (لا خطة جشعة تأخذ مكان «المفاتيح أولاً» وPIMC) والخطة كما
+        كانت بلا أبواب تماماً."""
+        base = [["red", "blue", "red"], ["blue", "blue", "blue"], ["red", "red"], []]
+        st = mk([(4, l) for l in base])
+        st["tubes"][0]["keys"] = [1]
+        info0 = {}
+        want = solver.plan(st, info=info0)
+        info = {}
+        mv = solver.plan(st, info=info, doors=[{"key": (0, 1), "tubes": [
+            {"x": 0, "y": 0, "cap": 4, "layers": ["yellow", "?", "yellow"]}]}])
+        self.assertEqual((info["doors_res"], info["doors"]), ("hidden", 1))
+        self.assertEqual((mv, info["mode"]), (want, info0["mode"]))
+        # ومفتاح داخل قارورة الباب لا يُعرف بابه: كذلك
+        info = {}
+        mv = solver.plan(st, info=info, doors=[{"key": (0, 1), "tubes": [
+            {"x": 0, "y": 0, "cap": 4, "layers": ["yellow", "yellow", "yellow"], "keys": [0]}]}])
+        self.assertEqual((mv, info["doors_res"]), (want, "hidden"))
+
+    def test_invalid_spec_tubes_never_open(self):
+        """مواصفة مرفوضة (مفتاح على طبقة لا توجد) مع باب صالح: قواريرها لا تصير قوارير مفتوحة وهمية (لا حركة إليها)، والمسألة
+        ناقصة فالخطة كما كانت."""
+        st = mk([(4, l) for l in self.BASE])
+        st["tubes"][0]["keys"] = [2]
+        P = solver._Doors(st, self.door_spec() + [{"key": (3, 5), "tubes": [{"x": 0, "y": 0, "cap": 4, "layers": []},
+                                                                            {"x": 0, "y": 0, "cap": 4, "layers": []}]}])
+        self.assertEqual((len(P.specs), sorted(P.never)), (1, [5, 6]))
+        mask = P.settle(P.s0, (1 << len(P.keylist)) - 1)
+        self.assertTrue(P.all_open(mask))
+        self.assertTrue({5, 6} <= P.locked(mask))
+        self.assertTrue(all(i < 5 and j < 5 for i, j, _a in P.moves(P.s0, mask)))
+        self.assertFalse(P.complete(mask))
+        info = {}
+        mv = solver.plan(st, info=info, doors=self.door_spec() + [{"key": (3, 5), "tubes": [
+            {"x": 0, "y": 0, "cap": 4, "layers": []}, {"x": 0, "y": 0, "cap": 4, "layers": []}]}])
+        self.assertEqual((mv, info["doors_res"]), ([(0, 3)], "hidden"))
+
+    def test_dead_end_door_state_retried_without_avoid(self):
+        """«الطريق المسدود» يضمّ حالة يمرّ بها كل حلّ كامل (انفتاح الباب): يُعاد بحث الأبواب بدون avoid فلا تضيع المعرفة."""
+        st = mk([(4, l) for l in self.BASE])
+        st["tubes"][0]["keys"] = [2]
+        mv = solver.plan(st, doors=self.door_spec())
+        cur = st
+        avoid = set()
+        for m in mv:
+            cur = solver.apply_move(cur, *m)
+            avoid.add(solver.state_key(cur))
+        info = {}
+        mv2 = solver.plan(st, info=info, doors=self.door_spec(), avoid=avoid)
+        self.assertEqual(info["mode"], "doors-full")
+        self.assertTrue(mv2)
+
+    def test_l124_cyan_start_with_known_doors(self):
+        """بداية المرحلة 124 «السماوية» من سجل التشغيل 12 بالبابين المعروفين: فيهما «?» ومفاتيح لا يُعرف بابها، فلا بحث أبواب،
+        والخطة كما كانت بلا أبواب لكل keys_first (التنويع يبقى له أثره) وفي وقتها."""
+        start = {"tubes": [
+            {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan"]},
+            {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]},
+            {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]},
+            {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "cyan", "cyan"], "keys": [0]},
+            {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]}
+        doors = [{"key": (3, 0), "tubes": [
+                     {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]},
+                     {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}]},
+                 {"key": (4, 0), "tubes": [
+                     {"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "lavender"]},
+                     {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "orange", "cyan", "cyan"]}]}]
+        for kf in (True, False):
+            info0, info = {}, {}
+            want = solver.plan(start, info=info0, keys_first=kf, time_limit=LIMIT_S)
+            mv, dt = timed_plan(start, info=info, doors=doors, keys_first=kf, time_limit=LIMIT_S)
+            self.assertEqual((info["doors_res"], info["doors"], info["mode"]), ("hidden", 2, info0["mode"]))
+            self.assertLess(dt / 1000, LIMIT_S * 1.2)
+            self.assertIn(mv[0], solver.legal_moves(start))
+
+    def test_vary_and_seed(self):
+        """vary=0 كما كان تماماً؛ vary>0 يغيّر كسر التعادل (خطط مختلفة بين المحاولات) ويبقى الحل صحيحاً."""
+        firsts = set()
+        for seed in range(5):
+            st = random_puzzle(6, 2, 4400 + seed)
+            base = solver.plan(st, time_limit=3.0)
+            self.assertEqual(solver.plan(st, time_limit=3.0, vary=0, seed=None), base)
+            for v in (1, 2, 3):
+                mv = solver.plan(st, time_limit=3.0, vary=v, seed=11 * v)
+                if base:
+                    self.assertTrue(mv)
+                    self.assertTrue(solver.is_solved(run_moves(st, mv)))
+                    firsts.add((seed, tuple(mv[:3])))
+        self.assertGreater(len(firsts), 5)
+        self.assertIsNone(solver._TIE)                          # يعود بعد الاستدعاء
+
+
 def _summary():
     print("\n[solver tests] calls=%d max_plan_ms=%.0f plain=%s one_empty=%s tall8=%s hidden=%s"
           % (STATS["calls"], STATS["max_ms"], STATS.get("plain"), STATS.get("one_empty"),

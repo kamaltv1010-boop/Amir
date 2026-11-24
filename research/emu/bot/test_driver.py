@@ -2005,5 +2005,516 @@ class TestEmulatorWatchdog(unittest.TestCase):
         self.assertIn("لم يكمل إقلاعه", self.log())
 
 
+# ============================================================== ذاكرة كل بداية والأبواب (التشغيل 12، المرحلة 124)
+L124_START = [
+    {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan"]},
+    {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]},
+    {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]},
+    {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "cyan", "cyan"], "keys": [0]},
+    {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]
+# من سجل التشغيل 12 (23:03:39 و23:04:00): البداية «السماوية» بعد الباب الأول ثم الثاني
+L124_DOOR1 = [
+    {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]},
+    {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]},
+    {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]},
+    {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]},
+    {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]},
+    {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum"]},
+    {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]
+L124_DOOR2 = [
+    {"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "lavender"]},
+    {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "orange", "cyan", "cyan"]},
+    {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]},
+    {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]},
+    {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]},
+    {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "darkgreen"]},
+    {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]},
+    {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "plum", "plum"]},
+    {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}]
+
+
+def _cp(tubes):
+    return {"tubes": [dict(t, layers=list(t["layers"])) for t in tubes]}
+
+
+class TestDoorMemory(unittest.TestCase):
+    def test_door_record_from_l124_log(self):
+        """الباب الأول: الحركة (3، 0) تصبّ السماوي فيتحرّر مفتاح (304،743 طبقة 0) وتظهر قارورتان؛ والثاني من (372،743 طبقة 0).
+        بعد انفتاح الأول تتغيّر الفهارس (372 صارت 6) فيُطابق الباب الثاني بالموضع."""
+        start = _cp(L124_START)
+        ref1 = solver.apply_move(start, 3, 0)
+        st1 = _cp(L124_DOOR1)
+        mp1 = driver.door_map(ref1, st1)
+        self.assertIsNotNone(mp1)
+        keys1, tubes1 = driver.door_record(ref1, st1, mp1)
+        self.assertEqual(keys1, [[304, 743, 0]])
+        self.assertEqual([(t["x"], t["y"], t["layers"], t.get("keys")) for t in tubes1],
+                         [(98, 538, ["darkgreen", "?", "?", "lavender"], [0]),
+                          (167, 538, ["yellow", "purple", "brown", "darkgreen"], [1])])
+        # قبل الحركة التي حرّرت المفتاح الثاني: (6، 3) تصبّ الأخضر الداكن من (372،743)
+        pre2 = _cp(L124_DOOR1)
+        pre2["tubes"][3]["layers"] = ["purple", "orange", "darkgreen"]
+        pre2["tubes"][5]["layers"] = ["plum"] * 4
+        pre2["tubes"][6]["layers"] = ["cyan", "cyan", "darkgreen"]
+        ref2 = solver.apply_move(pre2, 6, 3)
+        st2 = _cp(L124_DOOR2)
+        mp2 = driver.door_map(ref2, st2)
+        keys2, tubes2 = driver.door_record(ref2, st2, mp2)
+        self.assertEqual(keys2, [[372, 743, 0]])
+        self.assertEqual([(t["x"], t["y"]) for t in tubes2], [(98, 332), (168, 332)])
+        doors = []
+        self.assertEqual(driver.merge_door(doors, keys1, tubes1), "new")
+        self.assertEqual(driver.merge_door(doors, keys2, tubes2), "new")
+        self.assertEqual(driver.merge_door(doors, [[304, 744, 0]], tubes1), "known")     # بكسل فرق في القراءة
+        self.assertEqual(len(doors), 2)
+        # محاولة جديدة بالبداية نفسها: البابان بفهارس البداية
+        kd = driver.known_doors(_cp(L124_START), doors)
+        self.assertEqual([d["keys"] for d in kd], [[(3, 0)], [(4, 0)]])
+        # بعد انفتاح الأول: مفتاحه طار، والثاني صار على القارورة 6
+        kd = driver.known_doors(_cp(L124_DOOR1), doors)
+        self.assertEqual([d["keys"] for d in kd], [[(6, 0)]])
+        self.assertEqual([t["y"] for t in kd[0]["tubes"]], [332, 332])
+        # بعد الاثنين: لا باب معروف مغلق
+        self.assertEqual(driver.known_doors(_cp(L124_DOOR2), doors), [])
+        # والحلّال يستقبلها، وفيها «?» ومفاتيح لا يُعرف بابها: المنطق المعتاد كما هو (والحركة الأولى قانونية بفهارس الحالة)
+        info = {}
+        mv = solver.plan(_cp(L124_START), info=info, doors=driver.known_doors(_cp(L124_START), doors))
+        self.assertEqual((info["doors_res"], info["doors"]), ("hidden", 2))
+        self.assertIn(mv[0], solver.legal_moves(_cp(L124_START)))
+
+    def test_no_record_without_freed_key(self):
+        """قارورة إضافية فارغة (أداة أو «Play On») ليست باباً: لا مفتاح تحرّر ولا قوارير بطبقات."""
+        a = _cp(L124_DOOR2)
+        b = _cp(L124_DOOR2 + [{"x": 440, "y": 743, "cap": 4, "layers": []}])
+        self.assertIsNone(driver.door_record(a, b, driver.door_map(a, b)))
+
+    def test_nested_door_by_position(self):
+        """مفتاح داخل قارورة باب مغلق معروف يفتح باباً آخر معروفاً: يُطابق بقوارير الباب الأول في القائمة الممتدّة."""
+        st = {"tubes": [{"x": 100, "y": 700, "cap": 4, "layers": ["blue", "red"], "keys": [0]},
+                        {"x": 170, "y": 700, "cap": 4, "layers": ["red", "red", "red"]},
+                        {"x": 240, "y": 700, "cap": 4, "layers": []}]}
+        doors = [{"keys": [[100, 700, 0]], "tubes": [{"x": 100, "y": 500, "cap": 4,
+                                                      "layers": ["yellow", "blue", "blue", "blue"], "keys": [0]}]},
+                 {"keys": [[100, 500, 0]], "tubes": [{"x": 170, "y": 500, "cap": 4, "layers": ["yellow"] * 3}]}]
+        kd = driver.known_doors(st, list(reversed(doors)))       # الترتيب في الذاكرة لا يهمّ
+        self.assertEqual([d["keys"] for d in kd], [[(0, 0)], [(3, 0)]])
+        info = {}
+        mv = solver.plan(st, info=info, doors=kd)
+        self.assertEqual(info["mode"], "doors-full")
+        self.assertEqual(mv, [(0, 1)])                          # تصبّ الأحمر فيتحرّر المفتاح: ينفتح الباب الأول
+        self.assertEqual(sum(1 for _m, o in solver._DOOR_LINE if o), 2)
+
+    def test_learn_and_fill_hidden_layers(self):
+        """طبقة مخفية انكشفت في قارورة باب تُكتب في ذاكرته، وفي المحاولة التالية تدخل ذاكرة الطبقات حين ينفتح الباب."""
+        doors = []
+        driver.merge_door(doors, [[304, 743, 0]], [dict(t, layers=list(t["layers"])) for t in L124_DOOR1[:2]])
+        st = _cp(L124_DOOR2)
+        self.assertEqual(driver.learn_door_layers(doors, st, [(2, 2, "brown"), (0, 2, "green")]), 1)
+        self.assertEqual(doors[0]["tubes"][0]["layers"], ["darkgreen", "?", "brown", "lavender"])
+        self.assertEqual(driver.learn_door_layers(doors, st, [(2, 2, "brown")]), 0)      # معروفة الآن
+        mem = {}
+        self.assertEqual(driver.fill_from_doors(doors, _cp(L124_DOOR1), [0, 1], mem), 1)
+        self.assertEqual(mem, {(0, 2): "brown"})
+
+
+class TestSignatureStrategy(DriverCase):
+    def lv_for(self, bot, n=124, tubes=L124_START):
+        st = _cp(tubes)
+        lv = driver.LevelCtx(n, st, 0.0)
+        rec = bot.sig_rec(lv.sig_id, n)
+        lv.sig_attempt = rec["fails"]
+        bot.lv = lv
+        return lv, rec
+
+    def test_alternation_per_signature(self):
+        """keys_first بالتناوب بعدد محاولات البداية نفسها لا بعدد «Give Up» في المرحلة؛ والأولى لكل بداية كما كانت."""
+        bot, _, _ = self.make()
+        bot.level_fails[124] = 5                        # الصيغة القديمة: 5 فردي ≥ 3 → بلا «المفاتيح أولاً»
+        lv, rec = self.lv_for(bot)
+        pp = bot.plan_params(lv, lv.start_state)
+        self.assertEqual((pp["keys_first"], pp["seed"], pp["vary"], pp["doors"]), (True, None, 0, None))
+        self.assertIs(pp["avoid"], lv.visited)
+        seeds = set()
+        for att, kf in ((1, False), (2, True), (3, False)):
+            rec["fails"] = att
+            lv2, _ = self.lv_for(bot)
+            pp = bot.plan_params(lv2, lv2.start_state)
+            self.assertEqual((pp["keys_first"], pp["vary"]), (kf, att))
+            seeds.add(pp["seed"])
+        self.assertEqual(len(seeds), 3)
+        # بداية أخرى للمرحلة نفسها: محاولتها الأولى كما كانت
+        other = [dict(t) for t in L124_START]
+        other[0] = dict(other[0], layers=["purple", "purple"])
+        lv3, rec3 = self.lv_for(bot, tubes=other)
+        self.assertNotEqual(lv3.sig_id, lv.sig_id)
+        self.assertEqual(rec3["fails"], 0)
+        self.assertTrue(bot.plan_params(lv3, lv3.start_state)["keys_first"])
+
+    def test_dead_end_remembered_and_avoided(self):
+        """«Give Up»: آخر الحالات قبل الانسداد تُحفظ للبداية، وتصل إلى الحلّال (avoid) في محاولتها التالية."""
+        bot, _, _ = self.make()
+        lv, rec = self.lv_for(bot)
+        cur = lv.start_state
+        for mv in [(3, 0), (1, 3), (4, 3)]:
+            cur = solver.apply_move(cur, *mv)
+            k = solver.state_key(cur)
+            lv.history.append((k, k))
+        for i in range(6):                              # حالات وهمية حتى يتجاوز الذيل خمس حالات
+            lv.history.append(((("x%d" % i,),), (("y%d" % i,),)))
+        bot.note_dead_end(lv)
+        self.assertEqual(rec["fails"], 1)
+        self.assertEqual(len(rec["dead"]), 2 * driver.DEAD_TAIL)
+        bot.note_dead_end(lv)                           # النافذة قُرئت مرتين: تُحسب مرة في المحاولة
+        lv2, _ = self.lv_for(bot)
+        self.assertEqual(lv2.sig_attempt, 1)
+        pp = bot.plan_params(lv2, lv2.start_state)
+        self.assertTrue(set(rec["dead"]) <= pp["avoid"])
+        self.assertFalse(pp["keys_first"])
+        self.assertIn("طريق مسدود محفوظ", self.log())
+        # الحدّ: لا يزيد الطريق المسدود على SIG_DEAD_MAX
+        for r in range(20):
+            lv.dead_noted = False
+            lv.history = [(((("z%d_%d" % (r, i)),),), ((("w%d_%d" % (r, i)),),)) for i in range(5)]
+            bot.note_dead_end(lv)
+        self.assertEqual(len(rec["dead"]), driver.SIG_DEAD_MAX)
+
+    def test_dead_states_change_the_plan(self):
+        """الحلّال لا يمرّ بحالة من الطريق المسدود ما دام له بديل."""
+        st = {"tubes": [{"x": 0, "y": 0, "cap": 4, "layers": l} for l in
+                        (["red", "blue"], ["blue", "red"], ["red", "blue"], ["blue", "red"], [], [])]}
+        mv = solver.plan(st)
+        first = solver.state_key(solver.apply_move(st, *mv[0]))
+        mv2 = solver.plan(st, avoid={first})
+        self.assertTrue(mv2)
+        self.assertNotEqual(solver.state_key(solver.apply_move(st, *mv2[0])), first)
+        cur = st
+        for m in mv2:
+            cur = solver.apply_move(cur, *m)
+        self.assertTrue(solver.is_solved(cur))
+
+    def test_sig_cap(self):
+        bot, _, _ = self.make()
+        for i in range(driver.SIG_MAX + 5):
+            self.clock.sleep(1)
+            bot.sig_rec("1:%04d" % i, 1)
+        self.assertEqual(len(bot.sig_data), driver.SIG_MAX)
+        self.assertNotIn("1:0000", bot.sig_data)          # الأقدم استعمالاً حُذف
+        self.assertIn("1:%04d" % (driver.SIG_MAX + 4), bot.sig_data)
+
+    def test_sigs_survive_hot_update_and_old_json_loads(self):
+        """سجلّات البدايات تُحفظ مع level_fails قبل التحديث الساخن وتُقرأ بعده؛ والملف القديم بلا "sigs" أو بسجلّ تالف يُقرأ."""
+        old_sf = driver.STATE_FILE
+        driver.STATE_FILE = Path(self.tmp.name) / "bot_state.json"
+        try:
+            bot, _, _ = self.make()
+            lv, rec = self.lv_for(bot)
+            bot.memory_by_sig[lv.start_sig] = bot.sig_mem[lv.sig_id] = {(1, 2): "brown"}
+            k = solver.state_key(lv.start_state)
+            lv.history = [(k, k)]
+            bot.note_dead_end(lv)
+            driver.merge_door(rec["doors"], [[304, 743, 0]], [dict(t, layers=list(t["layers"])) for t in L124_DOOR1[:2]])
+            bot.level_fails[124] = 1
+            bot.save_counters()
+            bot2, _, _ = self.make()
+            self.assertTrue(bot2.load_counters())
+            r2 = bot2.sig_data[lv.sig_id]
+            self.assertEqual((r2["n"], r2["fails"]), (124, 1))
+            self.assertEqual(r2["dead"], [k])                 # صفوف كما يعيدها state_key
+            self.assertEqual(r2["doors"][0]["keys"], [[304, 743, 0]])
+            self.assertEqual(r2["mem"], [[1, 2, "brown"]])
+            self.assertIn("ذاكرة 1 بداية", self.log())
+            # البداية نفسها بعد التحديث: محاولتها الثانية وذاكرة طبقاتها
+            fr = driver.Frame(Image.new("RGB", (473, 1000)))
+            bot2.new_level(fr, _cp(L124_START), n=124)
+            self.assertEqual(bot2.lv.sig_attempt, 1)
+            self.assertEqual(bot2.lv.memory, {(1, 2): "brown"})
+            self.assertIn("البداية نفسها للمرة 2", self.log())
+            # ملف قديم بلا الحقول الجديدة
+            driver.STATE_FILE.write_text(json.dumps({"t": self.clock.time(), "level_fails": {"124": 3},
+                                                     "lives_until": 0, "refills": 0, "coins": 70}), encoding="utf-8")
+            bot3, _, _ = self.make()
+            self.assertTrue(bot3.load_counters())
+            self.assertEqual((dict(bot3.level_fails), bot3.sig_data), ({124: 3}, {}))
+            # سجلّات تالفة تُهمل وحدها
+            driver.STATE_FILE.write_text(json.dumps({"t": self.clock.time(), "level_fails": {}, "sigs": {
+                "a": "bad", "b": {"n": "x"}, "c": {"n": 7, "fails": "2", "dead": [[[4, ["red"]]], "bad"],
+                                                    "doors": [{"keys": "bad"}, {"keys": [[1, 2, 0]], "tubes": [
+                                                        {"x": 1, "y": 2, "cap": 4, "layers": ["red"]}]}],
+                                                    "mem": [[0, 1, "red"], ["bad"]]}}}), encoding="utf-8")
+            bot4, _, _ = self.make()
+            self.assertTrue(bot4.load_counters())
+            self.assertEqual(list(bot4.sig_data), ["c"])
+            c = bot4.sig_data["c"]
+            self.assertEqual((c["fails"], c["dead"], len(c["doors"]), c["mem"]), (2, [((4, ("red",)),)], 1, [[0, 1, "red"]]))
+        finally:
+            driver.STATE_FILE = old_sf
+
+
+class TestDoorReviewFixes(DriverCase):
+    """إصلاحات مراجعة ذاكرة الأبواب (التشغيل 12)."""
+
+    def lv_for(self, bot, n=124, tubes=L124_START):
+        st = _cp(tubes)
+        lv = driver.LevelCtx(n, st, 0.0)
+        rec = bot.sig_rec(lv.sig_id, n)
+        lv.sig_attempt = rec["fails"]
+        bot.lv = lv
+        return lv, rec
+
+    def test_merge_door_identity_by_position(self):
+        """هوية الباب خانات قواريره: مفتاح زائد في قراءة لاحقة لا يصنع سجلاً ثانياً (والمفاتيح التقاطع)، وقراءة تتداخل مع سجلّ ولا
+        تطابقه تستبدله؛ وknown_doors يتجاهل سجلاً في خانة قارورة ظاهرة أو قارورة باب قُبل قبله."""
+        d1 = [dict(t, layers=list(t["layers"])) for t in L124_DOOR1[:2]]
+        doors = []
+        self.assertEqual(driver.merge_door(doors, [[304, 743, 0]], d1), "new")
+        d1b = [dict(t, layers=list(t["layers"])) for t in L124_DOOR1[:2]]
+        d1b[0]["layers"] = ["darkgreen", "green", "?", "lavender"]
+        self.assertEqual(driver.merge_door(doors, [[304, 743, 0], [372, 743, 0]], d1b), "known")
+        self.assertEqual(len(doors), 1)
+        self.assertEqual(doors[0]["keys"], [[304, 743, 0]])
+        self.assertEqual(doors[0]["tubes"][0]["layers"], ["darkgreen", "green", "?", "lavender"])
+        # بابان في لقطة واحدة (قوارير أكثر تتداخل مع السجلّ): القراءة الأحدث تحلّ محلّه
+        both = d1 + [dict(t, layers=list(t["layers"])) for t in L124_DOOR2[:2]]
+        self.assertEqual(driver.merge_door(doors, [[304, 743, 0], [372, 743, 0]], both), "replaced")
+        self.assertEqual((len(doors), len(doors[0]["tubes"])), (1, 4))
+        # ملف قديم فيه سجلّان للقوارير نفسها: الأول وحده يدخل المسألة
+        dup = [{"keys": [[304, 743, 0]], "tubes": d1}, {"keys": [[304, 743, 0], [372, 743, 0]], "tubes": d1b}]
+        self.assertEqual(len(driver.known_doors(_cp(L124_START), dup)), 1)
+        # سجلّ قارورته في خانة قارورة ظاهرة الآن: لا يدخل
+        bad = [{"keys": [[304, 743, 0]], "tubes": [{"x": 168, "y": 743, "cap": 4, "layers": ["red"] * 4}]}]
+        self.assertEqual(driver.known_doors(_cp(L124_START), bad), [])
+
+    def test_door_attributed_to_vanished_key(self):
+        """لقطة بين طيران المفتاح وانفتاح الباب اعتُمدت (اللوحة المرجعية بلا المفتاح): يُنسب الباب إلى المفتاح الذي اختفى منذ آخر
+        باب؛ وبلا ذلك يُقال في السجل إنه لم يُسجَّل."""
+        bot, _, _ = self.make()
+        lv, rec = self.lv_for(bot)
+        ref = solver.apply_move(_cp(L124_START), 3, 0)          # المفتاح ما زال مرسوماً
+        late = _cp(ref["tubes"])
+        late["tubes"][3].pop("keys")                            # طار ولم ينفتح الباب بعد
+        lv.last_state = ref
+        bot.track_vanished(lv, late)
+        self.assertEqual(lv.vanished, [[304, 743, 0]])
+        lv.last_state = late
+        st1 = _cp(L124_DOOR1)
+        mp = driver.door_map(late, st1)
+        self.assertIsNone(driver.door_record(late, st1, mp))
+        self.assertEqual(driver.door_record(late, st1, mp, lv.vanished)[0], [[304, 743, 0]])
+        lv.history = [("a", "a", None), ("b", "b", None)]
+        bot.door_opened(st1, late, mp)
+        self.assertEqual((len(rec["doors"]), rec["doors"][0]["keys"]), (1, [[304, 743, 0]]))
+        self.assertEqual((lv.vanished, lv.door_idx), ([], 2))
+        # مفتاح عاد للقراءة (ملصق فات لقطة) ليس محرَّراً
+        lv2, rec2 = self.lv_for(bot)
+        lv2.last_state = ref
+        bot.track_vanished(lv2, late)
+        lv2.last_state = late
+        bot.track_vanished(lv2, ref)
+        self.assertEqual(lv2.vanished, [])
+        bot.door_opened(st1, late, driver.door_map(late, st1))
+        self.assertIn("تعذّر نسب الباب إلى مفتاح", self.log())
+
+    def test_dead_tail_after_door_and_hidden_filled(self):
+        """الطريق المسدود: لا تدخله حالة انفتاح الباب ولا ما قبلها، و«?» في حالاته تُملأ بما عُرف بعدها (طبقات الباب) فيطابق
+        مفتاحها ما يراه الحلّال في المحاولة التالية."""
+        bot, _, _ = self.make()
+        lv, rec = self.lv_for(bot)
+        s0 = _cp(L124_START)
+        s1 = solver.apply_move(s0, 3, 0)
+        s2 = _cp(L124_DOOR1)                                    # بعد الباب
+        s3 = solver.apply_move(s2, 3, 5)
+        s4 = solver.apply_move(s3, 6, 5)
+        ent = lambda s: (solver.state_key(s), solver.state_key(s), driver.compact_tubes(s))
+        lv.history = [ent(s0), ent(s1)]
+        lv.door_idx = len(lv.history)
+        lv.history += [ent(s2), ent(s3), ent(s4)]
+        bot.note_dead_end(lv)
+        self.assertEqual(rec["dead"], [solver.state_key(s3), solver.state_key(s4)])
+        self.assertEqual(len(rec["dead_st"]), 2)
+        self.assertIn("بعد آخر باب انفتح", self.log())
+        # المحاولة التالية: طبقتا الباب عُرفتا (learn_door_layers)، والحلّال يرى s4 بهما
+        driver.merge_door(rec["doors"], [[304, 743, 0]], [dict(t, layers=list(t["layers"])) for t in L124_DOOR1[:2]])
+        rec["doors"][0]["tubes"][0]["layers"] = ["darkgreen", "green", "brown", "lavender"]
+        seen = _cp(s4["tubes"])
+        seen["tubes"][0]["layers"] = ["darkgreen", "green", "brown", "lavender"]
+        lv2, _ = self.lv_for(bot)
+        pp = bot.plan_params(lv2, lv2.start_state)
+        self.assertNotIn(solver.state_key(seen), set(rec["dead"]))
+        self.assertIn(solver.state_key(seen), pp["avoid"])
+        # والحفظ عبر التحديث الساخن
+        c = driver.clean_sig_rec(json.loads(json.dumps(rec)))
+        self.assertEqual(c["dead_st"], rec["dead_st"])
+
+    def test_legacy_hot_update_does_not_replay_lost_attempt(self):
+        """ملف عدّادات من كود بلا "sigs" والمرحلة خسرت قبله: أول محاولة لكل بداية فيها تُعدّ الثانية (لا الاستدعاء الحتمي الخاسر)."""
+        old_sf = driver.STATE_FILE
+        driver.STATE_FILE = Path(self.tmp.name) / "bot_state.json"
+        try:
+            fr = driver.Frame(Image.new("RGB", (473, 1000)))
+            driver.STATE_FILE.write_text(json.dumps({"t": self.clock.time(), "level_fails": {"124": 5},
+                                                     "lives_until": 0, "refills": 0, "coins": 70}), encoding="utf-8")
+            bot, _, _ = self.make()
+            self.assertTrue(bot.load_counters())
+            bot.new_level(fr, _cp(L124_START), n=124)
+            self.assertEqual(bot.lv.sig_attempt, 1)
+            self.assertFalse(bot.plan_params(bot.lv, bot.lv.start_state)["keys_first"])
+            self.assertIn("بداية بلا سجلّ بعد التحديث", self.log())
+            bot.new_level(fr, _cp(L124_DOOR2), n=125)          # مرحلة لم تخسر قبل التحديث: كما كانت
+            self.assertEqual(bot.lv.sig_attempt, 0)
+            # ملف بذاكرة البدايات (ولو فارغة): لا تعديل
+            driver.STATE_FILE.write_text(json.dumps({"t": self.clock.time(), "level_fails": {"124": 5}, "sigs": {}}),
+                                         encoding="utf-8")
+            bot2, _, _ = self.make()
+            self.assertTrue(bot2.load_counters())
+            bot2.new_level(fr, _cp(L124_START), n=124)
+            self.assertEqual(bot2.lv.sig_attempt, 0)
+        finally:
+            driver.STATE_FILE = old_sf
+
+    def test_shuffle_stops_door_learning(self):
+        """بعد الخلط: لا يُسجَّل باب ولا تُملأ ذاكرة منه، وذاكرة المحاولة لا تدخل معرفة الطريق المسدود."""
+        bot, _, _ = self.make()
+        lv, rec = self.lv_for(bot)
+        lv.boosters.append("shuffle")
+        ref = solver.apply_move(_cp(L124_START), 3, 0)
+        st1 = _cp(L124_DOOR1)
+        note = bot.remember_door(ref, st1, driver.door_map(ref, st1))
+        self.assertIn("بعد الخلط", note)
+        self.assertEqual(rec["doors"], [])
+        lv.memory = {(1, 0): "red"}
+        self.assertEqual(bot.hidden_knowledge(lv, rec), [])
+
+    def test_known_doors_with_blocked_tube_keeps_original_indices(self):
+        """مسألة معروفة كلها وقارورة مغطّاة قبل قارورة المفتاح: الحلّال يحذفها ويعيد الحركات بالفهارس الأصلية (_remap_doors)."""
+        base = [["green", "yellow", "blue", "yellow"], ["yellow", "red", "blue", "red"], ["blue", "blue", "red", "red"], []]
+        door = {"keys": [[100, 700, 2]], "tubes": [{"x": 100, "y": 500, "cap": 4, "layers": ["green", "yellow", "green", "green"]}]}
+        plain = {"tubes": [{"x": 100 + 70 * k, "y": 700, "cap": 4, "layers": list(l)} for k, l in enumerate(base)]}
+        plain["tubes"][0]["keys"] = [2]
+        want = solver.plan(plain, doors=driver.known_doors(plain, [door]))
+        cov = {"tubes": [{"x": 30, "y": 700, "cap": 4, "layers": [], "blocked": True, "cover": "curtain"}]
+               + [dict(t, layers=list(t["layers"])) for t in plain["tubes"]]}
+        kd = driver.known_doors(cov, [door])
+        self.assertEqual(kd[0]["keys"], [(1, 2)])
+        info = {}
+        mv = solver.plan(cov, info=info, doors=kd)
+        self.assertEqual(info["mode"], "doors-full")
+        self.assertEqual(mv, [(i + 1, j + 1) for i, j in want])
+
+
+class FixedDoorGame(DoorGame):
+    """مرحلة بباب مواضع قواريرها ثابتة (كاللعبة الحقيقية: القوارير خلف الباب تظهر في مكانه، والقديمة لا تتحرّك)، و«No Available
+    Moves» حين لا يبقى اللغز الكامل (مع ما خلف الباب) قابلاً للحل بعد ثلاث صبّات، ثم «Give Up» يعيد البداية نفسها."""
+    KIND = dict(FakeGame.KIND, nomoves="unknown")
+    POS = [(98, 743), (168, 743), (236, 743), (304, 743), (98, 538), (168, 538)]
+
+    def load(self, k):
+        super().load(k)
+        self.dead_pours = 0
+        self.dead_snaps = None
+
+    def snapshot(self):
+        # النافذة تظهر بعد لقطات قليلة (البوت يرى الباب منفتحاً أولاً كما في المرحلة 124)
+        if self.screen == "level" and self.dead_snaps is not None:
+            self.dead_snaps += 1
+            if self.dead_snaps > 3:
+                self.screen = "nomoves"
+                self.dead_snaps = None
+        return super().snapshot()
+
+    def layout(self):
+        shut = self.closed()
+        return [(-1000, -1000) if k in shut else self.POS[k] for k in range(len(self.truth))]
+
+    def pour(self, i, j):
+        ok = super().pour(i, j)
+        if ok:
+            import test_solver as T
+            full = T.mk([(c, list(t)) for c, t in zip(self.caps, self.truth)])
+            if not self.solved() and not T.reference_solvable(full):
+                self.dead_pours += 1
+                if (self.dead_pours >= 3 or not solver.legal_moves(self.visible())) and self.dead_snaps is None:
+                    self.dead_snaps = 0
+        return ok
+
+    def tap(self, x, y):
+        if self.screen == "nomoves":
+            if abs(x - 236) < 60 and abs(y - 700) < 40:
+                self.give_ups = getattr(self, "give_ups", 0) + 1
+                self.load(self.li)
+                self.screen = "level"
+            return
+        super().tap(x, y)
+
+
+class GiveUpVision(FakeVisionModule):
+    def find_give_up(self, arr):
+        return (236, 700) if self._snap(arr)["screen"] == "nomoves" else None
+
+    def booster_free(self, arr):
+        return [False, False, False]                  # الأدوات نفدت (ثمنها بالعملات)
+
+
+class TestDoorMemorySim(DriverCase):
+    def test_second_attempt_uses_door_memory(self):
+        """مرحلة بباب واحد: «المفاتيح أولاً» يصبّ الأصفر في الفارغة الوحيدة فينفتح الباب واللغز الكامل بلا حل («Give Up»).
+        المحاولة الثانية للبداية نفسها تعرف ما خلف الباب فتحلّ المسألة كلها أولاً (doors-full) وتفوز."""
+        lvl = ([4] * 5,
+               [["green", "yellow", "blue", "yellow"], ["yellow", "red", "blue", "red"], ["blue", "blue", "red", "red"], [],
+                ["green", "yellow", "green", "green"]],
+               [[False] * 4, [False] * 4, [False] * 4, [], [False] * 4],
+               [{"key": (0, 2), "tubes": [4]}])
+        game = FixedDoorGame([lvl], random.Random(2))
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(FakeDevice(game), driver.Vision(GiveUpVision(game), out), out, 600, git=False)
+        bot.loading_hashes, bot.daily_hashes, bot.nonet_hashes = [], [], []
+        for _ in range(40):
+            bot.run(max_iters=100)
+            if game.wins >= 1:
+                break
+        log = self.log()
+        self.assertEqual(game.wins, 1, log[-4000:])
+        self.assertEqual(getattr(game, "give_ups", 0), 1, log[-4000:])
+        self.assertIn("ذاكرة الأبواب: المفتاح (98،743 طبقة 2) ← 1 قارورة (جديد)", log)
+        self.assertIn("طريق مسدود محفوظ", log)
+        self.assertIn("البداية نفسها للمرة 2", log)
+        self.assertIn("(doors-full", log)
+        rec = next(iter(bot.sig_data.values()))
+        self.assertEqual((rec["fails"], len(rec["doors"])), (1, 1))
+
+    def test_hidden_door_layer_learned_then_known(self):
+        """طبقة مخفية في قارورة الباب تنكشف في المحاولة الأولى (فتُكتب في ذاكرة الباب) ثم «Give Up»؛ في الثانية المسألة الممتدّة
+        معروفة كلها فيُخطَّط لها كاملة (doors-full)، وحين ينفتح الباب تدخل الطبقة ذاكرة المحاولة قبل أن تنكشف (الحلّال يراها)."""
+        lvl = ([4] * 5,
+               [["green", "green", "yellow", "red"], ["yellow", "green", "red", "yellow"], ["red", "blue", "green", "red"], [],
+                ["blue", "blue", "blue", "yellow"]],
+               [[False] * 4, [False] * 4, [False] * 4, [], [False, False, True, False]],
+               [{"key": (0, 0), "tubes": [4]}])
+        game = FixedDoorGame([lvl], random.Random(2))
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        bot = driver.Bot(FakeDevice(game), driver.Vision(GiveUpVision(game), out), out, 600, git=False)
+        bot.loading_hashes, bot.daily_hashes, bot.nonet_hashes = [], [], []
+        snaps = []
+        orig = bot.remember_door
+
+        def spy(ref, st, mp, record=True):
+            note = orig(ref, st, mp, record)
+            k = next(i for i, t in enumerate(st["tubes"]) if t["y"] == 538)
+            snaps.append((st["tubes"][k]["layers"][2], bot.lv.memory.get((k, 2))))
+            return note
+        bot.remember_door = spy
+        for _ in range(40):
+            bot.run(max_iters=100)
+            if game.wins >= 1:
+                break
+        log = self.log()
+        self.assertEqual((game.wins, getattr(game, "give_ups", 0)), (1, 1), log[-4000:])
+        self.assertIn("ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف", log)
+        self.assertIn("(doors-full", log)
+        self.assertIn("1 طبقة مخفية معروفة من محاولة سابقة", log)
+        self.assertEqual(snaps, [("?", None), ("?", "blue")])
+        rec = next(iter(bot.sig_data.values()))
+        self.assertEqual(rec["doors"][0]["tubes"][0]["layers"], ["blue", "blue", "blue", "yellow"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
