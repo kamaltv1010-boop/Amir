@@ -42,3 +42,14 @@
 [04:30:47] الإعلان التجريبي: رجوع (6)
 [04:30:50] الإعلان التجريبي الأبيض باقٍ منذ 47 ثانية؛ إعادة تشغيل اللعبة
 [04:31:46] شاشة التحميل: انتظار بلا نقر
+[04:34:15] بداية المرحلة 127: 13 قارورة، سعات [(4, 6), (16, 1)]، مخفي 2، مغطّاة 6 (كيس 6)
+[04:34:15] حالة المرحلة 127: [{"x": 100, "y": 334, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 168, "y": 334, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 236, "y": 524, "cap": 16, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 334, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 372, "y": 334, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 99, "y": 539, "cap": 4, "layers": ["lavender", "purple", "lavender", "purple"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["purple", "purple", "lavender", "lavender"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["lavender", "cyan", "lavender", "yellow"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["yellow", "cyan", "cyan", "yellow"]}, {"x": 100, "y": 744, "cap": 4, "layers": [], "blocked": "bag"}, {"x": 168, "y": 744, "cap": 4, "layers": ["?", "yellow", "lavender", "darkgreen"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["?", "cyan", "red", "orange"]}, {"x": 372, "y": 744, "cap": 4, "layers": [], "blocked": "bag"}]
+[04:34:15] خطة المرحلة 127: 12 حركة (reveal، 31.4 ms)
+[04:34:41] الحالة بعد (5, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[04:34:42] خطة المرحلة 127: 1 حركة (reveal، 72.4 ms)
+[04:34:46] خطة المرحلة 127: 7 حركة (reveal، 41.4 ms)
+[04:35:21] انتهى التحميل بعد 215 ثانية
+[04:35:21] اللعبة ليست في الواجهة (mCurrentFocus=Window{d2d41c9 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[04:36:12] شاشة التحميل: انتظار بلا نقر
+[04:37:36] شاشة جديدة لم تُرَ من قبل: new_010_lives.jpg
+[04:37:36] نافذة «More Lives» (الرصيد 170 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
