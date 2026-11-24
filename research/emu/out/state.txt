@@ -1,10 +1,10 @@
 done 43
 الحالة: يلعب
-مراحل مكتملة: 1
-الوقت: 15 دقيقة من 300
-آخر شاشة: level
-الشاشات: {'button': 4, 'level': 84, 'unknown': 47}
-صور محفوظة: 8/900، شاشات جديدة: 3
-المرحلة الحالية: 143 (حركات 20، مخفي 2، إخفاقات 0، أدوات -، 1.6 دقيقة)
-الحالة المقروءة: [blue,blue,blue,blue]/4 [green,cyan,cyan,cyan]/4 []/4 [brown,brown,brown,brown]/4 [lavender]/4 [?,?,yellow,yellow]/4 [cyan,green,green]/4 [purple,purple,purple,purple]/4 [orange,orange,orange]/4 [pink,pink,pink]/4{وسم:pink} [red,red,red,red]/4{وسم:red} [lavender,lavender,lavender]/4{وسم:lavender} [yellow,yellow,green]/4{وسم:yellow}
+مراحل مكتملة: 2
+الوقت: 20 دقيقة من 300
+آخر شاشة: unknown
+الشاشات: {'button': 7, 'level': 96, 'unknown': 69}
+صور محفوظة: 12/900، شاشات جديدة: 6
+المرحلة الحالية: 143 (حركات 29، مخفي 0، إخفاقات 0، أدوات -، 6.9 دقيقة)
+الحالة المقروءة: [blue,blue,blue,blue]/4 [green,green,green,green]/4 []/4 [brown,brown,brown,brown]/4 []/4 []/4 [cyan,cyan,cyan,cyan]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4 [pink,pink,pink,pink]/4{وسم:pink} [red,red,red,red]/4{وسم:red} [lavender,lavender,lavender,lavender]/4{وسم:lavender} [yellow,yellow,yellow,yellow]/4{وسم:yellow}
 العملات: ?، «Give Up» لكل مرحلة: -
