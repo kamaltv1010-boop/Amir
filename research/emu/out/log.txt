@@ -831,3 +831,59 @@
 [18:00:23] المرحلة 139 عالقة (3 إخفاقات متتالية): [green,mint,red,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 [cyan,cyan,cyan]/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
 [18:00:23] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
 [18:00:29] خطة المرحلة 139: 6 حركة (astar، 0.8 ms)
+[18:00:46] المرحلة 139 أُعيدت من البداية (العنوان نفسه، ذاكرة 0 طبقة مكشوفة)
+[18:01:02] بداية المرحلة 139 (صعبة جداً): 15 قارورة، سعات [(4, 12), (10, 1), (11, 2)]، مخفي 0
+[18:01:02] وسوم المرحلة 139 («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): القارورة 9: plum، القارورة 14: mint
+[18:01:02] حالة المرحلة 139: [{"x": 66, "y": 438, "cap": 11, "layers": ["green", "mint", "red", "cyan", "c_22_6_2", "c_23_7_1", "cyan", "cyan", "cyan"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["darkgreen", "darkgreen", "darkgreen", "darkgreen"]}, {"x": 202, "y": 440, "cap": 11, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "c_03_6_7"]}, {"x": 270, "y": 423, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 406, "y": 336, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 134, "y": 542, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 338, "y": 542, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 406, "y": 540, "cap": 4, "layers": []}, {"x": 66, "y": 747, "cap": 4, "layers": ["plum", "plum", "plum", "plum"], "accept": "plum"}, {"x": 134, "y": 746, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 745, "cap": 4, "layers": []}, {"x": 338, "y": 746, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 406, "y": 747, "cap": 4, "layers": ["mint", "mint", "mint"], "accept": "mint"}]
+[18:01:02] خطة المرحلة 139: 0 حركة (progress-none، 0.7 ms) — لا حركة مفيدة
+[18:01:02] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 []/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
+[18:01:02] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[18:01:07] خطة المرحلة 139: 0 حركة (progress-none، 0.8 ms) — لا حركة مفيدة
+[18:01:07] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 []/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
+[18:01:07] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[18:01:13] خطة المرحلة 139: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[18:01:13] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 []/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
+[18:01:13] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[18:01:18] خطة المرحلة 139: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[18:01:18] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 []/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
+[18:01:18] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:01:18] حركة عشوائية (2, 8) (1)
+[18:01:30] لا تقدّم بعد الحركة (2, 8) (إخفاق 1)
+[18:01:30] خطة المرحلة 139: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[18:01:30] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 []/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
+[18:01:30] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:01:30] حركة عشوائية (14, 12) (2)
+[18:01:37] خطة المرحلة 139: 0 حركة (progress-none، 1.0 ms) — لا حركة مفيدة
+[18:01:37] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 []/4{وسم:mint}
+[18:01:37] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:01:37] حركة عشوائية (3, 8) (3)
+[18:01:49] لا تقدّم بعد الحركة (3, 8) (إخفاق 1)
+[18:01:49] خطة المرحلة 139: 0 حركة (progress-none، 1.5 ms) — لا حركة مفيدة
+[18:01:49] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 []/4{وسم:mint}
+[18:01:49] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:01:49] حركة عشوائية (3, 8) (4)
+[18:02:01] لا تقدّم بعد الحركة (3, 8) (إخفاق 1)
+[18:02:01] خطة المرحلة 139: 0 حركة (progress-none، 1.2 ms) — لا حركة مفيدة
+[18:02:01] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 []/4{وسم:mint}
+[18:02:01] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:02:01] حركة عشوائية (2, 8) (5)
+[18:02:13] لا تقدّم بعد الحركة (2, 8) (إخفاق 1)
+[18:02:13] خطة المرحلة 139: 0 حركة (progress-none، 1.0 ms) — لا حركة مفيدة
+[18:02:13] المرحلة 139 عالقة (لا خطة): [green,mint,red,cyan,c_22_6_2,c_23_7_1,cyan,cyan,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 []/4{وسم:mint}
+[18:02:13] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:02:13] حركة عشوائية (0, 8) (6)
+[18:02:30] المرحلة 139 أُعيدت من البداية (العنوان نفسه، ذاكرة 0 طبقة مكشوفة)
+[18:02:46] بداية المرحلة 139 (صعبة جداً): 15 قارورة، سعات [(4, 12), (10, 1), (11, 2)]، مخفي 0
+[18:02:46] وسوم المرحلة 139 («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): القارورة 9: plum، القارورة 14: mint
+[18:02:46] حالة المرحلة 139: [{"x": 66, "y": 438, "cap": 11, "layers": ["green", "mint", "red", "cyan"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["darkgreen", "darkgreen", "darkgreen", "darkgreen"]}, {"x": 202, "y": 440, "cap": 11, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "c_03_6_7"]}, {"x": 270, "y": 423, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 406, "y": 336, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 134, "y": 542, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 338, "y": 542, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 406, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["plum", "plum", "plum", "plum"], "accept": "plum"}, {"x": 134, "y": 746, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["mint", "mint", "mint"]}, {"x": 338, "y": 746, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 406, "y": 747, "cap": 4, "layers": [], "accept": "mint"}]
+[18:02:46] خطة المرحلة 139: 5 حركة (astar، 0.7 ms)
+[18:02:58] لا تقدّم بعد الحركة (0, 8) (إخفاق 1)
+[18:02:58] القارورة 8 مرفوعة؛ نقرة لإنزالها
+[18:03:18] نسخة احتياطية لبيانات اللعبة: 72254 ك.ب (9 مرحلة مكتملة)
+[18:03:20] انتهى التحميل بعد 2668 ثانية
+[18:03:20] إعلان بملء الشاشة: رجوع (1)
+[18:03:52] شاشة التحميل: انتظار بلا نقر
+[18:05:37] المرحلة 139 أُعيدت من البداية (العنوان نفسه، ذاكرة 0 طبقة مكشوفة)
+[18:05:44] بداية المرحلة 139 (صعبة جداً): 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[18:05:44] حالة المرحلة 139: [{"x": 66, "y": 336, "cap": 4, "layers": ["pink", "green", "blue", "lavender"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["green", "orange", "mint", "brown"]}, {"x": 202, "y": 431, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["yellow", "lavender", "cyan", "cyan"], "keys": [0]}, {"x": 134, "y": 540, "cap": 4, "layers": ["purple", "brown", "yellow", "cyan"]}]
+[18:05:44] خطة المرحلة 139: 2 حركة (key، 0.2 ms)

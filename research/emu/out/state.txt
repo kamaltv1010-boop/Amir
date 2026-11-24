@@ -1,10 +1,10 @@
 done 43
 الحالة: يلعب
 مراحل مكتملة: 9
-الوقت: 134 دقيقة من 300
+الوقت: 139 دقيقة من 300
 آخر شاشة: level
-الشاشات: {'button': 39, 'level': 1612, 'unknown': 470, 'close': 7}
-صور محفوظة: 111/900، شاشات جديدة: 29
-المرحلة الحالية: 139 صعبة جداً (حركات 0، مخفي 0، إخفاقات 0، أدوات -، 0.9 دقيقة)
-الحالة المقروءة: [green,mint,red,cyan]/11 [darkgreen,darkgreen,darkgreen,darkgreen]/4 [orange,orange,orange,orange,orange,orange,orange,orange,orange,orange,c_03_6_7]/11 [green,green,green,green,green,green,green,green,green]/10 [brown,brown,brown,brown]/4 [red,red,red]/4 [blue,blue,blue,blue]/4 [pink,pink,pink,pink]/4 []/4 [plum,plum,plum,plum]/4{وسم:plum} [yellow,yellow,yellow,yellow]/4 [purple,purple,purple,purple]/4 [cyan,cyan,cyan]/4 [lavender,lavender,lavender,lavender]/4 [mint,mint,mint]/4{وسم:mint}
+الشاشات: {'button': 41, 'level': 1695, 'unknown': 495, 'close': 7}
+صور محفوظة: 115/900، شاشات جديدة: 29
+المرحلة الحالية: 139 صعبة جداً (حركات 0، مخفي 0، إخفاقات 0، أدوات -، 0.0 دقيقة)
+الحالة المقروءة: [pink,green,blue,lavender]/4 [green,orange,mint,brown]/4 [cyan,cyan,cyan,cyan]/10 [lavender,lavender,lavender,lavender]/10 [yellow,lavender,cyan,cyan]/4 [purple,brown,yellow,cyan]/4
 العملات: 540، «Give Up» لكل مرحلة: {137: 2}
