@@ -252,3 +252,24 @@
 [12:47:07] انتظار الأرواح: باقي 1 دقيقة قبل زرّ المرحلة
 [12:47:59] نافذة «More Lives» (الرصيد 310 أقل من 900): إغلاق بـ X وانتظار 11.9 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
 [12:53:05] انتظار الأرواح: باقي 7 دقيقة قبل زرّ المرحلة
+[12:58:08] انتظار الأرواح: باقي 2 دقيقة قبل زرّ المرحلة
+[13:00:01] خطة المرحلة 130: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[13:00:01] المرحلة 130 عالقة (لا خطة): [blue,red,pink,blue]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,yellow,orange,red]/4 [orange,yellow,purple,orange]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,lavender,purple,red]/4 [green,purple,yellow,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,orange,red,pink]/4 [blue,green,blue,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [pink,yellow,pink,purple]/4
+[13:00:01] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[13:00:01] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[13:00:10] خطة المرحلة 130: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[13:00:10] المرحلة 130 عالقة (لا خطة): [blue,red,pink,blue]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,yellow,orange,red]/4 [orange,yellow,purple,orange]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,lavender,purple,red]/4 [green,purple,yellow,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,orange,red,pink]/4 [blue,green,blue,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [pink,yellow,pink,purple]/4
+[13:00:10] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[13:00:10] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[13:00:18] خطة المرحلة 130: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[13:00:18] المرحلة 130 عالقة (لا خطة): [blue,red,pink,blue]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,yellow,orange,red]/4 [orange,yellow,purple,orange]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,lavender,purple,red]/4 [green,purple,yellow,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,orange,red,pink]/4 [blue,green,blue,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [pink,yellow,pink,purple]/4
+[13:00:18] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[13:00:18] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[13:00:26] خطة المرحلة 130: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[13:00:26] المرحلة 130 عالقة (لا خطة): [blue,red,pink,blue]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,yellow,orange,red]/4 [orange,yellow,purple,orange]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,lavender,purple,red]/4 [green,purple,yellow,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [lavender,orange,red,pink]/4 [blue,green,blue,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [pink,yellow,pink,purple]/4
+[13:00:26] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[13:00:26] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[13:00:26] الرجوع لم يُعِد المرحلة 130 (4 محاولات)؛ إعادة تشغيل اللعبة
+[13:00:55] التحميل طال أكثر من 12 دقيقة؛ إعادة تشغيل اللعبة
+[13:01:23] شاشة التحميل: انتظار بلا نقر
+[13:02:19] نافذة «More Lives» (الرصيد 310 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
