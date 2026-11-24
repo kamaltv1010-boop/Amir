@@ -887,3 +887,56 @@
 [18:05:44] بداية المرحلة 139 (صعبة جداً): 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
 [18:05:44] حالة المرحلة 139: [{"x": 66, "y": 336, "cap": 4, "layers": ["pink", "green", "blue", "lavender"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["green", "orange", "mint", "brown"]}, {"x": 202, "y": 431, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["yellow", "lavender", "cyan", "cyan"], "keys": [0]}, {"x": 134, "y": 540, "cap": 4, "layers": ["purple", "brown", "yellow", "cyan"]}]
 [18:05:44] خطة المرحلة 139: 2 حركة (key، 0.2 ms)
+[18:05:51] الحركة (4, 3) تحرّر مفتاحاً؛ انتظار الباب
+[18:06:00] المرحلة 139: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (66،540 طبقة 0) ← 3 قارورة (جديد)
+[18:06:00] حالة المرحلة 139 بعد الباب: [{"x": 66, "y": 336, "cap": 4, "layers": ["pink", "green", "blue", "lavender"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["green", "orange", "mint", "brown"]}, {"x": 202, "y": 431, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["yellow"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["purple", "brown", "yellow", "cyan"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["darkgreen", "orange", "orange", "plum"], "accept": "plum"}, {"x": 134, "y": 745, "cap": 4, "layers": ["?", "blue", "?", "purple"], "keys": [1]}, {"x": 202, "y": 745, "cap": 4, "layers": ["cyan", "lavender", "lavender", "cyan"], "keys": [1]}]
+[18:06:00] خطة المرحلة 139: 1 حركة (key، 0.2 ms)
+[18:06:02] الحركة (8, 2) تحرّر مفتاحاً؛ انتظار الباب
+[18:06:09] المرحلة 139: قوارير جديدة (باب انفتح؟ 9 → 12 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (202،745 طبقة 1) ← 3 قارورة (جديد)
+[18:06:09] حالة المرحلة 139 بعد الباب: [{"x": 66, "y": 336, "cap": 4, "layers": ["pink", "green", "blue", "lavender"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["green", "orange", "mint", "brown"]}, {"x": 202, "y": 431, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 270, "y": 423, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["yellow"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["purple", "brown", "yellow", "cyan"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["darkgreen", "orange", "orange", "plum"], "accept": "plum"}, {"x": 134, "y": 745, "cap": 4, "layers": ["?", "blue", "?", "purple"], "keys": [1]}, {"x": 202, "y": 745, "cap": 4, "layers": ["cyan", "lavender", "lavender"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["darkgreen", "green", "brown", "lavender"]}, {"x": 338, "y": 745, "cap": 4, "layers": ["?", "red", "?", "plum"], "keys": [1]}, {"x": 406, "y": 745, "cap": 4, "layers": ["blue", "red", "red", "mint"], "accept": "mint"}]
+[18:06:09] خطة المرحلة 139: 3 حركة (key، 0.8 ms)
+[18:06:23] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:06:23] خطة المرحلة 139: 3 حركة (key، 0.9 ms)
+[18:06:36] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:06:36] خطة المرحلة 139: 5 حركة (progress، 41.0 ms)
+[18:06:44] خطة المرحلة 139: 3 حركة (progress، 8.9 ms)
+[18:06:56] خطة المرحلة 139: 0 حركة (progress-none، 2.9 ms) — لا حركة مفيدة
+[18:06:56] المرحلة 139 عالقة (لا خطة): [pink,green,blue]/4 [green,orange,mint,mint]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/10 [plum,plum]/4 [purple,brown,yellow,yellow]/4 [darkgreen,orange,orange]/4{وسم:darkgreen} [?,blue,yellow]/4 [purple]/4 [darkgreen,green,brown,brown]/4 [?,red,green]/4 [blue,red,red]/4{وسم:blue}
+[18:06:56] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[18:06:56] حركة عشوائية (5, 7) (1)
+[18:07:01] شاشة جديدة لم تُرَ من قبل: new_030_unknown.jpg
+[18:07:01] انتهى التحميل بعد 188 ثانية
+[18:07:01] نافذة «No Available Moves» في المرحلة 139: «Give Up» (الرصيد 580 أقل من 900)
+[18:07:01] المرحلة 139: طريق مسدود محفوظ لهذه البداية (5 حالة جديدة، 5 محفوظة، محاولاتها الفاشلة 1، أبواب معروفة 2)
+[18:07:05] شاشة جديدة لم تُرَ من قبل: new_031_close.jpg
+[18:07:19] بداية المرحلة 139 (صعبة جداً): 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[18:07:19] حالة المرحلة 139: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "pink", "plum", "green"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "plum", "purple", "red"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 270, "y": 422, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "yellow", "brown"], "keys": [0]}, {"x": 134, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "orange", "cyan"]}]
+[18:07:19] خطة المرحلة 139: 1 حركة (key، 0.1 ms)
+[18:07:21] الحركة (4, 2) تحرّر مفتاحاً؛ انتظار الباب
+[18:07:27] المرحلة 139: قوارير جديدة (باب انفتح؟ 6 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (66،540 طبقة 0) ← 3 قارورة (جديد)
+[18:07:27] حالة المرحلة 139 بعد الباب: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "pink", "plum", "green"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "plum", "purple", "red"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 422, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "orange", "cyan"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["orange", "red", "red", "purple"], "accept": "purple"}, {"x": 134, "y": 745, "cap": 4, "layers": ["?", "blue", "?", "lavender"], "keys": [1]}, {"x": 202, "y": 745, "cap": 4, "layers": ["mint", "plum", "lavender", "blue"]}]
+[18:07:27] خطة المرحلة 139: 2 حركة (key، 0.2 ms)
+[18:07:36] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:07:36] خطة المرحلة 139: 1 حركة (key، 0.1 ms)
+[18:07:38] الحركة (7, 2) تحرّر مفتاحاً؛ انتظار الباب
+[18:07:44] المرحلة 139: قوارير جديدة (باب انفتح؟ 9 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (134،745 طبقة 1) ← 2 قارورة (جديد)
+[18:07:44] حالة المرحلة 139 بعد الباب: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "pink", "plum", "green"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "plum", "purple", "red"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 422, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["lavender"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "orange", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "brown", "green", "pink"], "keys": [0]}, {"x": 406, "y": 540, "cap": 4, "layers": ["?", "blue", "?", "brown"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["orange", "red", "red", "purple"], "accept": "purple"}, {"x": 134, "y": 745, "cap": 4, "layers": ["?", "blue"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["mint", "plum", "lavender", "blue"]}]
+[18:07:45] خطة المرحلة 139: 1 حركة (reveal، 159.3 ms)
+[18:07:49] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:07:49] خطة المرحلة 139: 5 حركة (key، 0.8 ms)
+[18:08:07] الحركة (6, 2) تحرّر مفتاحاً؛ انتظار الباب
+[18:08:15] المرحلة 139: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (338،540 طبقة 0) ← 2 قارورة (جديد)
+[18:08:15] حالة المرحلة 139 بعد الباب: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "pink", "plum", "green"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "plum", "purple", "red"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 422, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["cyan", "darkgreen", "mint", "purple"]}, {"x": 406, "y": 336, "cap": 4, "layers": ["?", "purple", "?", "cyan"], "keys": [1]}, {"x": 66, "y": 540, "cap": 4, "layers": ["green"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "orange", "cyan"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green"]}, {"x": 406, "y": 540, "cap": 4, "layers": ["?", "blue", "pink", "pink"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["orange", "red", "red", "purple"], "accept": "purple"}, {"x": 134, "y": 745, "cap": 4, "layers": ["?", "blue", "blue"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["mint", "plum", "lavender", "lavender"]}]
+[18:08:15] خطة المرحلة 139: 2 حركة (key، 0.5 ms)
+[18:08:23] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:08:23] خطة المرحلة 139: 2 حركة (key، 0.4 ms)
+[18:08:29] الحركة (5, 7) تحرّر مفتاحاً؛ انتظار الباب
+[18:08:37] المرحلة 139: قوارير جديدة (باب انفتح؟ 13 → 16 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (406،336 طبقة 1) ← 3 قارورة (جديد)
+[18:08:37] حالة المرحلة 139 بعد الباب: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "pink", "plum", "green"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "plum", "purple", "red"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown"]}, {"x": 270, "y": 422, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["cyan", "darkgreen", "mint", "purple"]}, {"x": 406, "y": 336, "cap": 4, "layers": ["?", "purple"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["yellow", "yellow", "orange", "orange"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "green"]}, {"x": 406, "y": 540, "cap": 4, "layers": ["?", "blue", "pink", "pink"]}, {"x": 66, "y": 747, "cap": 4, "layers": ["orange", "red", "red", "purple"], "accept": "purple"}, {"x": 134, "y": 745, "cap": 4, "layers": ["?", "blue", "blue"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["mint", "plum", "lavender", "lavender"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["pink", "brown", "darkgreen", "green"]}, {"x": 338, "y": 745, "cap": 4, "layers": ["?", "red", "?", "mint"]}, {"x": 406, "y": 745, "cap": 4, "layers": ["blue", "darkgreen", "plum", "orange"], "accept": "orange"}]
+[18:08:49] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:09:15] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:09:35] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:09:42] الحالة بعد (5, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[18:10:20] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:11:04] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[18:11:04] خطة المرحلة 139: 10 حركة (astar، 1.8 ms)
