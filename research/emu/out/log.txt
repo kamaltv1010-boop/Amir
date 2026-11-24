@@ -133,3 +133,22 @@
 [00:50:06] انتظار الأرواح: باقي 0 دقيقة قبل زرّ المرحلة
 [00:50:38] نافذة «More Lives» (الرصيد 70 أقل من 900): إغلاق بـ X وانتظار 9.2 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
 [00:55:53] انتظار الأرواح: باقي 4 دقيقة قبل زرّ المرحلة
+[01:00:01] سهم تعليم: لمس الهدف (338, 705)
+[01:00:07] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{96ad77c u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
+[01:00:34] شاشة التحميل: انتظار بلا نقر
+[01:01:37] بداية المرحلة 124 (صعبة): 5 قارورة، سعات [(4, 4), (10, 1)]، مخفي 0
+[01:01:37] حالة المرحلة 124: [{"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "cyan", "cyan"], "keys": [0]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]
+[01:01:37] خطة المرحلة 124: 1 حركة (key، 0.1 ms)
+[01:01:39] الحركة (3, 0) تحرّر مفتاحاً؛ انتظار الباب
+[01:01:48] المرحلة 124: قوارير جديدة (باب انفتح؟ 5 → 7 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 3)؛ استمرار بلا إعادة
+[01:01:48] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}, {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "plum"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "darkgreen", "plum"], "keys": [0]}]
+[01:01:48] خطة المرحلة 124: 3 حركة (key، 0.2 ms)
+[01:01:58] الحركة (6, 3) تحرّر مفتاحاً؛ انتظار الباب
+[01:02:07] المرحلة 124: قوارير جديدة (باب انفتح؟ 7 → 9 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 2)؛ استمرار بلا إعادة
+[01:02:07] حالة المرحلة 124 بعد الباب: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "lavender"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "orange", "cyan", "cyan"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["darkgreen", "?", "?", "lavender"], "keys": [0]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "purple", "brown", "darkgreen"], "keys": [1]}, {"x": 236, "y": 634, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "orange", "darkgreen", "darkgreen"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "cyan", "green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["plum", "plum", "plum", "plum"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["cyan", "cyan"]}]
+[01:02:07] خطة المرحلة 124: 2 حركة (key، 0.2 ms)
+[01:02:20] خطة المرحلة 124: 1 حركة (progress، 2.2 ms)
+[01:02:24] خطة المرحلة 124: 0 حركة (progress-none، 1.3 ms) — لا حركة مفيدة
+[01:02:24] المرحلة 124 عالقة (لا خطة): [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
+[01:02:24] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[01:02:24] حركة عشوائية (6, 0) (1)

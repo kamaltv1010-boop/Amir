@@ -1,10 +1,10 @@
 done 42
 الحالة: يلعب
 مراحل مكتملة: 0
-الوقت: 116 دقيقة من 300
-آخر شاشة: button
-الشاشات: {'button': 118, 'level': 96, 'unknown': 59, 'close': 4, 'lives': 9}
-صور محفوظة: 25/900، شاشات جديدة: 10
-المرحلة الحالية: 124 صعبة (حركات 22، مخفي 0، إخفاقات 0، أدوات -، 25.5 دقيقة)
-الحالة المقروءة: [orange,orange]/4 [blue,blue,green]/4 [brown,lavender,lavender,lavender]/4 [orange,green,green]/4 [pink,pink,pink,pink,pink,pink,pink,pink,pink,pink]/10 [brown,yellow,yellow,yellow]/4 [orange,brown,brown]/4 [plum,plum,plum]/4 [cyan,cyan,cyan]/4 [purple,purple,purple]/4 [purple,darkgreen,darkgreen,darkgreen]/4
-العملات: 70، «Give Up» لكل مرحلة: {124: 4}، انتظار الأرواح 3 دقيقة
+الوقت: 121 دقيقة من 300
+آخر شاشة: level
+الشاشات: {'button': 122, 'level': 111, 'unknown': 75, 'close': 4, 'lives': 9}
+صور محفوظة: 28/900، شاشات جديدة: 10
+المرحلة الحالية: 124 صعبة (حركات 8، مخفي 2، إخفاقات 0، أدوات -، 0.8 دقيقة)
+الحالة المقروءة: [?,brown,green]/4 [lavender,orange]/4 [darkgreen,?,brown]/4 [yellow,purple,brown,darkgreen]/4 [cyan,cyan,cyan,cyan,cyan,cyan,cyan,cyan]/10 [purple,orange,darkgreen,darkgreen]/4 [green,cyan,green,green]/4 [plum,plum,plum,plum]/4 [lavender,lavender]/4
+العملات: 70، «Give Up» لكل مرحلة: {124: 4}
