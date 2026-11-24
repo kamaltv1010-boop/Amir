@@ -1,0 +1,8 @@
+[21:12:01] بدء البوت: 300 دقيقة، الفرع claude/quirky-ride-r4oor0
+[21:12:02] التحكم عن بعد: seq الحالي 43 (يُعتبر منفَّذاً)
+[21:12:02] انتظار الجهاز...
+[21:12:03] الشاشة: Physical size: 1080x2280، الكثافة: Physical density: 440، ABI: x86_64,x86,arm64-v8a,armeabi-v7a,armeabi
+[21:12:33] تثبيت (com.grandgames.magicsort.apk config.arm64_v8a.apk): Success
+[21:12:43] استعادة بيانات اللعبة من save/game_backup.ab (75780 ك.ب): تمت
+[21:12:44] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
+[21:16:12] أول شاشة: button
