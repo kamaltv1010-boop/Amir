@@ -97,12 +97,22 @@ CFG = {
     "fail_plan_step": _env("BOT_FAIL_PLAN_STEP", 0.75, float),
     "fail_plan_max": _env("BOT_FAIL_PLAN_MAX", 4.0, float),
     "key_wait": _env("BOT_KEY_WAIT", 1.5, float),      # بعد حركة تحرّر مفتاحاً: طيرانه وانفتاح الباب
-    # حارس المحاكي: اسم AVD الذي يشغّله reactivecircus/android-emulator-runner وخياراته (كما في emu-bot.yml)، وأقصى إعادات له
+    # حارس المحاكي: اسم AVD الذي يشغّله reactivecircus/android-emulator-runner وخياراته (كما في emu-bot.yml)
     "emu_avd": _env("BOT_AVD", "test"),
     "emu_options": _env("BOT_EMU_OPTIONS", "-no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan"),
-    "emu_restarts": _env("BOT_EMU_RESTARTS", 8, int),
+    # سياسة إعادات المحاكي بالتقدّم (emu_restart_policy؛ التشغيل 15: مات 9 مرات في نحو 190 دقيقة وتوقف البوت بعد 8 إعادات وأمامه
+    # 110 دقائق وهو يفوز بين الأعطال): يُعاد ما دام البوت يتقدّم، ويتوقف بعد emu_fruitless_max إعادات متتالية بلا تقدّم،
+    # أو عند emu_restarts إعادة في التشغيل (حدّ أمان سخيّ)، أو حين يبقى أقل من emu_restart_min_left دقيقة.
+    "emu_restarts": _env("BOT_EMU_RESTARTS", 40, int),
+    "emu_fruitless_max": _env("BOT_EMU_FRUITLESS_MAX", 3, int),
+    "emu_progress_min": _env("BOT_EMU_PROGRESS_MIN", 15.0, float),  # دقائق لعب بعد إعادة تُحسب تقدّماً ولو بلا فوز
+    "emu_restart_min_left": _env("BOT_EMU_RESTART_MIN_LEFT", 6.0, float),
+    "emu_install_min": _env("BOT_EMU_INSTALL_MIN", 12.0, float),     # أقل وقت باقٍ لتثبيت اللعبة واستعادة حفظها بعد إعادة
     # نسخة احتياطية بعد فوز جديد إن مضت هذه الدقائق على آخر نسخة (المحاكي قد يموت فجأة فيضيع تقدّم ما بعد آخر نسخة)
     "backup_win_min": _env("BOT_BACKUP_WIN_MIN", 10.0, float),
+    # النسخة الاحتياطية تُحفظ أجزاءً مرتّبة (split_backup): GitHub يحذّر من ملف فوق 50 ميغا ويرفض ما فوق 100، والنسخة بلغت 77.6
+    "backup_part_mb": _env("BOT_BACKUP_PART_MB", 40.0, float),
+    "backup_max_mb": _env("BOT_BACKUP_MAX_MB", 400.0, float),       # أكبر نسخة تُقبل (أكبر منها: خطأ في adb backup)
     # بعد حركة تكمل جارة جبس: ينكسر الجبس بعد ثوانٍ (التشغيل التاسع: يظهر مكسوراً بعد 6..7 ث من النقر، وقائماً بعد 4 ث)
     "plaster_wait": _env("BOT_PLASTER_WAIT", 4.0, float),
     "plaster_grace": _env("BOT_PLASTER_GRACE", 10.0, float),  # «عالقة» قبل هذا بعد إكمال الجارة: انتظار الجبس لا الأدوات
@@ -1255,6 +1265,321 @@ def start_emulator(log_path="/tmp/emulator_restart.log") -> bool:
     return True
 
 
+# ============================================================== النسخة الاحتياطية أجزاءً
+# النسخة الاحتياطية لبيانات اللعبة (adb backup) تُحفظ أجزاءً مرتّبة أصغر من 50 ميغا لكل منها، فلا يرفض GitHub رفعها:
+#   game_backup.ab.part00، game_backup.ab.part01، ...    (تُجمع بالترتيب: cat game_backup.ab.part* > game_backup.ab)
+#   game_backup.ab.manifest.json                          (الحجم وsha256 للنسخة كلها ولكل جزء: تحقّق الاستعادة)
+# الملف الواحد game_backup.ab لا يُرفع بعد الآن (يُحذف من out/ عند أول نسخة بأجزاء)، لكن الاستعادة ما زالت تقبله في save/
+# (حفظ التشغيلات السابقة). البوت يكتب في research/emu/out ويستعيد من research/emu/save (وإلا من out).
+#
+# أرشفة تشغيل منتهٍ (يدوياً بـ bash من جذر المستودع، بعد أن ينتهي التشغيل ويُسحب الفرع؛ runN-Lxxx وN يُبدَّلان): ينقل النسخة إلى
+# save/ إن وُجدت في out/ ثم ينقل out/ كله إلى runs/. الحفظ القديم في save/ لا يُحذف (git rm) إلا بعد التحقق من وجود بديله في
+# out/: ملف الوصف (نسخة أجزاء) أو الملف الواحد (كود ما قبل الأجزاء، مثل التشغيل 16)؛ وتشغيل بلا نسخة (بلا فوز، أو فشلت كل نسخه
+# كالتشغيل 10) يُبقي save/ كما هو. git rm يحذف الحفظ القديم كله (الملف الواحد والأجزاء وملف الوصف) فلا يبقى جزء زائد من نسخة أكبر.
+# الأوامر سلسلة واحدة (&&): إن فشل أمر فلا commit ولا push، والرجوع: git reset -q --hard HEAD
+# --- أوامر الأرشفة (بداية)
+#   O=research/emu/out; S=research/emu/save; R=research/emu/runs/runN-Lxxx
+#   if [ -f "$O/game_backup.ab.manifest.json" ]; then
+#     git rm -r -q --ignore-unmatch "$S/game_backup.ab*" && mkdir -p "$S" &&
+#       git mv "$O/game_backup.ab.manifest.json" "$O"/game_backup.ab.part* "$S/"
+#   elif [ -f "$O/game_backup.ab" ]; then
+#     git rm -r -q --ignore-unmatch "$S/game_backup.ab*" && mkdir -p "$S" && git mv "$O/game_backup.ab" "$S/"
+#   else
+#     echo "لا نسخة في out/: يبقى save/ كما هو"
+#   fi && git mv "$O" "$R" && git commit -q -m "أرشفة التشغيل N" && git push
+# --- أوامر الأرشفة (نهاية)   (يجرّبها TestArchiveCommands على مستودع مؤقت)
+BACKUP_NAME = "game_backup.ab"
+BACKUP_MANIFEST = BACKUP_NAME + ".manifest.json"
+BACKUP_PART_RE = re.compile(r"^game_backup\.ab\.part(\d{2,})$")
+BACKUP_MAGIC = b"ANDROID BACKUP"
+
+
+def backup_part_name(i) -> str:
+    return "%s.part%02d" % (BACKUP_NAME, i)
+
+
+def is_backup_file(name) -> bool:
+    """ملفات النسخة الاحتياطية في مجلد (الملف الواحد القديم، والأجزاء، وملف الوصف)؛ لا الملفات المؤقتة المبدوءة بنقطة."""
+    return name in (BACKUP_NAME, BACKUP_MANIFEST) or bool(BACKUP_PART_RE.match(name))
+
+
+def backup_parts_in(d: Path):
+    """الأجزاء الموجودة في المجلد: [(الرقم، المسار)] مرتّبة بالرقم."""
+    found = []
+    try:
+        for p in Path(d).iterdir():
+            m = BACKUP_PART_RE.match(p.name)
+            if m and p.is_file():
+                found.append((int(m.group(1)), p))
+    except OSError:
+        return []
+    return sorted(found)
+
+
+def _sha256_file(path, chunk=1 << 20):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while True:
+            b = f.read(chunk)
+            if not b:
+                break
+            h.update(b)
+    return h.hexdigest()
+
+
+def split_backup(src, dest_dir, part_bytes, meta=None) -> dict:
+    """يقسم ملف النسخة src إلى أجزاء مرتّبة في dest_dir، كل جزء part_bytes بايت على الأكثر (الأخير أصغر أو مساوٍ)، مع ملف
+    الوصف (الحجم وsha256 للكل ولكل جزء، وmeta). تُكتب الأجزاء أولاً بأسماء مؤقتة مبدوءة بنقطة (لا ينسخها النشر) ثم تُعاد تسميتها
+    كلها وملف الوصف آخراً، ثم تُحذف الأجزاء الأعلى الباقية من نسخة أكبر والملف الواحد القديم. يعيد ملف الوصف (dict)."""
+    import hashlib
+    src, dest_dir = Path(src), Path(dest_dir)
+    part_bytes = int(part_bytes)
+    if part_bytes <= 0:
+        raise ValueError("part_bytes")
+    total = src.stat().st_size
+    if total <= 0:
+        raise ValueError("نسخة فارغة")
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    whole = hashlib.sha256()
+    parts, tmps = [], []
+    try:
+        with open(src, "rb") as f:
+            i = 0
+            while True:
+                name = backup_part_name(i)
+                tmp = dest_dir / (".%s.tmp" % name)
+                h, size = hashlib.sha256(), 0
+                with open(tmp, "wb") as g:
+                    tmps.append(tmp)
+                    while size < part_bytes:
+                        b = f.read(min(1 << 20, part_bytes - size))
+                        if not b:
+                            break
+                        g.write(b)
+                        h.update(b)
+                        whole.update(b)
+                        size += len(b)
+                if size == 0:                      # الحجم مضاعف تام لحجم الجزء: لا جزء فارغ في آخرها
+                    tmps.pop()
+                    os.remove(tmp)
+                    break
+                parts.append({"name": name, "size": size, "sha256": h.hexdigest()})
+                i += 1
+                if size < part_bytes:
+                    break
+        if sum(pt["size"] for pt in parts) != total:
+            raise OSError("تغيّر حجم النسخة أثناء تقسيمها")
+        man = {"format": 1, "name": BACKUP_NAME, "size": total, "sha256": whole.hexdigest(),
+               "part_bytes": part_bytes, "parts": parts}
+        if meta:
+            man.update({k: v for k, v in meta.items() if k not in man})
+        mtmp = dest_dir / (".%s.tmp" % BACKUP_MANIFEST)
+        tmps.append(mtmp)
+        mtmp.write_text(json.dumps(man, ensure_ascii=False, indent=1), encoding="utf-8")
+        for pt in parts:
+            os.replace(dest_dir / (".%s.tmp" % pt["name"]), dest_dir / pt["name"])
+        os.replace(mtmp, dest_dir / BACKUP_MANIFEST)
+        tmps = []
+    finally:
+        for t in tmps:
+            try:
+                os.remove(t)
+            except OSError:
+                pass
+    keep = {pt["name"] for pt in parts}
+    for _n, p in backup_parts_in(dest_dir):
+        if p.name not in keep:
+            os.remove(p)
+    legacy = dest_dir / BACKUP_NAME
+    if legacy.exists():
+        os.remove(legacy)
+    return man
+
+
+def join_backup(src_dir, out_path):
+    """يجمع النسخة من مجلد إلى out_path. يعيد (المسار، الوصف) إن صحّت، أو (None، السبب) إن لم توجد أو تلفت:
+    - ملف وصف: الأجزاء التي يسمّيها كلها بالترتيب، وحجم كل جزء وبصمته ثم حجم الكل وبصمته يجب أن تطابقه؛
+    - أجزاء بلا ملف وصف: متتالية من 00 بلا فجوة (لا تحقق من البصمة)؛
+    - الملف الواحد القديم game_backup.ab (حفظ ما قبل الأجزاء): يُعاد مساره كما هو بلا نسخ.
+    وفي كل حال يجب أن تبدأ النسخة بـ «ANDROID BACKUP» (ترويسة adb backup)."""
+    import hashlib
+    src_dir, out_path = Path(src_dir), Path(out_path)
+
+    def magic_ok(p):
+        try:
+            with open(p, "rb") as f:
+                return f.read(len(BACKUP_MAGIC)) == BACKUP_MAGIC
+        except OSError:
+            return False
+
+    parts = backup_parts_in(src_dir)
+    mpath = src_dir / BACKUP_MANIFEST
+    if mpath.exists() or parts:
+        man = None
+        if mpath.exists():
+            try:
+                man = json.loads(mpath.read_text(encoding="utf-8"))
+                names = [pt["name"] for pt in man["parts"]]
+                if not names or any(not BACKUP_PART_RE.match(str(n)) for n in names):
+                    raise ValueError(names)
+                int(man["size"])
+            except (OSError, ValueError, KeyError, TypeError) as e:
+                return None, "ملف الوصف تالف (%r)" % (e,)
+            plist = [(pt["name"], src_dir / pt["name"], pt) for pt in man["parts"]]
+        else:
+            nums = [n for n, _p in parts]
+            if nums != list(range(len(nums))):
+                return None, "أجزاء بلا ملف وصف وفيها فجوة (%s)" % ",".join("%02d" % n for n in nums)
+            plist = [(p.name, p, None) for _n, p in parts]
+        for name, p, _pt in plist:
+            if not p.is_file():
+                return None, "الجزء %s غائب" % name
+        whole = hashlib.sha256()
+        total = 0
+        tmp = out_path.with_name("." + out_path.name + ".tmp")
+        try:
+            with open(tmp, "wb") as g:
+                for name, p, pt in plist:
+                    h, size = hashlib.sha256(), 0
+                    with open(p, "rb") as f:
+                        while True:
+                            b = f.read(1 << 20)
+                            if not b:
+                                break
+                            g.write(b)
+                            h.update(b)
+                            whole.update(b)
+                            size += len(b)
+                    if pt is not None and (size != int(pt.get("size", -1)) or h.hexdigest() != pt.get("sha256")):
+                        raise ValueError("الجزء %s تالف (الحجم %d، المتوقع %s)" % (name, size, pt.get("size")))
+                    total += size
+            if man is not None and (total != int(man["size"]) or whole.hexdigest() != man.get("sha256")):
+                raise ValueError("النسخة المجموعة لا تطابق ملف الوصف (الحجم %d، المتوقع %s)" % (total, man["size"]))
+            if not magic_ok(tmp):
+                raise ValueError("النسخة المجموعة لا تبدأ بترويسة adb backup")
+            os.replace(tmp, out_path)
+        except (OSError, ValueError) as e:
+            try:
+                os.remove(tmp)
+            except OSError:
+                pass
+            return None, str(e) if isinstance(e, ValueError) else "خطأ في القراءة (%r)" % (e,)
+        how = "تحقّق الحجم والبصمة" if man is not None else "بلا ملف وصف: لا تحقق من البصمة"
+        return out_path, "%d جزء، %d ك.ب، %s" % (len(plist), total // 1024, how)
+    legacy = src_dir / BACKUP_NAME
+    if legacy.is_file() and legacy.stat().st_size > 2048:
+        if not magic_ok(legacy):
+            return None, "الملف الواحد لا يبدأ بترويسة adb backup"
+        return legacy, "ملف واحد (صيغة ما قبل الأجزاء)، %d ك.ب" % (legacy.stat().st_size // 1024)
+    return None, "لا نسخة"
+
+
+def verify_backup(path, chunk=1 << 20):
+    """هل ملف adb backup كامل؟ adb backup يعود بنجاح ويترك ملفاً مقطوعاً إن مات المحاكي أثناء النقل أو قُتل بعد مهلته، فلا يكفي
+    الحجم. تُقرأ أسطر الترويسة الأربعة («ANDROID BACKUP»، الإصدار، علم الضغط، «none»: البوت لا يشفّر)، ثم يُفكّ تيار zlib كله
+    (علم الضغط 1) ويُشترط أن ينتهي التيار (eof) بلا بيانات بعده، أو (بلا ضغط) أن يكون أرشيف tar بكتل 512 كاملة. ثم يُشترط في
+    الحالين أن ينتهي tar بكتلتي الأصفار (finalizeBackup في Android). يعيد (ok، السبب)."""
+    import zlib
+    try:
+        with open(path, "rb") as f:
+            head = [f.readline(64) for _ in range(4)]
+            if head[0] != BACKUP_MAGIC + b"\n":
+                return False, "لا ترويسة adb backup"
+            try:
+                int(head[1].strip())
+                comp = int(head[2].strip())
+            except ValueError:
+                return False, "ترويسة تالفة (%r)" % (b"".join(head[1:3]),)
+            if head[3].strip() != b"none":
+                return False, "نسخة مشفّرة أو ترويسة تالفة (%r)" % (head[3].strip()[:20],)
+            if comp not in (0, 1):
+                return False, "علم ضغط غريب (%d)" % comp
+            d = zlib.decompressobj() if comp else None
+            total, tail = 0, b""
+            while True:
+                b = f.read(chunk)
+                if not b:
+                    break
+                if d is not None:
+                    if d.eof:
+                        return False, "بيانات بعد نهاية تيار الضغط"
+                    try:
+                        b = d.decompress(b)
+                    except zlib.error as e:
+                        return False, "تيار الضغط تالف (%s)" % (e,)
+                total += len(b)
+                tail = (tail + b)[-1024:]
+            if d is not None:
+                try:
+                    rest = d.flush()
+                except zlib.error as e:
+                    return False, "تيار الضغط تالف (%s)" % (e,)
+                total += len(rest)
+                tail = (tail + rest)[-1024:]
+                if not d.eof:
+                    return False, "مقطوعة: تيار الضغط لم يكتمل (%d ك.ب بعد الفكّ)" % (total // 1024)
+                if d.unused_data:
+                    return False, "بيانات بعد نهاية تيار الضغط"
+            if total < 1024 or total % 512:
+                return False, "مقطوعة: أرشيف tar ليس كتلاً كاملة (%d بايت)" % total
+            if tail.count(0) != 1024:
+                return False, "مقطوعة: أرشيف tar بلا كتلتي النهاية"
+    except OSError as e:
+        return False, "خطأ في القراءة (%r)" % (e,)
+    return True, "كاملة (%d ك.ب بعد الفكّ)" % (total // 1024)
+
+
+def find_backup(dirs, out_path, log=None):
+    """أول نسخة صالحة من المجلدات بالترتيب (save ثم out). في كل مجلد: الأجزاء (أو الملف الواحد إن لم توجد)، وإن تلفت الأجزاء
+    وبجانبها ملف واحد قديم صالح فهو بديلها. يعيد (المسار، الوصف) أو (None، None)؛ log يُعطى سبب رفض كل مصدر."""
+    for d in dirs:
+        d = Path(d)
+        path, info = join_backup(d, out_path)
+        if path is not None:
+            return path, "%s/: %s" % (d.name, info)
+        if info != "لا نسخة" and log:
+            log("نسخة احتياطية مرفوضة في %s/: %s" % (d.name, info))
+        legacy = d / BACKUP_NAME
+        if info != "لا نسخة" and legacy.is_file() and legacy.stat().st_size > 2048:
+            with open(legacy, "rb") as f:
+                if f.read(len(BACKUP_MAGIC)) == BACKUP_MAGIC:
+                    return legacy, "%s/: ملف واحد قديم بدل الأجزاء التالفة، %d ك.ب" % (d.name, legacy.stat().st_size // 1024)
+    return None, None
+
+
+def emu_restart_policy(restarts, fruitless, won_since, minutes_since, minutes_left, cfg=None):
+    """قرار إعادة تشغيل المحاكي الميت (recover_device). المدخلات: restarts إعادات هذا التشغيل حتى الآن، fruitless إعادات متتالية
+    لم يتبعها تقدّم، won_since المراحل المكتملة منذ آخر إعادة، minutes_since دقائق اللعب منذ عودة المحاكي في آخر إعادة، minutes_left
+    ما بقي من وقت التشغيل. «التقدّم» بعد إعادة: فوز بمرحلة واحدة على الأقل، أو emu_progress_min دقيقة لعب (المحاكي سليم ولو
+    انتظر البوت الأرواح)؛ وأول عطل في التشغيل لا تسبقه إعادة فلا يُحسب بلا تقدّم.
+    يعيد (allow, fruitless_new, reason): هل يُعاد المحاكي، والعدّاد الجديد، وسبباً عربياً للسجل."""
+    cfg = cfg or CFG
+    progress = won_since > 0 or minutes_since >= cfg["emu_progress_min"]
+    if restarts == 0 or progress:
+        fruitless = 0
+    else:
+        fruitless += 1
+    if restarts == 0:
+        why = "أول عطل في التشغيل"
+    elif won_since > 0:
+        why = "تقدّم منذ الإعادة السابقة: %d مرحلة في %.0f دقيقة" % (won_since, minutes_since)
+    elif progress:
+        why = "تقدّم منذ الإعادة السابقة: %.0f دقيقة لعب بلا عطل" % minutes_since
+    else:
+        why = "بلا تقدّم منذ الإعادة السابقة (%.0f دقيقة بلا فوز)؛ إعادات متتالية بلا تقدّم: %d من %d" % (
+            minutes_since, fruitless, cfg["emu_fruitless_max"])
+    if minutes_left < cfg["emu_restart_min_left"]:
+        return False, fruitless, "بقي %.1f دقيقة فقط من التشغيل (أقل من %.0f): لا فائدة من إعادة المحاكي" % (
+            minutes_left, cfg["emu_restart_min_left"])
+    if restarts >= cfg["emu_restarts"]:
+        return False, fruitless, "بلغت إعادات المحاكي حدّ الأمان (%d إعادة في التشغيل)" % restarts
+    if fruitless >= cfg["emu_fruitless_max"]:
+        return False, fruitless, "%d إعادات متتالية للمحاكي بلا أي تقدّم (لا فوز ولا %.0f دقيقة لعب بعد أيّ منها)" % (
+            fruitless, cfg["emu_progress_min"])
+    return True, fruitless, why
+
+
 # ============================================================== المحرّك
 class Bot:
     def __init__(self, dev: Device, vis: Vision, out: Out, minutes: float, git=True):
@@ -1270,6 +1595,10 @@ class Bot:
         self.unknown_streak = 0
         self.cap_fails = 0             # لقطات فاشلة متتالية (حارس المحاكي: recover_device)
         self.emu_restarts = 0          # إعادات تشغيل المحاكي في هذا التشغيل
+        self.emu_fruitless = 0         # إعادات متتالية لم يتبعها تقدّم (emu_restart_policy)
+        self.emu_restart_at = self.t_start  # متى عاد المحاكي (أو فشلت إعادته) آخر مرة
+        self.emu_restart_levels = 0    # المراحل المكتملة عند آخر إعادة
+        self.last_ok_grab = self.t_start  # آخر لقطة ناجحة: «دقائق اللعب» بعد إعادة تنتهي عندها لا عند قرار الحارس
         self.warn_retries = 0
         self.unknown_since = 0.0
         self.unknown_acts = 0
@@ -1320,6 +1649,7 @@ class Bot:
         self.last_backup = time.time()  # آخر نسخة احتياطية لبيانات اللعبة (backup_app)
         self.backup_levels = 0         # عدد المراحل المكتملة عند آخر نسخة احتياطية ناجحة
         self.final_backup_done = False
+        self.backups_saved = 0         # نسخ حُفظت في هذا التشغيل (الاستعادة بعدها من out/ لأنها أحدث من save/)
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
         self.start_probe_tries = 0
         self.start_same = 0            # قراءات متتالية مطابقة لـ start_probe
@@ -1482,14 +1812,25 @@ class Bot:
         dst.mkdir(parents=True, exist_ok=True)
         ref = self.pushed_sig if force else self.copied_sig
         with self.out.lock:
+            local = set()
             for p in self.out.dir.iterdir():
                 if p.name.startswith(".") or not p.is_file():
                     continue
+                local.add(p.name)
                 st = p.stat()
                 sig = (st.st_size, st.st_mtime_ns)
                 if ref.get(p.name) != sig:
                     shutil.copy2(p, dst / p.name)
                     self.copied_sig[p.name] = sig
+            # ملفات النسخة الاحتياطية تتبع out/ تماماً: الجزء الأعلى الباقي من نسخة أكبر والملف الواحد القديم (لا يُرفع ملف فوق
+            # 50 ميغا) يُحذفان من شجرة النشر أيضاً فيُسجَّل حذفهما في الـ commit
+            for p in dst.iterdir():
+                if is_backup_file(p.name) and p.name not in local and p.is_file():
+                    try:
+                        p.unlink()
+                    except OSError:
+                        pass
+                    self.copied_sig.pop(p.name, None)
 
     def fetch_cmd(self):
         """يقرأ cmd.txt من origin (بلا لمس شجرة العمل). يعيد (seq، الأسطر) أو None."""
@@ -1694,7 +2035,10 @@ class Bot:
             tmp.write_text(json.dumps({
                 "t": time.time(), "level_fails": {str(k): int(v) for k, v in self.level_fails.items()},
                 "lives_until": float(self.lives_until), "last_refill_tap": float(self.last_refill_tap),
-                "refills": int(self.refills), "coins": self.coins, "sigs": self.sigs_json()}), encoding="utf-8")
+                "refills": int(self.refills), "coins": self.coins, "sigs": self.sigs_json(),
+                "emu": [int(self.emu_restarts), int(self.emu_fruitless), float(self.emu_restart_at),
+                        int(self.emu_restart_levels)],
+                "backups": int(self.backups_saved)}), encoding="utf-8")
             os.replace(tmp, STATE_FILE)
         except (OSError, TypeError, ValueError) as e:
             self.log("تعذّر حفظ العدّادات قبل التحديث: %r" % e)
@@ -1749,6 +2093,18 @@ class Bot:
         if coins is not None:
             self.coins = coins
         try:
+            # إعادات المحاكي قبل التحديث الساخن: حدّ الأمان وعدّاد «بلا تقدّم» لا يعودان صفراً بعد «update»
+            er, ef, eat, elv = d["emu"]
+            self.emu_restarts, self.emu_fruitless = max(0, int(er)), max(0, int(ef))
+            self.emu_restart_at, self.emu_restart_levels = float(eat), min(int(elv), self.levels_done)
+        except (KeyError, TypeError, ValueError):
+            pass
+        try:
+            # نسخ هذا التشغيل قبل التحديث: بعدها تستعيد restore_app من out/ (الأحدث) لا من save/ (حفظ بداية التشغيل)
+            self.backups_saved = max(self.backups_saved, int(d.get("backups") or 0))
+        except (TypeError, ValueError):
+            pass
+        try:
             nsig = self.load_sigs(d)
         except Exception:                               # noqa: BLE001
             nsig = 0
@@ -1777,9 +2133,10 @@ class Bot:
         return False
 
     def backup_app(self):
-        """أمر «backup» (وتلقائياً كل 45 دقيقة وقبل النهاية): نسخة احتياطية لبيانات اللعبة بلا APK (adb backup) في
-        out/game_backup.ab تُرفع مع المخرجات، حتى يستعيدها تشغيل لاحق على محاكٍ جديد (restore_app) فيكمل من المرحلة نفسها
-        بدل البدء من 1. تطلب تأكيداً على الشاشة يُلمس آلياً."""
+        """أمر «backup» (وتلقائياً كل 45 دقيقة وبعد فوز جديد وقبل النهاية): نسخة احتياطية لبيانات اللعبة بلا APK (adb backup)
+        تُحفظ أجزاءً مرتّبة أصغر من 50 ميغا في out/ (split_backup: game_backup.ab.partNN وملف الوصف؛ انظر أوامر الأرشفة فوق
+        BACKUP_NAME) وتُرفع مع المخرجات، حتى يستعيدها تشغيل لاحق على محاكٍ جديد (restore_app) فيكمل من المرحلة نفسها بدل البدء
+        من 1. تطلب تأكيداً على الشاشة يُلمس آلياً."""
         self.last_backup = time.time()
         tmp = "/tmp/game_backup.ab"
         try:
@@ -1797,29 +2154,54 @@ class Bot:
             p.wait(timeout=300)
         except subprocess.TimeoutExpired:
             p.kill()
+        return self.store_backup(tmp, ok)
+
+    def store_backup(self, tmp, confirmed=True) -> bool:
+        """يحفظ ملف adb backup المؤقت أجزاءً في out/ (تحت قفل الإخراج، فلا ينسخ النشر مجموعة ناقصة). True إن حُفظ. الأرشيف
+        يُتحقق من اكتماله أولاً (verify_backup): نسخة قطعها موت المحاكي أو مهلة adb لا تحلّ محلّ آخر نسخة سليمة في out/ ولا تُغيّر
+        backup_levels (فتُعاد المحاولة بعد backup_win_min دقيقة)."""
         size = os.path.getsize(tmp) if os.path.exists(tmp) else 0
-        if size > 2048 and size < 90 * 1024 * 1024:
-            shutil.copy2(tmp, self.out.dir / "game_backup.ab")
-            self.log("نسخة احتياطية لبيانات اللعبة: %d ك.ب (%d مرحلة مكتملة)" % (size // 1024, self.levels_done))
-            self.backup_levels = self.levels_done
-        else:
-            self.log("لم تُحفظ النسخة الاحتياطية (الحجم %d بايت، التأكيد %s)" % (size, ok))
+        saved = False
+        complete, why = (False, "")
+        if 2048 < size < CFG["backup_max_mb"] * 1024 * 1024:
+            complete, why = verify_backup(tmp)
+            if not complete:
+                self.log("نسخة احتياطية غير كاملة (%d ك.ب، التأكيد %s): %s؛ تبقى النسخة السابقة كما هي"
+                         % (size // 1024, confirmed, why))
+        if complete:
+            try:
+                with self.out.lock:
+                    man = split_backup(tmp, self.out.dir, CFG["backup_part_mb"] * 1024 * 1024,
+                                       meta={"levels_done": self.levels_done, "time": time.strftime("%Y-%m-%d %H:%M:%S")})
+                self.log("نسخة احتياطية لبيانات اللعبة: %d ك.ب في %d جزء (%d مرحلة مكتملة)"
+                         % (size // 1024, len(man["parts"]), self.levels_done))
+                self.backup_levels = self.levels_done
+                self.backups_saved += 1
+                saved = True
+            except (OSError, ValueError) as e:
+                self.log("تعذّر حفظ النسخة الاحتياطية أجزاءً: %r" % (e,))
+        elif not why:
+            self.log("لم تُحفظ النسخة الاحتياطية (الحجم %d بايت، التأكيد %s)" % (size, confirmed))
         time.sleep(2)
         if PKG not in self.dev.focus():
             self.dev.launch()
-        return size > 2048
+        return saved
 
     def restore_app(self):
-        """تشغيل جديد على محاكٍ فارغ: يستعيد بيانات اللعبة من نسخة سابقة (research/emu/save/game_backup.ab، وإلا
-        out/game_backup.ab) قبل أول تشغيل لها، فتكمل من مرحلتها. adb restore يطلب تأكيداً على الشاشة يُلمس آلياً."""
-        src = None
-        for p in (HERE.parent / "save" / "game_backup.ab", HERE.parent / "out" / "game_backup.ab"):
-            if p.exists() and p.stat().st_size > 2048:
-                src = p
-                break
+        """تشغيل جديد على محاكٍ فارغ: يستعيد بيانات اللعبة من نسخة سابقة قبل أول تشغيل لها، فتكمل من مرحلتها: أجزاء
+        research/emu/save (تُجمع وتُتحقق ببصمتها) أو ملفها الواحد القديم، وإلا out/ (find_backup). وبعد نسخة حُفظت في هذا التشغيل
+        (محاكٍ أُعيد ففقد اللعبة) out/ أولاً لأنها أحدث. adb restore يطلب تأكيداً على الشاشة يُلمس آلياً."""
+        dirs = (HERE.parent / "save", self.out.dir)
+        if self.backups_saved:
+            dirs = dirs[::-1]
+        src, info = find_backup(dirs, Path("/tmp/game_backup_restore.ab"), self.log)
         if src is None:
-            self.log("لا نسخة احتياطية: اللعبة تبدأ من المرحلة 1")
+            self.log("لا نسخة احتياطية صالحة: اللعبة تبدأ من المرحلة 1")
             return False
+        complete, why = verify_backup(src)
+        if not complete:
+            # نسخة من كود ما قبل التحقق (store_backup لا يحفظ المقطوعة الآن): تُستعاد على أي حال، فبعضها خير من المرحلة 1
+            self.log("تحذير: النسخة المستعادة غير كاملة (%s)؛ قد يستعيد adb جزءاً من البيانات فقط" % why)
         try:
             p = subprocess.Popen(self.dev._cmd(["restore", str(src)]), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except OSError as e:
@@ -1830,8 +2212,7 @@ class Bot:
             p.wait(timeout=300)
         except subprocess.TimeoutExpired:
             p.kill()
-        self.log("استعادة بيانات اللعبة من %s (%d ك.ب): %s" % (src.parent.name + "/" + src.name, src.stat().st_size // 1024,
-                                                           "تمت" if ok else "لم يظهر التأكيد"))
+        self.log("استعادة بيانات اللعبة من %s: %s" % (info, "تمت" if ok else "لم يظهر التأكيد"))
         return ok
 
     def dump_logcat(self, name, n):
@@ -1940,7 +2321,8 @@ class Bot:
             d.sh(c)
         self.log("وضع الطيران: %s" % d.sh("settings get global airplane_mode_on"))
 
-    def install_game(self):
+    def install_game(self, until=None):
+        """يثبّت حزمة اللعبة (محاولات بتركيبات الملفات). until: وقت لا تتجاوزه المحاولات (restart_emulator قرب نهاية التشغيل)."""
         g = Path(CFG["game_dir"])
         apks = sorted(g.glob("*.apk"))
         if not apks:
@@ -1967,8 +2349,14 @@ class Bot:
             if key in seen:
                 continue
             seen.add(key)
+            tmo = 400
+            if until is not None:
+                tmo = min(400, int(until - time.time()))
+                if tmo < 30:
+                    self.log("تثبيت اللعبة: نفدت المهلة")
+                    return False
             rc, out = self.dev.run(["install-multiple", "-r", "-g"] + [str(p) for p in files],
-                                   timeout=400)
+                                   timeout=tmo)
             self.log("تثبيت (%s): %s" % (" ".join(p.name for p in files), out.strip()[-160:]))
             if "Success" in out:
                 obb = g / "Android" / "obb"
@@ -2021,6 +2409,7 @@ class Bot:
                     time.sleep(3)
                     continue
                 self.cap_fails = 0
+                self.last_ok_grab = time.time()
                 if self.is_nonet(fr):
                     self.kinds["nonet"] += 1
                     self.handle_nonet(fr)
@@ -2952,9 +3341,11 @@ class Bot:
 
     def recover_device(self) -> bool:
         """حارس المحاكي، على عدد اللقطات الفاشلة المتتالية (cap_fails؛ كل واحدة نحو 25 ثانية بانتظار wait-for-device): عند 3 يُعاد
-        تشغيل خادم adb؛ وعند 4 ثم كل 4 يُعاد تشغيل المحاكي نفسه (emu_restarts مرة على الأكثر في التشغيل) ثم اللعبة؛ وبعد استنفادها
-        يتوقف البوت فينتهي التشغيل وتُنشر النتائج بدل الدوران ساعات. (التشغيل العاشر: مات المحاكي في 10:37 بعد الفوز
-        بالمرحلة 109، وبقي البوت يعيد المحاولة كل دقيقة أكثر من ساعتين.) True إن فعل شيئاً يستحق إعادة التصوير فوراً."""
+        تشغيل خادم adb أولاً؛ وعند 4 ثم كل 4 يُعاد تشغيل المحاكي نفسه ثم اللعبة ما دامت سياسة التقدّم تسمح (emu_restart_policy:
+        يُعاد ما دام البوت يفوز أو يلعب بين الأعطال، ويتوقف بعد emu_fruitless_max إعادات متتالية بلا تقدّم، أو عند حدّ الأمان
+        emu_restarts، أو قرب نهاية الوقت)؛ وحين ترفض يتوقف البوت فينتهي التشغيل وتُنشر النتائج بدل الدوران ساعات. (التشغيل العاشر:
+        مات المحاكي ولم يعد فبقي البوت يعيد المحاولة أكثر من ساعتين؛ والتشغيل 15: الحدّ الثابت 8 أوقف بوتاً يتقدّم وأمامه 110
+        دقائق.) True إن فعل شيئاً يستحق إعادة التصوير فوراً."""
         n = self.cap_fails
         if n == 3:
             state = self.dev.adb_state()
@@ -2963,14 +3354,26 @@ class Bot:
             self.dev.run(["wait-for-device"], timeout=30)
             return True
         if n >= 4 and n % 4 == 0:
-            if self.emu_restarts < CFG["emu_restarts"]:
+            now = time.time()
+            won = self.levels_done - self.emu_restart_levels
+            # دقائق اللعب من عودة المحاكي إلى آخر لقطة ناجحة: لا يدخل فيها زمن العطل الحالي (اللقطات الفاشلة، وإعادة adb،
+            # ومحاولة نسخة على محاكٍ ميت)، وإعادة لم تتبعها لقطة ناجحة تعطي صفراً
+            since = max(0.0, self.last_ok_grab - self.emu_restart_at) / 60.0
+            left = (self.deadline - now) / 60.0
+            allow, self.emu_fruitless, why = emu_restart_policy(self.emu_restarts, self.emu_fruitless, won, since, left)
+            if allow:
                 self.emu_restarts += 1
+                self.log("المحاكي لا يردّ: إعادة تشغيله رقم %d (%s)" % (self.emu_restarts, why))
                 self.log_host_oom()
-                ok = self.restart_emulator()
+                # مهلة الإعادة: ما بقي من التشغيل ناقص دقيقة، فلا تتجاوز الإعادةُ deadline (المحاكي قد لا يُقلع، أو تغيب اللعبة)
+                ok = self.restart_emulator(budget=self.deadline - time.time() - 60)
+                self.emu_restart_at = time.time()
+                self.emu_restart_levels = self.levels_done
                 if ok:
                     self.cap_fails = 0
                 return True
-            self.log("المحاكي لا يعود بعد %d إعادات؛ إيقاف البوت لينتهي التشغيل وتُنشر النتائج" % self.emu_restarts)
+            self.log("المحاكي لا يردّ ولن يُعاد تشغيله: %s؛ إيقاف البوت لينتهي التشغيل وتُنشر النتائج (%d إعادة، %d مرحلة مكتملة)"
+                     % (why, self.emu_restarts, self.levels_done))
             self.stop = True
             return True
         return False
@@ -2988,26 +3391,37 @@ class Bot:
         except (subprocess.TimeoutExpired, OSError):
             pass
 
-    def restart_emulator(self) -> bool:
+    def restart_emulator(self, budget=None) -> bool:
         """يقتل المحاكي العالق ويشغّله من جديد (start_emulator)، وينتظر إقلاعه، ويعيد إعدادات الشاشة، ثم يشغّل اللعبة (وتثبّتها
-        مع استعادة الحفظ إن غابت). True إن عاد الجهاز وشُغّلت اللعبة."""
+        مع استعادة الحفظ إن غابت). True إن عاد الجهاز وشُغّلت اللعبة. budget: أقصى ثوانٍ للإعادة كلها (recover_device: ما بقي من
+        التشغيل)؛ انتظار الإقلاع يُقصَّر بها، ولا يبدأ تثبيت اللعبة واستعادة حفظها إلا إن بقي منها emu_install_min دقيقة (لا تثبيت
+        بلا استعادة: لعبة من المرحلة 1 تكتب نسختها فوق نسخة out/)، وتعيد False حين تنفد."""
         d = self.dev
-        self.log("إعادة تشغيل المحاكي (المرة %d من %d)..." % (self.emu_restarts, CFG["emu_restarts"]))
+        end = time.time() + (budget if budget is not None else 1e9)
+
+        def left():
+            return end - time.time()
+        if left() <= 0:
+            self.log("لا وقت لإعادة تشغيل المحاكي قبل نهاية التشغيل")
+            return False
+        self.log("إعادة تشغيل المحاكي (المرة %d، حدّ الأمان %d)..." % (self.emu_restarts, CFG["emu_restarts"]))
         kill_emulators()
         time.sleep(3)
         if not start_emulator():
             self.log("تعذّر تشغيل المحاكي: لم يُعثر على الأمر emulator")
             return False
         d.restart_adb()
-        d.run(["wait-for-device"], timeout=300)
+        d.run(["wait-for-device"], timeout=max(5, min(300, int(left()))))
         booted = False
         for _ in range(150):
+            if left() <= 0:
+                break
             if d.sh("getprop sys.boot_completed", timeout=10) == "1":
                 booted = True
                 break
             time.sleep(2)
         if not booted:
-            self.log("المحاكي لم يكمل إقلاعه بعد إعادة تشغيله")
+            self.log("المحاكي لم يكمل إقلاعه بعد إعادة تشغيله%s" % ("" if left() > 0 else " (نفدت مهلة الإعادة: نهاية التشغيل قريبة)"))
             return False
         for c in ("settings put global window_animation_scale 0", "settings put global transition_animation_scale 0",
                   "settings put global animator_duration_scale 0",
@@ -3020,8 +3434,11 @@ class Bot:
         except Exception:                               # noqa: BLE001
             pass
         if not d.installed():
+            if left() < CFG["emu_install_min"] * 60:
+                self.log("اللعبة غير مثبّتة بعد إعادة المحاكي، ولم يبقَ وقت لتثبيتها واستعادة الحفظ (%.1f دقيقة)" % (left() / 60))
+                return False
             self.log("اللعبة غير مثبّتة بعد إعادة المحاكي: تثبيتها واستعادة الحفظ")
-            self.install_game()
+            self.install_game(until=end)
             self.restore_app()
         d.launch()
         self.unknown_streak = 0

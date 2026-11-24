@@ -1764,6 +1764,80 @@ class TestGitPublish(unittest.TestCase):
                 driver.CFG.clear()
                 driver.CFG.update(saved[2])
 
+    def test_backup_parts_replace_single_file_on_branch(self):
+        """تحديث ساخن أثناء تشغيل كتب كوده القديم out/game_backup.ab في الفرع: أول نسخة بالكود الجديد ترفع الأجزاء وملف الوصف،
+        والملف الواحد يُحذف من الفرع (في الرفع التالي على الأكثر، بعد أن تصير شجرة النشر على الفرع)، وجزء زائد من نسخة أكبر كذلك."""
+        br = "claude/test-bot"
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            origin, main = d / "origin.git", d / "main"
+            self.sh("git", "init", "-q", "--bare", str(origin))
+            self.sh("git", "clone", "-q", str(origin), str(main))
+            self.sh("git", "config", "user.email", "t@example.com", cwd=main)
+            self.sh("git", "config", "user.name", "t", cwd=main)
+            self.sh("git", "checkout", "-q", "-b", br, cwd=main)
+            (main / "research" / "emu").mkdir(parents=True)
+            (main / "research" / "emu" / "cmd.txt").write_text("seq 0\n")
+            self.sh("git", "add", "-A", cwd=main)
+            self.sh("git", "commit", "-q", "-m", "init", cwd=main)
+            self.sh("git", "push", "-q", "origin", br, cwd=main)
+            # الكود القديم رفع الملف الواحد في out/ (بعد بداية التشغيل: ليس في HEAD المحلي)
+            other = d / "other"
+            self.sh("git", "clone", "-q", "-b", br, str(origin), str(other))
+            self.sh("git", "config", "user.email", "o@example.com", cwd=other)
+            self.sh("git", "config", "user.name", "o", cwd=other)
+            (other / driver.OUT_REL).mkdir(parents=True)
+            (other / driver.OUT_REL / driver.BACKUP_NAME).write_bytes(b"old single backup")
+            self.sh("git", "add", "-A", cwd=other)
+            self.sh("git", "commit", "-q", "-m", "old", cwd=other)
+            self.sh("git", "push", "-q", "origin", br, cwd=other)
+
+            saved = (driver.ROOT, driver.PUB_DIR, dict(driver.CFG))
+            driver.ROOT, driver.PUB_DIR = main, d / "pub"
+            driver.CFG["branch"] = br
+            driver.CFG["backup_part_mb"] = 0.01
+            try:
+                game = FakeGame([make_level(random.Random(1), 3, 1)], random.Random(1))
+                out = driver.Out(main / driver.OUT_REL, 50, quiet=True)
+                (out.dir / driver.BACKUP_NAME).write_bytes(b"old single backup")
+                bot = driver.Bot(FakeDevice(game), driver.Vision(FakeVisionModule(game), out), out, 10)
+                bot.setup_publisher()
+                self.assertTrue(bot.pub_ok)
+                tmp = d / "b.ab"
+                tmp.write_bytes(backup_bytes(30000, seed=3))
+                clock, driver.time = driver.time, FakeClock()
+                try:
+                    self.assertTrue(bot.store_backup(str(tmp)))
+                finally:
+                    driver.time = clock
+                ls = lambda: self.sh("git", "--git-dir", str(origin), "ls-tree", "-r", "--name-only", br)  # noqa: E731
+                self.assertTrue(bot.publish("نشر 1"))
+                self.assertTrue(bot.publish("نشر 2"))
+                files = ls()
+                self.assertNotIn(driver.OUT_REL + "/" + driver.BACKUP_NAME + "\n", files)
+                self.assertIn(driver.OUT_REL + "/" + driver.backup_part_name(2), files)
+                self.assertIn(driver.OUT_REL + "/" + driver.BACKUP_MANIFEST, files)
+                # نسخة أصغر: يُحذف الجزء 02 من الفرع
+                tmp.write_bytes(backup_bytes(15000, seed=4))
+                driver.time = FakeClock()
+                try:
+                    self.assertTrue(bot.store_backup(str(tmp)))
+                finally:
+                    driver.time = clock
+                self.assertTrue(bot.publish("نشر 3"))
+                files = ls()
+                self.assertNotIn(driver.backup_part_name(2), files)
+                self.assertIn(driver.OUT_REL + "/" + driver.backup_part_name(1), files)
+                # الفرع كما يراه التشغيل التالي: الأجزاء تُجمع وتطابق
+                chk = d / "chk"
+                self.sh("git", "clone", "-q", "-b", br, str(origin), str(chk))
+                got, info = driver.join_backup(chk / driver.OUT_REL, d / "j.ab")
+                self.assertEqual(got.read_bytes(), tmp.read_bytes(), info)
+            finally:
+                driver.ROOT, driver.PUB_DIR = saved[0], saved[1]
+                driver.CFG.clear()
+                driver.CFG.update(saved[2])
+
 
 class TestInstallAbi(unittest.TestCase):
     """التثبيت يختار ملف المعمارية بحسب abilist الجهاز (الحزمة الحديثة فيها arm64_v8a وحده)."""
@@ -1918,7 +1992,8 @@ class FlakyDevice(FakeDevice):
 
 
 class TestEmulatorWatchdog(unittest.TestCase):
-    """حارس المحاكي (recover_device): adb عند 3 لقطات فاشلة، والمحاكي عند 4 ثم كل 4، والتوقف بعد emu_restarts إعادة (التشغيل العاشر)."""
+    """حارس المحاكي (recover_device): adb عند 3 لقطات فاشلة، والمحاكي عند 4 ثم كل 4، والتوقف بعد إعادات متتالية بلا تقدّم
+    (التشغيل العاشر: محاكٍ لا يعود؛ وسياسة التقدّم نفسها في TestEmuRestartPolicy وTestEmuRestartProgress)."""
 
     def setUp(self):
         self.clock = FakeClock()
@@ -1955,8 +2030,12 @@ class TestEmulatorWatchdog(unittest.TestCase):
         return (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
 
     def test_defaults(self):
-        self.assertEqual(self.cfg["emu_restarts"], 8)
+        self.assertEqual(self.cfg["emu_restarts"], 40)
+        self.assertEqual(self.cfg["emu_fruitless_max"], 3)
+        self.assertEqual(self.cfg["emu_progress_min"], 15.0)
+        self.assertEqual(self.cfg["emu_restart_min_left"], 6.0)
         self.assertEqual(self.cfg["backup_win_min"], 10.0)
+        self.assertLess(self.cfg["backup_part_mb"] * 1024 * 1024, 50 * 1000 * 1000)   # تحت تحذير GitHub (50 ميغا)
 
     def test_short_glitch_needs_no_recovery(self):
         game, dev, bot = self.make(2)
@@ -1989,20 +2068,514 @@ class TestEmulatorWatchdog(unittest.TestCase):
                 break
         self.assertEqual(game.wins, 1, self.log()[-2000:])
 
-    def test_gives_up_after_restarts_are_exhausted(self):
+    def test_gives_up_after_restarts_without_progress(self):
+        # المحاكي لا يعود أبداً: الإعادة الأولى ثم إعادتان بلا تقدّم بعد كل منهما... حتى emu_fruitless_max إعادات بلا تقدّم
         self.start_ok = False
         game, dev, bot = self.make(10 ** 6)
         bot.run(max_iters=60)
-        self.assertEqual(self.started, driver.CFG["emu_restarts"], self.log()[-2000:])
+        self.assertEqual(self.started, driver.CFG["emu_fruitless_max"], self.log()[-2000:])
         self.assertTrue(bot.stop)
         self.assertIn("إيقاف البوت لينتهي التشغيل", self.log())
+        self.assertIn("إعادات متتالية للمحاكي بلا أي تقدّم", self.log())
 
     def test_boot_that_never_completes_counts_as_failed_restart(self):
         game, dev, bot = self.make(10 ** 6, boot="0")
         bot.run(max_iters=60)
-        self.assertEqual(self.started, driver.CFG["emu_restarts"])
+        self.assertEqual(self.started, driver.CFG["emu_fruitless_max"])
         self.assertTrue(bot.stop)
         self.assertIn("لم يكمل إقلاعه", self.log())
+
+
+# ============================================================== سياسة إعادات المحاكي بالتقدّم (التشغيل 15)
+class TestEmuRestartPolicy(unittest.TestCase):
+    """emu_restart_policy: يُعاد المحاكي ما دام البوت يتقدّم، ويتوقف بعد إعادات متتالية بلا تقدّم أو عند حدّ الأمان أو قرب النهاية."""
+
+    CFG = {"emu_restarts": 40, "emu_fruitless_max": 3, "emu_progress_min": 15.0, "emu_restart_min_left": 6.0}
+
+    def pol(self, restarts, fruitless, won, since, left=200.0):
+        return driver.emu_restart_policy(restarts, fruitless, won, since, left, self.CFG)
+
+    def test_first_failure_always_restarts(self):
+        allow, f, why = self.pol(0, 0, 0, 1.0)
+        self.assertTrue(allow)
+        self.assertEqual(f, 0)
+        self.assertIn("أول عطل", why)
+
+    def test_win_since_last_restart_is_progress(self):
+        allow, f, why = self.pol(7, 2, 1, 2.0)
+        self.assertTrue(allow)
+        self.assertEqual(f, 0)
+        self.assertIn("1 مرحلة", why)
+
+    def test_play_time_without_win_is_progress(self):
+        allow, f, _ = self.pol(5, 2, 0, 15.0)
+        self.assertTrue(allow)
+        self.assertEqual(f, 0)
+        allow, f, _ = self.pol(5, 2, 0, 14.9)
+        self.assertFalse(allow)                  # الثالثة بلا تقدّم
+        self.assertEqual(f, 3)
+
+    def test_counts_consecutive_fruitless_restarts(self):
+        seq = [self.pol(1, 0, 0, 1.0), self.pol(2, 1, 0, 1.0), self.pol(3, 2, 0, 1.0)]
+        self.assertEqual([(a, f) for a, f, _ in seq], [(True, 1), (True, 2), (False, 3)])
+        self.assertIn("بلا أي تقدّم", seq[-1][2])
+
+    def test_progress_resets_the_fruitless_count(self):
+        self.assertEqual(self.pol(3, 2, 2, 5.0)[:2], (True, 0))
+
+    def test_absolute_safety_cap(self):
+        allow, _f, why = self.pol(40, 0, 3, 30.0)
+        self.assertFalse(allow)
+        self.assertIn("حدّ الأمان", why)
+        self.assertTrue(self.pol(39, 0, 3, 30.0)[0])
+
+    def test_no_restart_near_the_end(self):
+        allow, _f, why = self.pol(2, 0, 4, 20.0, left=5.9)
+        self.assertFalse(allow)
+        self.assertIn("بقي 5.9 دقيقة", why)
+        self.assertTrue(self.pol(2, 0, 4, 20.0, left=6.0)[0])
+        self.assertFalse(self.pol(0, 0, 0, 0.0, left=1.0)[0])   # ولا أول عطل قرب النهاية
+
+    def test_run15_sequence_never_stops(self):
+        # التشغيل 15: تسعة أعطال في 190 دقيقة وفوز بين أغلبها (14 مرحلة)؛ الحدّ الثابت 8 أوقف البوت وأمامه 110 دقائق
+        gaps = [(11, 1), (8, 2), (8, 1), (10, 1), (10, 1), (30, 3), (68, 2), (25, 2), (7, 0)]
+        restarts, fruitless, left = 0, 0, 300.0
+        for since, won in gaps:
+            left -= since
+            allow, fruitless, _ = self.pol(restarts, fruitless, won, since, left)
+            self.assertTrue(allow, (restarts, since, won))
+            restarts += 1
+        self.assertEqual(restarts, 9)
+
+
+class TestEmuRestartProgress(unittest.TestCase):
+    """recover_device على البوت كله: الإعادة تُحسب من التقدّم بين الأعطال (فوز أو وقت لعب) لا من عدد ثابت."""
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cfg = dict(driver.CFG)
+        rng = random.Random(5)
+        game = FakeGame([make_level(rng, 4, 2)], rng)
+        dev = FlakyDevice(game, 0)
+        out = driver.Out(Path(self.tmp.name), 600, quiet=True)
+        self.bot = driver.Bot(dev, driver.Vision(FakeVisionModule(game), out), out, 300, git=False)
+        self.bot.log_host_oom = lambda: None
+        self.restarted = 0
+
+        self.budgets = []
+
+        def fake_restart(budget=None):
+            self.restarted += 1
+            self.budgets.append(budget)
+            self.clock.sleep(60)
+            return True
+        self.bot.restart_emulator = fake_restart
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        self.tmp.cleanup()
+
+    def crash(self, after_min, won=0):
+        """يلعب after_min دقيقة ويفوز بـ won مرحلة ثم يموت المحاكي: آخر لقطة ناجحة ثم دقيقتان من اللقطات الفاشلة وإعادة adb
+        ومحاولة نسخة على محاكٍ ميت (لا تُحسب لعباً)، ثم قرار الحارس عند اللقطة الفاشلة الرابعة. يعيد: أُعيد المحاكي؟"""
+        self.clock.sleep(after_min * 60)
+        self.bot.last_ok_grab = self.clock.time()
+        self.bot.levels_done += won
+        self.clock.sleep(120)
+        before = self.restarted
+        self.bot.cap_fails = 4
+        self.assertTrue(self.bot.recover_device())
+        return self.restarted > before
+
+    def log(self):
+        return (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
+
+    def test_keeps_restarting_while_winning(self):
+        for _ in range(12):                      # أكثر من الحدّ الثابت القديم (8)
+            self.assertTrue(self.crash(8, won=1), self.log()[-1500:])
+            self.assertEqual(self.bot.cap_fails, 0)
+        self.assertFalse(self.bot.stop)
+        self.assertEqual(self.bot.emu_restarts, 12)
+        self.assertIn("تقدّم منذ الإعادة السابقة: 1 مرحلة", self.log())
+
+    def test_stops_after_three_restarts_without_progress(self):
+        self.assertTrue(self.crash(10, won=2))
+        self.assertTrue(self.crash(3, won=1))
+        self.assertTrue(self.crash(2))           # بعد الإعادة 2 لا فوز: 1
+        self.assertTrue(self.crash(2))           # 2
+        self.assertFalse(self.crash(2))          # 3: توقف
+        self.assertTrue(self.bot.stop)
+        self.assertEqual(self.bot.emu_restarts, 4)
+        self.assertIn("ولن يُعاد تشغيله: 3 إعادات متتالية للمحاكي بلا أي تقدّم", self.log())
+
+    def test_long_play_without_win_still_counts(self):
+        self.assertTrue(self.crash(1))
+        for _ in range(5):
+            self.assertTrue(self.crash(20))      # انتظار أرواح طويل بلا فوز: المحاكي سليم
+        self.assertFalse(self.bot.stop)
+        self.assertEqual(self.bot.emu_fruitless, 0)
+
+    def test_win_between_fruitless_restarts_resets(self):
+        self.assertTrue(self.crash(1))
+        self.assertTrue(self.crash(1))
+        self.assertTrue(self.crash(1))           # 2 بلا تقدّم
+        self.assertTrue(self.crash(1, won=1))    # فوز: يعود الصفر
+        self.assertEqual(self.bot.emu_fruitless, 0)
+        self.assertTrue(self.crash(1))
+        self.assertTrue(self.crash(1))
+        self.assertFalse(self.bot.stop)
+
+    def test_stops_within_remaining_time(self):
+        self.assertTrue(self.crash(10, won=1))
+        self.assertFalse(self.crash(300 - 10 - 1 - 4, won=3))   # بقي نحو 4 دقائق
+        self.assertTrue(self.bot.stop)
+        self.assertIn("لا فائدة من إعادة المحاكي", self.log())
+
+    def test_safety_cap(self):
+        driver.CFG["emu_restarts"] = 5
+        for _ in range(5):
+            self.assertTrue(self.crash(2, won=1))
+        self.assertFalse(self.crash(2, won=1))
+        self.assertTrue(self.bot.stop)
+        self.assertIn("حدّ الأمان (5 إعادة", self.log())
+
+    def test_adb_restart_still_comes_first(self):
+        self.bot.cap_fails = 3
+        self.assertTrue(self.bot.recover_device())
+        self.assertEqual(self.bot.dev.adb_restarts, 1)
+        self.assertEqual(self.restarted, 0)
+
+    def test_counters_survive_hot_update(self):
+        self.assertTrue(self.crash(2, won=1))
+        self.assertTrue(self.crash(1))
+        self.assertEqual((self.bot.emu_restarts, self.bot.emu_fruitless), (2, 1))
+        saved = driver.STATE_FILE
+        driver.STATE_FILE = Path(self.tmp.name) / "state.json"
+        try:
+            self.bot.save_counters()
+            out = driver.Out(Path(self.tmp.name) / "b2", 10, quiet=True)
+            b2 = driver.Bot(self.bot.dev, self.bot.vis, out, 100, git=False)
+            b2.levels_done = self.bot.levels_done
+            self.assertTrue(b2.load_counters())
+        finally:
+            driver.STATE_FILE = saved
+        self.assertEqual((b2.emu_restarts, b2.emu_fruitless, b2.emu_restart_levels), (2, 1, 1))
+        self.assertEqual(b2.emu_restart_at, self.bot.emu_restart_at)
+
+
+# ============================================================== النسخة الاحتياطية أجزاءً (أقل من 50 ميغا لكل ملف)
+def backup_bytes(n, seed=1, compressed=True):
+    """أرشيف adb backup كامل حجمه نحو n بايت (أقل منه بـ 600 على الأكثر): الترويسة ثم tar (محتوى عشوائي بكتل 512 وكتلتا الأصفار
+    في آخره)، مضغوطاً بـ zlib بلا ضغط فعلي (المستوى 0) فيبقى الحجم متوقَّعاً."""
+    import zlib
+    head = b"ANDROID BACKUP\n5\n%d\nnone\n" % (1 if compressed else 0)
+    body = max(512, (n - len(head) - 1024 - 40) // 512 * 512)
+    tar = random.Random(seed).randbytes(body) + bytes(1024)
+    return head + (zlib.compress(tar, 0) if compressed else tar)
+
+
+class TestBackupParts(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.d = Path(self.tmp.name)
+        self.out = self.d / "out"
+        self.out.mkdir()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def blob(self, n, seed=1):
+        body = random.Random(seed).randbytes(max(0, n - len(driver.BACKUP_MAGIC)))
+        data = (driver.BACKUP_MAGIC + body)[:n]
+        p = self.d / ("src_%d_%d.ab" % (n, seed))
+        p.write_bytes(data)
+        return p, data
+
+    def names(self, d=None):
+        return sorted(p.name for p in (d or self.out).iterdir())
+
+    def test_round_trip_around_the_boundary(self):
+        P = 1000
+        for n in (20, P - 1, P, P + 1, 2 * P - 1, 2 * P, 2 * P + 1, 5 * P + 7):
+            with self.subTest(n=n):
+                src, data = self.blob(n, seed=n)
+                man = driver.split_backup(src, self.out, P)
+                sizes = [pt["size"] for pt in man["parts"]]
+                self.assertEqual(len(sizes), -(-n // P))
+                self.assertTrue(all(0 < s <= P for s in sizes), sizes)
+                self.assertEqual(sum(sizes), n)
+                self.assertEqual(self.names(), sorted([driver.backup_part_name(i) for i in range(len(sizes))]
+                                                      + [driver.BACKUP_MANIFEST]))
+                got, info = driver.join_backup(self.out, self.d / "joined.ab")
+                self.assertIsNotNone(got, info)
+                self.assertEqual(got.read_bytes(), data)
+                self.assertIn("تحقّق الحجم والبصمة", info)
+
+    def test_real_sizes_stay_below_github_warning(self):
+        # 77.6 ميغا (التشغيل 15) بأجزاء backup_part_mb: جزءان تحت 50 ميغا (بلا كتابة 77 ميغا في الاختبار: الحساب فقط)
+        P = int(driver.CFG["backup_part_mb"] * 1024 * 1024)
+        self.assertLess(P, 50 * 1000 * 1000)
+        self.assertEqual(-(-77599608 // P), 2)
+
+    def test_stale_higher_parts_and_legacy_file_are_removed(self):
+        src, _ = self.blob(3500)
+        driver.split_backup(src, self.out, 1000)            # 4 أجزاء
+        (self.out / driver.BACKUP_NAME).write_bytes(b"old single file")
+        (self.out / "log.txt").write_text("keep")
+        small, data = self.blob(1500, seed=2)
+        man = driver.split_backup(small, self.out, 1000)    # جزءان: يُحذف 02 و03 والملف الواحد
+        self.assertEqual(len(man["parts"]), 2)
+        self.assertEqual(self.names(), [driver.BACKUP_MANIFEST, driver.backup_part_name(0),
+                                        driver.backup_part_name(1), "log.txt"])
+        self.assertEqual(driver.join_backup(self.out, self.d / "j.ab")[0].read_bytes(), data)
+
+    def test_no_temp_files_left_and_meta_kept(self):
+        src, _ = self.blob(2500)
+        man = driver.split_backup(src, self.out, 1000, meta={"levels_done": 7, "size": -1})
+        self.assertEqual(man["levels_done"], 7)
+        self.assertEqual(man["size"], 2500)                 # meta لا يغطّي حقول التحقق
+        self.assertFalse([n for n in self.names() if n.startswith(".")])
+        on_disk = json.loads((self.out / driver.BACKUP_MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(on_disk, man)
+
+    def test_empty_source_is_refused(self):
+        p = self.d / "empty.ab"
+        p.write_bytes(b"")
+        with self.assertRaises(ValueError):
+            driver.split_backup(p, self.out, 1000)
+        self.assertEqual(self.names(), [])
+
+    def test_legacy_single_file(self):
+        _, data = self.blob(5000)
+        (self.out / driver.BACKUP_NAME).write_bytes(data)
+        got, info = driver.join_backup(self.out, self.d / "j.ab")
+        self.assertEqual(got, self.out / driver.BACKUP_NAME)    # كما هو بلا نسخ
+        self.assertIn("ملف واحد", info)
+
+    def test_corrupted_part_is_rejected(self):
+        src, _ = self.blob(2500)
+        driver.split_backup(src, self.out, 1000)
+        p1 = self.out / driver.backup_part_name(1)
+        b = bytearray(p1.read_bytes())
+        b[10] ^= 0xFF
+        p1.write_bytes(bytes(b))
+        got, info = driver.join_backup(self.out, self.d / "j.ab")
+        self.assertIsNone(got)
+        self.assertIn("part01", info)
+        self.assertFalse((self.d / "j.ab").exists())
+        self.assertFalse((self.d / ".j.ab.tmp").exists())
+
+    def test_truncated_part_is_rejected(self):
+        src, _ = self.blob(2500)
+        driver.split_backup(src, self.out, 1000)
+        p2 = self.out / driver.backup_part_name(2)
+        p2.write_bytes(p2.read_bytes()[:-1])
+        self.assertIsNone(driver.join_backup(self.out, self.d / "j.ab")[0])
+
+    def test_missing_part_is_rejected(self):
+        src, _ = self.blob(2500)
+        driver.split_backup(src, self.out, 1000)
+        (self.out / driver.backup_part_name(1)).unlink()
+        got, info = driver.join_backup(self.out, self.d / "j.ab")
+        self.assertIsNone(got)
+        self.assertIn("غائب", info)
+
+    def test_parts_without_manifest(self):
+        src, data = self.blob(2500)
+        driver.split_backup(src, self.out, 1000)
+        (self.out / driver.BACKUP_MANIFEST).unlink()
+        got, info = driver.join_backup(self.out, self.d / "j.ab")
+        self.assertEqual(got.read_bytes(), data)
+        self.assertIn("بلا ملف وصف", info)
+        (self.out / driver.backup_part_name(1)).unlink()     # فجوة بلا ملف وصف
+        got, info = driver.join_backup(self.out, self.d / "j.ab")
+        self.assertIsNone(got)
+        self.assertIn("فجوة", info)
+
+    def test_broken_manifest_and_bad_header(self):
+        src, _ = self.blob(2500)
+        driver.split_backup(src, self.out, 1000)
+        (self.out / driver.BACKUP_MANIFEST).write_text("{not json")
+        self.assertIn("ملف الوصف تالف", driver.join_backup(self.out, self.d / "j.ab")[1])
+        bad = self.d / "bad"
+        bad.mkdir()
+        p = self.d / "noheader.ab"
+        p.write_bytes(b"x" * 3000)
+        driver.split_backup(p, bad, 1000)
+        got, info = driver.join_backup(bad, self.d / "j.ab")
+        self.assertIsNone(got)
+        self.assertIn("ترويسة", info)
+
+    def test_nothing_there(self):
+        self.assertEqual(driver.join_backup(self.out, self.d / "j.ab"), (None, "لا نسخة"))
+        (self.out / driver.BACKUP_NAME).write_bytes(driver.BACKUP_MAGIC)   # أصغر من 2 ك.ب: ليس نسخة
+        self.assertEqual(driver.join_backup(self.out, self.d / "j.ab"), (None, "لا نسخة"))
+
+    def test_find_backup_order_and_fallbacks(self):
+        save, out = self.d / "save", self.out
+        save.mkdir()
+        logs = []
+        self.assertEqual(driver.find_backup((save, out), self.d / "j.ab", logs.append), (None, None))
+        _, old = self.blob(4000, seed=9)
+        (save / driver.BACKUP_NAME).write_bytes(old)              # حفظ قديم بملف واحد
+        src, new = self.blob(4500, seed=10)
+        driver.split_backup(src, out, 1000)
+        got, info = driver.find_backup((save, out), self.d / "j.ab", logs.append)
+        self.assertEqual(got.read_bytes(), old)                   # save/ أولاً
+        self.assertTrue(info.startswith("save/"))
+        # أجزاء جديدة في save/ (أرشفة) بجانب الملف القديم: الأجزاء أولاً
+        driver.split_backup(src, save, 2000)
+        (save / driver.BACKUP_NAME).write_bytes(old)              # split_backup حذفه؛ يعاد ليبقى بجانب الأجزاء
+        got, info = driver.find_backup((save, out), self.d / "j.ab", logs.append)
+        self.assertEqual(got.read_bytes(), new)
+        self.assertIn("جزء", info)
+        # جزء تالف في save/: الملف الواحد القديم بجانبه بديله، مع سطر السبب
+        (save / driver.backup_part_name(0)).write_bytes(b"broken")
+        got, info = driver.find_backup((save, out), self.d / "j.ab", logs.append)
+        self.assertEqual(got.read_bytes(), old)
+        self.assertIn("بدل الأجزاء التالفة", info)
+        self.assertTrue(any("مرفوضة في save/" in ln for ln in logs))
+        # بلا الملف القديم: out/ بعدها
+        (save / driver.BACKUP_NAME).unlink()
+        got, info = driver.find_backup((save, out), self.d / "j.ab", logs.append)
+        self.assertEqual(got.read_bytes(), new)
+        self.assertTrue(info.startswith("out/"))
+
+
+class TestBackupInBot(unittest.TestCase):
+    """البوت يحفظ النسخة أجزاءً في out/ ويستعيدها من save/ (مجموعةً ومتحقَّقاً منها)، والنشر يحذف الأجزاء الزائدة والملف الواحد."""
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.d = Path(self.tmp.name)
+        self.cfg = dict(driver.CFG)
+        rng = random.Random(2)
+        game = FakeGame([make_level(rng, 4, 2)], rng)
+        self.dev = FakeDevice(game)
+        self.out = driver.Out(self.d / "out", 50, quiet=True)
+        self.bot = driver.Bot(self.dev, driver.Vision(FakeVisionModule(game), self.out), self.out, 100, git=False)
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        self.tmp.cleanup()
+
+    def ab(self, n, seed=1):
+        p = self.d / "tmp_backup.ab"
+        p.write_bytes(backup_bytes(n, seed))
+        return p
+
+    def test_store_backup_writes_parts_and_drops_single_file(self):
+        driver.CFG["backup_part_mb"] = 0.01                  # 10485 بايت لكل جزء
+        (self.out.dir / driver.BACKUP_NAME).write_bytes(b"legacy")
+        self.bot.levels_done = 3
+        self.assertTrue(self.bot.store_backup(str(self.ab(30000))))
+        names = sorted(p.name for p in self.out.dir.iterdir())
+        self.assertNotIn(driver.BACKUP_NAME, names)
+        self.assertEqual([n for n in names if ".part" in n], [driver.backup_part_name(i) for i in range(3)])
+        man = json.loads((self.out.dir / driver.BACKUP_MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(man["levels_done"], 3)
+        self.assertEqual(self.bot.backup_levels, 3)
+        log = (self.out.dir / "log.txt").read_text(encoding="utf-8")
+        self.assertIn("في 3 جزء", log)
+
+    def test_restore_mid_run_prefers_this_runs_backup(self):
+        # بعد نسخة في هذا التشغيل (محاكٍ أُعيد ففقد اللعبة): out/ أحدث من save/ (حفظ بداية التشغيل)
+        root = self.d / "repo" / "research" / "emu"
+        (root / "bot").mkdir(parents=True)
+        old, new = self.ab(12000, seed=7), None
+        driver.split_backup(old, root / "save", 10000)
+        old_bytes = old.read_bytes()
+        restored = []
+
+        def fake_popen(cmd, **k):
+            restored.append(Path(cmd[-1]).read_bytes())
+
+            class P:
+                def wait(self, timeout=None):
+                    return 0
+            return P()
+        saved = (driver.HERE, driver.subprocess.Popen)
+        driver.HERE = root / "bot"
+        driver.subprocess.Popen = fake_popen
+        self.bot.confirm_backup_dialog = lambda tries=25: True
+        self.dev._cmd = lambda args: ["adb"] + list(args)
+        out2 = driver.Out(root / "out", 50, quiet=True)
+        self.bot.out = out2
+        try:
+            self.assertTrue(self.bot.restore_app())            # بداية التشغيل: save/
+            new = self.ab(14000, seed=8)
+            self.assertTrue(self.bot.store_backup(str(new)))
+            self.assertTrue(self.bot.restore_app())            # بعد نسخة هذا التشغيل: out/
+        finally:
+            driver.HERE, driver.subprocess.Popen = saved
+        self.assertEqual(restored, [old_bytes, new.read_bytes()])
+
+    def test_store_backup_refuses_tiny_or_huge(self):
+        p = self.d / "tiny.ab"
+        p.write_bytes(b"x" * 100)
+        self.assertFalse(self.bot.store_backup(str(p)))
+        driver.CFG["backup_max_mb"] = 0.01
+        self.assertFalse(self.bot.store_backup(str(self.ab(30000))))
+        self.assertFalse([p for p in self.out.dir.iterdir() if driver.is_backup_file(p.name)])
+
+    def test_restore_joins_parts_from_save(self):
+        root = self.d / "repo" / "research" / "emu"
+        (root / "bot").mkdir(parents=True)
+        src = self.ab(25000, seed=4)
+        driver.split_backup(src, root / "save", 10000)
+        restored = []
+
+        def fake_popen(cmd, **k):
+            restored.append(Path(cmd[-1]).read_bytes())
+
+            class P:
+                def wait(self, timeout=None):
+                    return 0
+            return P()
+        saved = (driver.HERE, driver.subprocess.Popen)
+        driver.HERE = root / "bot"
+        driver.subprocess.Popen = fake_popen
+        self.bot.confirm_backup_dialog = lambda tries=25: True
+        self.dev._cmd = lambda args: ["adb"] + list(args)
+        try:
+            self.assertTrue(self.bot.restore_app())
+        finally:
+            driver.HERE, driver.subprocess.Popen = saved
+        self.assertEqual(restored, [src.read_bytes()])
+        log = (self.out.dir / "log.txt").read_text(encoding="utf-8")
+        self.assertIn("استعادة بيانات اللعبة من save/: 3 جزء", log)
+
+    def test_sync_out_mirrors_backup_deletions_only(self):
+        pub = self.d / "pub"
+        saved = driver.PUB_DIR
+        driver.PUB_DIR = pub
+        try:
+            dst = pub / driver.OUT_REL
+            dst.mkdir(parents=True)
+            # شجرة النشر فيها نسخة أكبر (4 أجزاء) والملف الواحد القديم، وملف حذفه صاحب المشروع محلياً لا يُمسّ
+            for n in [driver.BACKUP_NAME, driver.BACKUP_MANIFEST] + [driver.backup_part_name(i) for i in range(4)]:
+                (dst / n).write_bytes(b"old")
+            (dst / "other.jpg").write_bytes(b"keep")
+            driver.split_backup(self.ab(15000), self.out.dir, 10000)   # جزءان محلياً
+            self.out.log("سطر")
+            self.bot._sync_out()
+            names = sorted(p.name for p in dst.iterdir())
+            self.assertEqual(names, sorted([driver.BACKUP_MANIFEST, driver.backup_part_name(0),
+                                            driver.backup_part_name(1), "log.txt", "other.jpg"]))
+            got, _ = driver.join_backup(dst, self.d / "j.ab")
+            self.assertIsNotNone(got)
+        finally:
+            driver.PUB_DIR = saved
 
 
 # ============================================================== ذاكرة كل بداية والأبواب (التشغيل 12، المرحلة 124)
@@ -2661,6 +3234,285 @@ class TestTags(DriverCase):
         self.assertEqual(tubes[0]["accept"], "red")
         self.assertIn("{وسم:red}", solver.describe(new))
 
+
+# ============================================================== ملاحظات المراجعة: قياس اللعب، ومهلة الإعادة، والأرشيف المقطوع، والأرشفة
+class TestReviewFixes(unittest.TestCase):
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.d = Path(self.tmp.name)
+        self.cfg = dict(driver.CFG)
+        self._kill, self._start = driver.kill_emulators, driver.start_emulator
+        driver.kill_emulators = lambda: None
+        driver.start_emulator = lambda log_path=None: True
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        driver.kill_emulators, driver.start_emulator = self._kill, self._start
+        self.tmp.cleanup()
+
+    def make(self, boot="1", minutes=300):
+        rng = random.Random(9)
+        game = FakeGame([make_level(rng, 4, 2)], rng)
+        dev = FlakyDevice(game, 0, boot)
+        out = driver.Out(self.d / "out", 600, quiet=True)
+        bot = driver.Bot(dev, driver.Vision(FakeVisionModule(game), out), out, minutes, git=False)
+        bot.log_host_oom = lambda: None
+        return dev, bot
+
+    def log(self):
+        return (self.d / "out" / "log.txt").read_text(encoding="utf-8")
+
+    # --- 1: دقائق اللعب حتى آخر لقطة ناجحة لا حتى القرار
+    def test_outage_time_is_not_play_time(self):
+        dev, bot = self.make()
+        bot.restart_emulator = lambda budget=None: (self.clock.sleep(60), True)[1]
+        crashes = []
+        for k in range(5):
+            # المحاكي يعيش 13 دقيقة بلا فوز ثم يموت؛ العطل حتى القرار 3 دقائق (لقطات فاشلة وadb ونسخة على محاكٍ ميت):
+            # 13 + 3 = 16 دقيقة منذ الإعادة، لكن اللعب 13 فقط (< emu_progress_min = 15)، فلا يُحسب تقدّماً
+            self.clock.sleep(13 * 60)
+            bot.last_ok_grab = self.clock.time()
+            self.clock.sleep(3 * 60)
+            bot.cap_fails = 4
+            self.assertTrue(bot.recover_device())
+            crashes.append(bot.stop)
+        self.assertEqual(crashes, [False, False, False, True, True], self.log()[-1500:])
+        self.assertIn("بلا تقدّم منذ الإعادة السابقة (13 دقيقة بلا فوز)", self.log())
+
+    def test_failed_restart_counts_zero_play(self):
+        dev, bot = self.make()
+        results = iter([True, False, False, False])
+        bot.restart_emulator = lambda budget=None: (self.clock.sleep(600), next(results))[1]
+        self.clock.sleep(30 * 60)
+        bot.last_ok_grab = self.clock.time()
+        bot.cap_fails = 4
+        bot.recover_device()                     # أول عطل: يُعاد وينجح
+        bot.last_ok_grab = self.clock.time() + 20 * 60   # 20 دقيقة لعب بعدها
+        self.clock.sleep(21 * 60)
+        bot.cap_fails = 4
+        bot.recover_device()                     # تقدّم: يُعاد ويفشل (لا لقطة ناجحة بعده)
+        for n in (8, 12):                        # إعادتان فاشلتان متتاليتان: 10 دقائق انتظار الإقلاع ليست لعباً
+            bot.cap_fails = n
+            bot.recover_device()
+        self.assertEqual(bot.emu_fruitless, 2, self.log()[-1500:])
+        bot.cap_fails = 16
+        bot.recover_device()
+        self.assertTrue(bot.stop)
+
+    # --- 2: مهلة الإعادة من الوقت الباقي
+    def test_restart_gets_remaining_time_budget(self):
+        dev, bot = self.make(minutes=60)
+        got = []
+        bot.restart_emulator = lambda budget=None: (got.append(budget), True)[1]
+        self.clock.sleep(50 * 60)
+        bot.cap_fails = 4
+        bot.recover_device()
+        self.assertEqual(len(got), 1)
+        self.assertAlmostEqual(got[0], 10 * 60 - 60, delta=1)
+
+    def test_restart_emulator_gives_up_when_budget_runs_out(self):
+        dev, bot = self.make(boot="0")           # لا يكمل الإقلاع أبداً
+        t0 = self.clock.time()
+        self.assertFalse(bot.restart_emulator(budget=90))
+        self.assertLess(self.clock.time() - t0, 200)
+        self.assertIn("نفدت مهلة الإعادة", self.log())
+
+    def test_restart_emulator_skips_install_without_time(self):
+        dev, bot = self.make()
+        dev.installed = lambda: False
+        called = []
+        bot.install_game = lambda until=None: called.append("install")
+        bot.restore_app = lambda: called.append("restore")
+        launched = dev.launched
+        self.assertFalse(bot.restart_emulator(budget=5 * 60))
+        self.assertEqual(called, [])
+        self.assertEqual(dev.launched, launched)
+        self.assertIn("لم يبقَ وقت لتثبيتها", self.log())
+        self.assertTrue(bot.restart_emulator(budget=30 * 60))
+        self.assertEqual(called, ["install", "restore"])
+
+    def test_install_game_respects_until(self):
+        dev, bot = self.make()
+        g = self.d / "game"
+        g.mkdir()
+        (g / (driver.PKG + ".apk")).write_bytes(b"x")
+        driver.CFG["game_dir"] = str(g)
+        calls = []
+        dev.run = lambda args, timeout=None: (calls.append(timeout), (1, "Failure"))[1]
+        self.assertFalse(bot.install_game(until=self.clock.time() + 100))
+        self.assertTrue(calls and all(t <= 100 for t in calls), calls)
+        calls.clear()
+        self.assertFalse(bot.install_game(until=self.clock.time() + 10))
+        self.assertEqual(calls, [])
+
+    # --- 3: backups_saved يبقى بعد التحديث الساخن
+    def test_backups_saved_survives_hot_update(self):
+        dev, bot = self.make()
+        bot.backups_saved = 2
+        saved = driver.STATE_FILE
+        driver.STATE_FILE = self.d / "state.json"
+        try:
+            bot.save_counters()
+            b2 = driver.Bot(dev, bot.vis, driver.Out(self.d / "b2", 10, quiet=True), 100, git=False)
+            self.assertTrue(b2.load_counters())
+        finally:
+            driver.STATE_FILE = saved
+        self.assertEqual(b2.backups_saved, 2)
+
+    # --- 4: الأرشيف المقطوع لا يحلّ محلّ النسخة السليمة
+    def test_verify_backup(self):
+        def chk(data):
+            p = self.d / "v.ab"
+            p.write_bytes(data)
+            return driver.verify_backup(p)
+        good = backup_bytes(40000, seed=2)
+        self.assertTrue(chk(good)[0])
+        self.assertTrue(chk(backup_bytes(40000, seed=2, compressed=False))[0])
+        for cut in (30, 100, len(good) // 2, len(good) - 1):
+            with self.subTest(cut=cut):
+                self.assertFalse(chk(good[:cut])[0])
+        plain = backup_bytes(40000, seed=2, compressed=False)
+        self.assertFalse(chk(plain[:-512])[0])               # بلا كتلتي النهاية
+        self.assertFalse(chk(plain[:-100])[0])               # كتل ناقصة
+        self.assertFalse(chk(good + b"junk")[0])             # بيانات بعد التيار
+        self.assertFalse(chk(good.replace(b"none", b"AES-256", 1))[0])
+        self.assertFalse(chk(b"x" * 5000)[0])
+        import zlib
+        head = b"ANDROID BACKUP\n5\n1\nnone\n"
+        no_eof = head + zlib.compress(random.Random(1).randbytes(4096), 0)    # tar بلا كتلتي الأصفار
+        self.assertFalse(chk(no_eof)[0])
+
+    def test_truncated_backup_keeps_previous_parts(self):
+        dev, bot = self.make()
+        driver.CFG["backup_part_mb"] = 0.01
+        good = self.d / "good.ab"
+        good.write_bytes(backup_bytes(30000, seed=5))
+        bot.levels_done = 3
+        self.assertTrue(bot.store_backup(str(good)))
+        before = {p.name: p.read_bytes() for p in bot.out.dir.iterdir() if driver.is_backup_file(p.name)}
+        cut = self.d / "cut.ab"
+        cut.write_bytes(backup_bytes(60000, seed=6)[:25000])  # مات المحاكي أثناء النقل
+        bot.levels_done = 4
+        self.assertFalse(bot.store_backup(str(cut)))
+        after = {p.name: p.read_bytes() for p in bot.out.dir.iterdir() if driver.is_backup_file(p.name)}
+        self.assertEqual(after, before)
+        self.assertEqual(bot.backup_levels, 3)
+        self.assertEqual(bot.backups_saved, 1)
+        self.assertIn("نسخة احتياطية غير كاملة", self.log())
+        got, info = driver.join_backup(bot.out.dir, self.d / "j.ab")
+        self.assertEqual(got.read_bytes(), good.read_bytes(), info)
+
+
+class TestArchiveCommands(unittest.TestCase):
+    """أوامر أرشفة التشغيل في تعليق driver.py (بين «أوامر الأرشفة (بداية)» و«(نهاية)») تُنفَّذ كما هي على مستودع مؤقت."""
+
+    @staticmethod
+    def commands():
+        src = (Path(__file__).resolve().parent / "driver.py").read_text(encoding="utf-8").splitlines()
+        a = next(i for i, l in enumerate(src) if "أوامر الأرشفة (بداية)" in l)
+        b = next(i for i, l in enumerate(src) if "أوامر الأرشفة (نهاية)" in l)
+        lines = [l[4:] if l.startswith("#   ") else l.lstrip("#") for l in src[a + 1:b]]
+        return "\n".join(lines).replace("runN-Lxxx", "run99-L999").replace("التشغيل N", "التشغيل 99")
+
+    def setUp(self):
+        import shutil
+        import subprocess
+        if not shutil.which("git") or not shutil.which("bash"):
+            self.skipTest("لا git أو bash")
+        self.sp = subprocess
+        self.tmp = tempfile.TemporaryDirectory()
+        self.d = Path(self.tmp.name)
+        self.origin = self.d / "origin.git"
+        self.repo = self.d / "repo"
+        self.git("init", "-q", "--bare", str(self.origin), cwd=self.d)
+        self.git("init", "-q", "-b", "main", str(self.repo), cwd=self.d)
+        for k, v in (("user.email", "t@t"), ("user.name", "t")):
+            self.git("config", k, v)
+        self.git("remote", "add", "origin", str(self.origin))
+        self.emu = self.repo / "research" / "emu"
+        (self.emu / "runs" / "run1").mkdir(parents=True)
+        (self.emu / "runs" / "run1" / "log.txt").write_text("old run")
+        (self.emu / "out").mkdir()
+        (self.emu / "out" / "log.txt").write_text("this run")
+        (self.emu / "save").mkdir()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def git(self, *a, cwd=None):
+        r = self.sp.run(["git"] + list(a), cwd=str(cwd or self.repo), capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        return r.stdout
+
+    def commit_all(self):
+        self.git("add", "-A")
+        self.git("commit", "-q", "-m", "حالة")
+        self.git("push", "-q", "-u", "origin", "main")
+
+    def archive(self):
+        r = self.sp.run(["bash", "-c", self.commands()], cwd=str(self.repo), capture_output=True, text=True)
+        return r.returncode, r.stdout + r.stderr
+
+    def tree(self, sub):
+        out = self.git("ls-tree", "-r", "--name-only", "origin/main", "--", "research/emu/" + sub)
+        return sorted(l.split("/")[-1] for l in out.split())
+
+    def parts(self, d, n, seed):
+        src = self.d / ("src%d.ab" % seed)
+        src.write_bytes(backup_bytes(n, seed=seed))
+        driver.split_backup(src, d, 10000)
+        return src.read_bytes()
+
+    def test_parts_replace_old_save_and_stale_parts(self):
+        self.parts(self.emu / "save", 35000, 1)               # 4 أجزاء قديمة
+        (self.emu / "save" / driver.BACKUP_NAME).write_bytes(b"older single")
+        new = self.parts(self.emu / "out", 15000, 2)          # جزءان جديدان
+        self.commit_all()
+        rc, out = self.archive()
+        self.assertEqual(rc, 0, out)
+        self.git("fetch", "-q", "origin")
+        self.assertEqual(self.tree("save"), sorted([driver.BACKUP_MANIFEST, driver.backup_part_name(0),
+                                                    driver.backup_part_name(1)]))
+        self.assertEqual(self.tree("runs/run99-L999"), ["log.txt"])
+        self.assertEqual(self.tree("out"), [])
+        got, info = driver.join_backup(self.emu / "save", self.d / "j.ab")
+        self.assertEqual(got.read_bytes(), new, info)
+
+    def test_old_single_file_from_old_code(self):
+        self.parts(self.emu / "save", 25000, 1)
+        (self.emu / "out" / driver.BACKUP_NAME).write_bytes(backup_bytes(5000, seed=3))
+        self.commit_all()
+        rc, out = self.archive()
+        self.assertEqual(rc, 0, out)
+        self.git("fetch", "-q", "origin")
+        self.assertEqual(self.tree("save"), [driver.BACKUP_NAME])
+        self.assertEqual(self.tree("runs/run99-L999"), ["log.txt"])
+
+    def test_failure_commits_nothing(self):
+        (self.emu / "save" / driver.BACKUP_NAME).write_bytes(b"keep me")
+        (self.emu / "out" / driver.BACKUP_MANIFEST).write_text("{}")      # ملف وصف بلا أجزاء: git mv يفشل
+        self.commit_all()
+        head = self.git("rev-parse", "origin/main")
+        rc, out = self.archive()
+        self.assertNotEqual(rc, 0)
+        self.git("fetch", "-q", "origin")
+        self.assertEqual(self.git("rev-parse", "origin/main"), head)
+        self.assertEqual(self.git("rev-parse", "HEAD"), head)
+
+    def test_no_backup_keeps_save(self):
+        (self.emu / "save" / driver.BACKUP_NAME).write_bytes(b"keep me")
+        self.commit_all()
+        rc, out = self.archive()
+        self.assertEqual(rc, 0, out)
+        self.assertIn("يبقى save/ كما هو", out)
+        self.git("fetch", "-q", "origin")
+        self.assertEqual(self.tree("save"), [driver.BACKUP_NAME])
+        self.assertEqual(self.tree("runs/run99-L999"), ["log.txt"])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
