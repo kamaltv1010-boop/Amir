@@ -1013,6 +1013,7 @@ def _find_tag(a, cx, w, top):
         return None
     # القارورة الصغيرة المرسومة في البطاقة أولاً (_tag_icon_color)، ثم الشريط، ثم تصويت البكسلات غير الورقية في الثلثين السفليين
     accept = _tag_icon_color(a, x0, y0, x1, y1, w)
+    src = "icon"
     # الشريط حول العنق (بلون البطاقة نفسه، أفتح ومجدول) في الشريحة top+0.2w..top+0.45w؛ فوقها غطاء العنق الزجاجي وهو نفسه
     # قريب من الخزامي (lavender) فلا يدخل التصويت. حتى في القارورة غير الموسومة يعطي زجاج الشريحة نحو 0.06w² «خزامياً»، فالشريط
     # احتياط للون (حين لا تُقرأ القارورة الصغيرة) لا شرط للكشف: البطاقة بشكلها وموضعها هي الحاسمة. وهو صحيح فوق القارورة الممتلئة
@@ -1021,8 +1022,9 @@ def _find_tag(a, cx, w, top):
     rxa, rxb = max(0, int(round(cx - 0.55 * w))), min(W, int(round(cx + 0.45 * w)))
     ribbon = _palette_vote(a[ra:rb, rxa:rxb].reshape(-1, 3), max_de=30.0, min_n=int(0.04 * w * w)) if rb > ra else None
     if accept is None and ribbon is not None:
-        accept = ribbon
+        accept, src = ribbon, "ribbon"
     if accept is None:
+        src = "vote"
         # آخر احتياط (القارورة الفارغة فقط تعطي فيه لون البطاقة؛ الممتلئة تعطي سائلها): البكسلات غير الورقية في الثلثين السفليين
         # (إطار القارورة الصغيرة الزجاجي أزرق فاتح قريب من الخزامي: بفرق ΔE ≤ 25 كان يقارب السائل البنفسجي 97 مقابل 120، وبفرق
         # ≤ 12 يبقى 20 مقابل 73؛ فالتصويت بعتبة ضيّقة أولاً ثم أوسع إن قلّ العدد)
@@ -1039,7 +1041,7 @@ def _find_tag(a, cx, w, top):
                 accept = color_name(np.median(px[sel].astype(np.float64), axis=0))
     if accept is None:
         return None
-    return {"box": [int(x0), int(y0), int(x1), int(y1)], "accept": accept, "ribbon": ribbon}
+    return {"box": [int(x0), int(y0), int(x1), int(y1)], "accept": accept, "ribbon": ribbon, "src": src}
 
 
 def _cover_tube(t):
@@ -1067,11 +1069,21 @@ def _read_tube(a, t, h, e, warnings, bg=None):
 
     def tag_info(out):
         if tag:
-            out["accept"] = tag["accept"]       # اللون الوحيد الذي يُصبّ فيها
+            acc, src = tag["accept"], tag.get("src", "icon")
+            # لون الوسم = الطبقة السفلى ما دامت القارورة غير فارغة وقاعها ظاهر: كذلك تبدأ كل قارورة موسومة (108 من 108 قراءة مؤرشفة
+            # من 130 إلى 154، وكل البدايات الخمس للمرحلة 154)، وقواعد اللعبة تحفظه (لا يُصبّ فيها إلا لونها، والقاع لا يتغيّر إلا إن
+            # فرغت). فإن خالفته قراءة البطاقة يُعتمد القاع: في الإطار الحيّ للتشغيل 19 قُرئ الوسم الأخضر «lavender» ثلاث مرات فوق
+            # [green, orange, yellow, lavender] واللقطة المحفوظة نفسها تُقرأ «green»
+            L = out.get("layers") or []
+            if L and L[0] in PALETTE and L[0] != acc and not t["tall"]:     # (قاع الطويلة على حاملها تقدير)
+                out["tag_read"] = acc           # ما أعطته البطاقة (للسجل والتشخيص)
+                acc, src = L[0], "bottom"
+            out["accept"] = acc                 # اللون الوحيد الذي يُصبّ فيها
+            out["tag_src"] = src
             out["tag_box"] = list(tag["box"])
             # (لا تحذير حين يخالف لونُ الشريط القارورةَ الصغيرة: الشريط الأزرق الداكن يُقرأ بنفسجياً — zz_final في التشغيل 14)
-            if str(tag["accept"]).startswith("c_"):
-                warnings.append("unknown tag color %s at x=%d" % (tag["accept"], cx))
+            if str(acc).startswith("c_"):
+                warnings.append("unknown tag color %s at x=%d" % (acc, cx))
         return out
     if not t["tall"] or t["stand"] < 0.08:
         # قاع القارورة ظاهر (العادية، أو الطويلة بعد اكتمالها وتحطّم حاملها)

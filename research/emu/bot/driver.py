@@ -195,6 +195,7 @@ class Out:
                 f.write(text)
 
     def save_jpg(self, name, img, force=False) -> bool:
+        """تحفظ اللقطة المصغّرة؛ الاسم المنتهي بـ .png يُحفظ بلا ضغط (لقطات التشخيص: JPEG يطمس الألوان الرفيعة)."""
         if self.images >= self.max_images and not force:
             if not self.capped_logged:
                 self.capped_logged = True
@@ -205,7 +206,10 @@ class Out:
         img = downscale(img)
         with self.lock:
             tmp = self.dir / (".%s.tmp" % name)
-            img.save(tmp, format="JPEG", quality=80)
+            if name.endswith(".png"):
+                img.save(tmp, format="PNG")
+            else:
+                img.save(tmp, format="JPEG", quality=80)
             os.replace(tmp, self.dir / name)
         self.images += 1
         return True
@@ -420,11 +424,17 @@ class Vision:
                         d["key_colors"] = [str(c) for c in t["key_colors"]]
                 if isinstance(t.get("accept"), str) and t["accept"]:
                     d["accept"] = t["accept"]            # «Tag!» (من المرحلة 130): لا يُصبّ فيها إلا هذا اللون
+                    if t.get("tag_src"):
+                        d["tag_src"] = str(t["tag_src"])  # icon | ribbon | vote | bottom (قاع القارورة)
+                    if t.get("tag_read"):
+                        d["tag_read"] = str(t["tag_read"])  # ما أعطته البطاقة حين خالفت القاع
                 if t.get("blocked"):                     # تحت ستارة أو كيس أو جبس: محتواها مجهول ولا تُلمس
                     d["blocked"] = True
                     d["layers"] = []
                     d.pop("keys", None)
                     d.pop("accept", None)
+                    d.pop("tag_src", None)
+                    d.pop("tag_read", None)
                     if t.get("cover"):
                         d["cover"] = str(t["cover"])
                     if t.get("cover_color"):
@@ -605,46 +615,78 @@ def with_memory(st, memory):
     return out
 
 
+TAG_CONF = {"icon": 2, "ribbon": 1, "vote": 0}
+
+
+def tag_conf(t) -> int:
+    """ثقة لون وسم القارورة t: 3 إن كانت غير فارغة وقاعها ظاهر ولونها لون القاع (قاعدة اللعبة: القارورة الموسومة تبدأ ولون وسمها في
+    قاعها، ولا يدخلها غيره، فالقاع لا يتغيّر إلا إن فرغت)، وإلا بمصدر القراءة (القارورة الصغيرة في البطاقة، أو الشريط، أو التصويت)."""
+    L = t.get("layers") or []
+    if L and not t.get("tall") and L[0] != "?" and not str(L[0]).startswith("c_") and t.get("accept") == L[0]:
+        return 3
+    return TAG_CONF.get(t.get("tag_src"), 1)
+
+
 def remember_tags(st, tags):
-    """ذاكرة الوسوم بالموضع («Tag!»، من المرحلة 130): `tags` = [[س، ص، لون]] لكل قارورة موسومة رُئيت في هذه المحاولة (تُحدَّث
-    هنا). قارورة في خانة وسم معروف لم يُقرأ وسمها في هذه اللقطة (بطاقة حجبها صبّ أو حركة) يُعاد إليها وسمها ما دامت فارغة أو
-    كل طبقاتها بلونه (وإلا فليست هي). يعيد (الحالة، عدد القوارير التي أُعيد وسمها)."""
-    for t in st["tubes"]:
-        if t.get("accept") and not t.get("blocked"):
-            for r in tags:
-                if _pos_near(r[0], r[1], t):
-                    r[0], r[1], r[2] = t["x"], t["y"], t["accept"]
-                    break
-            else:
-                tags.append([t["x"], t["y"], t["accept"]])
+    """ذاكرة الوسوم بالموضع («Tag!»، من المرحلة 130): `tags` = [[س، ص، لون، ثقة]] لكل قارورة موسومة رُئيت في هذه المحاولة
+    (تُحدَّث هنا؛ مداخل قديمة بثلاثة عناصر ثقتها 0). لون الوسم لا يتغيّر، فقراءة أقلّ ثقة من الذاكرة لا تغيّرها بل تُصحَّح بها ما دامت
+    القارورة فارغة أو قاعها بلون الذاكرة (التشغيل 19: الوسم الأخضر قُرئ في الإطار الحيّ «lavender» فوق القارورة الممتلئة ثم الفارغة).
+    وقارورة في خانة وسم معروف لم يُقرأ وسمها في هذه اللقطة (بطاقة حجبها صبّ أو حركة، أو لم يُكشف ورقها) يُعاد إليها وسمها ما دامت
+    فارغة أو قاعها بلونه (وإلا فليست هي). يعيد (الحالة، عدد القوارير التي أُعيد وسمها أو صُحّح)."""
     filled = 0
     tubes = []
     for t in st["tubes"]:
+        if t.get("accept") and not t.get("blocked"):
+            conf = tag_conf(t)
+            for r in tags:
+                if _pos_near(r[0], r[1], t):
+                    rc = r[3] if len(r) > 3 else 0
+                    L = t["layers"]
+                    if r[2] != t["accept"] and rc > conf and (not L or L[0] == r[2]):
+                        t = dict(t, accept=r[2], tag_src="memory")
+                        filled += 1
+                        r[:] = [t["x"], t["y"], r[2], rc]
+                    elif r[2] == t["accept"]:
+                        r[:] = [t["x"], t["y"], r[2], max(rc, conf)]
+                    else:
+                        r[:] = [t["x"], t["y"], t["accept"], conf]
+                    break
+            else:
+                tags.append([t["x"], t["y"], t["accept"], conf])
+        tubes.append(t)
+    out_tubes = []
+    for t in tubes:
         if not t.get("accept") and not t.get("blocked"):
-            for x, y, acc in tags:
-                if _pos_near(x, y, t) and all(c == acc for c in t["layers"]):
-                    t = dict(t, accept=acc)
+            for r in tags:
+                L = t["layers"]
+                if _pos_near(r[0], r[1], t) and (not L or L[0] == r[2]):
+                    t = dict(t, accept=r[2], tag_src="memory")
                     filled += 1
                     break
-        tubes.append(t)
+        out_tubes.append(t)
     if not filled:
         return st, 0
     out = dict(st)
-    out["tubes"] = tubes
+    out["tubes"] = out_tubes
     return out, filled
 
 
 def rebase_tags(tags, ref, st, mp):
     """ذاكرة الوسوم بمواضع اللوحة الجديدة حين تتغيّر المواضع (باب، قارورة إضافية، «Play On»: الصفّ يُعاد ترتيبه): تُبنى من
     القوارير الموسومة في `ref` (تحمل `accept` من الرؤية أو من remember_tags) بالمطابقة `mp` {فهرس في ref: فهرس في st}، وتُحذف
-    المداخل القديمة كلها (مدخل بموضع قديم قد يقع على قارورة عادية أو على القارورة الإضافية الفارغة فيعطيها وسماً خطأً).
-    تُعدَّل `tags` في مكانها وتُعاد."""
+    المداخل القديمة كلها (مدخل بموضع قديم قد يقع على قارورة عادية أو على القارورة الإضافية الفارغة فيعطيها وسماً خطأً). الثقة تبقى
+    كما كانت في الذاكرة لتلك القارورة (أو ثقة قراءتها). تُعدَّل `tags` في مكانها وتُعاد."""
     tubes = st["tubes"]
     new = []
     for k, t in enumerate(ref["tubes"]):
         j = mp.get(k)
         if t.get("accept") and j is not None and 0 <= j < len(tubes):
-            new.append([tubes[j]["x"], tubes[j]["y"], t["accept"]])
+            conf = tag_conf(t)
+            for r in tags:
+                if _pos_near(r[0], r[1], t) and r[2] == t["accept"] and len(r) > 3:
+                    conf = max(conf, r[3])
+                    break
+            new.append([tubes[j]["x"], tubes[j]["y"], t["accept"], conf])
     tags[:] = new
     return tags
 
@@ -1242,6 +1284,7 @@ class LevelCtx:
         self.sig_id = sig_id(n, self.start_sig)
         self.tags = []                 # [[س، ص، لون]] القوارير الموسومة («Tag!») التي رُئيت (remember_tags)
         self.tag_fills = 0             # لقطات أُعيد فيها وسم لم يُقرأ (للسجل)
+        self.tag_notes = set()         # خلافات البطاقة والقاع التي سُجّلت في هذه المحاولة (مرة لكل خانة)
         self.sig_attempt = 0           # محاولات هذه البداية الفاشلة قبل هذه (منها التناوب والتنويع)
         self.dead_noted = False        # سُجّل «الطريق المسدود» لهذه المحاولة
         self.dead_replans = set()      # حالات خُطّط لها من جديد بدون ذاكرة الطريق المسدود فلم يُعثر على شيء
@@ -1925,6 +1968,7 @@ class Bot:
         self.start_probe_tries = 0
         self.start_same = 0            # قراءات متتالية مطابقة لـ start_probe
         self.arrow_shots = 0
+        self.tagfix_shots = 0          # لقطات PNG لخلاف البطاقة والقاع (3 في التشغيل على الأكثر)
         self.net_required = False      # ظهرت نافذة «No internet connection»: لا وضع طيران بعدها
         self.restart_n = None          # رقم المرحلة التي ستُعاد (بعد «Give Up» أو إعادة مكتشفة) إن لم يُقرأ العنوان
         self.saved_starts = set()      # مراحل حُفظت لقطة بدايتها (إعادة المرحلة لا تستهلك صوراً جديدة)
@@ -3059,11 +3103,21 @@ class Bot:
         if lv.tags and len(lv.last_state["tubes"]) != len(st["tubes"]):
             # عدد القوارير تغيّر بلا مسار الباب (فرع shifted أدناه): الوسوم بالموضع تُنقل بالمطابقة قبل أن تُطبَّق على غير قواريرها
             rebase_tags(lv.tags, lv.last_state, st, slot_map(lv.last_state, st))
+        for k, t in enumerate(st["tubes"]):
+            if t.get("tag_read"):
+                note = (int(round(t["x"] / 24.0)), int(round(t["y"] / 45.0)), t["tag_read"], t.get("accept"))
+                if note not in lv.tag_notes:
+                    lv.tag_notes.add(note)
+                    self.log("الوسم في القارورة %d: البطاقة تُقرأ %s وقاعها %s: يُعتمد القاع (لون الوسم في قاع قارورته)"
+                             % (k, t["tag_read"], t.get("accept")))
+                    if self.tagfix_shots < 3:          # لقطة بلا ضغط لتشخيص قراءة البطاقة في الإطار الحيّ
+                        self.tagfix_shots += 1
+                        self.out.save_jpg("tagfix_L%03d_%d.png" % (lv.n, self.tagfix_shots), fr.pil)
         st, nfill = remember_tags(st, lv.tags)
         if nfill:
             lv.tag_fills += 1
             if lv.tag_fills <= 3:
-                self.log("ذاكرة الوسوم: %d قارورة لم يُقرأ وسمها في هذه اللقطة فأُعيد إليها وسم خانتها" % nfill)
+                self.log("ذاكرة الوسوم: %d قارورة لم يُقرأ وسمها في هذه اللقطة أو قُرئ بثقة أقل فأُعيد إليها وسم خانتها" % nfill)
         key = solver.state_key(st)
 
         # ---- جبس انكسر (اكتملت جارته): القالب صار قارورة ظاهرة في خانته بالفهرس نفسه، استمرار للمحاولة نفسها

@@ -4153,7 +4153,7 @@ class TestTags(DriverCase):
         tags = []
         st = {"tubes": [T(118, 377, [], accept="red"), T(196, 375, ["red", "blue"]), T(352, 377, [], accept="pink")]}
         out, n = driver.remember_tags(st, tags)
-        self.assertEqual((n, sorted(a for _x, _y, a in tags)), (0, ["pink", "red"]))
+        self.assertEqual((n, sorted(r[2] for r in tags)), (0, ["pink", "red"]))
         # الوسم غاب عن لقطة: يعود بالموضع ما دامت القارورة فارغة أو كل طبقاتها بلونه
         st2 = {"tubes": [T(118, 377, ["red", "red"]), T(196, 375, ["red", "blue"]), T(352, 377, ["blue"])]}
         out, n = driver.remember_tags(st2, tags)
@@ -4177,11 +4177,34 @@ class TestTags(DriverCase):
         _out, bad = driver.remember_tags(new, [list(r) for r in tags])
         self.assertEqual([t["x"] for t in _out["tubes"] if t.get("accept") == "pink"], [372])
         driver.rebase_tags(tags, old, new, driver.slot_map(old, new))
-        self.assertEqual(sorted(tags), [[104, 636, "red"], [304, 636, "pink"]])
+        self.assertEqual(sorted(tags), [[104, 636, "red", 1], [304, 636, "pink", 1]])     # (الثقة 1: فارغة بلا مصدر مقروء)
         out, n = driver.remember_tags(new, tags)
         got = {t["x"]: t.get("accept") for t in out["tubes"][6:]}
         self.assertEqual(got, {36: None, 104: "red", 172: None, 240: None, 304: "pink", 372: None, 440: None})
         self.assertEqual(n, 2)
+
+    def test_tag_memory_keeps_the_bottom_reading(self):
+        """التشغيل 19: الوسم الأخضر قُرئ «lavender» في الإطار الحيّ. ما قُرئ من قاع قارورة غير فارغة (ثقة 3: لون الوسم في قاعها) لا
+        تغيّره قراءة أقلّ ثقة بعد أن تفرغ، بل تُصحَّح بها؛ وقارورة لم يُقرأ وسمها تأخذه ما دامت فارغة أو قاعها بلونه."""
+        tags = []
+        full = {"tubes": [T(168, 537, ["green", "orange", "yellow", "lavender"], accept="green", tag_src="bottom")]}
+        out, n = driver.remember_tags(full, tags)
+        self.assertEqual((n, tags), (0, [[168, 537, "green", 3]]))
+        empty = {"tubes": [T(167, 537, [], accept="lavender", tag_src="ribbon")]}
+        out, n = driver.remember_tags(empty, tags)
+        self.assertEqual((n, out["tubes"][0]["accept"], out["tubes"][0]["tag_src"]), (1, "green", "memory"))
+        self.assertEqual(tags, [[167, 537, "green", 3]])
+        self.assertEqual(empty["tubes"][0]["accept"], "lavender")                         # لا تتغيّر الحالة الأصلية
+        out, n = driver.remember_tags({"tubes": [T(168, 537, ["green"])]}, tags)        # البطاقة لم تُقرأ: القاع بلونه
+        self.assertEqual((n, out["tubes"][0]["accept"]), (1, "green"))
+        out, n = driver.remember_tags({"tubes": [T(168, 537, ["blue"])]}, tags)         # قاع بلون آخر: ليست هي
+        self.assertEqual((n, out["tubes"][0].get("accept")), (0, None))
+        # قراءة بثقة أعلى من الذاكرة تغيّرها (البطاقة فوق قارورة فارغة أوثق من الشريط)
+        tags2 = [[300, 537, "purple", 1]]
+        out, n = driver.remember_tags({"tubes": [T(304, 537, [], accept="blue", tag_src="icon")]}, tags2)
+        self.assertEqual((n, out["tubes"][0]["accept"], tags2), (0, "blue", [[304, 537, "blue", 2]]))
+        self.assertEqual(driver.tag_conf(T(1, 1, ["red", "blue"], accept="red", tag_src="icon")), 3)
+        self.assertEqual(driver.tag_conf(T(1, 1, [], accept="red", tag_src="vote")), 0)
 
     def test_keys_and_records_carry_accept(self):
         a, b = T(118, 377, [], accept="red"), T(118, 377, [], accept="blue")

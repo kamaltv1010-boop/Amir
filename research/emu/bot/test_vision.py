@@ -1040,6 +1040,32 @@ class TestTagVision(unittest.TestCase):
             self.assertEqual(vision._tag_icon_color(a, x0, y0, x1, y1, w), acc, (name, x))
             self.assertEqual(vision._tag_icon_color(a, x0, y0, min(x1, int(t["x"] + 0.48 * w)), y1, w), acc, (name, x, "clipped"))
 
+    def test_tag_color_follows_the_bottom_layer(self):
+        """لون الوسم = قاع القارورة غير الفارغة (108 من 108 قراءة مؤرشفة، وقواعد اللعبة تحفظه): إن أعطت البطاقة غيره يُعتمد القاع
+        ويُحفظ ما أعطته في "tag_read" (التشغيل 19: الإطار الحيّ قرأ الوسم الأخضر «lavender» فوق [green، orange، yellow، lavender]).
+        وفي القراءة العادية يأتي اللون من القارورة الصغيرة نفسها ("tag_src" = icon) ويطابق القاع."""
+        for name, exp in TAG_FULL.items():
+            st = vision.parse_level(_path(name))
+            for t in st["tubes"]:
+                if t.get("accept"):
+                    self.assertEqual(t.get("tag_src"), "icon", (name, t["x"]))
+                    self.assertNotIn("tag_read", t)
+                    if t["layers"]:
+                        self.assertEqual(t["accept"], t["layers"][0], (name, t["x"]))
+        orig = vision._find_tag
+
+        def wrong(a, cx, w, top):
+            r = orig(a, cx, w, top)
+            return dict(r, accept="lavender", src="ribbon") if r else r
+        vision._find_tag = wrong
+        try:
+            st = vision.parse_level(_path("L154_tags_curtains"))
+        finally:
+            vision._find_tag = orig
+        got = [(t["x"], t["layers"][:1], t["accept"], t.get("tag_src"), t.get("tag_read")) for t in st["tubes"] if t.get("accept")]
+        self.assertEqual(got, [(167, [], "lavender", "ribbon", None),                  # فارغة: لا قاع يصحّحها (ذاكرة السائق)
+                               (304, ["blue"], "blue", "bottom", "lavender")])
+
     def test_no_tags_elsewhere(self):
         """لا وسم في أي لقطة لغز أخرى (أبواب، جبس، أكياس، ستائر، طين، طويلة، مفاتيح...): البطاقة الورقية بشكلها وموضعها وحدها."""
         for name in _all_testdata():
