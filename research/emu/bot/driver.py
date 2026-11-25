@@ -108,6 +108,17 @@ CFG = {
     "emu_progress_min": _env("BOT_EMU_PROGRESS_MIN", 15.0, float),  # دقائق لعب بعد إعادة تُحسب تقدّماً ولو بلا فوز
     "emu_restart_min_left": _env("BOT_EMU_RESTART_MIN_LEFT", 6.0, float),
     "emu_install_min": _env("BOT_EMU_INSTALL_MIN", 12.0, float),     # أقل وقت باقٍ لتثبيت اللعبة واستعادة حفظها بعد إعادة
+    # إقلاع المحاكي بعد إعادته (التشغيل 16: لم يُقلع بعد عطل ثلاث مرات متتالية، كل مرة بعد انتظار 10 دقائق، فتوقف البوت وأمامه
+    # 3.5 ساعة): الإقلاع العادي يُنتظر emu_boot_min دقيقة على الأكثر (الإعادات الناجحة تُقلع في أقل من دقيقة)، فإن فشل يُشغَّل مرة
+    # بمحو البيانات (-wipe-data) ثم تُثبّت اللعبة وتُستعاد آخر نسخة احتياطية، إن بقي emu_wipe_boot_min + emu_install_min دقيقة؛
+    # وإقلاعه بعد المحو (أول إقلاع أطول) يُنتظر حتى emu_wipe_boot_max دقيقة ولا يأكل وقت التثبيت. محاكٍ حيّ ظاهر في adb لم يُكمل
+    # إقلاعه في emu_boot_min (بطيء لا معطوب) يُمدَّد له emu_boot_extend_min دقيقة قبل التفكير في المحو.
+    "emu_boot_min": _env("BOT_EMU_BOOT_MIN", 6.0, float),
+    "emu_boot_extend_min": _env("BOT_EMU_BOOT_EXTEND_MIN", 4.0, float),
+    "emu_wipe": _env("BOT_EMU_WIPE", 1, int),                        # 0: بلا محاولة المحو
+    "emu_wipe_boot_min": _env("BOT_EMU_WIPE_BOOT_MIN", 4.0, float),
+    "emu_wipe_boot_max": _env("BOT_EMU_WIPE_BOOT_MAX", 10.0, float),
+    "emu_avd_home": _env("BOT_AVD_HOME", ""),                        # مجلّد AVD (فارغ: ANDROID_AVD_HOME أو ~/.android/avd)
     # نسخة احتياطية بعد فوز جديد إن مضت هذه الدقائق على آخر نسخة (المحاكي قد يموت فجأة فيضيع تقدّم ما بعد آخر نسخة)
     "backup_win_min": _env("BOT_BACKUP_WIN_MIN", 10.0, float),
     # النسخة الاحتياطية تُحفظ أجزاءً مرتّبة (split_backup): GitHub يحذّر من ملف فوق 50 ميغا ويرفض ما فوق 100، والنسخة بلغت 77.6
@@ -1238,6 +1249,10 @@ class LevelCtx:
         return set(self.bad.get(key, set())) | self.ban
 
 
+EMU_LOG = "/tmp/emulator_restart.log"   # مخرجات المحاكي الذي يشغّله البوت (start_emulator)؛ آخر أسطره في السجل عند فشل الإقلاع
+MEMINFO = "/proc/meminfo"
+
+
 def kill_emulators():
     """يقتل عملية المحاكي العالقة (qemu) ومشغّلها، إن وُجدا."""
     for pat in ("qemu-system", "emulator -avd"):
@@ -1247,22 +1262,275 @@ def kill_emulators():
             pass
 
 
-def start_emulator(log_path="/tmp/emulator_restart.log") -> bool:
+def start_emulator(log_path=None, wipe=False):
     """يشغّل المحاكي من جديد في الخلفية بالـ AVD والخيارات نفسها التي يستعملها emu-bot.yml (بياناته باقية: -no-snapshot لا يمحوها،
-    فاللعبة وتقدّمها في مكانهما). False إن لم يوجد الأمر emulator."""
+    فاللعبة وتقدّمها في مكانهما). wipe: يضيف -wipe-data فيبدأ المحاكي فارغاً بلا اللعبة (restart_emulator بعد إقلاع فاشل).
+    مخرجاته تُضاف إلى log_path (EMU_LOG) بعد سطر فاصل بالوقت؛ وإن تعذّرت الكتابة فيه (قرص ممتلئ) يُشغَّل على أي حال ومخرجاته
+    إلى العدم. True إن شُغّل، None إن لم يوجد الأمر emulator، False إن وُجد وتعذّر تشغيله (OSError)."""
+    log_path = log_path or EMU_LOG
     sdk = os.environ.get("ANDROID_SDK_ROOT") or os.environ.get("ANDROID_HOME") or ""
     exe = os.path.join(sdk, "emulator", "emulator") if sdk else ""
     if not (exe and os.path.exists(exe)):
         exe = shutil.which("emulator") or ""
     if not exe:
-        return False
-    args = [exe, "-avd", CFG["emu_avd"]] + CFG["emu_options"].split()
+        return None
+    args = [exe, "-avd", CFG["emu_avd"]] + CFG["emu_options"].split() + (["-wipe-data"] if wipe else [])
+    log = None
     try:
-        log = open(log_path, "ab")
-        subprocess.Popen(args, stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True)
+        log = open(log_path, "ab")                  # المحاكي يرث نسخته من الملف؛ نسخة البوت تُغلق
+    except OSError:
+        pass
+    if log is not None:
+        try:
+            log.write(("\n=== %s %s ===\n" % (time.strftime("%H:%M:%S"), " ".join(args[1:]))).encode("utf-8"))
+            log.flush()
+        except OSError:                             # ENOSPC/EIO: الفاصل لا يمنع التشغيل
+            pass
+    try:
+        subprocess.Popen(args, stdout=log if log is not None else subprocess.DEVNULL, stderr=subprocess.STDOUT,
+                         stdin=subprocess.DEVNULL, start_new_session=True)
     except OSError:
         return False
+    finally:
+        if log is not None:
+            try:
+                log.close()
+            except OSError:
+                pass
     return True
+
+
+PROC = "/proc"
+EMU_PATTERNS = ("qemu-system", "emulator -avd")      # كأنماط kill_emulators
+
+
+def emulator_procs():
+    """عمليات المحاكي من /proc: [(pid، الحالة R/S/D/Z...، ppid، الاسم comm)]؛ تطابق أنماط kill_emulators في سطر الأمر، أو
+    الاسم (الزومبي سطر أمره فارغ: qemu-system-x86 أو emulator). None إن تعذّرت قراءة /proc (فيُفحص بـ pgrep)."""
+    try:
+        entries = [e for e in os.listdir(PROC) if e.isdigit()]
+    except OSError:
+        return None
+    me = os.getpid()
+    found = []
+    for e in entries:
+        pid = int(e)
+        if pid == me:
+            continue
+        try:
+            with open(os.path.join(PROC, e, "stat"), "rb") as f:
+                st = f.read().decode("utf-8", "replace")
+        except OSError:
+            continue                                    # انتهت أثناء القراءة
+        l, r = st.find("("), st.rfind(")")
+        if l < 0 or r < l:
+            continue
+        comm = st[l + 1:r]
+        rest = st[r + 1:].split()
+        if len(rest) < 2:
+            continue
+        state = rest[0]
+        try:
+            ppid = int(rest[1])
+        except ValueError:
+            ppid = -1
+        try:
+            with open(os.path.join(PROC, e, "cmdline"), "rb") as f:
+                cmd = f.read().replace(b"\0", b" ").decode("utf-8", "replace")
+        except OSError:
+            cmd = ""
+        if any(p in cmd for p in EMU_PATTERNS) or comm.startswith("qemu-system") or comm == "emulator":
+            found.append((pid, state, ppid, comm))
+    return found
+
+
+def reap_emulator_zombies() -> list:
+    """يحصد أبناء البوت الموتى من المحاكي (حالة Z وppid = البوت). بعد التحديث الساخن (os.execv) يبقى المحاكي الذي شغّله
+    start_emulator قبله ابناً للعملية بلا كائن Popen يحصده، فيبقى زومبي بعد موته: pgrep وفحص pid في أقفال AVD يرونه حيّاً
+    (التشغيل 16). waitpid لكل pid بعينه لا -1 (لا يُحصد ابن لـ subprocess مثل git في خيط النشر). يعيد [(pid، الاسم)]."""
+    reaped = []
+    me = os.getpid()
+    for pid, state, ppid, comm in emulator_procs() or []:
+        if state == "Z" and ppid == me:
+            try:
+                got, _ = os.waitpid(pid, os.WNOHANG)
+            except (ChildProcessError, OSError):
+                continue
+            if got == pid:
+                reaped.append((pid, comm))
+    return reaped
+
+
+def emulator_running():
+    """هل عملية المحاكي حيّة؟ True/False، وNone إن تعذّر الفحص. من /proc (الزومبي Z والميت X ليسا حياة)، وإلا بـ pgrep."""
+    procs = emulator_procs()
+    if procs is not None:
+        return any(state not in ("Z", "X", "x") for _, state, _, _ in procs)
+    try:
+        for pat in EMU_PATTERNS:
+            p = subprocess.run(["pgrep", "-f", pat], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10)
+            if p.returncode == 0:
+                return True
+            if p.returncode != 1:                       # 1: لا عملية؛ غيره خطأ في الفحص
+                return None
+        return False
+    except (subprocess.TimeoutExpired, OSError):
+        return None
+
+
+def emulator_proc_summary() -> str:
+    """سطر التشخيص عن عملية المحاكي: حيّة أو غائبة، وحالة كل عملية من /proc (R/S/D/Z، والزومبي ابن البوت أم لا)."""
+    procs = emulator_procs()
+    running = emulator_running()
+    head = {True: "حيّة", False: "غائبة", None: "تعذّر فحصها"}[running]
+    if procs:
+        me = os.getpid()
+        head += " (%s)" % "، ".join("%s %d %s%s" % (c, pid, st, " ابن البوت" if pp == me else "") for pid, st, pp, c in procs[:6])
+    return "عملية المحاكي: " + head
+
+
+def avd_dir(avd=None) -> Path:
+    """مجلّد AVD: <emu_avd_home في CFG أو ANDROID_AVD_HOME، وإلا أول موجود من ANDROID_USER_HOME/avd وANDROID_EMULATOR_HOME/avd
+    و~/.android/avd (ترتيب بحث المحاكي)>/<avd>.avd."""
+    name = "%s.avd" % (avd or CFG["emu_avd"])
+    home = CFG.get("emu_avd_home") or os.environ.get("ANDROID_AVD_HOME")
+    if home:
+        return Path(home) / name
+    cands = [os.path.join(os.environ[k], "avd") for k in ("ANDROID_USER_HOME", "ANDROID_EMULATOR_HOME") if os.environ.get(k)]
+    cands.append(os.path.join(os.path.expanduser("~"), ".android", "avd"))
+    for c in cands:
+        if (Path(c) / name).is_dir():
+            return Path(c) / name
+    return Path(cands[0]) / name
+
+
+def clear_avd_locks(avd=None) -> list:
+    """يحذف ملفات القفل *.lock التي يتركها محاكٍ قُتل بـ kill -9 في مجلّد AVD (يُستدعى بعد kill_emulators). يعيد أسماء ما حُذف."""
+    removed = []
+    try:
+        locks = sorted(avd_dir(avd).glob("*.lock"))
+    except OSError:
+        return removed
+    for p in locks:
+        try:
+            if p.is_dir() and not p.is_symlink():
+                shutil.rmtree(p)
+            else:
+                p.unlink()
+            removed.append(p.name)
+        except OSError:
+            pass
+    return removed
+
+
+def tail_lines(path, n=15, max_bytes=64 * 1024, width=220) -> list:
+    """آخر n سطراً غير فارغ من ملف (يقرأ آخر max_bytes فقط)؛ [] إن غاب أو تعذّرت قراءته."""
+    try:
+        with open(path, "rb") as f:
+            f.seek(0, os.SEEK_END)
+            size = f.tell()
+            f.seek(max(0, size - max_bytes))
+            data = f.read()
+    except OSError:
+        return []
+    lines = [l.rstrip() for l in data.decode("utf-8", "replace").splitlines() if l.strip()]
+    return [l[-width:] for l in lines[-n:]] if n > 0 else []
+
+
+EMU_LOCK_RE = re.compile(r"another emulator instance|multiple emulators with the same avd", re.I)
+
+
+def emu_log_mentions_lock(log_path=None) -> bool:
+    """هل يذكر سجلّ آخر تشغيل للمحاكي (ما بعد آخر سطر فاصل «=== » في EMU_LOG) رفضه لمحاكٍ آخر بالـ AVD نفسه؟"""
+    lines = tail_lines(log_path or EMU_LOG, 200, max_bytes=128 * 1024, width=400)
+    for i in range(len(lines) - 1, -1, -1):
+        if lines[i].startswith("=== "):
+            lines = lines[i + 1:]
+            break
+    return any(EMU_LOCK_RE.search(l) for l in lines)
+
+
+def _existing(path):
+    p = Path(path)
+    while not p.exists() and p != p.parent:
+        p = p.parent
+    return p
+
+
+def host_resources(avd=None) -> str:
+    """سطر واحد: المساحة الحرّة في أنظمة ملفات مجلّد AVD و/tmp والمنزل (shutil.disk_usage، كـ df -h)، والذاكرة المتاحة والـ swap
+    (/proc/meminfo، كـ free -m). ما تعذّرت قراءته يُكتب كذلك ولا يرفع خطأ."""
+    parts, seen = [], {}
+    for label, path in (("AVD", avd_dir(avd)), ("/tmp", "/tmp"), ("~", os.path.expanduser("~"))):
+        try:
+            p = _existing(path)
+            dev = os.stat(p).st_dev
+            if dev in seen:
+                parts[seen[dev]][0].append(label)
+                continue
+            du = shutil.disk_usage(p)
+            seen[dev] = len(parts)
+            parts.append([[label], "%.1f من %.1f غ.ب حرّة (%d%%)" % (du.free / 2 ** 30, du.total / 2 ** 30,
+                                                                    round(100.0 * du.free / du.total) if du.total else 0)])
+        except (OSError, ValueError):
+            parts.append([[label], "تعذّرت قراءته"])
+    disk = "، ".join("%s: %s" % ("+".join(lbl), txt) for lbl, txt in parts)
+    try:
+        mem = {}
+        with open(MEMINFO, encoding="utf-8", errors="replace") as f:
+            for line in f:
+                k, _, v = line.partition(":")
+                if v.strip().split()[:1]:
+                    mem[k.strip()] = int(v.strip().split()[0]) // 1024      # ك.ب ← م.ب
+        ram = "متاحة %d من %d م.ب" % (mem.get("MemAvailable", mem.get("MemFree", 0)), mem.get("MemTotal", 0))
+        if mem.get("SwapTotal"):
+            ram += "، swap حرّة %d من %d" % (mem.get("SwapFree", 0), mem["SwapTotal"])
+    except (OSError, ValueError):
+        ram = "تعذّرت قراءتها"
+    return "القرص: %s؛ الذاكرة: %s" % (disk, ram)
+
+
+def avd_summary(avd=None) -> str:
+    """سطر عن مجلّد AVD: حجم userdata-qemu.img (الظاهر والمخصّص فعلاً) وملفات القفل الباقية."""
+    d = avd_dir(avd)
+    try:
+        if not d.is_dir():
+            return "مجلّد AVD غير موجود: %s" % d
+        bits = []
+        for name in ("userdata-qemu.img", "userdata-qemu.img.qcow2"):
+            f = d / name
+            if f.exists():
+                st = f.stat()
+                bits.append("%s %.2f غ.ب (مخصّص %.2f)" % (name, st.st_size / 2 ** 30,
+                                                         getattr(st, "st_blocks", 0) * 512 / 2 ** 30))
+        locks = sorted(p.name for p in d.glob("*.lock"))
+        bits.append("أقفال: %s" % ("، ".join(locks) if locks else "لا شيء"))
+        return "مجلّد AVD %s: %s" % (d.name, "، ".join(bits))
+    except OSError as e:
+        return "مجلّد AVD %s: تعذّرت قراءته (%r)" % (d, e)
+
+
+def emulator_diagnostics(full=True, log_path=None, avd=None, tail=15) -> list:
+    """أسطر تشخيص المحاكي للسجل (رخيصة، ولا ترفع خطأ أبداً): الموارد (host_resources)، وحالة عملية المحاكي، ومع full مجلّد AVD
+    (avd_summary)؛ ثم آخر tail سطراً من مخرجات المحاكي (EMU_LOG: لماذا لم يُقلع، أو لماذا مات المحاكي السابق)."""
+    log_path = log_path or EMU_LOG
+    lines = []
+    for fn in (lambda: host_resources(avd),
+               emulator_proc_summary,
+               (lambda: avd_summary(avd)) if full else None):
+        if fn is None:
+            continue
+        try:
+            lines.append(fn())
+        except Exception as e:                          # noqa: BLE001
+            lines.append("تشخيص: خطأ %r" % e)
+    tl = tail_lines(log_path, tail)
+    if tl:
+        lines.append("آخر %d سطراً من سجلّ المحاكي (%s):" % (len(tl), log_path))
+        lines.extend("  | " + l for l in tl)
+    elif tail > 0:
+        lines.append("سجلّ المحاكي %s غير موجود أو فارغ" % log_path)
+    return lines
 
 
 # ============================================================== النسخة الاحتياطية أجزاءً
@@ -1650,6 +1918,8 @@ class Bot:
         self.backup_levels = 0         # عدد المراحل المكتملة عند آخر نسخة احتياطية ناجحة
         self.final_backup_done = False
         self.backups_saved = 0         # نسخ حُفظت في هذا التشغيل (الاستعادة بعدها من out/ لأنها أحدث من save/)
+        self.backup_hold = False       # لا نسخ احتياطية حتى نهاية التشغيل: أُعيد تثبيت اللعبة ولم تُستعد نسختها (restore_after_install)
+        self.restore_had_backup = False  # آخر restore_app وجدت نسخة صالحة (فشلها يضيّع تقدّماً، لا مجرد بداية من 1)
         self.start_probe = None        # (عدد القوارير، مفتاح الحالة) في أول قراءة لمرحلة جديدة: تُعتمد حين تتكرّر
         self.start_probe_tries = 0
         self.start_same = 0            # قراءات متتالية مطابقة لـ start_probe
@@ -2038,7 +2308,7 @@ class Bot:
                 "refills": int(self.refills), "coins": self.coins, "sigs": self.sigs_json(),
                 "emu": [int(self.emu_restarts), int(self.emu_fruitless), float(self.emu_restart_at),
                         int(self.emu_restart_levels)],
-                "backups": int(self.backups_saved)}), encoding="utf-8")
+                "backups": int(self.backups_saved), "backup_hold": bool(self.backup_hold)}), encoding="utf-8")
             os.replace(tmp, STATE_FILE)
         except (OSError, TypeError, ValueError) as e:
             self.log("تعذّر حفظ العدّادات قبل التحديث: %r" % e)
@@ -2104,6 +2374,8 @@ class Bot:
             self.backups_saved = max(self.backups_saved, int(d.get("backups") or 0))
         except (TypeError, ValueError):
             pass
+        # منع النسخ بعد استعادة فاشلة (restore_after_install) يبقى بعد التحديث الساخن
+        self.backup_hold = self.backup_hold or bool(d.get("backup_hold"))
         try:
             nsig = self.load_sigs(d)
         except Exception:                               # noqa: BLE001
@@ -2136,8 +2408,12 @@ class Bot:
         """أمر «backup» (وتلقائياً كل 45 دقيقة وبعد فوز جديد وقبل النهاية): نسخة احتياطية لبيانات اللعبة بلا APK (adb backup)
         تُحفظ أجزاءً مرتّبة أصغر من 50 ميغا في out/ (split_backup: game_backup.ab.partNN وملف الوصف؛ انظر أوامر الأرشفة فوق
         BACKUP_NAME) وتُرفع مع المخرجات، حتى يستعيدها تشغيل لاحق على محاكٍ جديد (restore_app) فيكمل من المرحلة نفسها بدل البدء
-        من 1. تطلب تأكيداً على الشاشة يُلمس آلياً."""
+        من 1. تطلب تأكيداً على الشاشة يُلمس آلياً. لا تُؤخذ مع backup_hold (اللعبة لم تُستعد بعد إعادة تثبيتها: نسختها تكتب
+        حالة المرحلة 1 فوق آخر نسخة سليمة في out/)."""
         self.last_backup = time.time()
+        if self.backup_hold:
+            self.log("لا تُكتب نسخة فوق آخر نسخة سليمة: اللعبة لم تُستعد بعد إعادة تثبيتها (backup_hold حتى نهاية التشغيل)")
+            return False
         tmp = "/tmp/game_backup.ab"
         try:
             os.remove(tmp)
@@ -2195,6 +2471,7 @@ class Bot:
         if self.backups_saved:
             dirs = dirs[::-1]
         src, info = find_backup(dirs, Path("/tmp/game_backup_restore.ab"), self.log)
+        self.restore_had_backup = src is not None
         if src is None:
             self.log("لا نسخة احتياطية صالحة: اللعبة تبدأ من المرحلة 1")
             return False
@@ -2208,12 +2485,35 @@ class Bot:
             self.log("تعذّرت الاستعادة: %r" % e)
             return False
         ok = self.confirm_backup_dialog()
+        timed_out = False
         try:
             p.wait(timeout=300)
         except subprocess.TimeoutExpired:
             p.kill()
+            timed_out = True
+        if ok and timed_out:
+            # قُتل adb restore بعد 300 ث: قد تكون البيانات مستعادة جزئياً، فلا تُعدّ استعادة (restore_after_install يعيدها)
+            self.log("استعادة بيانات اللعبة من %s: انتهت مهلة adb restore بعد التأكيد (لم تكتمل)" % info)
+            return False
         self.log("استعادة بيانات اللعبة من %s: %s" % (info, "تمت" if ok else "لم يظهر التأكيد"))
         return ok
+
+    def restore_after_install(self, until=None) -> bool:
+        """بعد تثبيت اللعبة على محاكٍ فارغ (أول التشغيل، أو محاكٍ أُعيد أو مُحيت بياناته): restore_app، ومرة ثانية إن فشلت وكانت
+        هناك نسخة صالحة وبقي 6 دقائق قبل until. بعد استعادة ناجحة: last_backup = الآن وbackup_levels = levels_done (لا نسخة فورية من
+        حالة مستعادة أقدم يُكتب في وصفها levels_done الحالي). وإن بقيت لم تُستعد ونسخة صالحة موجودة: backup_hold حتى نهاية التشغيل،
+        فلا تحلّ نسخة من لعبة تبدأ من المرحلة 1 محلّ آخر نسخة سليمة في out/ (ولا تنقلها الأرشفة إلى save/)."""
+        ok = self.restore_app()
+        if not ok and self.restore_had_backup and (until is None or until - time.time() > 6 * 60):
+            self.log("لم تُستعد النسخة الاحتياطية بعد تثبيت اللعبة: محاولة ثانية")
+            ok = self.restore_app()
+        if ok:
+            self.last_backup = time.time()
+            self.backup_levels = self.levels_done
+        elif self.restore_had_backup:
+            self.backup_hold = True
+            self.log("لا تُكتب نسخة فوق آخر نسخة سليمة حتى نهاية التشغيل: اللعبة لم تُستعد بعد تثبيتها (تبدأ من المرحلة 1)")
+        return bool(ok)
 
     def dump_logcat(self, name, n):
         try:
@@ -2269,7 +2569,7 @@ class Bot:
             d.sh(c)
         if not d.installed():
             self.install_game()
-            self.restore_app()
+            self.restore_after_install(self.deadline)
         else:
             self.log("اللعبة مثبّتة مسبقاً")
         if CFG["airplane"] == "start":
@@ -2380,7 +2680,7 @@ class Bot:
             # نسخة احتياطية لتقدّم اللعبة (يكمل منها التشغيل التالي): بعد فوز جديد إن مضت backup_win_min دقيقة على آخر نسخة،
             # وكل 45 دقيقة، وقبل النهاية بـ 6 دقائق. (التشغيل العاشر: مات المحاكي ثلاث مرات ولم تُحفظ نسخة بعد المرحلة 109، فيعيد
             # التشغيل التالي المراحل 109-112.)
-            if self.git_enabled and self.levels_done > 0 and (
+            if self.git_enabled and self.levels_done > 0 and not self.backup_hold and (
                     time.time() - self.last_backup > 45 * 60
                     or (self.levels_done > self.backup_levels
                         and time.time() - self.last_backup > CFG["backup_win_min"] * 60)
@@ -3391,11 +3691,95 @@ class Bot:
         except (subprocess.TimeoutExpired, OSError):
             pass
 
+    def log_emu_diag(self, full=True):
+        """تشخيص المحاكي في السجل (emulator_diagnostics): موجز عند كل إعادة (الموارد وحالة العملية وآخر 3 أسطر من سجلّه)، وكامل عند
+        فشل الإقلاع (ومعه مجلّد AVD وآخر 15 سطراً، وآخر 200 سطر في out/emulator_log.txt). لا يرفع خطأ أبداً."""
+        try:
+            for line in emulator_diagnostics(full=full, tail=15 if full else 3):
+                self.log("تشخيص المحاكي: " + line)
+            if full:
+                tl = tail_lines(EMU_LOG, 200, max_bytes=256 * 1024, width=400)
+                if tl:
+                    self.out.write("emulator_log.txt", "\n".join(tl) + "\n")
+        except Exception as e:                          # noqa: BLE001
+            self.log("تعذّر تشخيص المحاكي: %r" % e)
+
+    def prepare_emulator(self) -> bool:
+        """قبل كل تشغيل للمحاكي: يقتله، ويحصد زومبي المحاكي الذي شغّله البوت قبل تحديث ساخن (reap_emulator_zombies)، ثم يحذف أقفال
+        AVD الباقية فقط إن لم تبقَ عملية محاكٍ حيّة (emulator_running ليست True؛ تُقتل مرة ثانية قبل الحكم). False إن بقيت عملية
+        حيّة: لا تُحذف أقفالها، فلا يفتح محاكيان صور AVD نفسها."""
+        running = None
+        for attempt in range(2):
+            kill_emulators()
+            time.sleep(3 if attempt == 0 else 8)
+            for pid, comm in reap_emulator_zombies():
+                self.log("حُصد محاكٍ ميت (زومبي) من قبل التحديث الساخن: %s pid %d" % (comm, pid))
+            running = emulator_running()
+            if running is not True:
+                break
+            if attempt == 0:
+                self.log("عملية المحاكي ما زالت حيّة بعد قتلها: قتلها مرة أخرى")
+        if running is True:
+            self.log("بقيت عملية محاكٍ حيّة بعد قتلها مرتين: لا تُحذف أقفال AVD (%s)" % emulator_proc_summary())
+            return False
+        locks = clear_avd_locks()
+        if locks:
+            self.log("حُذفت أقفال AVD باقية من المحاكي المقتول: %s" % "، ".join(locks))
+        return True
+
+    def boot_emulator(self, wait, wipe=False):
+        """يجهّز الطريق (prepare_emulator) ويشغّل المحاكي (wipe: بمحو بياناته) وينتظر إقلاعه wait ثانية على الأكثر (wait_boot).
+        True إن أقلع، False إن لم يُقلع، None إن لم يوجد الأمر emulator. self.boot_info: why (start: تعذّر تشغيله، exited: انتهت
+        عمليته، timeout)، seen (ظهر في adb)، alive (حالة العملية عند نهاية المهلة)، stuck (بقيت عملية قديمة حيّة)، t0."""
+        self.boot_info = info = {"why": "", "seen": False, "alive": None, "stuck": False, "t0": time.time()}
+        info["stuck"] = not self.prepare_emulator()
+        started = start_emulator(wipe=True) if wipe else start_emulator()
+        if started is None:
+            return None
+        if not started:
+            self.log("تعذّر تشغيل الأمر emulator (خطأ نظام)")
+            info["why"] = "start"
+            return False
+        info["t0"] = time.time()
+        self.dev.restart_adb()
+        return self.wait_boot(info["t0"] + max(0.0, wait), wipe)
+
+    def wait_boot(self, stop_at, wipe=False):
+        """ينتظر sys.boot_completed حتى stop_at بالاستطلاع: wait-for-device بمهلة 20 ثانية حتى يظهر الجهاز (لا انتظار حاجب طويل
+        لمحاكٍ خرج فوراً)، وفحص عملية المحاكي من t0 + 30 كل 20 ثانية (يكفّ إن انتهت). يحدّث self.boot_info."""
+        d = self.dev
+        info = self.boot_info
+        t0 = info["t0"]
+        next_check = max(time.time(), t0 + 30)
+        while time.time() < stop_at:
+            if not info["seen"]:
+                rc, _ = d.run(["wait-for-device"], timeout=max(5, min(20, int(stop_at - time.time()))))
+                info["seen"] = rc == 0
+            if info["seen"] and d.sh("getprop sys.boot_completed", timeout=10) == "1":
+                self.log("أقلع المحاكي%s بعد %.0f ثانية" % (" بعد محو بياناته" if wipe else "", time.time() - t0))
+                return True
+            if time.time() >= next_check:
+                next_check = time.time() + 20
+                if emulator_running() is False:
+                    self.log("عملية المحاكي انتهت بعد %.0f ثانية من تشغيله دون إقلاع" % (time.time() - t0))
+                    info["why"] = "exited"
+                    return False
+            time.sleep(2)
+        info["why"] = "timeout"
+        info["alive"] = emulator_running()
+        return False
+
     def restart_emulator(self, budget=None) -> bool:
-        """يقتل المحاكي العالق ويشغّله من جديد (start_emulator)، وينتظر إقلاعه، ويعيد إعدادات الشاشة، ثم يشغّل اللعبة (وتثبّتها
-        مع استعادة الحفظ إن غابت). True إن عاد الجهاز وشُغّلت اللعبة. budget: أقصى ثوانٍ للإعادة كلها (recover_device: ما بقي من
-        التشغيل)؛ انتظار الإقلاع يُقصَّر بها، ولا يبدأ تثبيت اللعبة واستعادة حفظها إلا إن بقي منها emu_install_min دقيقة (لا تثبيت
-        بلا استعادة: لعبة من المرحلة 1 تكتب نسختها فوق نسخة out/)، وتعيد False حين تنفد."""
+        """يقتل المحاكي العالق ويشغّله من جديد (boot_emulator)، وينتظر إقلاعه emu_boot_min دقيقة، ويعيد إعدادات الشاشة، ثم يشغّل
+        اللعبة (وتثبّتها مع استعادة الحفظ إن غابت). True إن عاد الجهاز وشُغّلت اللعبة. budget: أقصى ثوانٍ للإعادة كلها
+        (recover_device: ما بقي من التشغيل)؛ انتظار الإقلاع يُقصَّر بها، ولا يبدأ تثبيت اللعبة واستعادة حفظها إلا إن بقي منها
+        emu_install_min دقيقة (لا تثبيت بلا استعادة: لعبة من المرحلة 1 تكتب نسختها فوق نسخة out/)، وتعيد False حين تنفد.
+        إن لم يُقلع (التشغيل 16: ثلاث إعادات متتالية لم تُقلع) يُكتب التشخيص في السجل، ثم بالترتيب: محاكٍ حيّ ظاهر في adb يُمدَّد
+        انتظاره emu_boot_extend_min دقيقة (بطيء لا معطوب)؛ وسجلّ يذكر محاكياً آخر بالـ AVD نفسه (قفل باقٍ أو زومبي بعد التحديث
+        الساخن) يُعاد إقلاعه عادياً مرة بعد الحصد وحذف الأقفال (المحو لا يعالج القفل)؛ وإلا يُشغَّل مرة بمحو بياناته (-wipe-data) إن
+        بقي emu_wipe_boot_min + emu_install_min دقيقة ولم تبقَ عملية قديمة حيّة: اللعبة تغيب فتُثبَّت وتُستعاد آخر نسخة احتياطية
+        (يضيع تقدّم ما بعدها). إعادة بالمحو أعادت اللعبة إعادةٌ عادية (True)، وفشلها بلا ثمرة (False). محاكٍ أقلع وبقي بلا اللعبة
+        (فشل التثبيت مرتين أو لا وقت له) يوقف البوت: لقطات سطح مكتب Android لا تُعدّ عطلاً فلا تعود recover_device."""
         d = self.dev
         end = time.time() + (budget if budget is not None else 1e9)
 
@@ -3405,24 +3789,56 @@ class Bot:
             self.log("لا وقت لإعادة تشغيل المحاكي قبل نهاية التشغيل")
             return False
         self.log("إعادة تشغيل المحاكي (المرة %d، حدّ الأمان %d)..." % (self.emu_restarts, CFG["emu_restarts"]))
-        kill_emulators()
-        time.sleep(3)
-        if not start_emulator():
+        self.log_emu_diag(full=False)
+        booted = self.boot_emulator(min(left(), CFG["emu_boot_min"] * 60))
+        if booted is None:
             self.log("تعذّر تشغيل المحاكي: لم يُعثر على الأمر emulator")
+            self.log_emu_diag(full=True)
             return False
-        d.restart_adb()
-        d.run(["wait-for-device"], timeout=max(5, min(300, int(left()))))
-        booted = False
-        for _ in range(150):
-            if left() <= 0:
-                break
-            if d.sh("getprop sys.boot_completed", timeout=10) == "1":
-                booted = True
-                break
-            time.sleep(2)
+        wiped = False
         if not booted:
             self.log("المحاكي لم يكمل إقلاعه بعد إعادة تشغيله%s" % ("" if left() > 0 else " (نفدت مهلة الإعادة: نهاية التشغيل قريبة)"))
-            return False
+            self.log_emu_diag(full=True)
+            info = self.boot_info
+            ext = min(CFG["emu_boot_extend_min"] * 60, left())
+            if info["why"] == "timeout" and info["seen"] and info["alive"] is True and not info["stuck"] and ext >= 60:
+                self.log("المحاكي حيّ وظاهر في adb لكنه لم يُكمل إقلاعه: تمديد الانتظار %.0f دقيقة بدل محو بياناته" % (ext / 60))
+                booted = self.wait_boot(time.time() + ext)
+                if not booted:
+                    self.log("المحاكي لم يكمل إقلاعه حتى بعد التمديد")
+            if not booted and emu_log_mentions_lock():
+                self.log("سجلّ المحاكي يذكر محاكياً آخر بالـ AVD نفسه (قفل باقٍ أو زومبي بعد التحديث الساخن): حصد وحذف الأقفال ثم "
+                         "إقلاع عادي ثانٍ بدل محو البيانات")
+                booted = self.boot_emulator(min(left(), CFG["emu_boot_min"] * 60)) if left() > 60 else False
+                if booted is None:
+                    return False
+                if not booted:
+                    self.log("المحاكي لم يكمل إقلاعه في المحاولة العادية الثانية")
+                    self.log_emu_diag(full=True)
+                    if emu_log_mentions_lock():
+                        self.log("ما زال المحاكي يرفض التشغيل لمحاكٍ آخر بالـ AVD نفسه: محو البيانات لا يعالج ذلك")
+                        return False
+        if not booted:
+            if not CFG["emu_wipe"]:
+                return False
+            if self.boot_info.get("stuck"):
+                self.log("عملية محاكٍ قديمة ما زالت حيّة: لا محو للبيانات (قد تفتح صور AVD نفسها)")
+                return False
+            need = (CFG["emu_wipe_boot_min"] + CFG["emu_install_min"]) * 60
+            if left() < need:
+                self.log("لا وقت لتشغيل المحاكي بمحو بياناته ثم تثبيت اللعبة واستعادة الحفظ (بقي %.1f دقيقة، يلزم %.0f)"
+                         % (max(0.0, left()) / 60, need / 60))
+                return False
+            self.log("محاولة أخيرة: تشغيل المحاكي بمحو بياناته (-wipe-data) ثم تثبيت اللعبة واستعادة آخر نسخة احتياطية "
+                     "(يضيع تقدّم ما بعد آخر نسخة)")
+            # نافذة إقلاعه لا تأكل وقت التثبيت والاستعادة (ودقيقة هامشاً للإعدادات)
+            wait = min(CFG["emu_wipe_boot_max"] * 60, left() - CFG["emu_install_min"] * 60 - 60)
+            booted = self.boot_emulator(wait, wipe=True)
+            if not booted:
+                self.log("المحاكي لم يُقلع حتى بعد محو بياناته")
+                self.log_emu_diag(full=True)
+                return False
+            wiped = True
         for c in ("settings put global window_animation_scale 0", "settings put global transition_animation_scale 0",
                   "settings put global animator_duration_scale 0",
                   "settings put secure immersive_mode_confirmations confirmed",
@@ -3433,18 +3849,37 @@ class Bot:
             d.start_logcat("/tmp/bot_logcat.txt")
         except Exception:                               # noqa: BLE001
             pass
+        restored = None
         if not d.installed():
             if left() < CFG["emu_install_min"] * 60:
                 self.log("اللعبة غير مثبّتة بعد إعادة المحاكي، ولم يبقَ وقت لتثبيتها واستعادة الحفظ (%.1f دقيقة)" % (left() / 60))
-                return False
-            self.log("اللعبة غير مثبّتة بعد إعادة المحاكي: تثبيتها واستعادة الحفظ")
-            self.install_game(until=end)
-            self.restore_app()
+                return self.stop_without_game()
+            self.log("اللعبة غير مثبّتة بعد إعادة المحاكي%s: تثبيتها واستعادة الحفظ" % (" (مُحيت بياناته)" if wiped else ""))
+            ok = self.install_game(until=end)
+            if not ok and left() >= CFG["emu_install_min"] * 60:
+                self.log("تعذّر تثبيت اللعبة بعد إعادة المحاكي: محاولة ثانية")
+                ok = self.install_game(until=end)
+            if not ok:
+                self.log("تعذّر تثبيت اللعبة بعد إعادة المحاكي")
+                return self.stop_without_game()
+            restored = self.restore_after_install(end)
+        if wiped and self.airplane_on:
+            self.airplane(True)                         # المحو أعاد إعدادات الجهاز كلها
         d.launch()
         self.unknown_streak = 0
+        if wiped:
+            self.log("عاد المحاكي بعد محو بياناته: ثُبّتت اللعبة و%s؛ قد يضيع تقدّم ما بعد آخر نسخة احتياطية"
+                     % ("استُعيدت آخر نسخة احتياطية" if restored else "لم تُستعد نسخة احتياطية (تبدأ من حيث تبدأ)"))
         self.log("عاد المحاكي وشُغّلت اللعبة من جديد")
         time.sleep(25)
         return True
+
+    def stop_without_game(self) -> bool:
+        """المحاكي أقلع واللعبة غير مثبّتة: يوقف البوت (لقطات سطح مكتب Android تنجح فلا تعود recover_device، وon_unknown يشغّل لعبة
+        غائبة حتى نهاية الوقت). يعيد False (إعادة بلا ثمرة)."""
+        self.log("المحاكي يعمل بلا اللعبة بعد إعادته: إيقاف البوت لينتهي التشغيل وتُنشر النتائج")
+        self.stop = True
+        return False
 
     def relaunch(self, why):
         """إيقاف اللعبة ثم تشغيلها (تُفتح المرحلة الجارية نفسها أو الواجهة)."""

@@ -9,6 +9,8 @@
 import json
 import os
 import random
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -1961,6 +1963,21 @@ class TestPlanBoost(unittest.TestCase):
         self.assertEqual(driver.plan_boost("unknown", -3), 1.0)       # عدّاد غريب لا يُنقص
 
 
+def fake_emulator_host(tc, root):
+    """يعزل تشخيص المحاكي في الاختبار عن المضيف الحقيقي: سجلّ المحاكي ومجلّد AVD في مجلّد مؤقت، وفحص عملية المحاكي «تعذّر»
+    (None: لا كفّ مبكر عن انتظار الإقلاع). CFG يُعاد في tearDown الصنف."""
+    root = Path(root)
+    saved = (driver.EMU_LOG, driver.emulator_running)
+    driver.EMU_LOG = str(root / "emulator_restart.log")
+    driver.emulator_running = lambda: None
+    driver.CFG["emu_avd_home"] = str(root / "avd")
+
+    def restore():
+        driver.EMU_LOG, driver.emulator_running = saved
+    tc.addCleanup(restore)
+    return root / "avd" / ("%s.avd" % driver.CFG["emu_avd"])
+
+
 class FlakyDevice(FakeDevice):
     """جهاز تفشل لقطاته عدداً من المرات (المحاكي مات أو انقطع adb) ثم تعود؛ يسجّل ما فعله حارس المحاكي."""
 
@@ -2003,11 +2020,14 @@ class TestEmulatorWatchdog(unittest.TestCase):
         self.cfg = dict(driver.CFG)
         self._kill, self._start = driver.kill_emulators, driver.start_emulator
         self.started = 0
+        self.wipes = 0
         self.start_ok = True
         driver.kill_emulators = lambda: None
+        fake_emulator_host(self, self.tmp.name)
 
-        def fake_start(log_path="/tmp/emulator_restart.log"):
+        def fake_start(log_path=None, wipe=False):
             self.started += 1
+            self.wipes += bool(wipe)
             return self.start_ok
         driver.start_emulator = fake_start
 
@@ -2069,8 +2089,8 @@ class TestEmulatorWatchdog(unittest.TestCase):
         self.assertEqual(game.wins, 1, self.log()[-2000:])
 
     def test_gives_up_after_restarts_without_progress(self):
-        # المحاكي لا يعود أبداً: الإعادة الأولى ثم إعادتان بلا تقدّم بعد كل منهما... حتى emu_fruitless_max إعادات بلا تقدّم
-        self.start_ok = False
+        # المحاكي لا يعود أبداً (لا أمر emulator): الإعادة الأولى ثم إعادتان بلا تقدّم... حتى emu_fruitless_max إعادات بلا تقدّم
+        self.start_ok = None
         game, dev, bot = self.make(10 ** 6)
         bot.run(max_iters=60)
         self.assertEqual(self.started, driver.CFG["emu_fruitless_max"], self.log()[-2000:])
@@ -2079,11 +2099,679 @@ class TestEmulatorWatchdog(unittest.TestCase):
         self.assertIn("إعادات متتالية للمحاكي بلا أي تقدّم", self.log())
 
     def test_boot_that_never_completes_counts_as_failed_restart(self):
+        # كل إعادة: إقلاع عادي فاشل ثم محاولة بمحو البيانات فاشلة (TestEmulatorRestartWipe)، وتُحسب إعادة واحدة بلا ثمرة
         game, dev, bot = self.make(10 ** 6, boot="0")
         bot.run(max_iters=60)
-        self.assertEqual(self.started, driver.CFG["emu_fruitless_max"])
+        self.assertEqual(self.started - self.wipes, driver.CFG["emu_fruitless_max"])
+        self.assertEqual(self.wipes, driver.CFG["emu_fruitless_max"])
+        self.assertEqual(bot.emu_restarts, driver.CFG["emu_fruitless_max"])
         self.assertTrue(bot.stop)
         self.assertIn("لم يكمل إقلاعه", self.log())
+        self.assertIn("لم يُقلع حتى بعد محو بياناته", self.log())
+
+
+# ============================================================== إقلاع المحاكي بمحو البيانات والتشخيص (التشغيل 16)
+class WipeDevice(FlakyDevice):
+    """جهاز يقلع أو لا بحسب نوع التشغيل (عادي أو بمحو البيانات)، واللعبة تغيب بعد المحو حتى تُثبَّت. present = False: لا جهاز في
+    adb، فـ wait-for-device يحجب مهلته كلها بالساعة الوهمية (كـ adb الحقيقي) ثم يفشل."""
+
+    def __init__(self, game, clock=None):
+        super().__init__(game, 0)
+        self.game_installed = True
+        self.clock = clock
+        self.present = True
+        self.waits = 0
+
+    def installed(self):
+        return self.game_installed
+
+    def run(self, args, timeout=30, binary=False):
+        if "wait-for-device" in args:
+            self.waits += 1
+            if not self.present:
+                if self.clock:
+                    self.clock.sleep(timeout)
+                return 124, "timeout"
+        return super().run(args, timeout, binary)
+
+    def sh(self, cmd, timeout=30):
+        if not self.present:
+            return ""
+        if callable(self.boot) and "sys.boot_completed" in cmd:
+            return self.boot()
+        return super().sh(cmd, timeout)
+
+
+class TestEmulatorRestartWipe(unittest.TestCase):
+    """restart_emulator: إقلاع عادي، وإن فشل تشغيل واحد بـ -wipe-data ثم تثبيت اللعبة واستعادة آخر نسخة، في حدود الوقت الباقي؛
+    والتشخيص (آخر أسطر سجلّ المحاكي والقرص والذاكرة) في السجل، ولا يتعطّل حين تغيب الملفات أو الأوامر."""
+
+    def setUp(self):
+        self.clock = FakeClock()
+        self._time = driver.time
+        driver.time = self.clock
+        self.tmp = tempfile.TemporaryDirectory()
+        self.d = Path(self.tmp.name)
+        self.cfg = dict(driver.CFG)
+        self._kill, self._start = driver.kill_emulators, driver.start_emulator
+        self.avd = fake_emulator_host(self, self.d)
+        self.starts = []
+        self.kills = 0
+        self.plan = {False: "1", True: "1"}      # ما يعيده sys.boot_completed بعد التشغيل العادي / بالمحو
+
+        def fake_kill():
+            self.kills += 1
+        driver.kill_emulators = fake_kill
+
+        def fake_start(log_path=None, wipe=False):
+            self.starts.append(bool(wipe))
+            self.dev.boot = self.plan[bool(wipe)]
+            if wipe:
+                self.dev.game_installed = False
+            with open(driver.EMU_LOG, "a", encoding="utf-8") as f:
+                f.write("=== start wipe=%s ===\n" % wipe)
+                for i in range(30):
+                    f.write("emulator line %d\n" % i)
+            return True
+        driver.start_emulator = fake_start
+        rng = random.Random(11)
+        game = FakeGame([make_level(rng, 4, 2)], rng)
+        self.dev = WipeDevice(game, self.clock)
+        self.out = driver.Out(self.d / "out", 600, quiet=True)
+        self.bot = driver.Bot(self.dev, driver.Vision(FakeVisionModule(game), self.out), self.out, 300, git=False)
+        self.bot.log_host_oom = lambda: None
+        self.called = []
+
+        def fake_install(until=None):
+            self.called.append("install")
+            self.install_left = (until - self.clock.time()) if until else None
+            self.dev.game_installed = True
+            return True
+        self.bot.install_game = fake_install
+        self.bot.restore_app = lambda: (self.called.append("restore"), True)[1]
+
+    def tearDown(self):
+        driver.time = self._time
+        driver.CFG.clear()
+        driver.CFG.update(self.cfg)
+        driver.kill_emulators, driver.start_emulator = self._kill, self._start
+        self.tmp.cleanup()
+
+    def log(self):
+        return (self.d / "out" / "log.txt").read_text(encoding="utf-8")
+
+    def test_normal_boot_needs_no_wipe(self):
+        launched = self.dev.launched
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False])
+        self.assertEqual(self.called, [])
+        self.assertGreater(self.dev.launched, launched)
+        log = self.log()
+        self.assertIn("أقلع المحاكي بعد", log)
+        self.assertIn("تشخيص المحاكي: القرص:", log)          # الموجز عند كل إعادة
+        self.assertIn("الذاكرة:", log)
+        self.assertNotIn("محو", log)
+        self.assertFalse((self.d / "out" / "emulator_log.txt").exists())
+
+    def test_failed_boot_then_wipe_installs_and_restores(self):
+        self.plan = {False: "0", True: "1"}
+        self.avd.mkdir(parents=True)
+        (self.avd / "multiinstance.lock").write_text("123")
+        (self.avd / "hardware-qemu.ini.lock").mkdir()
+        (self.avd / "userdata-qemu.img").write_bytes(b"\0" * 4096)
+        t0 = self.clock.time()
+        launched = self.dev.launched
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, True])
+        self.assertEqual(self.called, ["install", "restore"])
+        self.assertGreater(self.dev.launched, launched)
+        self.assertEqual(sorted(p.name for p in self.avd.glob("*.lock")), [])
+        self.assertTrue((self.avd / "userdata-qemu.img").exists())
+        # الإقلاع العادي يُنتظر emu_boot_min دقيقة لا عشراً
+        self.assertLess(self.clock.time() - t0, (driver.CFG["emu_boot_min"] + 2) * 60)
+        log = self.log()
+        self.assertIn("المحاكي لم يكمل إقلاعه بعد إعادة تشغيله", log)
+        self.assertIn("حُذفت أقفال AVD باقية من المحاكي المقتول: hardware-qemu.ini.lock، multiinstance.lock", log)
+        self.assertIn("مجلّد AVD test.avd: userdata-qemu.img", log)
+        self.assertIn("آخر 15 سطراً من سجلّ المحاكي", log)
+        self.assertIn("  | emulator line 29", log)
+        self.assertIn("محاولة أخيرة: تشغيل المحاكي بمحو بياناته (-wipe-data)", log)
+        self.assertIn("أقلع المحاكي بعد محو بياناته", log)
+        self.assertIn("اللعبة غير مثبّتة بعد إعادة المحاكي (مُحيت بياناته)", log)
+        self.assertIn("عاد المحاكي بعد محو بياناته: ثُبّتت اللعبة واستُعيدت آخر نسخة احتياطية", log)
+        self.assertIn("عاد المحاكي وشُغّلت اللعبة من جديد", log)
+        tail = (self.d / "out" / "emulator_log.txt").read_text(encoding="utf-8")
+        self.assertIn("emulator line 29", tail)
+
+    def test_wipe_without_backup_says_so(self):
+        self.plan = {False: "0", True: "1"}
+        self.bot.restore_app = lambda: (self.called.append("restore"), False)[1]
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertIn("لم تُستعد نسخة احتياطية", self.log())
+
+    def test_both_boots_fail(self):
+        self.plan = {False: "0", True: "0"}
+        launched = self.dev.launched
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, True])
+        self.assertEqual(self.called, [])
+        self.assertEqual(self.dev.launched, launched)
+        log = self.log()
+        self.assertIn("المحاكي لم يُقلع حتى بعد محو بياناته", log)
+        self.assertEqual(log.count("آخر 15 سطراً من سجلّ المحاكي"), 2)
+
+    def test_no_time_for_wipe_and_install(self):
+        self.plan = {False: "0", True: "1"}
+        self.assertFalse(self.bot.restart_emulator(budget=15 * 60))   # 6 دقائق إقلاع فاشل ثم يبقى نحو 9 < 4 + 12
+        self.assertEqual(self.starts, [False])
+        self.assertEqual(self.called, [])
+        self.assertIn("لا وقت لتشغيل المحاكي بمحو بياناته ثم تثبيت اللعبة واستعادة الحفظ", self.log())
+
+    def test_tight_budget_wipe_boot_leaves_install_time(self):
+        self.plan = {False: "0", True: "0"}
+        t0 = self.clock.time()
+        self.assertFalse(self.bot.restart_emulator(budget=23 * 60))
+        self.assertEqual(self.starts, [False, True])
+        # انتظار الإقلاع بعد المحو لا يتجاوز ما يترك emu_install_min دقيقة
+        self.assertLessEqual(self.clock.time() - t0, (23 - driver.CFG["emu_install_min"]) * 60)
+        self.plan = {False: "0", True: "1"}
+        self.starts.clear()
+        self.assertTrue(self.bot.restart_emulator(budget=23 * 60))
+        self.assertEqual(self.called, ["install", "restore"])
+        self.assertGreaterEqual(self.install_left, driver.CFG["emu_install_min"] * 60)
+
+    def test_wipe_can_be_disabled(self):
+        driver.CFG["emu_wipe"] = 0
+        self.plan = {False: "0", True: "1"}
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False])
+
+    def test_install_failure_after_wipe_stops_the_bot(self):
+        # المحاكي أقلع بلا اللعبة: محاولة تثبيت ثانية ثم إيقاف البوت (لقطات سطح مكتب Android تنجح فلا تعود recover_device)
+        self.plan = {False: "0", True: "1"}
+        self.bot.install_game = lambda until=None: (self.called.append("install"), False)[1]
+        launched = self.dev.launched
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.called, ["install", "install"])
+        self.assertTrue(self.bot.stop)
+        self.assertEqual(self.dev.launched, launched)
+        log = self.log()
+        self.assertIn("تعذّر تثبيت اللعبة بعد إعادة المحاكي: محاولة ثانية", log)
+        self.assertIn("المحاكي يعمل بلا اللعبة بعد إعادته: إيقاف البوت", log)
+
+    def test_install_failure_without_time_for_retry(self):
+        self.plan = {False: "1", True: "1"}
+        self.dev.game_installed = False
+
+        def slow_fail(until=None):
+            self.called.append("install")
+            self.clock.sleep(until - self.clock.time())        # استهلك المهلة كلها
+            return False
+        self.bot.install_game = slow_fail
+        self.assertFalse(self.bot.restart_emulator(budget=20 * 60))
+        self.assertEqual(self.called, ["install"])
+        self.assertTrue(self.bot.stop)
+
+    def test_early_stop_when_emulator_process_dies(self):
+        # المحاكي خرج فوراً ولا جهاز في adb: wait-for-device يحجب مهلته (20 ث) لا 300، والكفّ عند أول فحص بعد 30 ث
+        driver.emulator_running = lambda: False
+        self.dev.present = False
+        self.plan = {False: "0", True: "0"}
+        t0 = self.clock.time()
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, True])
+        self.assertLess(self.clock.time() - t0, 3 * 60)
+        self.assertEqual(self.log().count("عملية المحاكي انتهت بعد"), 2)
+        self.assertGreaterEqual(self.dev.waits, 4)
+
+    def test_absent_device_times_out_within_boot_window(self):
+        # لا جهاز ولا فحص للعملية (None): الإقلاع العادي لا يتجاوز emu_boot_min رغم الحجب
+        self.dev.present = False
+        self.plan = {False: "0", True: "0"}
+        t0 = self.clock.time()
+        driver.CFG["emu_wipe"] = 0
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertLessEqual(self.clock.time() - t0, driver.CFG["emu_boot_min"] * 60 + 60)
+
+    def test_slow_but_alive_emulator_gets_more_time_instead_of_wipe(self):
+        running = {"v": False}
+        driver.emulator_running = lambda: running["v"]
+        boot_at = {}
+
+        def fake_kill():
+            self.kills += 1
+            running["v"] = False
+        driver.kill_emulators = fake_kill
+        start = driver.start_emulator
+
+        def start_alive(log_path=None, wipe=False):
+            r = start(log_path, wipe)
+            running["v"] = True
+            boot_at["t"] = self.clock.time() + (driver.CFG["emu_boot_min"] + 2) * 60
+            self.dev.boot = lambda: "1" if self.clock.time() >= boot_at["t"] else "0"
+            return r
+        driver.start_emulator = start_alive
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False])
+        self.assertEqual(self.called, [])
+        log = self.log()
+        self.assertIn("المحاكي حيّ وظاهر في adb لكنه لم يُكمل إقلاعه: تمديد الانتظار 4 دقيقة بدل محو بياناته", log)
+        self.assertNotIn("-wipe-data", log)
+
+    def test_slow_emulator_that_never_boots_is_wiped_after_extension(self):
+        running = {"v": False}
+        driver.emulator_running = lambda: running["v"]
+
+        def fake_kill():
+            self.kills += 1
+            running["v"] = False
+        driver.kill_emulators = fake_kill
+        start = driver.start_emulator
+
+        def start_alive(log_path=None, wipe=False):
+            r = start(log_path, wipe)
+            running["v"] = True
+            return r
+        driver.start_emulator = start_alive
+        self.plan = {False: "0", True: "1"}
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, True])
+        self.assertIn("المحاكي لم يكمل إقلاعه حتى بعد التمديد", self.log())
+
+    def test_lock_message_retries_normal_boot_not_wipe(self):
+        # سجلّ المحاكي يذكر محاكياً آخر بالـ AVD نفسه (قفل باقٍ أو زومبي): إقلاع عادي ثانٍ بعد الحصد وحذف الأقفال، لا محو
+        start = driver.start_emulator
+
+        def start_locked(log_path=None, wipe=False):
+            first = not self.starts
+            r = start(log_path, wipe)
+            if first:
+                with open(driver.EMU_LOG, "a", encoding="utf-8") as f:
+                    f.write("ERROR | Running multiple emulators with the same AVD is an experimental feature.\n")
+                self.dev.boot = "0"
+            else:
+                self.dev.boot = "1"
+            return r
+        driver.start_emulator = start_locked
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, False])
+        self.assertEqual(self.called, [])
+        log = self.log()
+        self.assertIn("إقلاع عادي ثانٍ بدل محو البيانات", log)
+        self.assertNotIn("محاولة أخيرة", log)
+
+    def test_persistent_lock_message_does_not_wipe(self):
+        start = driver.start_emulator
+
+        def start_locked(log_path=None, wipe=False):
+            r = start(log_path, wipe)
+            with open(driver.EMU_LOG, "a", encoding="utf-8") as f:
+                f.write("emulator: ERROR: Another emulator instance is running. Please close it\n")
+            self.dev.boot = "0"
+            return r
+        driver.start_emulator = start_locked
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, False])
+        self.assertIn("محو البيانات لا يعالج ذلك", self.log())
+
+    def test_live_old_emulator_keeps_locks_and_blocks_wipe(self):
+        # عملية محاكٍ لا تموت (حالة D مثلاً): تُقتل مرتين، ولا تُحذف أقفال AVD، ولا محو
+        driver.emulator_running = lambda: True
+        self.avd.mkdir(parents=True)
+        (self.avd / "multiinstance.lock").write_text("1")
+        self.plan = {False: "0", True: "1"}
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False])
+        self.assertEqual(self.kills, 2)
+        self.assertTrue((self.avd / "multiinstance.lock").exists())
+        log = self.log()
+        self.assertIn("بقيت عملية محاكٍ حيّة بعد قتلها مرتين: لا تُحذف أقفال AVD", log)
+        self.assertIn("لا محو للبيانات", log)
+
+    def test_start_oserror_gets_diagnostics_and_wipe_attempt(self):
+        # الأمر موجود وتعذّر تشغيله (False، لا None): تشخيص كامل ثم محاولة المحو، لا «لم يُعثر على الأمر»
+        driver.start_emulator = lambda log_path=None, wipe=False: (self.starts.append(bool(wipe)), False)[1]
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False, True])
+        log = self.log()
+        self.assertIn("تعذّر تشغيل الأمر emulator (خطأ نظام)", log)
+        self.assertNotIn("لم يُعثر على الأمر", log)
+        self.assertIn("مجلّد AVD", log)
+
+    def test_missing_emulator_command_logs_full_diagnostics(self):
+        driver.start_emulator = lambda log_path=None, wipe=False: (self.starts.append(bool(wipe)), None)[1]
+        self.assertFalse(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.starts, [False])
+        log = self.log()
+        self.assertIn("لم يُعثر على الأمر emulator", log)
+        self.assertIn("مجلّد AVD", log)
+
+    # --- الاستعادة بعد المحو لا تفقد آخر نسخة سليمة
+    def _restore_results(self, results, had_backup=True):
+        it = iter(results)
+
+        def fake_restore():
+            self.called.append("restore")
+            self.bot.restore_had_backup = had_backup
+            return next(it)
+        self.bot.restore_app = fake_restore
+
+    def test_failed_restore_after_wipe_is_retried(self):
+        self.plan = {False: "0", True: "1"}
+        self._restore_results([False, True])
+        self.bot.levels_done = 5
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.called, ["install", "restore", "restore"])
+        self.assertFalse(self.bot.backup_hold)
+        # الحالة المستعادة لا تُنسخ فوراً (ولا يُكتب في وصفها levels_done الحالي)
+        self.assertEqual(self.bot.backup_levels, 5)
+        self.assertGreater(self.bot.last_backup, self.clock.time() - 60)
+        self.assertIn("لم تُستعد النسخة الاحتياطية بعد تثبيت اللعبة: محاولة ثانية", self.log())
+
+    def test_failed_restore_after_wipe_holds_backups(self):
+        self.plan = {False: "0", True: "1"}
+        self._restore_results([False, False])
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.called, ["install", "restore", "restore"])
+        self.assertTrue(self.bot.backup_hold)
+        log = self.log()
+        self.assertIn("لا تُكتب نسخة فوق آخر نسخة سليمة حتى نهاية التشغيل", log)
+        self.assertIn("لم تُستعد نسخة احتياطية", log)
+        # الحلقة لا تأخذ نسخة (لا بعد فوز ولا كل 45 دقيقة ولا قبل النهاية)، وأمر backup يُرفض، وملف الوصف في out/ كما هو
+        man = self.out.dir / driver.BACKUP_MANIFEST
+        man.write_text('{"keep": 1}', encoding="utf-8")
+        backups = []
+        real_backup = self.bot.backup_app
+        self.bot.backup_app = lambda: backups.append(1)
+        self.bot.remote_thread = lambda: None
+        self.bot.git_enabled = True
+        self.bot.levels_done = 3
+        self.bot.backup_levels = 0
+        self.bot.last_backup = self.clock.time() - 60 * 60
+        self.bot.deadline = self.clock.time() + 3 * 60
+        self.bot.run(max_iters=2)
+        self.assertEqual(backups, [])
+        self.assertFalse(real_backup())
+        self.assertIn("لا تُكتب نسخة فوق آخر نسخة سليمة: اللعبة لم تُستعد", self.log())
+        self.assertEqual(man.read_text(encoding="utf-8"), '{"keep": 1}')
+
+    def test_backup_hold_survives_hot_update(self):
+        self.bot.backup_hold = True
+        saved = driver.STATE_FILE
+        driver.STATE_FILE = self.d / "state.json"
+        try:
+            self.bot.save_counters()
+            b2 = driver.Bot(self.dev, self.bot.vis, driver.Out(self.d / "b2", 10, quiet=True), 100, git=False)
+            self.assertTrue(b2.load_counters())
+        finally:
+            driver.STATE_FILE = saved
+        self.assertTrue(b2.backup_hold)
+
+    def test_no_backup_anywhere_needs_no_hold(self):
+        self.plan = {False: "0", True: "1"}
+        self._restore_results([False], had_backup=False)
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertEqual(self.called, ["install", "restore"])
+        self.assertFalse(self.bot.backup_hold)
+
+    def test_policy_wipe_restart_counts_as_normal_restart(self):
+        self.plan = {False: "0", True: "1"}
+        self.clock.sleep(10 * 60)
+        self.bot.last_ok_grab = self.clock.time()
+        self.bot.cap_fails = 4
+        self.assertTrue(self.bot.recover_device())
+        self.assertEqual(self.bot.cap_fails, 0)
+        self.assertEqual(self.bot.emu_restarts, 1)
+        self.assertEqual(self.bot.emu_fruitless, 0)
+        self.assertFalse(self.bot.stop)
+        self.assertEqual(self.starts, [False, True])
+
+    def test_wipe_reapplies_airplane_mode(self):
+        self.plan = {False: "0", True: "1"}
+        self.bot.airplane_on = True
+        cmds = []
+        sh = self.dev.sh
+        self.dev.sh = lambda cmd, timeout=30: (cmds.append(cmd), sh(cmd, timeout))[1]
+        self.assertTrue(self.bot.restart_emulator(budget=60 * 60))
+        self.assertIn("settings put global airplane_mode_on 1", cmds)
+
+    # --- التشخيص
+    def test_diagnostics_robust_when_files_missing(self):
+        driver.MEMINFO, saved = str(self.d / "no_meminfo"), driver.MEMINFO
+        try:
+            lines = driver.emulator_diagnostics(full=True, log_path=str(self.d / "missing.log"))
+        finally:
+            driver.MEMINFO = saved
+        text = "\n".join(lines)
+        self.assertIn("القرص: AVD", text)                    # مجلّد AVD غائب: يُقرأ قرص أقرب مجلّد موجود فوقه
+        self.assertIn("الذاكرة: تعذّرت قراءتها", text)
+        self.assertIn("مجلّد AVD غير موجود", text)
+        self.assertIn("عملية المحاكي: تعذّر فحصها", text)
+        self.assertIn("غير موجود أو فارغ", text)
+
+    def test_diagnostics_tail_and_brief(self):
+        log = self.d / "emu.log"
+        log.write_bytes(b"".join(b"line %d\n" % i for i in range(40)) + b"\xff\xfe bad utf8\n\n")
+        full = driver.emulator_diagnostics(full=True, log_path=str(log))
+        tail = [l for l in full if l.startswith("  | ")]
+        self.assertEqual(len(tail), 15)
+        self.assertEqual(tail[0], "  | line 26")
+        self.assertIn("bad utf8", tail[-1])
+        brief = driver.emulator_diagnostics(full=False, log_path=str(log), tail=3)
+        self.assertEqual(len([l for l in brief if l.startswith("  | ")]), 3)
+        self.assertFalse(any("مجلّد AVD" in l for l in brief))
+        self.assertEqual(driver.tail_lines(str(self.d / "nope.log")), [])
+
+    def test_log_emu_diag_never_raises(self):
+        saved = driver.emulator_diagnostics
+
+        def boom(**kw):
+            raise RuntimeError("x")
+        driver.emulator_diagnostics = boom
+        try:
+            self.bot.log_emu_diag(full=True)
+        finally:
+            driver.emulator_diagnostics = saved
+        self.assertIn("تعذّر تشخيص المحاكي", self.log())
+
+    def test_emulator_running_without_pgrep(self):
+        saved = os.environ.get("PATH"), driver.PROC
+        os.environ["PATH"] = str(self.d / "empty")
+        driver.PROC = str(self.d / "no_proc")                 # لا /proc ولا pgrep: تعذّر الفحص
+        try:
+            self.assertIsNone(self._real_running()())
+        finally:
+            os.environ["PATH"], driver.PROC = saved
+
+    def _fake_proc(self, procs):
+        root = self.d / "proc"
+        for pid, comm, state, ppid, cmd in procs:
+            (root / str(pid)).mkdir(parents=True)
+            (root / str(pid) / "stat").write_text("%d (%s) %s %d 1 1 0 -1" % (pid, comm, state, ppid))
+            (root / str(pid) / "cmdline").write_bytes(cmd.replace(" ", "\0").encode())
+        (root / "self").mkdir(parents=True, exist_ok=True)
+        saved = driver.PROC
+        driver.PROC = str(root)
+        self.addCleanup(lambda: setattr(driver, "PROC", saved))
+        return root
+
+    def test_zombie_emulator_is_not_running(self):
+        # التشغيل 16: بعد التحديث الساخن صار المحاكي الميت زومبي لا يحصده أحد؛ pgrep -f يطابقه، و/proc يبيّن أنه Z
+        me = os.getpid()
+        self._fake_proc([(4242, "qemu-system-x86", "Z", me, ""),
+                         (77, "bash", "S", 1, "bash -c echo hi"),
+                         (78, "python3", "S", 1, "python3 driver.py")])
+        real = self._real_running()
+        self.assertEqual(driver.emulator_procs(), [(4242, "Z", me, "qemu-system-x86")])
+        self.assertFalse(real())
+        driver.emulator_running = real
+        summary = driver.emulator_proc_summary()
+        self.assertIn("غائبة", summary)
+        self.assertIn("qemu-system-x86 4242 Z ابن البوت", summary)
+        self._fake_proc([(4300, "qemu-system-x86", "D", 1,
+                          "/sdk/emulator/qemu/linux-x86_64/qemu-system-x86_64 -avd test -no-window")])
+        self.assertTrue(real())
+        self.assertIn("qemu-system-x86 4300 D", driver.emulator_proc_summary())
+
+    def test_reaps_real_zombie_child_named_qemu(self):
+        # زومبي حقيقي: نسخة من sleep باسم qemu-system-x86_64 تُقتل دون wait؛ prepare_emulator يحصدها ويسجّل، ثم لا يراها
+        import signal
+        import time as real_time
+        sleep = shutil.which("sleep")
+        if not sleep or not os.path.isdir("/proc/self"):
+            self.skipTest("لا sleep أو لا /proc")
+        exe = self.d / "qemu-system-x86_64"
+        shutil.copy(sleep, exe)
+        exe.chmod(0o755)
+        p = subprocess.Popen([str(exe), "300"])
+        try:
+            os.kill(p.pid, signal.SIGKILL)
+            state = ""
+            for _ in range(200):
+                try:
+                    state = Path("/proc/%d/stat" % p.pid).read_text().rsplit(")", 1)[1].split()[0]
+                except OSError:
+                    break
+                if state == "Z":
+                    break
+                real_time.sleep(0.01)
+            self.assertEqual(state, "Z")
+            self.assertIn((p.pid, "Z", os.getpid(), "qemu-system-x86"), driver.emulator_procs())
+            driver.emulator_running = self._real_running()
+            self.assertFalse(any(pid == p.pid and st != "Z" for pid, st, _, _ in driver.emulator_procs()))
+            self.avd.mkdir(parents=True)
+            (self.avd / "multiinstance.lock").write_text(str(p.pid))
+            self.assertTrue(self.bot.prepare_emulator())
+            self.assertFalse(Path("/proc/%d" % p.pid).exists())
+            self.assertFalse((self.avd / "multiinstance.lock").exists())
+            self.assertIn("حُصد محاكٍ ميت (زومبي) من قبل التحديث الساخن: qemu-system-x86 pid %d" % p.pid, self.log())
+        finally:
+            p.returncode = -9                                   # حُصد بـ waitpid: لا يحاول Popen حصده ثانية
+            if Path("/proc/%d" % p.pid).exists():
+                try:
+                    os.waitpid(p.pid, 0)
+                except ChildProcessError:
+                    pass
+
+    def test_emu_log_lock_detection_reads_last_start_only(self):
+        log = self.d / "emu.log"
+        log.write_text("=== 10:00 -avd test ===\nRunning multiple emulators with the same AVD\n=== 10:05 -avd test ===\nok\n")
+        self.assertFalse(driver.emu_log_mentions_lock(str(log)))
+        with open(log, "a") as f:
+            f.write("ERROR: another emulator instance is running\n")
+        self.assertTrue(driver.emu_log_mentions_lock(str(log)))
+        self.assertFalse(driver.emu_log_mentions_lock(str(self.d / "missing.log")))
+
+    def test_avd_dir_search_order(self):
+        driver.CFG["emu_avd_home"] = ""
+        keys = ("ANDROID_AVD_HOME", "ANDROID_USER_HOME", "ANDROID_EMULATOR_HOME")
+        saved = {k: os.environ.get(k) for k in keys}
+        try:
+            for k in keys:
+                os.environ.pop(k, None)
+            os.environ["ANDROID_USER_HOME"] = str(self.d / "user")
+            os.environ["ANDROID_EMULATOR_HOME"] = str(self.d / "emu")
+            (self.d / "emu" / "avd" / "test.avd").mkdir(parents=True)
+            self.assertEqual(driver.avd_dir(), self.d / "emu" / "avd" / "test.avd")     # الموجود
+            (self.d / "user" / "avd" / "test.avd").mkdir(parents=True)
+            self.assertEqual(driver.avd_dir(), self.d / "user" / "avd" / "test.avd")    # ANDROID_USER_HOME قبله
+            os.environ["ANDROID_AVD_HOME"] = str(self.d / "avdhome")
+            self.assertEqual(driver.avd_dir(), self.d / "avdhome" / "test.avd")
+        finally:
+            for k, v in saved.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+    def _real_running(self):
+        # الدالة الأصلية (fake_emulator_host بدّلها في هذا الاختبار)
+        return type(self)._orig_running
+
+    def test_clear_avd_locks(self):
+        self.assertEqual(driver.clear_avd_locks(), [])        # مجلّد غائب
+        self.avd.mkdir(parents=True)
+        (self.avd / "a.lock").write_text("1")
+        (self.avd / "b.lock").mkdir()
+        (self.avd / "config.ini").write_text("x")
+        self.assertEqual(driver.clear_avd_locks(), ["a.lock", "b.lock"])
+        self.assertEqual(sorted(p.name for p in self.avd.iterdir()), ["config.ini"])
+
+    def test_start_emulator_adds_wipe_data(self):
+        import time as real_time
+        import warnings
+        cm = warnings.catch_warnings()
+        cm.__enter__()
+        self.addCleanup(cm.__exit__, None, None, None)
+        warnings.simplefilter("ignore", ResourceWarning)     # Popen المحاكي لا يُنتظر عمداً (يحصده subprocess لاحقاً)
+        driver.time = self._time
+        sdk = self.d / "sdk"
+        (sdk / "emulator").mkdir(parents=True)
+        exe = sdk / "emulator" / "emulator"
+        exe.write_text('#!/bin/sh\necho "ARGS $*"\n')
+        exe.chmod(0o755)
+        saved = {k: os.environ.get(k) for k in ("ANDROID_SDK_ROOT", "ANDROID_HOME")}
+        os.environ["ANDROID_SDK_ROOT"] = str(sdk)
+        log = self.d / "start.log"
+        try:
+            for wipe in (False, True):
+                self.assertTrue(self._start(log_path=str(log), wipe=wipe))   # الأصلية (setUp بدّلها)
+                for _ in range(100):
+                    if log.exists() and log.read_text().count("ARGS") == 1 + wipe:
+                        break
+                    real_time.sleep(0.05)
+        finally:
+            for k, v in saved.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        args = [l for l in log.read_text().splitlines() if l.startswith("ARGS")]
+        self.assertEqual(len(args), 2, log.read_text())
+        self.assertNotIn("-wipe-data", args[0])
+        self.assertTrue(args[1].endswith("-wipe-data"))
+        self.assertIn("-avd test -no-window", args[1])
+        self.assertEqual(log.read_text().count("=== "), 2)     # سطر فاصل قبل كل تشغيل
+
+    def test_start_emulator_runs_even_if_log_unwritable(self):
+        # قرص ممتلئ: كتابة الفاصل تفشل (/dev/full) أو لا يُفتح السجل أصلاً، والمحاكي يُشغَّل على أي حال؛ وبلا الأمر: None
+        import time as real_time
+        import warnings
+        cm = warnings.catch_warnings()
+        cm.__enter__()
+        self.addCleanup(cm.__exit__, None, None, None)
+        warnings.simplefilter("ignore", ResourceWarning)     # Popen المحاكي لا يُنتظر عمداً (يحصده subprocess لاحقاً)
+        driver.time = self._time
+        sdk = self.d / "sdk"
+        (sdk / "emulator").mkdir(parents=True)
+        exe = sdk / "emulator" / "emulator"
+        marker = self.d / "ran"
+        exe.write_text('#!/bin/sh\necho x >> "%s"\n' % marker)
+        exe.chmod(0o755)
+        saved = {k: os.environ.get(k) for k in ("ANDROID_SDK_ROOT", "ANDROID_HOME", "PATH")}
+        os.environ["ANDROID_SDK_ROOT"] = str(sdk)
+        try:
+            logs = [str(self.d / "no_dir" / "x.log")] + (["/dev/full"] if os.path.exists("/dev/full") else [])
+            for i, lp in enumerate(logs, 1):
+                self.assertTrue(self._start(log_path=lp))
+                for _ in range(100):
+                    if marker.exists() and marker.read_text().count("x") == i:
+                        break
+                    real_time.sleep(0.05)
+                self.assertEqual(marker.read_text().count("x"), i, lp)
+            os.environ["ANDROID_SDK_ROOT"] = str(self.d / "nosdk")
+            os.environ.pop("ANDROID_HOME", None)
+            os.environ["PATH"] = str(self.d / "empty")
+            self.assertIsNone(self._start(log_path=str(self.d / "y.log")))
+        finally:
+            for k, v in saved.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+
+
+TestEmulatorRestartWipe._orig_running = staticmethod(driver.emulator_running)
 
 
 # ============================================================== سياسة إعادات المحاكي بالتقدّم (التشغيل 15)
@@ -2519,6 +3207,37 @@ class TestBackupInBot(unittest.TestCase):
         finally:
             driver.HERE, driver.subprocess.Popen = saved
         self.assertEqual(restored, [old_bytes, new.read_bytes()])
+
+    def test_restore_timeout_is_not_a_restore(self):
+        # adb restore قُتل بعد مهلته (300 ث) رغم لمس التأكيد: لا تُعدّ استعادة (restore_after_install يعيدها ثم يمنع النسخ)
+        root = self.d / "repo" / "research" / "emu"
+        (root / "bot").mkdir(parents=True)
+        driver.split_backup(self.ab(12000, seed=3), root / "save", 10000)
+        killed = []
+
+        def fake_popen(cmd, **k):
+            class P:
+                def wait(self, timeout=None):
+                    raise driver.subprocess.TimeoutExpired(cmd, timeout)
+
+                def kill(self):
+                    killed.append(1)
+            return P()
+        saved = (driver.HERE, driver.subprocess.Popen)
+        driver.HERE = root / "bot"
+        driver.subprocess.Popen = fake_popen
+        self.bot.confirm_backup_dialog = lambda tries=25: True
+        self.dev._cmd = lambda args: ["adb"] + list(args)
+        try:
+            self.assertFalse(self.bot.restore_app())
+            self.assertTrue(self.bot.restore_had_backup)
+            self.assertFalse(self.bot.restore_after_install(self.clock.time() + 3600))
+        finally:
+            driver.HERE, driver.subprocess.Popen = saved
+        self.assertEqual(len(killed), 3)                     # الأولى، ثم الاستعادة ومحاولتها الثانية
+        self.assertTrue(self.bot.backup_hold)
+        log = (self.out.dir / "log.txt").read_text(encoding="utf-8")
+        self.assertIn("انتهت مهلة adb restore بعد التأكيد (لم تكتمل)", log)
 
     def test_store_backup_refuses_tiny_or_huge(self):
         p = self.d / "tiny.ab"
@@ -3246,7 +3965,8 @@ class TestReviewFixes(unittest.TestCase):
         self.cfg = dict(driver.CFG)
         self._kill, self._start = driver.kill_emulators, driver.start_emulator
         driver.kill_emulators = lambda: None
-        driver.start_emulator = lambda log_path=None: True
+        driver.start_emulator = lambda log_path=None, wipe=False: True
+        fake_emulator_host(self, self.d)
 
     def tearDown(self):
         driver.time = self._time
@@ -3326,8 +4046,8 @@ class TestReviewFixes(unittest.TestCase):
         dev, bot = self.make()
         dev.installed = lambda: False
         called = []
-        bot.install_game = lambda until=None: called.append("install")
-        bot.restore_app = lambda: called.append("restore")
+        bot.install_game = lambda until=None: (called.append("install"), True)[1]
+        bot.restore_app = lambda: (called.append("restore"), True)[1]
         launched = dev.launched
         self.assertFalse(bot.restart_emulator(budget=5 * 60))
         self.assertEqual(called, [])
