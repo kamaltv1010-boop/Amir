@@ -1,10 +1,10 @@
 done 47
-الحالة: يلعب
+الحالة: انتهى
 مراحل مكتملة: 0
 الوقت: 201 دقيقة من 201
 آخر شاشة: unknown
-الشاشات: {'button': 204, 'lives': 16, 'unknown': 200, 'level': 181, 'close': 4}
-صور محفوظة: 33/900، شاشات جديدة: 19
-المرحلة الحالية: 154 صعبة (حركات 21، مخفي 4، إخفاقات 0، أدوات -، 1.7 دقيقة)
+الشاشات: {'button': 204, 'lives': 16, 'unknown': 201, 'level': 181, 'close': 4}
+صور محفوظة: 34/900، شاشات جديدة: 19
+المرحلة الحالية: 154 صعبة (حركات 21، مخفي 4، إخفاقات 0، أدوات -، 1.9 دقيقة)
 الحالة المقروءة: [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
 العملات: 180، «Give Up» لكل مرحلة: {154: 6}
