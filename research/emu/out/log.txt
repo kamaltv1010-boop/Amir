@@ -791,3 +791,31 @@
 [06:36:37] حالة المرحلة 154: [{"x": 64, "y": 743, "cap": 4, "layers": ["pink", "cyan", "green", "mint"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["pink", "orange", "brown", "mint"]}, {"x": 201, "y": 743, "cap": 4, "layers": []}, {"x": 270, "y": 743, "cap": 4, "layers": []}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "lavender", "darkgreen", "green"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["brown", "purple", "plum", "darkgreen"]}]
 [06:36:37] المرحلة 154: البداية نفسها للمرة 2 (بلا «المفاتيح أولاً»، 5 حالة طريق مسدود، 0 باب معروف، 0 طبقة مخفية معروفة)
 [06:36:37] خطة المرحلة 154: 5 حركة (progress، 3.5 ms)
+[06:37:00] المرحلة 154: قوارير جديدة (باب انفتح؟ 6 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، تعذّر نسب الباب إلى مفتاح (لا مفتاح محرَّر في اللوحة السابقة): لم يُسجَّل
+[06:37:00] حالة المرحلة 154 بعد الباب: [{"x": 98, "y": 538, "cap": 4, "layers": ["?", "purple", "?", "cyan"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["yellow", "orange", "darkgreen", "lavender"], "accept": "lavender"}, {"x": 236, "y": 538, "cap": 4, "layers": ["yellow", "cyan", "green", "brown"], "keys": [1]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "red", "plum", "plum"], "accept": "plum"}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "lavender", "?", "purple"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["pink", "cyan"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["pink", "orange", "brown", "mint"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green", "green"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["mint"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "lavender", "darkgreen", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["brown", "purple", "plum"]}]
+[06:37:00] خطة المرحلة 154: 1 حركة (reveal، 56.9 ms)
+[06:37:04] خطة المرحلة 154: 6 حركة (reveal، 37.5 ms)
+[06:37:14] الحركة (2, 7) تحرّر مفتاحاً؛ انتظار الباب
+[06:37:22] المرحلة 154: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (236،538 طبقة 1) ← 1 قارورة (جديد)
+[06:37:22] حالة المرحلة 154 بعد الباب: [{"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "plum", "?", "purple"], "keys": [1]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "purple", "pink"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["yellow", "orange", "darkgreen", "lavender"], "accept": "lavender"}, {"x": 236, "y": 538, "cap": 4, "layers": ["yellow", "cyan"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "red", "plum", "plum"], "accept": "plum"}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "lavender", "?", "purple"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["pink", "cyan", "cyan"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["pink", "orange", "brown", "brown"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["mint", "mint"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "lavender", "darkgreen", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["brown", "purple", "plum"]}]
+[06:37:22] خطة المرحلة 154: 3 حركة (reveal، 110.7 ms)
+[06:37:35] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[06:37:35] خطة المرحلة 154: 1 حركة (reveal، 82.8 ms)
+[06:37:39] خطة المرحلة 154: 2 حركة (reveal، 64.2 ms)
+[06:37:41] الحركة (1, 6) تحرّر مفتاحاً؛ انتظار الباب
+[06:37:47] المرحلة 154: قوارير جديدة (باب انفتح؟ 13 → 15 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (201،332 طبقة 1) ← 1 قارورة (جديد)
+[06:37:47] حالة المرحلة 154 بعد الباب: [{"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "plum"}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "plum"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["?", "red", "?", "green"]}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "green"}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "purple", "purple", "purple"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["yellow", "orange", "darkgreen", "lavender"], "accept": "lavender"}, {"x": 236, "y": 538, "cap": 4, "layers": ["yellow", "cyan", "cyan", "cyan"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "red", "plum", "plum"], "accept": "plum"}, {"x": 373, "y": 538, "cap": 4, "layers": ["?", "lavender", "mint", "mint"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["pink", "pink"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["pink", "orange", "brown", "brown"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["mint", "mint"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["yellow", "lavender", "darkgreen", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["brown", "purple", "plum"]}]
+[06:37:47] خطة المرحلة 154: 1 حركة (reveal، 168.8 ms)
+[06:37:51] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[06:37:51] خطة المرحلة 154: 1 حركة (reveal، 49.6 ms)
+[06:37:55] الحالة بعد (1, 14) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:37:56] خطة المرحلة 154: 2 حركة (reveal، 276.0 ms)
+[06:38:08] خطة المرحلة 154: 3 حركة (progress، 6.0 ms)
+[06:38:17] خطة المرحلة 154: 1 حركة (progress، 2.8 ms)
+[06:38:22] خطة المرحلة 154: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[06:38:22] المرحلة 154 عالقة (لا خطة): [#ستارة:plum] [purple,purple,purple]/4 [?,red,blue,blue]/4 [blue,red,lavender,blue]/4 [brown,brown,brown]/4 [yellow,orange,darkgreen]/4{وسم:yellow} [yellow,cyan,cyan,cyan]/4 [cyan,red,plum,plum]/4{وسم:plum} [?,lavender,lavender]/4 [pink,pink]/4 [pink,orange]/4 [green,green,green,green]/4 [mint,mint,mint,mint]/4 [yellow,lavender,darkgreen,darkgreen]/4 [brown,purple,plum,plum]/4
+[06:38:22] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[06:38:22] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[06:38:26] نافذة «No Available Moves» في المرحلة 154: «Give Up» (الرصيد 180 أقل من 900)
+[06:38:26] المرحلة 154: طريق مسدود محفوظ لهذه البداية (5 حالة جديدة، 10 محفوظة، محاولاتها الفاشلة 2، أبواب معروفة 2)
+[06:38:39] نافذة «More Lives» (الرصيد 180 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
