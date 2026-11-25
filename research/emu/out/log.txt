@@ -215,3 +215,29 @@
 [22:22:33] إعلان تجريبي رمادي (Pangle): انتظار ثم زرّ الإغلاق أو الرجوع (لا «View now» أبداً)
 [22:22:35] اللعبة ليست في الواجهة (mCurrentFocus=Window{ca2b0a5 u0 GoogleDiscoverWindow}   mFocusedApp=ActivityRecord{7c09174 u0 com.google.android.apps.ne)؛ تشغيلها
 [22:23:02] شاشة التحميل: انتظار بلا نقر
+[22:24:06] بداية المرحلة 164 (صعبة): 6 قارورة، سعات [(4, 6)]، مخفي 0
+[22:24:06] حالة المرحلة 164: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "orange", "lavender", "lavender"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "red", "lavender", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": []}, {"x": 275, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "yellow", "orange", "pink"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["orange", "yellow", "orange", "lavender"]}]
+[22:24:06] المرحلة 164: البداية نفسها للمرة 3 (المفاتيح أولاً، 8 حالة طريق مسدود، 0 باب معروف، 0 طبقة مخفية معروفة)
+[22:24:06] خطة المرحلة 164: 8 حركة (progress، 11.7 ms)
+[22:24:32] المرحلة 164: قوارير جديدة (باب انفتح؟ 6 → 8 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[22:24:32] حالة المرحلة 164 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "orange", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "red"]}, {"x": 197, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 275, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "yellow", "orange", "pink"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["orange", "yellow", "yellow"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["?", "brown", "?", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "pink", "blue", "brown"]}]
+[22:24:56] خطة المرحلة 164: 8 حركة (astar، 0.6 ms)
+[22:25:31] المرحلة 164: قوارير جديدة (باب انفتح؟ 8 → 10 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة
+[22:25:31] حالة المرحلة 164 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green"]}, {"x": 197, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 275, "y": 376, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["pink", "pink"]}, {"x": 118, "y": 637, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["cyan", "purple", "green", "blue"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["?", "red", "?", "cyan"]}]
+[22:25:31] خطة المرحلة 164: 3 حركة (reveal، 5.1 ms)
+[22:25:41] الجبس انكسر في المرحلة 164 (القارورة 8 جديدة (قالب لم يُقرأ؟)، القارورة 9 جديدة (قالب لم يُقرأ؟)): 10 → 12 قارورة، ذاكرة 0 طبقة؛ استمرار بلا إعادة
+[22:25:41] حالة المرحلة 164 بعد الباب: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red"]}, {"x": 118, "y": 375, "cap": 4, "layers": []}, {"x": 197, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 275, "y": 376, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 352, "y": 376, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["pink", "pink"]}, {"x": 118, "y": 637, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["cyan", "purple", "pink", "cyan"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["red", "green", "purple", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["cyan", "purple", "green", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["?", "red", "?", "cyan"]}]
+[22:26:18] خطة المرحلة 164: 5 حركة (astar، 0.7 ms)
+[22:26:40] شاشة جديدة لم تُرَ من قبل: new_014_unknown.jpg
+[22:26:40] فوز بالمرحلة 164 (unknown): 35 حركة في 154 ث، أدوات -
+[22:26:40] انتهى التحميل بعد 218 ثانية
+[22:26:40] شعار «MAGIC SORT» فوق لوحة معتمة (بعد الفوز): انتظار حتى 40 ثانية بلا لمس
+[22:26:55] نسخة احتياطية لبيانات اللعبة: 80453 ك.ب في 2 جزء (1 مرحلة مكتملة)
+[22:26:57] شاشة جديدة لم تُرَ من قبل: new_015_unknown.jpg
+[22:26:57] إعلان بملء الشاشة: رجوع (1)
+[22:27:22] شاشة التحميل: انتظار بلا نقر
+[22:28:31] بداية المرحلة 165: 14 قارورة، سعات [(4, 12), (16, 2)]، مخفي 12
+[22:28:31] حالة المرحلة 165: [{"x": 65, "y": 335, "cap": 4, "layers": ["yellow", "purple", "lavender", "lavender"]}, {"x": 133, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 202, "y": 335, "cap": 4, "layers": ["cyan", "brown", "orange", "brown"]}, {"x": 270, "y": 335, "cap": 4, "layers": ["green", "purple", "purple", "brown"]}, {"x": 338, "y": 524, "cap": 16, "layers": ["green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["lavender", "orange", "red", "purple"]}, {"x": 65, "y": 539, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 202, "y": 539, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 270, "y": 539, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 406, "y": 539, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 65, "y": 744, "cap": 4, "layers": ["red", "blue", "lavender", "blue"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["pink", "blue", "yellow", "green"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["green", "blue", "pink", "orange"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["blue", "green", "blue", "green"]}]
+[22:28:31] خطة المرحلة 165: 1 حركة (pimc، 319.8 ms)
+[22:29:05] الحالة بعد (13, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[22:29:10] الحالة بعد (13, 1) تختلف عن المتوقَّع؛ إعادة التخطيط
