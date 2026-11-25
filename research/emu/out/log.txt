@@ -45,3 +45,15 @@
 [02:37:45] نسخة احتياطية لبيانات اللعبة: 75332 ك.ب في 2 جزء (1 مرحلة مكتملة)
 [02:38:30] اللعبة ليست في الواجهة (mCurrentFocus=Window{a65cdc7 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [02:38:48] شاشة التحميل: انتظار بلا نقر
+[02:41:09] انتهى التحميل بعد 141 ثانية
+[02:41:14] سهم تعليم: لمس الهدف (338, 705)
+[02:41:21] سهم مزعوم واللعبة ليست في الواجهة (mCurrentFocus=Window{a65cdc7 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche): لا لمس، تشغيلها
+[02:41:59] شاشة التحميل: انتظار بلا نقر
+[02:43:44] بداية المرحلة 147: 12 قارورة، سعات [(4, 6)]، مخفي 0، مغطّاة 6 (جبس 2، ستارة 4)
+[02:43:44] جبس المرحلة 147: القالب 5 ينكسر بامتلاء القارورة 6؛ القالب 7 ينكسر بامتلاء القارورة 6
+[02:43:44] حالة المرحلة 147: [{"x": 98, "y": 332, "cap": 4, "layers": ["green", "red", "brown"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "yellow", "cyan"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["blue", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["red", "pink", "orange"]}, {"x": 373, "y": 332, "cap": 4, "layers": ["cyan", "blue", "green"]}, {"x": 168, "y": 542, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "blue"]}, {"x": 306, "y": 542, "cap": 4, "layers": [], "blocked": "plaster"}, {"x": 133, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 202, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 270, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}, {"x": 338, "y": 727, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "blue"}]
+[02:43:44] خطة المرحلة 147: 4 حركة (plaster، 0.2 ms)
+[02:43:58] الحركة (4, 6) تكمل جارة الجبس؛ انتظار انكساره
+[02:44:04] الحالة بعد (4, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[02:44:04] الجبس انكسر في المرحلة 147: القارورة 5 (167،538) ← [?,?,?,purple]، القارورة 7 (304،538) ← [?,?,?,red]؛ باقٍ 0 قالب، استمرار المحاولة نفسها بلا إعادة
+[02:45:41] خطة المرحلة 147: 9 حركة (astar، 1.1 ms)
