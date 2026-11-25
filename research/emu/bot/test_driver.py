@@ -3501,8 +3501,14 @@ class TestSignatureStrategy(DriverCase):
             bot, _, _ = self.make()
             lv, rec = self.lv_for(bot)
             bot.memory_by_sig[lv.start_sig] = bot.sig_mem[lv.sig_id] = {(1, 2): "brown"}
-            k = solver.state_key(lv.start_state)
-            lv.history = [(k, k)]
+            # البداية لا تُحفظ، والحالتان التاليتان مفتاحان تالفان يسقطان عند القراءة: الحالة العالقة بعد ثلاث حركات وحدها
+            cur = lv.start_state
+            lv.history = [(lv.start_sig, lv.start_sig)]
+            for mv in [(3, 0), (1, 3), (4, 3)]:
+                cur = solver.apply_move(cur, *mv)
+                k = solver.state_key(cur)
+                lv.history.append((k, k))
+            lv.history[1:3] = [(("a",), ("a",)), (("b",), ("b",))]
             bot.note_dead_end(lv)
             driver.merge_door(rec["doors"], [[304, 743, 0]], [dict(t, layers=list(t["layers"])) for t in L124_DOOR1[:2]])
             bot.level_fails[124] = 1
@@ -3540,6 +3546,211 @@ class TestSignatureStrategy(DriverCase):
             self.assertEqual((c["fails"], c["dead"], len(c["doors"]), c["mem"]), (2, [((4, ("red",)),)], 1, [[0, 1, "red"]]))
         finally:
             driver.STATE_FILE = old_sf
+
+
+# ============================================================== ذاكرة الطريق المسدود لا تُبقي البوت بلا خطة (التشغيل 17، المرحلة 154)
+# من سجل التشغيل 17 (04:04:10 و04:17:52 و05:36:41): بداية «سماوية» صعبة بثلاثة أبواب، ومفتاح أزرق في قاع القارورة 0 لا تقرؤه
+# الرؤية (أزرق على سماوي)؛ الظاهر وحده لا يُحلّ (ألوانه خلف الأبواب)
+L154_X = [64, 133, 201, 270, 338, 407]
+L154_CYAN = [["cyan", "cyan", "cyan", "green"], ["cyan", "purple", "purple", "red"], [], [],
+             ["lavender", "lavender", "pink", "red"], ["brown", "plum", "yellow", "mint"]]
+# 04:16:33 و06:09:10: بداية أخرى للمرحلة نفسها بمفتاح مقروء
+L154_RED = [["red", "darkgreen", "red", "darkgreen"], ["red", "red", "yellow", "pink"], [], [],
+            ["cyan", "blue", "darkgreen", "green"], ["pink", "purple", "yellow", "darkgreen"]]
+
+
+def _l154(layers, keys=None):
+    st = {"tubes": [{"x": L154_X[k], "y": 743, "cap": 4, "layers": list(l)} for k, l in enumerate(layers)]}
+    for k, p in (keys or {}).items():
+        st["tubes"][k]["keys"] = [p]
+    return st
+
+
+class TestDeadEndNeverBlocksPlan(DriverCase):
+    def lv_for(self, bot, st, n=154, fails=0):
+        lv = driver.LevelCtx(n, st, 0.0)
+        rec = bot.sig_rec(lv.sig_id, n)
+        rec["fails"] = fails
+        lv.sig_attempt = rec["fails"]
+        bot.lv = lv
+        return lv, rec
+
+    def dead_line(self, s0):
+        """محاولة 04:17:52: خطة progress بحركتين (الأحمر إلى فارغة)، ثم «لا خطة» وحركة عشوائية (5، 3) و«No Available Moves»."""
+        info = {}
+        mv = solver.plan(s0, info=info)
+        self.assertEqual((mv, info["mode"]), ([(1, 2), (4, 2)], "progress"))
+        states = [s0]
+        for m in mv + [(5, 3)]:
+            states.append(solver.apply_move(states[-1], *m))
+        self.assertEqual(solver.legal_moves(states[-1]), [])
+        return states
+
+    def start_plan(self, bot, lv):
+        stp = driver.with_memory(lv.start_state, lv.memory)
+        key = solver.state_key(stp)
+        lv.visited.add(key)
+        lv.history.append((key, key, driver.compact_tubes(stp)))
+        bot.plan_level(lv, stp, key)
+        return stp
+
+    def test_reproduce_run17_empty_plan(self):
+        """السبب كما في التشغيل 17: البداية وأول حالتين في avoid تقصّ كل حركة أولى، والحلّال بلا detour يعيد «لا حركة»."""
+        s0 = _l154(L154_CYAN)
+        dead = {solver.state_key(s) for s in self.dead_line(s0)}
+        for kf in (True, False):
+            info = {}
+            self.assertEqual(solver.plan(s0, avoid=dead, keys_first=kf, info=info), [])
+            self.assertEqual(info["mode"], "progress-none")
+
+    def test_short_attempt_changes_the_opening(self):
+        """محاولة انسدّت بعد 3 حركات (S0..S3): تُحفظ S1 وS2 وS3 ولا تُحفظ البداية؛ والمحاولتان التاليتان لا تعيدان الافتتاح
+        الخاسر [(1, 2), (4, 2)] بل تبدآن بالأخضر إلى فارغة (يحرّر المفتاح الذي لا تقرؤه الرؤية)."""
+        bot, _, _ = self.make()
+        s0 = _l154(L154_CYAN)
+        lv, rec = self.lv_for(bot, s0, fails=0)
+        states = self.dead_line(s0)
+        lv.history = [(solver.state_key(s), solver.state_key(s), driver.compact_tubes(s)) for s in states]
+        bot.note_dead_end(lv)
+        self.assertEqual(rec["dead"], [solver.state_key(s) for s in states[1:]])
+        self.assertEqual(len(rec["dead_st"]), 3)
+        self.assertIn("الحالة العالقة: آخر لوحة مقروءة", self.log())
+        for att in (1, 2):
+            lv2, _ = self.lv_for(bot, _l154(L154_CYAN), fails=att)
+            self.start_plan(bot, lv2)
+            self.assertTrue(lv2.plan, self.log())
+            self.assertNotEqual(lv2.plan[:2], [(1, 2), (4, 2)])
+            self.assertEqual(lv2.plan[0], (0, 2))
+        # محاولة قصيرة جداً (حركة واحدة ثم الانسداد): الحالة العالقة تُحفظ، والبداية لا
+        lv.dead_noted = False
+        s1 = solver.apply_move(s0, 0, 2)
+        lv.history = [(lv.start_sig, lv.start_sig, None), (solver.state_key(s1), solver.state_key(s1), None)]
+        bot.note_dead_end(lv)
+        self.assertIn(solver.state_key(s1), rec["dead"])
+        self.assertNotIn(lv.start_sig, rec["dead"])
+
+    def test_real_run17_history_records_unread_stuck_state(self):
+        """توقيت التشغيل 17 (04:18:21، «3 حالة جديدة»): اللوحة بعد (5، 3) لم تُقرأ قبل النافذة (lv.pending)، فالتاريخ S0 وS1 وS2
+        وحدها؛ الحالة العالقة الحقيقية S3 تُحفظ من lv.pending، والمحاولة التالية تبدأ بـ (0، 2)."""
+        bot, _, _ = self.make()
+        s0 = _l154(L154_CYAN)
+        lv, rec = self.lv_for(bot, s0, fails=0)
+        states = self.dead_line(s0)
+        lv.history = [(solver.state_key(s), solver.state_key(s), driver.compact_tubes(s)) for s in states[:3]]
+        lv.pending = (states[2], (5, 3), states[3], 0)
+        bot.note_dead_end(lv)
+        self.assertEqual(rec["dead"], [solver.state_key(s) for s in states[1:]])
+        self.assertEqual(rec["dead_st"][-1], driver.compact_tubes(states[3]))
+        self.assertIn("الحالة العالقة: الحالة بعد الحركة الأخيرة (5, 3) (لم تُقرأ)", self.log())
+        lv2, _ = self.lv_for(bot, _l154(L154_CYAN), fails=rec["fails"])
+        self.start_plan(bot, lv2)
+        self.assertEqual(lv2.plan[:1], [(0, 2)], self.log())
+
+    def test_random_move_avoids_dead_states(self):
+        """الحركة العشوائية لا تذهب إلى حالة في الطريق المسدود المحفوظ ما وُجدت غيرها (S2: كل ابن عدا (2، 3) مسدود)."""
+        bot, _, _ = self.make()
+        s0 = _l154(L154_CYAN)
+        lv, rec = self.lv_for(bot, s0, fails=1)
+        s2 = self.dead_line(s0)[2]
+        rec["dead"] = [solver.state_key(solver.apply_move(s2, i, j)) for i, j in solver.legal_moves(s2) if (i, j) != (2, 3)]
+        bot.do_move = lambda st, i, j: (i, j)
+        for _ in range(12):
+            self.assertEqual(bot.random_move(s2), (2, 3))
+        rec["dead"] = [solver.state_key(solver.apply_move(s2, i, j)) for i, j in solver.legal_moves(s2)]
+        self.assertIn(bot.random_move(s2), solver.legal_moves(s2))   # كلها مسدودة: أي حركة قانونية
+
+    def test_unrelated_dead_memory_keeps_stuck_flow(self):
+        """ذاكرة طريق مسدود لا دخل لها بغياب الخطة (حالات لا تُبلغ، أو حالة مقصوصة بلا تحسّن بعدها، أو لوحة بلا حركة): لا طريق
+        بديل ولا إعادة تخطيط، والخطة الفارغة تذهب إلى stuck() كما في المحاولة الأولى."""
+        s0 = _l154(L154_CYAN)
+        states = self.dead_line(s0)
+        s2, s3 = states[2], states[3]
+        cases = ((s2, [solver.state_key(_l154(L154_RED))]),                       # لا تُبلغ
+                 (s2, [solver.state_key(solver.apply_move(s2, 5, 3))]),           # تُقصّ ولا تحسّن بدونها
+                 (s3, [solver.state_key(s) for s in states[1:3]]))                 # لا حركة قانونية
+        for cur, dead in cases:
+            bot, _, _ = self.make()
+            lv, rec = self.lv_for(bot, s0, fails=1)
+            rec["dead"] = list(dead)
+            key = solver.state_key(cur)
+            lv.visited.add(key)
+            bot.plan_level(lv, cur, key)
+            self.assertEqual(lv.plan, [], self.log())
+            self.assertNotIn("طريق بديل", self.log())
+            self.assertNotIn("تخطيط من جديد بدونها", self.log())
+            self.assertIn("(progress-none", self.log())
+
+    def test_poisoned_record_from_run17_plans_a_detour(self):
+        """05:36:41: سجلّ قديم فيه البداية وأول حالتين والعالقة، والمحاولة الثالثة («المفاتيح أولاً»): الخطة لا
+        تُترك فارغة؛ طريق بديل بعيداً عن الطريق المسدود: الأخضر إلى فارغة (يحرّر المفتاح الذي لا تقرؤه الرؤية)."""
+        for fails in (2, 1):
+            bot, _, _ = self.make()
+            s0 = _l154(L154_CYAN)
+            lv, rec = self.lv_for(bot, s0, fails=fails)
+            states = self.dead_line(s0)
+            rec["dead"] = [solver.state_key(s) for s in states]
+            stp = self.start_plan(bot, lv)
+            self.assertTrue(lv.plan, self.log())
+            self.assertEqual(lv.plan[0], (0, 2))
+            first = solver.state_key(solver.apply_move(stp, *lv.plan[0]))
+            self.assertNotIn(first, set(rec["dead"]))
+            self.assertIn("طريق بديل بعيداً عنه", self.log())
+            self.assertNotIn("لا حركة مفيدة", self.log())
+
+    def test_known_key_frees_it_first_despite_dead_memory(self):
+        """والمفتاح نفسه مقروءاً (keys: [0]): «المفاتيح أولاً» يحرّره بالحركة الأولى ولو كانت البداية في سجلّ قديم."""
+        bot, _, _ = self.make()
+        s0 = _l154(L154_CYAN, {0: 0})
+        lv, rec = self.lv_for(bot, s0, fails=2)
+        rec["dead"] = [solver.state_key(s) for s in self.dead_line(_l154(L154_CYAN))]
+        self.start_plan(bot, lv)
+        self.assertEqual(lv.plan[:1], [(0, 2)])
+        self.assertTrue(solver.key_freed(s0, 0, 2))
+
+    def test_all_first_moves_dead_replans_without_memory(self):
+        """كل حركة أولى في الطريق المسدود المحفوظ (والطريق البديل لا يجد حالة خارجه): تخطيط من جديد بدونه برسالة واضحة، ولا
+        «لا خطة» وفي اللوحة حركات."""
+        for layers, keys, fails in ((L154_CYAN, None, 2), (L154_RED, {4: 1}, 1)):
+            bot, _, _ = self.make()
+            s0 = _l154(layers, keys)
+            lv, rec = self.lv_for(bot, s0, fails=fails)
+            rec["dead"] = [solver.state_key(solver.apply_move(s0, i, j)) for i, j in solver.legal_moves(s0)]
+            self.start_plan(bot, lv)
+            self.assertTrue(lv.plan, self.log())
+            self.assertIn(lv.plan[0], solver.legal_moves(s0))
+            self.assertIn("الخطة بذاكرة الطريق المسدود فارغة (قصّت كل خط محسِّن)؛ تخطيط من جديد بدونها", self.log())
+
+    def test_dead_memory_still_changes_the_line(self):
+        """التنويع باقٍ: حالة مسدودة لها بديل تُتجنّب، والطريق البديل وإعادة التخطيط بدون الذاكرة لا يعملان حينئذ (الحالة بعد أول
+        حركة لخطة المحاولة الأولى ليست أول حركة الثانية؛ وفي L124 بلا «المفاتيح أولاً» الحالة بعد الحركة الثانية)."""
+        rb = [{"x": 64 + 68 * k, "y": 743, "cap": 4, "layers": l} for k, l in
+              enumerate((["red", "blue"], ["blue", "red"], ["red", "blue"], ["blue", "red"], [], []))]
+        for tubes, n, fails, step in ((rb, 7, 2, 0), (L124_START, 124, 1, 1)):
+            bot, _, _ = self.make()
+            s0 = _cp(tubes)
+            lv, _ = self.lv_for(bot, s0, n=n, fails=fails)
+            rec = bot.sig_data[lv.sig_id]
+            rec["fails"] = 0
+            lv.sig_attempt = 0
+            pp = bot.plan_params(lv, s0)
+            pp["keys_first"] = fails % 2 == 0
+            line = solver.plan(s0, **pp)
+            cur = s0
+            for m in line[:step + 1]:
+                cur = solver.apply_move(cur, *m)
+            bad = solver.state_key(cur)
+            rec["dead"] = [bad]
+            rec["fails"] = lv.sig_attempt = fails
+            self.start_plan(bot, lv)
+            self.assertTrue(lv.plan)
+            cur = s0
+            seen = []
+            for m in lv.plan:
+                cur = solver.apply_move(cur, *m)
+                seen.append(solver.state_key(cur))
+            self.assertNotIn(bad, seen)
+            self.assertNotIn("تخطيط من جديد بدونها", self.log())
+            self.assertNotIn("طريق بديل", self.log())
 
 
 class TestDoorReviewFixes(DriverCase):

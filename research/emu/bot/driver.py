@@ -907,7 +907,7 @@ def door_map(old, new):
 SIG_MAX = 40          # أقصى عدد بدايات محفوظة (الأقدم استعمالاً يُحذف)
 SIG_DEAD_MAX = 40     # أقصى عدد حالات «طريق مسدود» لكل بداية (الأحدث يبقى)
 SIG_DOORS_MAX = 16    # أقصى عدد أبواب معروفة لكل بداية
-DEAD_TAIL = 5         # الحالة العالقة الأخيرة والأربع قبلها
+DEAD_TAIL = 5         # الحالة العالقة الأخيرة والأربع قبلها (حالة البداية لا تُحفظ أبداً: مفترق كل الخطوط)
 
 
 def sig_id(n, sig) -> str:
@@ -1244,6 +1244,7 @@ class LevelCtx:
         self.tag_fills = 0             # لقطات أُعيد فيها وسم لم يُقرأ (للسجل)
         self.sig_attempt = 0           # محاولات هذه البداية الفاشلة قبل هذه (منها التناوب والتنويع)
         self.dead_noted = False        # سُجّل «الطريق المسدود» لهذه المحاولة
+        self.dead_replans = set()      # حالات خُطّط لها من جديد بدون ذاكرة الطريق المسدود فلم يُعثر على شيء
 
     def bad_for(self, key):
         return set(self.bad.get(key, set())) | self.ban
@@ -2875,6 +2876,12 @@ class Bot:
                         dead.add(solver.state_key(fill_known(tc, know)))
                     except (TypeError, ValueError):
                         continue
+        # حالة البداية والحالة الآن ليستا طريقاً مسدوداً أبداً (سجلّات قديمة قد تحوي البداية: التشغيل 17)
+        dead.discard(lv.start_sig)
+        try:
+            dead.discard(solver.state_key(stp))
+        except (KeyError, TypeError, ValueError):
+            pass
         doors = known_doors(stp, rec["doors"]) if rec.get("doors") else []
         return {"keys_first": att % 2 == 0,
                 "avoid": (lv.visited | dead) if dead else lv.visited,
@@ -2939,9 +2946,28 @@ class Bot:
         h = lv.history
         start = max(0, len(h) - DEAD_TAIL, lv.door_idx + 1 - lv.hist_base)
         cut = start > max(0, len(h) - DEAD_TAIL)
-        for entry in h[start:]:
+        # حالة البداية لا تُحفظ أبداً (منعها يقصّ في المحاولة التالية كل حركة أولى: التشغيل 17، المرحلة 154)، وما بعدها يُحفظ
+        # ولو كانت المحاولة قصيرة: منعه يغيّر الافتتاح الخاسر، وplan_params وطريق الحلّال البديل وإعادة التخطيط بدون الذاكرة
+        # (plan_level) لا تتركها تُفرغ الخطة
+        never = {lv.start_sig}
+        if lv.hist_base == 0 and h:
+            never.update(h[0][:2])
+        tail = [h[idx] for idx in range(start, len(h))]
+        # الحركة الأخيرة لم تُقرأ لوحتها قبل النافذة (lv.pending): حالتها المتوقّعة هي الحالة العالقة الحقيقية، لا آخر لوحة مقروءة
+        # (التشغيل 17، 04:18:21: «3 حالة جديدة» = البداية وحالتان، والحالة بعد (5، 3) لم تُقرأ)
+        stuck = "آخر لوحة مقروءة"
+        if lv.pending is not None and lv.pending[2] is not None:
+            try:
+                pk = solver.state_key(lv.pending[2])
+                tail.append((pk, pk, compact_tubes(lv.pending[2])))
+                stuck = "الحالة بعد الحركة الأخيرة %s (لم تُقرأ)" % (lv.pending[1],)
+            except (KeyError, TypeError, ValueError):
+                pass
+        for entry in tail:
             new = False
             for sk in entry[:2]:
+                if sk in never:
+                    continue
                 if sk not in seen:
                     seen.add(sk)
                     dead.append(sk)
@@ -2951,8 +2977,9 @@ class Bot:
                 dead_st.append(entry[2])
         del dead[:-SIG_DEAD_MAX]
         del dead_st[:-SIG_DEAD_MAX]
-        self.log("المرحلة %d: طريق مسدود محفوظ لهذه البداية (%d حالة جديدة%s، %d محفوظة، محاولاتها الفاشلة %d، أبواب معروفة %d)"
-                 % (lv.n, added, "، بعد آخر باب انفتح" if cut else "", len(dead), rec["fails"], len(rec["doors"])))
+        self.log("المرحلة %d: طريق مسدود محفوظ لهذه البداية (%d حالة جديدة%s، الحالة العالقة: %s، %d محفوظة، محاولاتها الفاشلة %d، "
+                 "أبواب معروفة %d)" % (lv.n, added, "، بعد آخر باب انفتح" if cut else "", stuck,
+                                       len(dead), rec["fails"], len(rec["doors"])))
 
     def on_level(self, fr):
         st = self.vis.parse(fr)
@@ -3160,31 +3187,55 @@ class Bot:
         # ---- التخطيط (بالذاكرة: الطبقات المخفية التي رأيناها من قبل تُعامل كمعروفة)
         key = solver.state_key(stp)
         if not (lv.plan and lv.plan_key == key):
-            info = {}
-            # الصعبة جداً: ثلاثة أضعاف الوقت والعقد (البوت ينتظر الأرواح أكثر مما يفكّر، والمرحلة 99 تنسدّ في آخر كل محاولة)،
-            # وكل «Give Up» في المرحلة نفسها يزيده (plan_boost)
-            fails = self.level_fails.get(lv.n, 0)
-            boost = plan_boost(lv.badge, fails)
-            # الاستراتيجية بعدد محاولات هذه البداية الفاشلة (لا المرحلة كلها): «المفاتيح أولاً» وبدونه بالتناوب، وبذرة وكسر تعادل
-            # آخران في كل محاولة، وحالات الطريق المسدود السابق ممنوعة؛ والمحاولة الأولى لكل بداية كما كانت (المرحلة 124: البداية
-            # نفسها لُعبت ثلاث مرات بالخط نفسه وانسدّت في الموضع نفسه)
-            pp = self.plan_params(lv, stp)
-            doors = pp["doors"]
-            lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), time_limit=CFG["plan_sec"] * boost,
-                                  max_nodes=int(40000 * boost), info=info, **pp)
-            lv.plan_key = key
-            if lv.moves == 0 or not lv.plan or info.get("mode") not in ("pimc",):
-                self.log("خطة المرحلة %d: %d حركة (%s، %s ms)%s%s"
-                         % (lv.n, len(lv.plan), info.get("mode"), info.get("ms"),
-                            "، أبواب معروفة %d (%s)" % (len(doors), {
-                                "doors-full": "حل كامل", "hidden": "معرفة ناقصة: المنطق المعتاد",
-                                "none": "بحث الأبواب بلا حل: المنطق المعتاد"}.get(info.get("doors_res"), "-"))
-                            if doors else "",
-                            "" if lv.plan else " — لا حركة مفيدة"))
+            self.plan_level(lv, stp, key)
         if not lv.plan:
             return self.stuck(fr, st, "لا خطة")
         i, j = lv.plan.pop(0)
         return self.do_move(stp, i, j)
+
+    def plan_level(self, lv, stp, key):
+        """خطة الحالة `stp` (مفتاحها key) في lv.plan، بوسائط بدايتها (plan_params). ذاكرة الطريق المسدود لا تُبقي البوت بلا خطة
+        وفي اللوحة حركات (التشغيل 17، المرحلة 154): إن قصّت هي الخط المحسِّن (info["dead_blocked"]) فطريق بديل بعيداً عنها أولاً
+        (detour)، ثم تخطيط من جديد بدونها؛ وفي غير ذلك تبقى الخطة الفارغة لـ stuck() وأدواتها كما في المحاولة الأولى."""
+        info = {}
+        # الصعبة جداً: ثلاثة أضعاف الوقت والعقد (البوت ينتظر الأرواح أكثر مما يفكّر، والمرحلة 99 تنسدّ في آخر كل محاولة)،
+        # وكل «Give Up» في المرحلة نفسها يزيده (plan_boost)
+        fails = self.level_fails.get(lv.n, 0)
+        boost = plan_boost(lv.badge, fails)
+        # الاستراتيجية بعدد محاولات هذه البداية الفاشلة (لا المرحلة كلها): «المفاتيح أولاً» وبدونه بالتناوب، وبذرة وكسر تعادل
+        # آخران في كل محاولة، وحالات الطريق المسدود السابق ممنوعة؛ والمحاولة الأولى لكل بداية كما كانت (المرحلة 124: البداية
+        # نفسها لُعبت ثلاث مرات بالخط نفسه وانسدّت في الموضع نفسه)
+        pp = self.plan_params(lv, stp)
+        doors = pp["doors"]
+        # حالات الطريق المسدود المحفوظة وحدها (لا حالات هذه المحاولة): الحلّال يلجأ إلى الطريق البديل فقط إن قصّت هي الخط المحسِّن
+        dead = (pp["avoid"] - lv.visited) if pp["avoid"] is not lv.visited else set()
+        lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), time_limit=CFG["plan_sec"] * boost,
+                              max_nodes=int(40000 * boost), info=info, detour=dead or False, **pp)
+        if info.get("mode") == "progress-detour" and lv.plan:
+            self.log("المرحلة %d: لا خطة تتجنّب الطريق المسدود المحفوظ بالبحوث المعتادة؛ طريق بديل بعيداً عنه (%d حركة)"
+                     % (lv.n, len(lv.plan)))
+        if not hasattr(lv, "dead_replans"):
+            lv.dead_replans = set()
+        if not lv.plan and info.get("dead_blocked") and key not in lv.dead_replans:
+            # الطريق المسدود المحفوظ قصّ كل خط محسِّن ولا طريق بديل: تخطيط من جديد بحالات هذه المحاولة وحدها (مرة لكل حالة؛ وإن
+            # لم يُعثر على شيء فلا يُعاد في دورات stuck التالية)
+            pp = dict(pp, avoid=lv.visited)
+            info = {}
+            lv.plan = solver.plan(stp, bad_moves=lv.bad_for(key), time_limit=CFG["plan_sec"] * boost,
+                                  max_nodes=int(40000 * boost), info=info, **pp)
+            if not lv.plan:
+                lv.dead_replans.add(key)
+            self.log("المرحلة %d: الخطة بذاكرة الطريق المسدود فارغة (قصّت كل خط محسِّن)؛ تخطيط من جديد بدونها (%d حالة مسدودة "
+                     "مُهملة): %d حركة (%s)" % (lv.n, len(dead), len(lv.plan), info.get("mode")))
+        lv.plan_key = key
+        if lv.moves == 0 or not lv.plan or info.get("mode") not in ("pimc",):
+            self.log("خطة المرحلة %d: %d حركة (%s، %s ms)%s%s"
+                     % (lv.n, len(lv.plan), info.get("mode"), info.get("ms"),
+                        "، أبواب معروفة %d (%s)" % (len(doors), {
+                            "doors-full": "حل كامل", "hidden": "معرفة ناقصة: المنطق المعتاد",
+                            "none": "بحث الأبواب بلا حل: المنطق المعتاد"}.get(info.get("doors_res"), "-"))
+                        if doors else "",
+                        "" if lv.plan else " — لا حركة مفيدة"))
 
     @staticmethod
     def track_vanished(lv, st):
@@ -3482,12 +3533,25 @@ class Bot:
         lv = self.lv
         lv.random_moves += 1
         moves = [m for m in solver.legal_moves(st) if m not in lv.ban]
-        fresh = []
+        # الحركة العشوائية لا تعود إلى الطريق المسدود المحفوظ لهذه البداية ما وُجدت غيرها (التشغيل 17، المرحلة 154: (5، 3)
+        # العشوائية نفسها أنهت أكثر من محاولة)
+        try:
+            pp = self.plan_params(lv, st)
+            dead = (pp["avoid"] - lv.visited) if pp["avoid"] is not lv.visited else set()
+        except (KeyError, TypeError, ValueError, AttributeError):
+            dead = set()
+        fresh, alive = [], []
         for m in moves:
             nxt = solver.apply_move(st, *m)
-            if nxt is not None and solver.state_key(nxt) not in lv.visited:
+            if nxt is None:
+                continue
+            k = solver.state_key(nxt)
+            if k in dead:
+                continue
+            alive.append(m)
+            if k not in lv.visited:
                 fresh.append(m)
-        pool = fresh or moves
+        pool = fresh or alive or moves
         if not pool:
             self.log("لا حركة قانونية إطلاقاً؛ إعادة المرحلة")
             return self.restart_level()

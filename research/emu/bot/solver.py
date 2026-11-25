@@ -924,8 +924,11 @@ def _reveal_search(start, caps, budget, avoid, exclude):
     return best[1], best[0]
 
 
-def _progress_search(start, caps, budget, avoid, exclude, max_len=8):
-    """احتياط: أفضل حالة قريبة (أقل h، مع الحفاظ على الفارغات). سلسلة أو None."""
+def _progress_search(start, caps, budget, avoid, exclude, max_len=8, detour=None, stat=None):
+    """احتياط: أفضل حالة قريبة (أقل h، مع الحفاظ على الفارغات). سلسلة أو None.
+    detour = مفاتيح الطريق المسدود المحفوظ (جزء من avoid؛ التشغيل 17 المرحلة 154): إن لم تُبلغ حالة أفضل من البداية خارج avoid،
+    وقصّت هذه المفاتيح نفسها ابناً، وبدونها يُبلغ تحسّن يمرّ بإحداها (هي سبب غياب التحسّن: stat["blocked"])، تُختار أفضل حالة
+    بلغها البحث خارج avoid وفيها حركة بعدها، ولو لم تكن أفضل من البداية. وفي غير ذلك None كما بلا detour."""
     e0 = _empties(start)
 
     def value(s):
@@ -947,8 +950,10 @@ def _progress_search(start, caps, budget, avoid, exclude, max_len=8):
     k0 = _key(start, caps)
     parent = {k0: None}
     depth = {k0: 0}
+    cands = []
     heap = [(v0, 0, next(cnt), start, k0)]
     best = (v0, k0)
+    pruned = False
     while heap:
         v, g, _, s, k = heapq.heappop(heap)
         if not budget.tick():
@@ -958,7 +963,11 @@ def _progress_search(start, caps, budget, avoid, exclude, max_len=8):
         for (i, j, amt) in _gen_moves(s, caps, exclude if g == 0 else None):
             c = _apply(s, i, j, amt)
             kc = _key(c, caps)
-            if kc in parent or kc in avoid:
+            if kc in parent:
+                continue
+            if kc in avoid:
+                if detour and kc in detour:
+                    pruned = True
                 continue
             parent[kc] = k
             depth[kc] = g + 1
@@ -967,8 +976,20 @@ def _progress_search(start, caps, budget, avoid, exclude, max_len=8):
                 return _chain(parent, kc)
             if vc < best[0] - 1e-9 or (abs(vc - best[0]) < 1e-9 and depth[kc] < depth.get(best[1], 99)):
                 best = (vc, kc)
+            if detour:
+                cands.append((vc, g + 1, next(cnt), c, kc))
             heapq.heappush(heap, (vc + 0.01 * (g + 1), g + 1, next(cnt), c, kc))
     if best[1] == k0 or best[0] >= v0 - 1e-9:
+        if detour and pruned:
+            # هل الطريق المسدود المحفوظ سبب غياب التحسّن؟ بدونه (بميزانية صغيرة خاصة) يُبلغ تحسّن يمرّ بإحدى حالاته
+            alt = _progress_search(start, caps, _Budget(5000, time.perf_counter() + 0.3), avoid - set(detour), exclude, max_len)
+            if alt and any(kk in detour for kk in alt):
+                if stat is not None:
+                    stat["blocked"] = True
+                # أفضل حالة بلغها البحث (الأقرب عند التعادل) لا تنسدّ بعدها: حالة بلا حركة طريق مسدود آخر
+                for vc, g, _, c, kc in sorted(cands):
+                    if _gen_moves(c, caps):
+                        return _chain(parent, kc)
         return None
     return _chain(parent, best[1])
 
@@ -1326,14 +1347,17 @@ def _door_search_run(P, s0, caps, n, m0, enc, budget, avoid_names, exclude, w):
 
 # ---------------------------------------------------------------- الواجهة العامة
 def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
-         info=None, seed=None, keys_first=True, doors=None, vary=0):
+         info=None, seed=None, keys_first=True, doors=None, vary=0, detour=False):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
     قوارير الطين ("clay": True) لا يُصبّ منها، والمغطّاة ("blocked": True) لا تُلمس أبداً، وكاسرات الجبس (plaster_breakers)
     يُسعى إلى إكمالها أولاً. keys_first=False يترك بحث «المفاتيح أولاً» (فتح الأبواب بأسرع طريق) لتختار بحوث الكشف والتقدّم
     متى تُفتح الأبواب (مع بقاء منع دفن المفاتيح وقيمة عمقها): تنويع في المراحل التي يتكرّر فشلها (المرحلة 124). انظر _plan.
     doors: ما خلف الأبواب كما رآه السائق في محاولة سابقة للبداية نفسها ([{"key": (قارورة، موضع)، "tubes": [...]}]، انظر _Doors):
     يُبحث أولاً في المسألة المعروفة كلها (_door_search) إن عُرفت كلها، وإلا (أو بلا حلّ) فالمنطق المعتاد كما هو.
-    vary > 0: كسر تعادل عشوائي (بالبذرة seed) ووزن A* آخر: محاولة أخرى للبداية نفسها لا تكرّر طريق سابقتها."""
+    vary > 0: كسر تعادل عشوائي (بالبذرة seed) ووزن A* آخر: محاولة أخرى للبداية نفسها لا تكرّر طريق سابقتها.
+    detour: مفاتيح (state_key) طريق مسدود محفوظ من محاولة سابقة (جزء من avoid؛ True = avoid كلها): إن لم يُعثر على شيء بالبحوث
+    كلها وكانت هي التي قصّت الخط المحسِّن (info["dead_blocked"]) فطريق بديل بعيداً عنها (_progress_search بـ detour) بدل «لا حركة»
+    (التشغيل 17، المرحلة 154)."""
     global _NOSRC, _KEYS, _FILL, _PLASTER, _KEYS_FIRST, _TIE, _ACCEPT
     vis, keep = _visible(state)
     if keep is not None:                  # الفهارس الأصلية <-> فهارس الحالة بلا المغطّاة
@@ -1354,7 +1378,7 @@ def plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         _TIE = _random.Random((seed if seed is not None else 0) * 1000003 + vary)
     t_call = time.perf_counter()
     try:
-        moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed, doors, vary)
+        moves = _plan(vis, max_nodes, time_limit, bad_moves, avoid, info, seed, doors, vary, detour)
         if info is not None and doors:
             info["ms"] = round((time.perf_counter() - t_call) * 1000, 1)   # الوقت كله (بحث الأبواب ثم المعتاد)
     finally:
@@ -1395,8 +1419,27 @@ def _remap_doors(doors, inv, nvis, norig):
     return out
 
 
+def _reserve(budget, max_nodes, time_limit):
+    """ميزانية الطريق البديل (detour): ما بقي من budget، أو احتياط صغير إن نفدت (A* والعمقي يستهلكانها كلها في لغز لا يُحلّ
+    ظاهره: قوارير خلف الأبواب)."""
+    if budget.nodes < budget.max_nodes and time.perf_counter() < budget.deadline:
+        return budget
+    return _Budget(min(int(max_nodes), 5000), time.perf_counter() + min(float(time_limit), 0.3))
+
+
+def _detour(s, caps, budget, max_nodes, time_limit, av, dav, exclude, info):
+    """الطريق البديل عن الطريق المسدود المحفوظ dav (التشغيل 17، المرحلة 154): سلسلة أو None. info["dead_blocked"] حين قصّت
+    حالاته الخط المحسِّن (منه يعيد المحرّك التخطيط بدونها إن لم يوجد بديل)، وmode = progress-detour حينئذ فقط."""
+    stat = {}
+    chain = _progress_search(s, caps, _reserve(budget, max_nodes, time_limit), av, exclude, detour=dav, stat=stat)
+    if stat.get("blocked"):
+        info["dead_blocked"] = True
+        info["mode"] = "progress-detour"
+    return chain
+
+
 def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
-          info=None, seed=None, doors=None, vary=0):
+          info=None, seed=None, doors=None, vary=0, detour=False):
     """يعيد قائمة حركات (i, j). قائمة فارغة = لا حركة مفيدة (أو محلولة).
 
     bad_moves: حركات (i, j) تُستبعد من الخطوة الأولى (فشلت في هذه الحالة).
@@ -1422,6 +1465,13 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
     exclude = set(tuple(m) for m in (bad_moves or ()))
     av = _avoid_keys(avoid, enc.idx)  # مفاتيح بأسماء الألوان -> مفاتيح بالأعداد
     av.discard(_key(s, caps))
+    # مفاتيح الطريق المسدود المحفوظ (للطريق البديل): ما يُبلغ منها ويقع في avoid
+    if detour is True:
+        dav = set(av)
+    elif detour:
+        dav = _avoid_keys(detour, enc.idx) & av
+    else:
+        dav = set()
 
     # ---- ذاكرة الأبواب: ما خلف أبواب المفاتيح العالقة معروف من محاولة سابقة للبداية نفسها، فيُبحث في المسألة كلها أولاً
     global _KEYS
@@ -1492,6 +1542,8 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         if chain is None:
             info["mode"] = "progress"
             chain = _progress_search(s, caps, budget, av, exclude)
+        if chain is None and dav:
+            chain = _detour(s, caps, budget, max_nodes, time_limit, av, dav, exclude, info)
     else:
         info["mode"] = "astar"
         chain = _astar(s, caps, budget, av, exclude, w=(3.0, 2.5, 4.0)[vary % 3],
@@ -1505,6 +1557,8 @@ def _plan(state, max_nodes=40000, time_limit=1.6, bad_moves=None, avoid=None,
         if chain is None:
             info["mode"] = "progress"
             chain = _progress_search(s, caps, budget, av, exclude)
+        if chain is None and dav:
+            chain = _detour(s, caps, budget, max_nodes, time_limit, av, dav, exclude, info)
     moves = _derive_moves(s, caps, chain, exclude) if chain else []
     info["nodes"] = budget.nodes
     info["ms"] = round((time.perf_counter() - t0) * 1000, 1)

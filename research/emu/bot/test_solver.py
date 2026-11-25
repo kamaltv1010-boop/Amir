@@ -1135,6 +1135,73 @@ class TestTags(unittest.TestCase):
             self.assertEqual(got, exp, (ncol, ne, seed, vary))
 
 
+class TestDetour(unittest.TestCase):
+    """detour (التشغيل 17، المرحلة 154): avoid فيها طريق مسدود قصّ الخط المحسِّن نفسه، فطريق بديل بعيداً عنه بدل «لا حركة»."""
+    START = [["cyan", "cyan", "cyan", "green"], ["cyan", "purple", "purple", "red"], [], [],
+             ["lavender", "lavender", "pink", "red"], ["brown", "plum", "yellow", "mint"]]
+
+    def st(self):
+        return {"tubes": [{"x": 64 + 68 * k, "y": 743, "cap": 4, "layers": list(l)} for k, l in enumerate(self.START)]}
+
+    def dead(self):
+        s = self.st()
+        out = {solver.state_key(s)}
+        for m in solver.plan(s) + [(5, 3)]:
+            s = solver.apply_move(s, *m)
+            out.add(solver.state_key(s))
+        return out
+
+    def test_default_unchanged_and_detour_plans(self):
+        s, dead = self.st(), self.dead()
+        info = {}
+        self.assertEqual(solver.plan(s, avoid=dead, info=info), [])
+        self.assertEqual(info["mode"], "progress-none")
+        info = {}
+        mv = solver.plan(s, avoid=dead, info=info, detour=True)
+        self.assertEqual((mv, info["mode"]), ([(0, 2)], "progress-detour"))
+        cur = s
+        for m in mv:
+            cur = solver.apply_move(cur, *m)
+            self.assertNotIn(solver.state_key(cur), dead)
+        self.assertTrue(solver.legal_moves(cur))           # لا ينتهي الطريق البديل في حالة بلا حركة
+
+    def test_detour_not_used_without_avoid_or_when_progress_works(self):
+        s = self.st()
+        info = {}
+        self.assertEqual(solver.plan(s, info=info, detour=True), [(1, 2), (4, 2)])
+        self.assertEqual(info["mode"], "progress")
+
+    def test_detour_none_when_every_child_is_avoided(self):
+        s = self.st()
+        av = {solver.state_key(solver.apply_move(s, i, j)) for i, j in solver.legal_moves(s)}
+        info = {}
+        self.assertEqual(solver.plan(s, avoid=av, info=info, detour=True), [])
+        self.assertEqual(info["mode"], "progress-detour-none")
+
+    def test_detour_only_when_dead_states_block_progress(self):
+        """الطريق البديل فقط حين قصّت حالات الطريق المسدود نفسها الخط المحسِّن (info["dead_blocked"]): لا مع حالة مسدودة لا تُبلغ،
+        ولا مع حالة مقصوصة لا تحسّن بعدها، ولا حين قصّت الخطَّ حالاتُ المحاولة (avoid) لا حالات detour."""
+        s, dead = self.st(), self.dead()
+        irrelevant = solver.state_key({"tubes": [{"x": 0, "y": 0, "cap": 4, "layers": ["cyan"] * 4}]})
+        info = {}
+        self.assertEqual(solver.plan(s, avoid=dead, info=info, detour=dead), [(0, 2)])
+        self.assertEqual(info["mode"], "progress-detour")
+        self.assertTrue(info.get("dead_blocked"))
+        info = {}
+        self.assertEqual(solver.plan(s, avoid=dead | {irrelevant}, info=info, detour={irrelevant}), [])
+        self.assertEqual(info["mode"], "progress-none")
+        self.assertNotIn("dead_blocked", info)
+        s2 = s
+        for m in [(1, 2), (4, 2)]:
+            s2 = solver.apply_move(s2, *m)
+        child = {solver.state_key(solver.apply_move(s2, 5, 3))}
+        for d in (child, {irrelevant}):
+            info = {}
+            self.assertEqual(solver.plan(s2, avoid=d, info=info, detour=d), [])
+            self.assertEqual(info["mode"], "progress-none")
+            self.assertNotIn("dead_blocked", info)
+
+
 def _summary():
     print("\n[solver tests] calls=%d max_plan_ms=%.0f plain=%s one_empty=%s tall8=%s hidden=%s"
           % (STATS["calls"], STATS["max_ms"], STATS.get("plain"), STATS.get("one_empty"),
