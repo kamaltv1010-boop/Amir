@@ -6,3 +6,62 @@
 [07:43:32] استعادة بيانات اللعبة من save/: 2 جزء، 79866 ك.ب، تحقّق الحجم والبصمة: تمت
 [07:43:33] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
 [07:45:42] أول شاشة: button
+[07:45:45] شاشة جديدة لم تُرَ من قبل: new_001_button.jpg
+[07:45:58] بداية المرحلة 154 (صعبة): 6 قارورة، سعات [(4, 6)]، مخفي 0
+[07:45:58] حالة المرحلة 154: [{"x": 64, "y": 744, "cap": 4, "layers": ["lavender", "blue", "plum", "mint"], "keys": [1]}, {"x": 133, "y": 743, "cap": 4, "layers": ["red", "cyan", "plum", "mint"]}, {"x": 201, "y": 743, "cap": 4, "layers": []}, {"x": 270, "y": 743, "cap": 4, "layers": []}, {"x": 338, "y": 743, "cap": 4, "layers": ["brown", "cyan", "red", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["orange", "green", "green", "red"]}]
+[07:45:58] خطة المرحلة 154: 3 حركة (key، 0.6 ms)
+[07:46:09] الحركة (0, 1) تحرّر مفتاحاً؛ انتظار الباب
+[07:46:16] المرحلة 154: قوارير جديدة (باب انفتح؟ 6 → 11 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (64،743 طبقة 1) ← 5 قارورة (جديد)
+[07:46:16] حالة المرحلة 154 بعد الباب: [{"x": 98, "y": 538, "cap": 4, "layers": ["?", "darkgreen", "?", "blue"], "keys": [1]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "orange", "yellow", "lavender"], "accept": "lavender"}, {"x": 236, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "brown", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "lavender", "darkgreen", "mint"], "accept": "mint"}, {"x": 373, "y": 538, "cap": 4, "layers": ["?", "purple", "?", "yellow"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["lavender", "blue"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["red", "cyan", "plum", "plum"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["mint", "mint"]}, {"x": 270, "y": 744, "cap": 4, "layers": []}, {"x": 338, "y": 743, "cap": 4, "layers": ["brown", "cyan", "red", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["orange", "green", "green", "red"]}]
+[07:46:16] خطة المرحلة 154: 1 حركة (key، 0.3 ms)
+[07:46:20] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[07:46:20] خطة المرحلة 154: 1 حركة (key، 3.3 ms)
+[07:46:22] الحركة (0, 8) تحرّر مفتاحاً؛ انتظار الباب
+[07:46:31] المرحلة 154: قوارير جديدة (باب انفتح؟ 11 → 13 قارورة، ذاكرة 0 طبقة، مفاتيح باقية 1)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (98،538 طبقة 1) ← 1 قارورة (جديد)
+[07:46:31] حالة المرحلة 154 بعد الباب: [{"x": 270, "y": 332, "cap": 4, "layers": ["?", "orange", "?", "purple"], "keys": [1]}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "darkgreen"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "orange", "yellow", "lavender"], "accept": "lavender"}, {"x": 236, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "brown", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "lavender", "darkgreen", "mint"], "accept": "mint"}, {"x": 373, "y": 538, "cap": 4, "layers": ["?", "purple", "?", "yellow"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["lavender", "blue", "blue"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["red", "cyan", "plum", "plum"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["mint", "mint"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["brown", "cyan", "red", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["orange", "green", "green", "red"]}]
+[07:46:31] خطة المرحلة 154: 6 حركة (key، 2.6 ms)
+[07:46:35] خطة المرحلة 154: 5 حركة (key، 1.9 ms)
+[07:46:57] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[07:46:57] خطة المرحلة 154: 2 حركة (reveal، 241.2 ms)
+[07:47:09] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[07:47:09] خطة المرحلة 154: 2 حركة (key، 0.6 ms)
+[07:47:15] الحركة (0, 7) تحرّر مفتاحاً؛ انتظار الباب
+[07:47:24] المرحلة 154: قوارير جديدة (باب انفتح؟ 13 → 15 قارورة، ذاكرة 1 طبقة، مفاتيح باقية 0)؛ استمرار بلا إعادة، ذاكرة الأبواب: المفتاح (270،332 طبقة 1) ← 1 قارورة (جديد)
+[07:47:24] حالة المرحلة 154 بعد الباب: [{"x": 133, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "mint"}, {"x": 201, "y": 332, "cap": 4, "layers": ["?", "mint", "?", "brown"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["?", "orange"]}, {"x": 338, "y": 315, "cap": 4, "layers": [], "blocked": "curtain", "cover_color": "orange"}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "darkgreen", "darkgreen"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "orange", "yellow"], "accept": "lavender"}, {"x": 236, "y": 538, "cap": 4, "layers": ["darkgreen", "red", "brown", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue"], "accept": "blue"}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "purple", "purple", "purple"]}, {"x": 64, "y": 743, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["red", "cyan", "plum", "plum"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["mint", "mint", "mint"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["brown", "cyan", "red", "darkgreen"]}, {"x": 407, "y": 743, "cap": 4, "layers": ["orange", "green", "green", "red"]}]
+[07:47:24] خطة المرحلة 154: 2 حركة (reveal، 65.2 ms)
+[07:47:33] ذاكرة الأبواب: طبقة مخفية انكشفت في قارورة باب معروف (للمحاولات التالية)
+[07:47:33] خطة المرحلة 154: 4 حركة (progress، 12.6 ms)
+[07:47:49] خطة المرحلة 154: 0 حركة (progress-none، 3.8 ms) — لا حركة مفيدة
+[07:47:49] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 [green]/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green]/4
+[07:47:49] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:47:49] حركة عشوائية (5, 14) (1)
+[07:47:53] خطة المرحلة 154: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[07:47:53] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[07:47:53] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:47:53] حركة عشوائية (12, 5) (2)
+[07:47:59] لا تقدّم بعد الحركة (12, 5) (إخفاق 1)
+[07:47:59] خطة المرحلة 154: 0 حركة (progress-none، 2.8 ms) — لا حركة مفيدة
+[07:47:59] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[07:47:59] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:47:59] حركة عشوائية (12, 5) (3)
+[07:48:05] لا تقدّم بعد الحركة (12, 5) (إخفاق 1)
+[07:48:05] خطة المرحلة 154: 0 حركة (progress-none، 0.5 ms) — لا حركة مفيدة
+[07:48:05] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[07:48:05] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:48:05] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[07:48:10] خطة المرحلة 154: 0 حركة (progress-none، 0.6 ms) — لا حركة مفيدة
+[07:48:10] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[07:48:10] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:48:10] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[07:48:14] خطة المرحلة 154: 0 حركة (progress-none، 0.8 ms) — لا حركة مفيدة
+[07:48:14] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[07:48:14] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:48:14] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[07:48:19] خطة المرحلة 154: 0 حركة (progress-none، 1.0 ms) — لا حركة مفيدة
+[07:48:19] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[07:48:19] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[07:48:19] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[07:48:19] الرجوع لم يُعِد المرحلة 154 (4 محاولات)؛ إعادة تشغيل اللعبة
+[07:48:55] شاشة التحميل: انتظار بلا نقر
+[07:50:18] شاشة جديدة لم تُرَ من قبل: new_002_lives.jpg
+[07:50:18] نافذة «More Lives» (الرصيد 180 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
