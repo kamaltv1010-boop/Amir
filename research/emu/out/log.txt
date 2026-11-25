@@ -694,3 +694,14 @@
 [05:08:49] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
 [05:08:49] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
 [05:08:49] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[05:08:53] خطة المرحلة 154: 0 حركة (progress-none، 0.7 ms) — لا حركة مفيدة
+[05:08:53] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[05:08:53] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[05:08:53] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[05:08:57] خطة المرحلة 154: 0 حركة (progress-none، 0.7 ms) — لا حركة مفيدة
+[05:08:57] المرحلة 154 عالقة (لا خطة): [#ستارة:mint] [?,mint,cyan]/4 [?,orange,orange]/4 [#ستارة:orange] [?,darkgreen,darkgreen,darkgreen]/4 []/4{وسم:lavender} [darkgreen,red,brown,brown]/4 [blue,blue,blue,blue]/4{وسم:blue} [?,purple,purple,purple]/4 [yellow,yellow,yellow]/4 [red,cyan,plum,plum]/4 [mint,mint,mint]/4 [lavender,lavender,lavender,lavender]/4 [brown,cyan,red,red]/4 [orange,green,green,green]/4
+[05:08:57] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[05:08:57] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
+[05:08:57] الرجوع لم يُعِد المرحلة 154 (4 محاولات)؛ إعادة تشغيل اللعبة
+[05:09:37] شاشة التحميل: انتظار بلا نقر
+[05:11:10] نافذة «More Lives» (الرصيد 180 أقل من 900): إغلاق بـ X وانتظار 16.0 دقيقة للروح القادمة (لا إعلان ولا «Free Lives»)
