@@ -4206,6 +4206,30 @@ class TestTags(DriverCase):
         self.assertEqual(driver.tag_conf(T(1, 1, ["red", "blue"], accept="red", tag_src="icon")), 3)
         self.assertEqual(driver.tag_conf(T(1, 1, [], accept="red", tag_src="vote")), 0)
 
+    def test_tagged_tube_never_shuffled_and_memory_tags_match_raw(self):
+        """مراجعة b72ddce: (1) الخلط يغيّر قاع القارورة التي يُختار لها، فالموسومة لا تُختار أبداً (قاعها لون وسمها)؛ (2) وسم صحّحته
+        الذاكرة في اللوحة السابقة يطابق قراءة البطاقة الخام للقارورة نفسها في door_map، فيُطابَق الباب ويُسجَّل ولا تأخذ القارورة
+        الإضافية الفارغة الوسم (المراحل 133 و134 و139: الموسومة الفارغة آخر الترتيب والإضافية تُلحق بعدها)."""
+        st = {"tubes": [T(98, 538, ["red", "blue", "red", "blue"], accept="red"), T(168, 538, ["green", "yellow", "green"])]}
+        self.assertEqual(driver.Bot.shuffle_target(st), 1)
+        st["tubes"][1]["accept"] = "green"
+        self.assertIsNone(driver.Bot.shuffle_target(st))
+        mem = T(406, 747, [], accept="green", tag_src="memory")
+        raw = T(406, 747, [], accept="lavender", tag_src="ribbon")
+        self.assertTrue(driver._same_tube(mem, raw))
+        self.assertFalse(driver._same_tube(T(406, 747, [], accept="green", tag_src="icon"), raw))
+        top = [T(x, 540, ["red", "blue", "green", "yellow"]) for x in (64, 133, 201, 270, 338)]
+        old = {"tubes": top + [T(66, 747, ["plum"] * 4, accept="plum", tag_src="bottom"), T(406, 747, [], accept="green",
+                                                                                        tag_src="memory")]}
+        new = {"tubes": top + [T(66, 747, ["plum"] * 4, accept="plum", tag_src="bottom"),
+                               T(406, 747, [], accept="lavender", tag_src="ribbon"), T(440, 745, [])]}
+        mp = driver.door_map(old, new)
+        self.assertEqual(mp[6], 6)                                     # الموسومة بنفسها لا بالإضافية (7)
+        tags = [[66, 747, "plum", 3], [406, 747, "green", 3]]
+        driver.rebase_tags(tags, old, new, mp)
+        out, n = driver.remember_tags(new, tags)
+        self.assertEqual([(t["x"], t.get("accept")) for t in out["tubes"][5:]], [(66, "plum"), (406, "green"), (440, None)])
+
     def test_keys_and_records_carry_accept(self):
         a, b = T(118, 377, [], accept="red"), T(118, 377, [], accept="blue")
         self.assertFalse(driver._same_tube(a, b))

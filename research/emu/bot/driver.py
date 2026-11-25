@@ -831,8 +831,11 @@ def _same_tube(a, b) -> bool:
     المغطّاة تطابق المغطّاة فقط (لا قارورة فارغة)."""
     if bool(a.get("blocked")) != bool(b.get("blocked")):
         return False
-    if a.get("accept") and b.get("accept") and a["accept"] != b["accept"]:
-        return False                                # وسمان مختلفان («Tag!»): قارورتان مختلفتان ولو تشابهت طبقاتهما
+    if (a.get("accept") and b.get("accept") and a["accept"] != b["accept"]
+            and "memory" not in (a.get("tag_src"), b.get("tag_src"))):
+        # وسمان مختلفان («Tag!»): قارورتان مختلفتان ولو تشابهت طبقاتهما؛ إلا وسماً صحّحته ذاكرة الوسوم (اللوحة السابقة) مقابل
+        # قراءة البطاقة الخام نفسها التي صُحّحت (كان الباب لا يُطابَق ولا يُسجَّل، والقارورة الإضافية تأخذ الوسم)
+        return False
     la, lb = a["layers"], b["layers"]
     if len(la) != len(lb):
         return False
@@ -853,7 +856,8 @@ def _slot_score(a, b) -> float:
             return 3.0 if _near(a, b) else 1.0
         return 1.0 if (a.get("blocked") and _near(a, b)) else 0.0      # غطاء انكشف في خانته
     if _same_tube(a, b):
-        return 3.0 if _near(a, b) else 2.0
+        tag = 0.0 if bool(a.get("accept")) == bool(b.get("accept")) else -0.25   # الموسومة بالموسومة قبل الإضافية الفارغة
+        return (3.0 if _near(a, b) else 2.0) + tag
     if not _near(a, b):
         return 0.0
     pre = 0
@@ -915,22 +919,28 @@ def door_map(old, new):
         return None
     # أطول تطابق محافظ على الترتيب (LCS)، وبين التطابقات المتساوية أكثرها في الخانة نفسها: المخفي "?" يطابق أي لون، فقارورة
     # باب جديدة قد «تطابق» قديمة (المرحلة 124: [darkgreen,?,?,lavender] و[?,brown,?,lavender]) والموضع يحسم (القديمة لا تتحرّك)
+    # وبين المتساوية في العدد أكثرها مطابقةً لموسومة بموسومة (لا تُطابَق موسومة فارغة بالقارورة الإضافية الفارغة)، ثم في الخانة
     same = [[_same_tube(to[a], tn[b]) for b in range(nn)] for a in range(no)]
-    L = [[(0, 0)] * (nn + 1) for _ in range(no + 1)]
+
+    def gain(a, b):
+        return (1, 1 if bool(to[a].get("accept")) == bool(tn[b].get("accept")) else 0, 1 if _near(to[a], tn[b]) else 0)
+    L = [[(0, 0, 0)] * (nn + 1) for _ in range(no + 1)]
     for a in range(no - 1, -1, -1):
         for b in range(nn - 1, -1, -1):
             v = max(L[a + 1][b], L[a][b + 1])
             if same[a][b]:
-                m, nr = L[a + 1][b + 1]
-                v = max(v, (m + 1, nr + (1 if _near(to[a], tn[b]) else 0)))
+                m, tg, nr = L[a + 1][b + 1]
+                g = gain(a, b)
+                v = max(v, (m + g[0], tg + g[1], nr + g[2]))
             L[a][b] = v
     if L[0][0][0] < no:
         return None
     mp, a, b = {}, 0, 0
     while a < no and b < nn:
         if same[a][b]:
-            m, nr = L[a + 1][b + 1]
-            if L[a][b] == (m + 1, nr + (1 if _near(to[a], tn[b]) else 0)):
+            m, tg, nr = L[a + 1][b + 1]
+            g = gain(a, b)
+            if L[a][b] == (m + g[0], tg + g[1], nr + g[2]):
                 mp[a] = b
                 a += 1
                 b += 1
@@ -3378,7 +3388,8 @@ class Bot:
         else:
             self.log("المرحلة %d: قوارير جديدة (باب انفتح؟ %d → %d قارورة، ذاكرة %d طبقة، مفاتيح باقية %d)؛ استمرار بلا إعادة%s"
                      % (lv.n, old_n, len(st["tubes"]), len(mem), nk, door_note))
-        self.log("حالة المرحلة %d بعد الباب: %s" % (lv.n, json.dumps(compact_state(st), ensure_ascii=False)))
+        shown = remember_tags(st, [list(r) for r in lv.tags])[0] if lv.tags else st   # كما سيراها الحلّال (نسخة من الذاكرة)
+        self.log("حالة المرحلة %d بعد الباب: %s" % (lv.n, json.dumps(compact_state(shown), ensure_ascii=False)))
 
     def remember_door(self, ref, st, mp, record=True) -> str:
         """ذاكرة الأبواب لهذه البداية: المفتاح الذي تحرّر (بموضع قارورته وطبقته) -> القوارير الجديدة كما قُرئت أول مرة؛ وطبقات
@@ -3573,7 +3584,9 @@ class Bot:
         best = None
         for k, t in enumerate(st["tubes"]):
             L = t["layers"]
-            if not L:
+            if not L or t.get("accept"):
+                # الموسومة لا تُخلط: الخلط يغيّر قاعها (4 من 5 خلطات مؤرشفة)، وقاعها هو لون وسمها (الرؤية والذاكرة تعتمدانه)،
+                # وخلطها لا يفيد (لا يُصبّ فيها إلا لونها بعد أن تفرغ)
                 continue
             runs = sum(1 for p in range(len(L)) if p == 0 or L[p] != L[p - 1] or L[p] == "?")
             if runs <= 1 and len(L) == t["cap"]:
