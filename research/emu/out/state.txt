@@ -1,10 +1,10 @@
 done 50
 الحالة: يلعب
 مراحل مكتملة: 2
-الوقت: 218 دقيقة من 300
+الوقت: 223 دقيقة من 300
 آخر شاشة: button
-الشاشات: {'button': 217, 'level': 232, 'unknown': 186, 'close': 8, 'lives': 15}
-صور محفوظة: 41/900، شاشات جديدة: 18
-المرحلة الحالية: 165 (حركات 15، مخفي 0، إخفاقات 0، أدوات -، 3.9 دقيقة)
-الحالة المقروءة: []/4 [blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue,blue]/17 [purple,purple,purple,purple]/4 []/4 [green,green,green,green,green,green,green,green,green,green,green,green,green,green,green,green]/17 [lavender,lavender,lavender,lavender]/4 [brown,brown,brown,brown]/4 [yellow,yellow,yellow,yellow]/4 [orange,orange,orange,orange]/4 [cyan,cyan,cyan,cyan]/4 []/4 [pink,pink,pink,pink]/4 [green]/4 [red,red,red,red]/4
-العملات: 750، «Give Up» لكل مرحلة: {164: 8}
+الشاشات: {'button': 221, 'level': 235, 'unknown': 216, 'close': 8, 'lives': 16}
+صور محفوظة: 44/900، شاشات جديدة: 18
+المرحلة الحالية: 166 (حركات 0، مخفي 0، إخفاقات 0، أدوات -، 3.0 دقيقة)
+الحالة المقروءة: [#ستارة:brown] [lavender,green,red,pink]/4 [red,cyan,green]/4 [pink,orange,plum]/4 [red,pink,orange,brown]/4 [#ستارة:cyan] [#ستارة:c_02_6_4] [#جبس] [cyan,cyan]/4 [darkgreen,darkgreen]/4 [#جبس] [#ستارة:c_02_6_4] [lavender,brown,darkgreen]/4 [cyan,yellow,darkgreen]/4
+العملات: 830، «Give Up» لكل مرحلة: {164: 8}، انتظار الأرواح 4 دقيقة
