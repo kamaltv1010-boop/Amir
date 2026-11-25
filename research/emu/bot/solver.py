@@ -1600,11 +1600,16 @@ def legal_moves(state):
     s, caps = enc.start, enc.caps
     out = []
     tubes = (vis or {}).get("tubes") or []
+    maxcap = max(caps) if caps else 0
     for i, t in enumerate(s):
         if not t or t[-1] < 0 or tubes[i].get("clay"):
             continue
-        if len(t) == caps[i] and min(t) == max(t):
-            continue                          # مكتملة: تُسدّ بسدادة ذهبية فلا يُصبّ منها (التشغيل 18: (12، 5) مرتين «لا تقدّم»)
+        if (len(t) == caps[i] and min(t) == max(t) and caps[i] >= maxcap
+                and not any(k != i and t[0] in u for k, u in enumerate(s))):
+            # مكتملة تُسدّ بسدادة ذهبية فلا يُصبّ منها (التشغيل 18: (12، 5) مرتين «لا تقدّم»). اللعبة تسدّ القارورة حين تضمّ كل طبقات
+            # لونها، لا كل ممتلئة بلون واحد: بجانب العملاقة (سعة 16) قارورة حمراء ×4 بلا سدادة وصبّها في العملاقة لازم (المرحلة 127،
+            # والبنّي في 107). فلا تُعدّ مسدودة إلا إن لم يظهر لونها في غيرها ولم تكن قارورة أوسع منها (حيث يزيد اللون على سعتها)
+            continue
         for j, u in enumerate(s):
             if i == j or len(u) >= caps[j]:
                 continue

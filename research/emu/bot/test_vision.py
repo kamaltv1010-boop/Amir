@@ -930,6 +930,10 @@ TAG_FULL = {
     "L154_tags_full_b": [(168, "mint", None), (304, "purple", "yellow")],
     "L154_tags_full_c": [(168, "plum", "darkgreen"), (304, "darkgreen", "red")],
     "L154_tags_curtains": [(167, "green", None), (304, "blue", None)],     # الحالة العالقة: الفارغة وسمها أخضر ليموني
+    # مراجعة 77e457e: قارورة صغيرة زرقاء تلامس قطرياً السائل الأزرق خلف البطاقة (كانت «purple» من الشريط)، وصندوق مقصوص من
+    # اليمين (قطعة الورق اليمنى تحت العتبة) تلمس قارورته الصغيرة حافته (كان الشريط يصيب «purple» مصادفة)
+    "L146_tag_bridge": [(167, "yellow", None), (236, "blue", "purple"), (304, "pink", None)],
+    "L144_tag_clipped": [(133, "purple", None), (201, "mint", None), (270, "red", None)],
 }
 
 
@@ -1020,6 +1024,22 @@ class TestTagVision(unittest.TestCase):
                 self.assertTrue(abs(x - ex) <= 3, (name, x, ex))
                 self.assertEqual(acc, eacc, (name, x))
 
+    def test_tag_icon_read_directly_even_when_box_is_clipped(self):
+        """لون كل وسم في لقطات الاختبار من القارورة الصغيرة نفسها (لا من احتياط الشريط: الأزرق يُقرأ فيه «purple» أو «lavender» دائماً)،
+        ويبقى إن قُصّ صندوق البطاقة من اليمين حتى cx+0.48w كما يحدث حين تقع قطعة الورق اليمنى تحت عتبة القطع (13 من 160 مؤرشفة)."""
+        cases = [(n, x, y, acc) for n, exp in TAG_LEVELS.items() for (x, y, _l, acc) in exp if acc]
+        cases += [(n, x, None, acc) for n, exp in TAG_FULL.items() for (x, acc, _old) in exp]     # صفّ وسوم واحد
+        for name, x, y, acc in cases:
+            a = vision.load(_path(name))
+            st = vision.parse_level(a, debug=True)
+            w = st["_geom"]["w"]
+            t = [u for u in st["tubes"] if u.get("tag_box") and abs(u["x"] - x) <= 3 and (y is None or abs(u["y"] - y) <= 5)]
+            self.assertEqual(len(t), 1, (name, x, y))
+            t = t[0]
+            x0, y0, x1, y1 = t["tag_box"]
+            self.assertEqual(vision._tag_icon_color(a, x0, y0, x1, y1, w), acc, (name, x))
+            self.assertEqual(vision._tag_icon_color(a, x0, y0, min(x1, int(t["x"] + 0.48 * w)), y1, w), acc, (name, x, "clipped"))
+
     def test_no_tags_elsewhere(self):
         """لا وسم في أي لقطة لغز أخرى (أبواب، جبس، أكياس، ستائر، طين، طويلة، مفاتيح...): البطاقة الورقية بشكلها وموضعها وحدها."""
         for name in _all_testdata():
@@ -1027,6 +1047,18 @@ class TestTagVision(unittest.TestCase):
                 continue
             st = vision.parse_level(_path(name))
             self.assertFalse([t for t in st["tubes"] if t.get("accept")], name)
+
+
+# ---------------------------------------------------------------- إعلان Pangle التجريبي الرمادي
+class TestPangleAd(unittest.TestCase):
+    def test_pangle_test_ad_detected_only_there(self):
+        """«Pangle Test Carousel» (رمادي محايد داكن بملء الشاشة) إعلان، ولا شاشة أخرى في لقطات الاختبار (اللعب الكحلي، والإعلان
+        الأسود والأبيض، والتحميل، والواجهات والنوافذ). على الأرشيف كله: 13 لقطة هي نسخه وحدها من التشغيل 6 إلى 19."""
+        self.assertTrue(vision.is_dark_ad(_path("ad_pangle_test")))
+        self.assertFalse(vision.is_ad(_path("ad_pangle_test")) or vision.is_white_ad(_path("ad_pangle_test")))
+        self.assertIsNone(vision.find_ad_close(_path("ad_pangle_test")))     # لا X ظاهر: رجوع بعد المهلة
+        others = [n for n in _all_testdata() if n != "ad_pangle_test" and vision.is_dark_ad(_path(n))]
+        self.assertEqual(others, [])
 
 
 # ---------------------------------------------------------------- مفتاح بصبغة سائله (المرحلة 154)

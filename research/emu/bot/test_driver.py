@@ -486,6 +486,13 @@ class TestDriverSim(unittest.TestCase):
         # التشغيل 18: إعادة التشغيل محاولة فاشلة للبداية (تُحسب ويُحفظ طريقها) والمرحلة نفسها تُفتح من جديد كمحاولة جديدة
         self.assertEqual((rec["fails"], bot.level_fails[7], bot.restart_n, bot.expect_new), (1, 1, 7, True))
         self.assertIn("طريق مسدود محفوظ لهذه البداية", log)
+        # لوحة بدت محلولة ثم أُعيدت اللعبة: أول شاشة غير اللوحة بعد الإطلاق لا تجعل المحاولة الفاشلة «فوزاً» (مراجعة 77e457e)
+        bot.lv = driver.LevelCtx(8, {"tubes": []}, 0.0)
+        bot.lv.maybe_won = True
+        for _ in range(4):
+            bot.restart_level()
+        bot.leave_level("unknown")
+        self.assertEqual((bot.levels_done, bot.lv.result, bot.level_fails[8], bot.restart_n), (0, None, 1, 8))
         bot.restart_level()
         bot.lv.dead_restarts = 3
         st = {"tubes": [{"x": 100, "y": 500, "cap": 4, "layers": ["red"]},
@@ -1318,6 +1325,9 @@ class StallVision(TabScriptVision):
     def is_white_ad(self, arr):
         return bool(self.now.get("white_ad"))
 
+    def is_dark_ad(self, arr):
+        return bool(self.now.get("pangle_ad"))
+
     def find_ad_close(self, arr):
         return self.now.get("ad_close")
 
@@ -1636,6 +1646,35 @@ class TestStalls(DriverCase):
         self.drive(bot, sv, 80)
         self.assertEqual(len(dev.stops), 1, self.log())
         self.assertIn("الإعلان الأسود باقٍ منذ", self.log())
+
+    def test_pangle_ad_never_tapped(self):
+        """إعلان Pangle التجريبي الرمادي (التشغيلات 6..19): لا يُلمس «View now» ولا وسطه ولا «سهم» كاذب فيه؛ رجوع بعد مهلة العدّ
+        كل 5 ثوانٍ على الأكثر، ثم إعادة اللعبة بعد مهلة الإعلان (كالأبيض)."""
+        bot, sv, dev = self.make()
+        sv.now.update(kind="unknown", pangle_ad=True, ad_close=None, arrow=(338, 705), greens=[{"box": (160, 580, 320, 640)}])
+        taps, keys = self.drive(bot, sv, 60)
+        log = self.log()
+        self.assertEqual(taps, [], log)
+        self.assertTrue(keys and all(t >= driver.CFG["ad_wait_sec"] and k == 4 for t, k in keys), keys)
+        self.assertTrue(all(b - a >= 5 for (a, _), (b, _) in zip(keys, keys[1:])), keys)
+        self.assertEqual(len(dev.stops), 1, log)
+        self.assertIn("إعلان تجريبي رمادي (Pangle)", log)
+        self.assertIn("الإعلان التجريبي الرمادي باقٍ منذ", log)
+        self.assertNotIn("سهم تعليم", log)
+
+    def test_arrow_on_android_home_never_tapped(self):
+        """«سهم» على سطح مكتب Android بعد خروج اللعبة: لا يُلمس ولو فُحصت الواجهة قبل ثانية واللعبة ظاهرة (كانت مهلة الفحص 5 ثوانٍ
+        فلُمس سطح المكتب عند (338، 705) بعد إعلان Pangle في التشغيلات 10..19)؛ تُشغَّل اللعبة بدله."""
+        bot, sv, dev = self.make()
+        dev.focus = lambda: "mCurrentFocus=Window{9 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}"
+        sv.now.update(kind="unknown", arrow=(338, 705))
+        bot.unknown_streak, bot.unknown_since = 1, self.clock.time() - 3
+        bot.last_focus_check = self.clock.time() - 1
+        n0, l0 = len(dev.taps), dev.launched
+        bot.on_unknown(bot.grab(), "unknown")
+        self.assertEqual(dev.taps[n0:], [], self.log())
+        self.assertEqual(dev.launched, l0 + 1)
+        self.assertIn("سهم مزعوم واللعبة ليست في الواجهة", self.log())
 
     def test_journey_claim_arrow_still_tapped(self):
         """«Journey Rewards — Tap to Claim» (ليست إعلاناً ولا شعاراً): لمسة «السهم» التي استلمتها في التشغيل التاسع باقية."""

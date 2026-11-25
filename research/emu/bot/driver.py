@@ -3601,6 +3601,9 @@ class Bot:
                 self.level_fails[lv.n] += 1
                 self.restart_n = lv.n
                 self.note_dead_end(lv)
+                # لوحة بدت محلولة (maybe_won) قبل «لا حركة قانونية»: أول شاشة غير اللوحة بعد الإطلاق كانت تمرّ بـ leave_level فتجعل
+                # المحاولة المحسوبة فاشلة «فوزاً» (levels_done وlevel_hint = n+1 يسبق restart_n فتُسمّى المرحلة المعادة n+1)
+                lv.maybe_won = False
                 self.expect_new = True
                 self.start_probe, self.start_probe_tries, self.start_same = None, 0, 0
                 lv.dead_restarts = 0
@@ -3967,7 +3970,7 @@ class Bot:
         """إعلان بملء الشاشة فرضته اللعبة (البوت لا يطلب إعلاناً أبداً: لا «+1 Life» ولا «Free Lives» ولا «Install»).
         الأسود (is_ad): رجوع ثم زاويتا الإغلاق كما كان. الأبيض التجريبي (AppLovin MAX، is_white_ad): زرّ X في زاوية علوية
         (find_ad_close: يظهر بعد العدّ التنازلي) يُلمس متى ظهر، وإلا رجوع بعد مهلة العدّ (ad_wait_sec)، كل 5 ثوانٍ على الأكثر؛
-        لا يُلمس وسطه ولا «Install».
+        لا يُلمس وسطه ولا «Install». والرمادي التجريبي (Pangle «Test Carousel»، is_dark_ad) مثله: لا يُلمس «View now» أبداً.
         إن بقي الإعلان أكثر من ad_max_sec (الأبيض) أو ad_black_max_sec (الأسود) تُعاد اللعبة. (التشغيل التاسع: الأبيض بقي حتى
         مهلة الثلاث دقائق بنقرات تصعيد في وسطه، وشاشة تعليم معتمة ظُنّت إعلاناً أسود فدام الرجوع 25 دقيقة.)"""
         now = time.time()
@@ -3975,13 +3978,17 @@ class Bot:
             self.ad_since, self.ad_acts, self.ad_kind = now, 0, kind
             if kind == "white":
                 self.log("إعلان تجريبي أبيض (AppLovin): انتظار عدّه التنازلي ثم زرّ الإغلاق أو الرجوع (لا «Install» أبداً)")
+            elif kind == "pangle":
+                # Pangle «Test Carousel» (التشغيلات 6..19): كان شاشة مجهولة فيلمس البوت بعده سطح مكتب Android «سهماً»؛ لا يُلمس
+                # «View now» ولا وسطه أبداً، واللعبة تُغلق بعده غالباً فيعيدها فحص الواجهة
+                self.log("إعلان تجريبي رمادي (Pangle): انتظار ثم زرّ الإغلاق أو الرجوع (لا «View now» أبداً)")
         self.ad_last = now
         el = now - self.ad_since
-        if el > (CFG["ad_max_sec"] if kind == "white" else CFG["ad_black_max_sec"]):
+        if el > (CFG["ad_black_max_sec"] if kind == "black" else CFG["ad_max_sec"]):
             self.ad_last = None
             return self.relaunch("الإعلان %s باقٍ منذ %.0f ثانية؛ إعادة تشغيل اللعبة"
-                                 % ("التجريبي الأبيض" if kind == "white" else "الأسود", el))
-        if kind == "white":
+                                 % ({"white": "التجريبي الأبيض", "pangle": "التجريبي الرمادي"}.get(kind, "الأسود"), el))
+        if kind in ("white", "pangle"):
             # زرّ X في زاوية علوية يعني أن العدّ انتهى: يُلمس متى ظهر؛ والرجوع بعد مهلة العدّ فقط
             x = self.vis._pt(self.vis._safe("find_ad_close", fr.arr)) if el >= 2 else None
             if (x or el >= CFG["ad_wait_sec"]) and now - self.last_ad_act > 5:
@@ -4123,6 +4130,8 @@ class Bot:
         white = bool(self.vis._safe("is_white_ad", fr.arr, default=False))
         if white or self.vis._safe("is_ad", fr.arr, default=False):
             return self.on_ad(fr, "white" if white else "black")
+        if self.vis._safe("is_dark_ad", fr.arr, default=False):
+            return self.on_ad(fr, "pangle")
         self.ad_acts = 0
         # «No Available Moves»: «Give Up» ثم تُعاد المرحلة، إلا ما تقرّره on_no_moves («Play On» بالعملات)
         gu = self.vis._pt(self.vis._safe("find_give_up", fr.arr))
@@ -4194,9 +4203,10 @@ class Bot:
             return None
         if dur >= 2 and now - self.last_arrow_tap > 4 and self.arrow_taps < 3:
             tgt = self.vis._pt(self.vis._safe("find_tutorial_arrow", fr.arr))
-            if tgt and now - self.last_focus_check > 5:
+            if tgt:
                 # «سهم» في شاشة سطح مكتب Android (التشغيلان السادس والسابع: ثلاث لمسات على أيقونات المتجر والمتصفح بعد خروج
-                # اللعبة): لا يُلمس شيء خارج اللعبة، بل تُشغَّل
+                # اللعبة): لا يُلمس شيء خارج اللعبة، بل تُشغَّل. الفحص قبل كل لمس: بمهلة 5 ثوانٍ لُمس سطح المكتب بعد إعلان Pangle
+                # في التشغيلات 10..19 (فحص سابق قبل ثوانٍ واللعبة ما زالت ظاهرة)
                 self.last_focus_check = now
                 f = self.dev.focus()
                 if f and PKG not in f:

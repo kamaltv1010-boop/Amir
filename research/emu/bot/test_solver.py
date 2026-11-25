@@ -975,6 +975,19 @@ class TestTags(unittest.TestCase):
         st2 = mk_tags([(4, ["lavender"] * 3, None), (4, [], "lavender")])  # غير مكتملة: يُصبّ منها كالعادة
         self.assertIn((0, 1), solver.legal_moves(st2))
 
+    def test_full_tube_next_to_giant_is_not_corked(self):
+        """المرحلة 127 (مراجعة 77e457e): بجانب العملاقة (سعة 16، أحمر ×8) قارورة حمراء ×4 بلا سدادة، وصبّها في العملاقة الحركة
+        الوحيدة الممكنة (واللعبة قبلتها في التشغيلين 12 و13)؛ والبنّي ×4 إلى العملاقة في 107. اللعبة تسدّ القارورة حين تضمّ كل طبقات
+        لونها: فلا تُعدّ مسدودة إن ظهر لونها في غيرها أو كانت قارورة أوسع منها (لونها قد يكون مخفياً هناك)."""
+        full = [["blue", "green", "yellow", "pink"], ["green", "yellow", "pink", "blue"], ["yellow", "pink", "blue", "green"]]
+        st = mk([(4, l) for l in full] + [(16, ["red"] * 8), (4, ["red"] * 4)])
+        self.assertEqual(solver.legal_moves(st), [(4, 3)])
+        self.assertEqual(solver.plan(st)[:1], [(4, 3)])
+        # قارورة أوسع ولونها الظاهر غيره (الأحمر قد يكون في طبقاتها المخفية): لا يُفترض الأحمر مكتملاً
+        hid = mk([(16, ["?"] * 7 + ["blue"]), (4, ["red"] * 4), (4, [])])
+        self.assertEqual(sorted(solver.legal_moves(hid)), [(0, 2), (1, 2)])
+        self.assertEqual(solver.legal_moves(mk([(4, ["red"] * 4), (4, [])])), [])      # كل السعات 4: الأحمر كله فيها
+
     def test_l130_start_has_plan_with_constraint(self):
         st = mk_tags(L130)
         self.assertEqual(len(solver.legal_moves(st)), 4)                # كان 0: الموسومة قُرئت ممتلئة بلون مجهول
