@@ -1,21 +1,21 @@
 {
  "format": 1,
  "name": "game_backup.ab",
- "size": 82381914,
- "sha256": "a7fa847b803360bcdcb47a0eeaa4dcaea932cc822a1a655e0c9a383beb7a2a47",
+ "size": 82378860,
+ "sha256": "12da2f587fa2952e90e67d77e889308808a5dd306066cf725f9d4ce0f4b8942b",
  "part_bytes": 41943040,
  "parts": [
   {
    "name": "game_backup.ab.part00",
    "size": 41943040,
-   "sha256": "5de8aa07430d93907081b5db324a051b27780c3e427768503fc7646f08577565"
+   "sha256": "b8a32bdd3ccdf618682d136187a7c38f019ff1bf045faf7c4243590830ab1570"
   },
   {
    "name": "game_backup.ab.part01",
-   "size": 40438874,
-   "sha256": "21a919f4b4fdd20010d12fbc8c7d4771f502505c9f040ea6c83a629bcf12ea86"
+   "size": 40435820,
+   "sha256": "dab3796b765e056d39bdce9d858b3ba87f463052a3833a6a8b75853f80cf439d"
   }
  ],
  "levels_done": 2,
- "time": "2026-11-25 22:36:57"
+ "time": "2026-11-25 23:22:09"
 }
