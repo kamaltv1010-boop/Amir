@@ -69,3 +69,4 @@
 [07:57:29] انتهى التحميل بعد 514 ثانية
 [07:57:30] اللعبة ليست في الواجهة (mCurrentFocus=Window{1471fb9 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
 [07:58:48] شاشة التحميل: انتظار بلا نقر
+[08:01:26] انتظار الأرواح: باقي 5 دقيقة قبل زرّ المرحلة
