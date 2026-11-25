@@ -980,11 +980,21 @@ def _tag_icon_color(a, x0, y0, x1, y1, w):
     if best is None:
         return None
     px = np.concatenate([sub[y, s:e + 1] for y, s, e in best["runs"]])
+    # التصويت بعتبة ضيّقة أولاً ثم أوسع، والفائز يملك ربع بكسلات القارورة الصغيرة على الأقل: في الإطار الحيّ بلا ضغط (التشغيل 19،
+    # المرحلة 157، tagfix_L157_1.png) طابقت 6 بكسلات من إطارها الأزرق الفاتح «lavender» بفرق ≤ 12 و2 من سائلها الأخضر فقط، فكان
+    # يعيد «lavender» وسائلها الأخضر 85 بكسلاً بفرق ≤ 25 (ضغط JPEG يطمس الإطار فكانت اللقطات المحفوظة تُقرأ «green»)
+    lab = _srgb_to_lab(px.astype(np.float64))
+    d = np.sqrt(((lab[:, None, :] - _PAL_LAB[None, :, :]) ** 2).sum(-1))
+    nn, dm = d.argmin(axis=1), d.min(axis=1)
+    need = max(6, 0.25 * len(px))
     for thr in (12.0, 18.0, 25.0):
-        v = _palette_vote(px, max_de=thr, min_n=6)
-        if v is not None:
-            return v
-    return None
+        cnt = np.bincount(nn[dm <= thr], minlength=len(_PAL_NAMES))
+        k = int(np.argmax(cnt))
+        if cnt[k] >= need:
+            return _PAL_NAMES[k]
+    cnt = np.bincount(nn[dm <= 25.0], minlength=len(_PAL_NAMES))
+    k = int(np.argmax(cnt))
+    return _PAL_NAMES[k] if cnt[k] >= 6 else None
 
 
 def _find_tag(a, cx, w, top):

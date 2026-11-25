@@ -1066,6 +1066,14 @@ class TestTagVision(unittest.TestCase):
         self.assertEqual(got, [(167, [], "lavender", "ribbon", None),                  # فارغة: لا قاع يصحّحها (ذاكرة السائق)
                                (304, ["blue"], "blue", "bottom", "lavender")])
 
+    def test_live_lossless_frame_reads_the_icon(self):
+        """الإطار الحيّ بلا ضغط (tagfix_L157_1.png، التشغيل 19، المرحلة 157): 6 بكسلات من إطار القارورة الصغيرة الأزرق الفاتح تطابق
+        «lavender» بفرق ≤ 12 و2 فقط من سائلها الأخضر، فكان التصويت يعيد «lavender» (القاع صحّحه)، واللقطة نفسها بعد ضغط JPEG
+        تُقرأ «green». الفائز في كل عتبة يملك ربع بكسلات القارورة الصغيرة على الأقل."""
+        st = vision.parse_level(os.path.join(DATA, "L157_tag_live.png"))
+        got = [(t["x"], t["accept"], t.get("tag_src")) for t in st["tubes"] if t.get("accept")]
+        self.assertEqual(got, [(168, "blue", "icon"), (236, "green", "icon"), (304, "mint", "icon")])
+
     def test_no_tags_elsewhere(self):
         """لا وسم في أي لقطة لغز أخرى (أبواب، جبس، أكياس، ستائر، طين، طويلة، مفاتيح...): البطاقة الورقية بشكلها وموضعها وحدها."""
         for name in _all_testdata():
