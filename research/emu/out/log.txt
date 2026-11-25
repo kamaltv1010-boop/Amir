@@ -140,3 +140,20 @@
 [03:05:38] الإعلان التجريبي: رجوع (6)
 [03:05:40] الإعلان التجريبي الأبيض باقٍ منذ 47 ثانية؛ إعادة تشغيل اللعبة
 [03:06:20] شاشة التحميل: انتظار بلا نقر
+[03:07:46] نسخة احتياطية لبيانات اللعبة: 75788 ك.ب في 2 جزء (4 مرحلة مكتملة)
+[03:07:48] شاشة جديدة لم تُرَ من قبل: new_017_unknown.jpg
+[03:07:48] انتهى التحميل بعد 89 ثانية
+[03:07:49] إعلان بملء الشاشة: رجوع (1)
+[03:08:21] شاشة التحميل: انتظار بلا نقر
+[03:10:00] بداية المرحلة 150: 12 قارورة، سعات [(4, 12)]، مخفي 12
+[03:10:00] وسوم المرحلة 150 («Tag!»: لا يُصبّ في القارورة إلا لون بطاقتها): القارورة 6: lavender، القارورة 7: green، القارورة 8: blue، القارورة 9: orange، القارورة 10: pink
+[03:10:00] حالة المرحلة 150: [{"x": 40, "y": 372, "cap": 4, "layers": ["purple", "?", "?", "brown"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "?", "?", "brown"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["purple", "?", "?", "green"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["pink", "?", "?", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["red", "green", "green", "brown"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender", "lavender", "red", "red"]}, {"x": 40, "y": 637, "cap": 4, "layers": ["lavender", "?", "yellow"], "accept": "lavender"}, {"x": 118, "y": 637, "cap": 4, "layers": ["green", "?", "blue"], "accept": "green"}, {"x": 197, "y": 636, "cap": 4, "layers": ["blue", "?", "orange"], "accept": "blue"}, {"x": 275, "y": 637, "cap": 4, "layers": ["orange", "?", "purple"], "accept": "orange"}, {"x": 352, "y": 637, "cap": 4, "layers": [], "accept": "pink"}, {"x": 432, "y": 636, "cap": 4, "layers": []}]
+[03:10:01] خطة المرحلة 150: 1 حركة (pimc، 206.7 ms)
+[03:10:45] خطة المرحلة 150: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[03:10:45] المرحلة 150 عالقة (لا خطة): [purple,brown,brown,brown]/4 [red,?,purple,purple]/4 [purple,?,?,green]/4 [pink,?,yellow,yellow]/4 [red,green,green,brown]/4 [lavender,lavender,red,red]/4 [lavender,?,yellow]/4{وسم:lavender} [green]/4{وسم:lavender} [blue,lavender]/4{وسم:blue} [orange,orange]/4{وسم:orange} [pink]/4{وسم:pink} [blue,blue,blue]/4
+[03:10:45] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle
+[03:10:45] أداة: تراجع (1)
+[03:10:52] خطة المرحلة 150: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[03:10:52] المرحلة 150 عالقة (لا خطة): [purple,brown,brown,brown]/4 [red,?,purple,purple]/4 [purple,?,?,green]/4 [pink,?,yellow,yellow]/4 [red,green,green,brown]/4 [lavender,lavender,red,red]/4 [lavender,?,yellow]/4{وسم:lavender} [green]/4{وسم:lavender} [blue,lavender]/4{وسم:blue} [orange,orange]/4{وسم:orange} [pink]/4{وسم:pink} [blue,blue,blue]/4
+[03:10:52] أدوات نفدت (ثمنها بالعملات، لا تُشترى): add, shuffle, undo
+[03:10:52] لا حركة قانونية إطلاقاً؛ إعادة المرحلة
