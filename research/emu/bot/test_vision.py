@@ -554,6 +554,19 @@ KEY_LEVELS = {
         (353, 358, 'purple purple purple purple'), (431, 376, 'orange orange orange orange'),
     ], [(39, 526, 395, 225, "pink")]),
 }
+# المرحلة 154 (التشغيل 17): مفتاح أزرق فاتح على سائل سماوي (صبغتان متقاربتان) في قاع القارورة 0 تحت ثلاث طبقات سماوية وخضراء؛
+# كان يُقرأ بلا "keys" فلم يعرف الحلّال أن صبّ الأخضر يحرّره ويفتح الباب الأزرق الكبير (المستوى الثالث في _key_layer:
+# _same_hue_key). s2 وs3 لقطتا «لا خطة» متتاليتان، وstart بداية أخرى للمرحلة نفسها والمفتاح في الطبقة الثانية.
+L154_DOORS = [(102, 235, 134, 197, "pink"), (239, 235, 134, 197, "gold"), (63, 441, 347, 197, "blue")]
+for _n in ("L154_key_cyan_s2", "L154_key_cyan_s3"):
+    KEY_LEVELS[_n] = ([
+        (64, 743, 'cyan cyan cyan green', [0], ["blue"]), (133, 743, 'cyan purple purple red'), (201, 743, ''),
+        (270, 743, ''), (339, 743, 'lavender lavender pink red'), (407, 743, 'brown plum yellow mint'),
+    ], L154_DOORS)
+KEY_LEVELS["L154_key_cyan_start"] = ([
+    (64, 743, 'pink cyan green mint', [1], ["blue"]), (133, 743, 'pink orange brown mint'), (201, 743, ''),
+    (270, 743, ''), (338, 743, 'yellow lavender darkgreen green'), (407, 743, 'brown purple plum darkgreen'),
+], L154_DOORS)
 
 
 def test_keys_and_doors():
@@ -993,6 +1006,78 @@ class TestTagVision(unittest.TestCase):
             st = vision.parse_level(_path(name))
             self.assertFalse([t for t in st["tubes"] if t.get("accept")], name)
 
+
+# ---------------------------------------------------------------- مفتاح بصبغة سائله (المرحلة 154)
+class TestSameHueKey(unittest.TestCase):
+    def test_light_blue_key_on_cyan(self):
+        """المفتاح الأزرق الفاتح على السماوي يُقرأ (الطبقة بلونها الحقيقي "cyan" ومفتاحها "blue")، ويُحرَّر بصبّ الأخضر وحده:
+        طبقته تصير مكشوفة حين لا يبقى فوقها إلا سماوي (لا لون آخر)."""
+        for name in ("L154_key_cyan_s2", "L154_key_cyan_s3"):
+            st = vision.parse_level(_path(name))
+            self.assertFalse(st.get("warnings"), (name, st.get("warnings")))
+            t = st["tubes"][0]
+            self.assertEqual((t["layers"], t.get("keys"), t.get("key_colors")),
+                             (["cyan", "cyan", "cyan", "green"], [0], ["blue"]), name)
+            self.assertEqual([k for k, u in enumerate(st["tubes"]) if u.get("keys")], [0], name)
+            self.assertEqual([d["color"] for d in st["doors"]], ["pink", "gold", "blue"], name)
+
+    def test_same_hue_shading_is_not_a_key(self):
+        """حدّ المفتاح يختلف عن سائله في الصبغة (أزرق 212° على سماوي 197°). لو أُغمقت بكسلاته نفسها بصبغة السائل (كظلّ أو
+        تعتيم تحت نافذة: فرق الصبغة فيهما < 2.1 في كل الأرشيف) فليست مفتاحاً: المستوى الثالث يرفضها والطبقة تبقى سماوية."""
+        import numpy as np
+        a = vision.load(_path("L154_key_cyan_s2")).copy()
+        st = vision.parse_level(a, debug=True)
+        t, g = st["tubes"][0], st["_geom"]
+        cx, w, h = float(t["x"]), g["w"], g["h"]
+        yc = t["_B"] - 0.5 * h
+        self.assertIsNotNone(vision._key_layer(a, cx, w, yc, h))
+        xa, xb = int(round(cx - 0.36 * w)), int(round(cx + 0.36 * w)) + 1
+        ya, yb = int(round(yc - 0.40 * h)), int(round(yc + 0.40 * h)) + 1
+        win = a[ya:yb, xa:xb].astype(np.float64)
+        liquid = np.array(vision.PALETTE["cyan"], dtype=np.float64)
+        lum = win.mean(axis=2, keepdims=True) / liquid.mean()
+        dark = (lum[..., 0] < 0.8)                  # حدّ المفتاح الداكن (والجسم الفاتح يبقى كما هو)
+        self.assertGreater(dark.mean(), 0.05)
+        shaded = np.where(dark[..., None], np.clip(liquid * lum, 0, 255), win)
+        a[ya:yb, xa:xb] = shaded.astype(np.uint8)
+        self.assertIsNone(vision._key_layer(a, cx, w, yc, h))
+        t2 = vision.parse_level(a)["tubes"][0]
+        self.assertEqual((t2["layers"], t2.get("keys")), (["cyan", "cyan", "cyan", "green"], None))
+
+    def test_keys_in_testdata_unchanged(self):
+        """المستوى الثالث يضيف ولا يغيّر: مفاتيح كل لقطات testdata كما كانت قبله (قورن القديم بالجديد على 1686 لقطة مؤرشفة: لا
+        مفتاح تغيّر ولا اختفى، والمضاف 16 طبقة كلها مفاتيح بصبغة سائلها رُوجعت بالعين)، ولا مفتاح في أي لقطة أخرى.
+        popup_strikeshow مستثناة: نافذة حدث فوق الواجهة الرئيسية (ليست شاشة لعب، فلا يقرؤها السائق)؛ قراءتها الكاذبة القديمة لا
+        تُثبَّت. ولا تُحصر المقارنة في شاشات "level": L074_buried_key وL074_door_key تُصنَّفان "unknown" وفيهما مفاتيح حقيقية."""
+        expect = {
+            "L064_key_doors": [(1, [0], ["blue"])], "L074_buried_key": [(3, [1], ["green"])],
+            "L074_door_key": [(0, [1], ["gold"])], "L074_keys": [(3, [1], ["green"])],
+            "L089_superhard": [(0, [0], ["gold"])], "L099_bag_keys_mint": [(6, [2], ["gold"]), (7, [2], ["pink"])],
+            "L099_superhard_doors": [(2, [0], ["blue"])], "L101_door_no_plaster": [(3, [0], ["gold"])],
+            "L107_bags_no_plaster": [(1, [1], ["pink"])], "L154_key_cyan_s2": [(0, [0], ["blue"])],
+            "L154_key_cyan_s3": [(0, [0], ["blue"])], "L154_key_cyan_start": [(0, [1], ["blue"])],
+        }
+        got = {}
+        for name in _all_testdata():
+            if name == "popup_strikeshow":
+                continue
+            st = vision.parse_level(_path(name))
+            ks = [(k, t["keys"], t["key_colors"]) for k, t in enumerate(st["tubes"]) if t.get("keys")]
+            if ks:
+                got[name] = ks
+        self.assertEqual(got, expect)
+
+    def test_key_survives_window_jitter(self):
+        """مفتاح 154 يبقى مكشوفاً حين تتحرّك نافذة طبقته ±2 بكسل عمودياً و±1 في العرض: قاع القارورة المكتشف يختلف ببكسل بين
+        اللقطات، وكان المفتاح يضيع بإزاحة −1 (نسبة حدّه الداكن في وسط النافذة 0.40 تحت العتبة 0.45)."""
+        for name, layer in (("L154_key_cyan_s2", 0), ("L154_key_cyan_s3", 0), ("L154_key_cyan_start", 1)):
+            a = vision.load(_path(name))
+            st = vision.parse_level(a, debug=True)
+            t, g = st["tubes"][0], st["_geom"]
+            yc = t["_B"] - (layer + 0.5) * g["h"]
+            lost = [(dy, dw) for dy in (-2, -1, 0, 1, 2) for dw in (-1, 0, 1)
+                    if vision._key_layer(a, float(t["x"]), g["w"] + dw, yc + dy, g["h"]) is None]
+            self.assertEqual(lost, [], name)
 
 if __name__ == "__main__":
     total_t = total_te = total_l = total_le = 0

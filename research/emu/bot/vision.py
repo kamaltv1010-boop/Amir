@@ -802,17 +802,23 @@ KEY_HUES = ((12, "red"), (32, "orange"), (58, "gold"), (165, "green"), (250, "bl
             (345, "pink"), (361, "red"))
 
 
-def _hue_name(rgb) -> str:
+def _hue(rgb):
+    """الصبغة بالدرجات (0..360) أو None للرمادي."""
     r, g, b = (float(v) / 255 for v in rgb)
     mx, mn = max(r, g, b), min(r, g, b)
     if mx == mn:
-        return "gray"
+        return None
     if mx == r:
-        hue = (60 * ((g - b) / (mx - mn)) + 360) % 360
-    elif mx == g:
-        hue = 60 * ((b - r) / (mx - mn)) + 120
-    else:
-        hue = 60 * ((r - g) / (mx - mn)) + 240
+        return (60 * ((g - b) / (mx - mn)) + 360) % 360
+    if mx == g:
+        return 60 * ((b - r) / (mx - mn)) + 120
+    return 60 * ((r - g) / (mx - mn)) + 240
+
+
+def _hue_name(rgb) -> str:
+    hue = _hue(rgb)
+    if hue is None:
+        return "gray"
     for lim, name in KEY_HUES:
         if hue < lim:
             return name
@@ -861,7 +867,52 @@ def _key_layer(a, cx, w, yc, h):
         if glyph.sum() < 0.08 * len(px):
             continue
         return _PAL_NAMES[k0], _hue_name(np.median(fp[glyph], axis=0))
-    return None
+    return _same_hue_key(px, lab, dd, hh, ww, k0)
+
+
+def _same_hue_key(px, lab, dd, hh, ww, k0):
+    """المستوى الثالث: مفتاح بصبغة قريبة من سائله (أزرق فاتح على سماوي في المرحلة 154، وذهبي على أصفر، وأخضر على أخضر، ووردي
+    على وردي). جسمه الفاتح قريب من السائل (ΔE < 25) فلا يبلغ المستويان الأوّلان نسبتيهما (البعيد ~11% والصفوف المختلطة ~0.3)،
+    وعلامته حدّه الداكن المشبّع: بكسلات أغمق من لون اللوحة بـ 12 في L* وأبعد من ΔE 12 ومشبّعة (> 0.5)، 9..30% من النافذة،
+    موزّعة في الأعمدة الوسطى (70% منها فأكثر) وفي صفوف مختلطة (40% فأكثر، ولا يزيد الصفّ الداكن كله عن 10%: حدّ طبقة أغمق) وأكثرها
+    في 70% الوسطى من النافذة عمودياً (قوس حدّ الطبقة المجاورة في أعلاها أو أسفلها)، وقليل منها على الطرفين (زجاج القاع وظلّه)؛
+    والهامشان (70% لا 80%، والوسط 15..85% لا 25..75%) حتى لا يضيع المفتاح إن ارتفعت النافذة بكسلاً أو اثنين: قاع القارورة المكتشف
+    يختلف ببكسل بين لقطات المرحلة نفسها (وبين قوارير الصفّ الواحد)، وكانت نسبة الوسط في مفتاح 154 تنزل من 0.51 إلى 0.40 بإزاحة −1؛
+    وشرط الوسط لم يرفض أي نافذة سلبية في الأرشيف (1689 لقطة × 15 إزاحة)، فتوسيعه لا يضيف مفتاحاً كاذباً؛
+    وصبغتها تبتعد عن صبغة السائل 5..35 درجة: الظلّ والتعتيم تحت النوافذ يُغمقان السائل بصبغته نفسها (فرق < 2.1 في كل الأرشيف)
+    أما حدّ المفتاح فبصبغة مفتاحه (أزرق 212° على سماوي 197°، برتقالي على أصفر). يعيد (لون السائل، لون المفتاح) أو None."""
+    ref = _PAL_LAB[k0]
+    mx, mn = px.max(axis=1), px.min(axis=1)
+    sat = (mx - mn) / np.maximum(mx, 1)
+    darkv = (lab[:, 0] < ref[0] - 12) & (dd > 12) & (sat > 0.5)
+    if not 0.09 <= darkv.mean() <= 0.30:
+        return None
+    dark = darkv.reshape(hh, ww)
+    c0, c1 = int(round(0.12 * ww)), int(round(0.88 * ww))
+    dc = dark[:, c0:c1]
+    if dc.size == 0 or not dc.any():
+        return None
+    rowf = dc.mean(axis=1)
+    if float(((rowf > 0.06) & (rowf < 0.7)).mean()) < 0.4 or float((rowf >= 0.7).mean()) > 0.1:
+        return None
+    if float((dc.mean(axis=0) > 0.06).mean()) < 0.7:
+        return None
+    if float(np.concatenate([dark[:, :c0], dark[:, c1:]], axis=1).mean()) > 0.15:
+        return None
+    r0, r1 = int(round(0.15 * hh)), int(round(0.85 * hh))
+    if dc[r0:r1].sum() < 0.45 * dc.sum():
+        return None
+    liq = px[dd < 12]
+    if len(liq) < 0.25 * len(px):
+        return None
+    kc = np.median(px[darkv], axis=0)
+    hk, hl = _hue(kc), _hue(np.median(liq, axis=0))
+    if hk is None or hl is None:
+        return None
+    dh = abs(hk - hl)
+    if not 5 <= min(dh, 360 - dh) <= 35:
+        return None
+    return _PAL_NAMES[k0], _hue_name(kc)
 
 
 # ---------------------------------------------------------------- «Tag!» (من المرحلة 130)
