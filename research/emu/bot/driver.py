@@ -3595,6 +3595,14 @@ class Bot:
             lv.dead_restarts += 1
             if lv.dead_restarts >= 4:
                 self.log("الرجوع لم يُعِد المرحلة %d (%d محاولات)؛ إعادة تشغيل اللعبة" % (lv.n, lv.dead_restarts))
+                # إعادة التشغيل تكلّف روحاً وتفتح المرحلة من بدايتها: محاولة فاشلة كـ «Give Up». اللعبة لا تُظهر «No Available
+                # Moves» هنا لأنها ترى حركة لا يراها البوت (وسم قُرئ بلون السائل خلفه: التشغيل 18، المرحلة 154)، وكانت المحاولة لا
+                # تُحسب ولا يُحفظ طريقها، فلُعبت البداية نفسها بالخطّ الخاسر نفسه خمس مرات («البداية نفسها للمرة 1» كل مرة)
+                self.level_fails[lv.n] += 1
+                self.restart_n = lv.n
+                self.note_dead_end(lv)
+                self.expect_new = True
+                self.start_probe, self.start_probe_tries, self.start_same = None, 0, 0
                 lv.dead_restarts = 0
                 lv.plan = None
                 lv.pending = None

@@ -477,10 +477,15 @@ class TestDriverSim(unittest.TestCase):
         for _ in range(3):
             bot.restart_level()
         self.assertEqual((stops, bot.dev.launched, bot.dev.keys), ([], 0, [4, 4, 4]))
+        rec = bot.sig_rec(bot.lv.sig_id, 7)
+        self.assertEqual((rec["fails"], bot.level_fails.get(7, 0)), (0, 0))
         bot.restart_level()
         self.assertEqual((len(stops), bot.dev.launched, bot.lv.dead_restarts), (1, 1, 0))
         log = (Path(self.tmp.name) / "log.txt").read_text(encoding="utf-8")
         self.assertIn("الرجوع لم يُعِد المرحلة 7", log)
+        # التشغيل 18: إعادة التشغيل محاولة فاشلة للبداية (تُحسب ويُحفظ طريقها) والمرحلة نفسها تُفتح من جديد كمحاولة جديدة
+        self.assertEqual((rec["fails"], bot.level_fails[7], bot.restart_n, bot.expect_new), (1, 1, 7, True))
+        self.assertIn("طريق مسدود محفوظ لهذه البداية", log)
         bot.restart_level()
         bot.lv.dead_restarts = 3
         st = {"tubes": [{"x": 100, "y": 500, "cap": 4, "layers": ["red"]},

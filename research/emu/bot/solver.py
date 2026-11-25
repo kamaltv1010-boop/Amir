@@ -1603,6 +1603,8 @@ def legal_moves(state):
     for i, t in enumerate(s):
         if not t or t[-1] < 0 or tubes[i].get("clay"):
             continue
+        if len(t) == caps[i] and min(t) == max(t):
+            continue                          # مكتملة: تُسدّ بسدادة ذهبية فلا يُصبّ منها (التشغيل 18: (12، 5) مرتين «لا تقدّم»)
         for j, u in enumerate(s):
             if i == j or len(u) >= caps[j]:
                 continue

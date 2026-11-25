@@ -923,6 +923,16 @@ TAG_LEVELS = {
 }
 
 
+# «Tag!» فوق قوارير ممتلئة (التشغيل 18، المرحلة 154؛ ثلاث لقطات انتقال يصنّفها classify «unknown» ولوحتها مقروءة):
+# (x، لون الوسم الحقيقي كما في البطاقة والشريط، اللون الخطأ الذي كان يُقرأ أو None)
+TAG_FULL = {
+    "L154_tags_full": [(168, "darkgreen", "blue"), (304, "orange", "red")],
+    "L154_tags_full_b": [(168, "mint", None), (304, "purple", "yellow")],
+    "L154_tags_full_c": [(168, "plum", "darkgreen"), (304, "darkgreen", "red")],
+    "L154_tags_curtains": [(167, "green", None), (304, "blue", None)],     # الحالة العالقة: الفارغة وسمها أخضر ليموني
+}
+
+
 class TestTagVision(unittest.TestCase):
     """«Tag!» (من المرحلة 130): قارورة فارغة بشريط حول عنقها وبطاقة ورقية يمين العنق عليها قارورة صغيرة بلون. كانت البطاقة في
     نافذة العمود الأوسط فتُقرأ القارورة ممتلئة بلون الزجاج الفارغ الداكن c_23_7_1 (أربع قوارير × 4 طبقات) فلا حركة قانونية أبداً."""
@@ -998,10 +1008,22 @@ class TestTagVision(unittest.TestCase):
                 self.assertEqual(tagged, [([], acc) for (_, _, _, acc) in exp if acc], (name, dw, dy))
                 self.assertFalse([w for w in st.get("warnings", []) if "c_" in w], (name, dw, dy, st.get("warnings")))
 
+    def test_tag_color_over_full_bottles(self):
+        """لون الوسم من القارورة الصغيرة المرسومة على البطاقة، لا من السائل خلفها: البطاقة مائلة فزوايا صندوقها تضمّ الطبقة العليا
+        حين تمتلئ القارورة، فكان الوسم يُقرأ بلونها (التشغيل 18، المرحلة 154: الأخضر الداكن «blue» والبرتقالي «red» والبنفسجي
+        «yellow» والخوخي «darkgreen»، وفي L154_tags_full_c الأخضر الداكن «red»). الصحيح مطابق للشريط حول العنق في الصور."""
+        for name, exp in TAG_FULL.items():
+            st = vision.parse_level(_path(name))
+            got = [(t["x"], t.get("accept")) for t in st["tubes"] if t.get("accept")]
+            self.assertEqual(len(got), len(exp), (name, got))
+            for (x, acc), (ex, eacc, _old) in zip(got, exp):
+                self.assertTrue(abs(x - ex) <= 3, (name, x, ex))
+                self.assertEqual(acc, eacc, (name, x))
+
     def test_no_tags_elsewhere(self):
         """لا وسم في أي لقطة لغز أخرى (أبواب، جبس، أكياس، ستائر، طين، طويلة، مفاتيح...): البطاقة الورقية بشكلها وموضعها وحدها."""
         for name in _all_testdata():
-            if name in TAG_LEVELS or vision.classify(_path(name)) != "level":
+            if name in TAG_LEVELS or name in TAG_FULL or vision.classify(_path(name)) != "level":
                 continue
             st = vision.parse_level(_path(name))
             self.assertFalse([t for t in st["tubes"] if t.get("accept")], name)
@@ -1056,6 +1078,9 @@ class TestSameHueKey(unittest.TestCase):
             "L099_superhard_doors": [(2, [0], ["blue"])], "L101_door_no_plaster": [(3, [0], ["gold"])],
             "L107_bags_no_plaster": [(1, [1], ["pink"])], "L154_key_cyan_s2": [(0, [0], ["blue"])],
             "L154_key_cyan_s3": [(0, [0], ["blue"])], "L154_key_cyan_start": [(0, [1], ["blue"])],
+            # لقطات الوسوم (التشغيل 18): مفاتيح حقيقية رُوجعت بالعين (وردي على الأخضر، ذهبي على البرتقالي، وردي في قاع الخزامي)
+            "L154_tags_full": [(0, [1], ["pink"])], "L154_tags_full_b": [(1, [1], ["gold"])],
+            "L154_tags_full_c": [(0, [1], ["gold"]), (2, [0], ["pink"])],
         }
         got = {}
         for name in _all_testdata():

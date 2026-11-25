@@ -43,7 +43,8 @@
     المجاورة له في صفّه (يميناً أو يساراً؛ قاعدتها فتات جبس يُقرأ "clay")، وقاعدة الكسر في solver.plaster_breakers.
     "box" = [x0, أعلى، x1، أسفل] لكل قارورة (ومنها المغطّاة): منه يعرف الحلّال صفّ القارورة الطويلة وجاراتها.
     «Tag!» (من المرحلة 130): قارورة بشريط معقود حول عنقها وبطاقة ورقية يمين العنق عليها قارورة صغيرة بلون: لا يُصبّ فيها إلا
-    ذلك اللون. تُقرأ "accept" = اسم اللون (من اللوحة) و"tag_box" = صندوق البطاقة، وطبقاتها تُقرأ كالعادة بنافذة يسار البطاقة.
+    ذلك اللون. تُقرأ "accept" = اسم اللون (من اللوحة: سائل القارورة الصغيرة في البطاقة، لا ما خلفها) و"tag_box" = صندوق البطاقة،
+    وطبقاتها تُقرأ كالعادة بنافذة يسار البطاقة.
 
 القارورة الطويلة على حامل: قاعها مخفيّ، فيُقاس «الفراغ» (cap - عدد الطبقات) من قمة السائل
 بدقة (هذا ما يحتاجه الحلّال)، والطبقات المرئية تقدير حتى الحامل. في المراحل 10..14 قيس
@@ -941,6 +942,47 @@ def _palette_vote(px, max_de=25.0, min_n=6):
     return _PAL_NAMES[k] if cnt[k] >= min_n else None
 
 
+TAG_ICON_CHROMA = 28.0      # تشبّع C* (Lab) لسائل القارورة الصغيرة: الخزامي ≈ 34، إطارها الزجاجي الأزرق الفاتح ≈ 22، الورق ≈ 13
+
+
+def _tag_icon_color(a, x0, y0, x1, y1, w):
+    """لون القارورة الصغيرة المرسومة على البطاقة (صندوقها x0..x1، y0..y1)، أو None. البطاقة مائلة فصندوقها يضمّ في زواياه ما خلفها:
+    حين تمتلئ القارورة الموسومة يقع سائلها العلوي هناك، وكان تصويت كل البكسلات غير الورقية يعطيه هو (التشغيل 18، المرحلة 154:
+    ثمانية وسوم من عشرة فوق قوارير ممتلئة قُرئت بلون الطبقة العليا: الأخضر الليموني «lavender» والبرتقالي «red» والبنفسجي «yellow»،
+    فرأى البوت الحركات الصحيحة ممنوعة وأخرج الأخضر من قارورته ثم «لا حركة قانونية» واللعبة لا ترى انسداداً). السائل خلفها يتصل
+    دائماً بحافة الصندوق الموسَّع بكسلين، وسائل القارورة الصغيرة جزيرة داخله يحيط بها الورق وداخل البطاقة الأبيض وإطارها الأزرق
+    الفاتح (وكلها ضعيفة التشبّع)، فهو أكبر مكوّن مشبع لونياً لا يلمس الحافة في الثلثين السفليين. وحلقة الورق نفسها تنقطع فلا يصلح
+    «ما أحاط به الورق»، والتشبّع يفصل لأن الفجوات فاتحة باهتة."""
+    H, W = a.shape[:2]
+    pad = 2
+    ya, yb = max(0, y0 - pad), min(H, y1 + pad + 1)
+    xa, xb = max(0, x0 - pad), min(W, x1 + pad + 1)
+    sub = a[ya:yb, xa:xb]
+    if sub.shape[0] < 6 or sub.shape[1] < 6:
+        return None
+    lab = _srgb_to_lab(sub.reshape(-1, 3).astype(np.float64)).reshape(sub.shape)
+    m = (np.hypot(lab[..., 1], lab[..., 2]) > TAG_ICON_CHROMA) & ~paper_mask(sub)
+    hh, ww = m.shape
+    ymin = y0 + 0.35 * (y1 - y0 + 1) - ya
+    nmin = max(8, int(0.01 * w * w))
+    best = None
+    for c in _components(m):
+        if c["x0"] == 0 or c["y0"] == 0 or c["x1"] == ww - 1 or c["y1"] == hh - 1:
+            continue                            # سائل خلف البطاقة أو خارجها
+        if c["n"] < nmin or (c["y0"] + c["y1"]) / 2 < ymin:
+            continue                            # لمعة صغيرة، أو الشريط في ثقب البطاقة أعلاها
+        if best is None or c["n"] > best["n"]:
+            best = c
+    if best is None:
+        return None
+    px = np.concatenate([sub[y, s:e + 1] for y, s, e in best["runs"]])
+    for thr in (12.0, 18.0, 25.0):
+        v = _palette_vote(px, max_de=thr, min_n=6)
+        if v is not None:
+            return v
+    return None
+
+
 def _find_tag(a, cx, w, top):
     """بطاقة «Tag!» لقارورة عنقها على top ومركزها cx: مكوّن ورقي كبير يمين العنق (يبدأ قرب المحور ويتجاوز نصف العرض يميناً) بين
     top+0.2w وtop+1.3w. يعيد {"box": [x0، y0، x1، y1]، "accept": لون القارورة الصغيرة في البطاقة (أو لون الشريط احتياطاً)،
@@ -965,29 +1007,32 @@ def _find_tag(a, cx, w, top):
     if not (npaper >= 0.05 * w * w and 0.35 * w <= bw <= 0.85 * w and 0.45 * w <= bh <= 1.1 * w
             and x0 > cx - 0.08 * w and x1 > cx + 0.45 * w and (x0 + x1) / 2 > cx + 0.15 * w):
         return None
-    # القارورة الصغيرة: البكسلات غير الورقية في الثلثين السفليين من البطاقة الأقرب إلى لون من اللوحة
-    # (إطار القارورة الصغيرة الزجاجي أزرق فاتح قريب من الخزامي: بفرق ΔE ≤ 25 كان يقارب السائل البنفسجي 97 مقابل 120، وبفرق ≤ 12
-    # يبقى 20 مقابل 73؛ فالتصويت بعتبة ضيّقة أولاً ثم أوسع إن قلّ العدد)
-    sub = a[y0 + int(0.35 * bh):y1 + 1, x0:x1 + 1]
-    px = sub.reshape(-1, 3)[~paper_mask(sub).reshape(-1)]
-    accept = None
-    for thr in (12.0, 18.0, 25.0):
-        accept = _palette_vote(px, max_de=thr, min_n=max(6, int(0.006 * w * w)))
-        if accept is not None:
-            break
+    # القارورة الصغيرة المرسومة في البطاقة أولاً (_tag_icon_color)، ثم الشريط، ثم تصويت البكسلات غير الورقية في الثلثين السفليين
+    accept = _tag_icon_color(a, x0, y0, x1, y1, w)
     # الشريط حول العنق (بلون البطاقة نفسه، أفتح ومجدول) في الشريحة top+0.2w..top+0.45w؛ فوقها غطاء العنق الزجاجي وهو نفسه
     # قريب من الخزامي (lavender) فلا يدخل التصويت. حتى في القارورة غير الموسومة يعطي زجاج الشريحة نحو 0.06w² «خزامياً»، فالشريط
-    # احتياط للون (حين لا تُقرأ القارورة الصغيرة) لا شرط للكشف: البطاقة بشكلها وموضعها هي الحاسمة
+    # احتياط للون (حين لا تُقرأ القارورة الصغيرة) لا شرط للكشف: البطاقة بشكلها وموضعها هي الحاسمة. وهو صحيح فوق القارورة الممتلئة
+    # (السائل تحته) إلا الأزرق الداكن: شريطه يُقرأ «purple» (المرحلتان 130 و154)
     ra, rb = max(0, int(round(top + 0.20 * w))), min(H, int(round(top + 0.45 * w)))
     rxa, rxb = max(0, int(round(cx - 0.55 * w))), min(W, int(round(cx + 0.45 * w)))
     ribbon = _palette_vote(a[ra:rb, rxa:rxb].reshape(-1, 3), max_de=30.0, min_n=int(0.04 * w * w)) if rb > ra else None
+    if accept is None and ribbon is not None:
+        accept = ribbon
     if accept is None:
-        sat = px.max(axis=1).astype(np.float64) - px.min(axis=1)
-        sel = (sat > 0.35 * np.maximum(px.max(axis=1), 1)) & (px.max(axis=1) > 60)
-        if ribbon is not None:
-            accept = ribbon
-        elif sel.sum() >= 6:
-            accept = color_name(np.median(px[sel].astype(np.float64), axis=0))
+        # آخر احتياط (القارورة الفارغة فقط تعطي فيه لون البطاقة؛ الممتلئة تعطي سائلها): البكسلات غير الورقية في الثلثين السفليين
+        # (إطار القارورة الصغيرة الزجاجي أزرق فاتح قريب من الخزامي: بفرق ΔE ≤ 25 كان يقارب السائل البنفسجي 97 مقابل 120، وبفرق
+        # ≤ 12 يبقى 20 مقابل 73؛ فالتصويت بعتبة ضيّقة أولاً ثم أوسع إن قلّ العدد)
+        sub = a[y0 + int(0.35 * bh):y1 + 1, x0:x1 + 1]
+        px = sub.reshape(-1, 3)[~paper_mask(sub).reshape(-1)]
+        for thr in (12.0, 18.0, 25.0):
+            accept = _palette_vote(px, max_de=thr, min_n=max(6, int(0.006 * w * w)))
+            if accept is not None:
+                break
+        if accept is None:
+            sat = px.max(axis=1).astype(np.float64) - px.min(axis=1)
+            sel = (sat > 0.35 * np.maximum(px.max(axis=1), 1)) & (px.max(axis=1) > 60)
+            if sel.sum() >= 6:
+                accept = color_name(np.median(px[sel].astype(np.float64), axis=0))
     if accept is None:
         return None
     return {"box": [int(x0), int(y0), int(x1), int(y1)], "accept": accept, "ribbon": ribbon}

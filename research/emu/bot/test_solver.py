@@ -964,6 +964,17 @@ class TestTags(unittest.TestCase):
         self.assertTrue(solver.is_solved(st))
         self.assertEqual(solver.plan(st), [])
 
+    def test_complete_tube_is_corked_in_legal_moves(self):
+        """المكتملة تُسدّ بسدادة ذهبية فلا يُصبّ منها: لا تُعدّ حركة قانونية (التشغيل 18، المرحلة 154: الوسم الأخضر قُرئ «lavender»
+        فبدت (12، 5) من الخزامي المكتمل إلى الموسومة الفارغة الحركة الوحيدة، وجُرّبت مرتين «لا تقدّم» قبل إعادة المرحلة)."""
+        st = mk_tags([(4, ["lavender"] * 4, None), (4, [], "lavender"), (4, ["red", "blue"], None), (4, ["red", "blue"], None)])
+        lm = solver.legal_moves(st)
+        self.assertNotIn((0, 1), lm)
+        self.assertFalse([m for m in lm if m[0] == 0])
+        self.assertEqual(sorted(lm), [(2, 3), (3, 2)])                    # الأزرق على الأزرق يبقى قانونياً
+        st2 = mk_tags([(4, ["lavender"] * 3, None), (4, [], "lavender")])  # غير مكتملة: يُصبّ منها كالعادة
+        self.assertIn((0, 1), solver.legal_moves(st2))
+
     def test_l130_start_has_plan_with_constraint(self):
         st = mk_tags(L130)
         self.assertEqual(len(solver.legal_moves(st)), 4)                # كان 0: الموسومة قُرئت ممتلئة بلون مجهول
