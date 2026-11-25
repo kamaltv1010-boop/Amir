@@ -1,0 +1,10 @@
+done 47
+الحالة: يلعب
+مراحل مكتملة: 0
+الوقت: 7 دقيقة من 300
+آخر شاشة: level
+الشاشات: {'close': 1, 'button': 2, 'unknown': 12, 'level': 42}
+صور محفوظة: 8/900، شاشات جديدة: 3
+المرحلة الحالية: 154 صعبة (حركات 2، مخفي 4، إخفاقات 0، أدوات -، 0.2 دقيقة)
+الحالة المقروءة: [?,mint,?,yellow]/4 [mint,cyan,lavender,purple]/4{وسم:mint} [plum,purple,green,green]/4 [purple,orange,lavender,yellow]/4{وسم:purple} [?,cyan,?,pink]/4 [red,darkgreen,red,darkgreen]/4 [red,red,yellow,pink]/4 [green]/4 [darkgreen]/4 [cyan,blue]/4 [pink,purple,yellow,darkgreen]/4
+العملات: ?، «Give Up» لكل مرحلة: {154: 1}
