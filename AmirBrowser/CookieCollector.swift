@@ -648,24 +648,22 @@ final class CookieCollection: NSObject, WKNavigationDelegate {
     }
 
     /// What a page of `url` gets, as the profile's own tabs give it: its
-    /// fingerprint protection and user agent (a sign-in site sees the
-    /// iPhone's own), and the tracker blocking, unless shields are down for
-    /// the site.
+    /// fingerprint protection and Safari's user agent, and the tracker
+    /// blocking, unless shields are down for the site.
     private func applySettings(for url: URL) {
         guard let webView else { return }
         let shieldsUp = Shields.areUp(for: url)
-        let isSignInSite = Shields.isSignInSite(url)
         let controller = webView.configuration.userContentController
         controller.removeAllUserScripts()
         controller.removeAllContentRuleLists()
         let proxied = ProxyManager.shared.isProxied(profile.id)
-        if let script = FingerprintProtection.userScript(desktopMode: false, protections: shieldsUp, realDevice: isSignInSite, profile: profile, proxied: proxied) {
+        if let script = FingerprintProtection.userScript(desktopMode: false, protections: shieldsUp, profile: profile, proxied: proxied) {
             controller.addUserScript(script)
         }
         if shieldsUp, TrackerBlocker.isEnabled, let rules = collector?.model?.trackerRules {
             controller.add(rules)
         }
-        webView.customUserAgent = FingerprintProtection.userAgent(protections: shieldsUp && !isSignInSite, desktopMode: false, profile: profile)
+        webView.customUserAgent = FingerprintProtection.userAgent(desktopMode: false)
     }
 
     /// No page loads before the tracker rules are ready.

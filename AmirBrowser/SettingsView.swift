@@ -341,7 +341,7 @@ private struct FingerprintSettingsView: View {
                     ProtectionToggle(kind: kind)
                 }
             } footer: {
-                Text("Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint.")
+                Text("Websites can recognize your device from these details. When a protection is on, they read invisibly changed values. Change them any time from the ⋯ menu under Fingerprint. The screen size and user agent stay this iPhone's own, as in Safari: sites compare them with the page's width and with what the browser can do, so another phone's would give the browser away.")
             }
 
             Section {
@@ -349,12 +349,12 @@ private struct FingerprintSettingsView: View {
                     SettingsLabel("iPad Mode", systemName: "ipad", color: .blue)
                 }
             } footer: {
-                Text("Websites see one of 10 real iPads instead of an iPhone.")
+                Text("Websites see one of \(FingerprintProtection.possibleIPads.count) real iPads instead of an iPhone, with this iPhone's iOS version.")
             }
 
             Section("Current Values") {
-                let screen = FingerprintProtection.screenDevice
-                let agent = FingerprintProtection.userAgentDevice
+                let screen = FingerprintProtection.pageScreen
+                let system = "\(browser.isIPadMode ? "iPadOS" : "iOS") \(UIDevice.current.systemVersion)"
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Text("Screen Size")
@@ -362,18 +362,20 @@ private struct FingerprintSettingsView: View {
                         Text(verbatim: "\(screen.width) × \(screen.height)")
                             .foregroundColor(.secondary)
                     }
-                    Text(verbatim: screen.name)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    if browser.isIPadMode {
+                        Text(verbatim: FingerprintProtection.iPad.name)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
                 }
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Text("User Agent")
                         Spacer()
-                        Text(verbatim: "\(agent.name) · \(agent.system)")
+                        Text(verbatim: system)
                             .foregroundColor(.secondary)
                     }
-                    Text(verbatim: agent.userAgent)
+                    Text(verbatim: FingerprintProtection.userAgent(desktopMode: false) ?? "")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }

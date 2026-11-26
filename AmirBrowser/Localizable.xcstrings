@@ -3323,28 +3323,6 @@
         }
       }
     },
-    "New Screen Size" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "حجم شاشة جديد"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Screen Size"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nouvelle taille d’écran"
-          }
-        }
-      }
-    },
     "New Session" : {
       "localizations" : {
         "ar" : {
@@ -3389,28 +3367,6 @@
         }
       }
     },
-    "New User Agent" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "User Agent جديد"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New User Agent"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nouvel User-Agent"
-          }
-        }
-      }
-    },
     "New WebGL Fingerprint" : {
       "localizations" : {
         "ar" : {
@@ -3429,6 +3385,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouvelle empreinte WebGL"
+          }
+        }
+      }
+    },
+    "New iPad" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad جديد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New iPad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvel iPad"
           }
         }
       }
@@ -3605,28 +3583,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun proxy pour l’instant : les pages ne s’ouvrent pas. Trouvez des proxys gratuits ou ajoutez les vôtres."
-          }
-        }
-      }
-    },
-    "Noise only" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "التشويش فقط"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Noise only"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bruit seulement"
           }
         }
       }
@@ -5061,28 +5017,6 @@
         }
       }
     },
-    "Screen size changed" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "تم تغيير حجم الشاشة"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Screen size changed"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taille d’écran modifiée"
-          }
-        }
-      }
-    },
     "Search Engine" : {
       "localizations" : {
         "ar" : {
@@ -6205,28 +6139,6 @@
         }
       }
     },
-    "This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "يفحص هذا الموقع المتصفح بدقة عند تسجيل الدخول أو إنشاء حساب، لذا يرى وكيل المستخدم وحجم الشاشة الحقيقيين لهذا الـ iPhone. يبقى التشويش على Canvas و WebGL والصوت و ClientRects فعالًا، فيبدو كل ملف شخصي كهاتف مختلف. تبقى أدوات التتبع محظورة."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ce site examine le navigateur de près à la connexion ou à la création d’un compte ; il voit donc le vrai user agent et la vraie taille d’écran de cet iPhone. Canvas, WebGL, l’audio et ClientRects restent bruités, donc chaque profil ressemble à un autre téléphone. Les traqueurs restent bloqués."
-          }
-        }
-      }
-    },
     "Time saved" : {
       "localizations" : {
         "ar" : {
@@ -6535,28 +6447,6 @@
         }
       }
     },
-    "User agent changed" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "تم تغيير User Agent"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "User agent changed"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "User-Agent modifié"
-          }
-        }
-      }
-    },
     "Version" : {
       "localizations" : {
         "ar" : {
@@ -6711,46 +6601,46 @@
         }
       }
     },
-    "Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint." : {
+    "Websites can recognize your device from these details. When a protection is on, they read invisibly changed values. Change them any time from the ⋯ menu under Fingerprint. The screen size and user agent stay this iPhone's own, as in Safari: sites compare them with the page's width and with what the browser can do, so another phone's would give the browser away." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "يمكن للمواقع التعرّف على جهازك من هذه التفاصيل. عند تشغيل الحماية، تحصل المواقع على قيم معدّلة أو شائعة. يمكنك تغييرها في أي وقت من قائمة ⋯ ضمن «البصمة»."
+            "value" : "يمكن للمواقع التعرّف على جهازك من هذه التفاصيل. عند تشغيل الحماية، تقرأ المواقع قيماً معدّلة لا تُرى. يمكنك تغييرها في أي وقت من قائمة ⋯ ضمن «البصمة». أما حجم الشاشة والـ User Agent فيبقيان كما هما في هذا الـ iPhone، كما في Safari: المواقع تقارنهما بعرض الصفحة وبما يستطيع المتصفح فعله، فقيم هاتف آخر كانت ستكشف المتصفح."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Websites can recognize your device from these details. When a protection is on, they get changed or common values. Change them any time from the ⋯ menu under Fingerprint."
+            "value" : "Websites can recognize your device from these details. When a protection is on, they read invisibly changed values. Change them any time from the ⋯ menu under Fingerprint. The screen size and user agent stay this iPhone's own, as in Safari: sites compare them with the page's width and with what the browser can do, so another phone's would give the browser away."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les sites peuvent reconnaître votre appareil grâce à ces détails. Quand une protection est activée, ils reçoivent des valeurs modifiées ou courantes. Changez-les quand vous voulez depuis le menu ⋯, dans Empreinte."
+            "value" : "Les sites peuvent reconnaître votre appareil grâce à ces détails. Quand une protection est activée, ils lisent des valeurs modifiées de façon invisible. Changez-les quand vous voulez depuis le menu ⋯, dans Empreinte. La taille d’écran et le User-Agent restent ceux de cet iPhone, comme dans Safari : les sites les comparent à la largeur de la page et à ce que le navigateur sait faire, donc ceux d’un autre téléphone trahiraient le navigateur."
           }
         }
       }
     },
-    "Websites see one of 10 real iPads instead of an iPhone." : {
+    "Websites see one of %lld real iPads instead of an iPhone, with this iPhone's iOS version." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ترى المواقع واحداً من 10 أجهزة iPad حقيقية بدل iPhone."
+            "value" : "ترى المواقع واحداً من %lld أجهزة iPad حقيقية بدل iPhone، بنسخة iOS التي يعمل بها هذا الـ iPhone."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Websites see one of 10 real iPads instead of an iPhone."
+            "value" : "Websites see one of %lld real iPads instead of an iPhone, with this iPhone's iOS version."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les sites voient l’un de 10 vrais iPad au lieu d’un iPhone."
+            "value" : "Les sites voient l’un de %lld vrais iPad au lieu d’un iPhone, avec la version d’iOS de cet iPhone."
           }
         }
       }
@@ -6883,6 +6773,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mode iPad"
+          }
+        }
+      }
+    },
+    "iPad changed" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تغيّر الـ iPad"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad changé"
           }
         }
       }

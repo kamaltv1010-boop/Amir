@@ -46,21 +46,12 @@ struct ShieldsPanel: View {
                         HStack {
                             SettingsLabel("Fingerprint protection", systemName: "hand.raised.fill", color: .blue)
                             Spacer()
-                            if isSignInSite {
-                                Text("Noise only")
-                                    .foregroundColor(.secondary)
-                            } else {
-                                Text(verbatim: "\(browser.enabledProtections.count)/\(FingerprintProtection.Kind.allCases.count)")
-                                    .font(.body.monospacedDigit())
-                                    .foregroundColor(.secondary)
-                            }
+                            Text(verbatim: "\(browser.enabledProtections.count)/\(FingerprintProtection.Kind.allCases.count)")
+                                .font(.body.monospacedDigit())
+                                .foregroundColor(.secondary)
                         }
                     } header: {
                         Text("This Page")
-                    } footer: {
-                        if isSignInSite {
-                            Text("This site checks the browser closely when you sign in or create an account, so it sees this iPhone's own user agent and screen size. Canvas, WebGL, audio and ClientRects still get noise, so each profile looks like a different phone. Trackers are still blocked.")
-                        }
                     }
                 }
 
@@ -90,10 +81,6 @@ struct ShieldsPanel: View {
             }
         }
         .navigationViewStyle(.stack)
-    }
-
-    private var isSignInSite: Bool {
-        Shields.isSignInSite(tab.webView.url)
     }
 
     private var isSecure: Bool {

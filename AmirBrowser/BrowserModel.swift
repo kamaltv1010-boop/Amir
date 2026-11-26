@@ -77,7 +77,7 @@ final class BrowserModel: NSObject, ObservableObject {
             // Every launch is a new session: no old pages, new fingerprints,
             // and nothing left in any profile's store on the phone.
             UserDefaults.standard.removeObject(forKey: Profiles.key(Self.savedTabsKey))
-            FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
+            FingerprintProtection.newAllSeeds()
             let stores = [WKWebsiteDataStore.default()] + Profiles.storedProfiles.map { Profiles.dataStore(for: $0) }
             for store in stores {
                 store.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: .distantPast) {}
@@ -419,7 +419,7 @@ final class BrowserModel: NSObject, ObservableObject {
         httpOnlyHosts = []
         history.clear()
         isUpdatingPrivacy = true
-        FingerprintProtection.newSeeds(FingerprintProtection.Kind.allCases)
+        FingerprintProtection.newAllSeeds()
         isUpdatingPrivacy = false
 
         let blank = BrowserTab(model: self, isPrivate: false)
@@ -461,7 +461,7 @@ final class BrowserModel: NSObject, ObservableObject {
     func applyPrivacySettings() {
         isUpdatingPrivacy = true
         defer { isUpdatingPrivacy = false }
-        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isActive))
+        enabledProtections = Set(FingerprintProtection.Kind.allCases.filter(FingerprintProtection.isEnabled))
         isIPadMode = FingerprintProtection.isIPadMode
         for tab in allTabs {
             tab.applySettings(for: tab.webView.url ?? tab.pendingURL)
@@ -477,10 +477,14 @@ final class BrowserModel: NSObject, ObservableObject {
         selectedTab.reload()
     }
 
-    /// Gives every site new values for `kinds` and reloads the page with them.
-    func newFingerprint(_ kinds: [FingerprintProtection.Kind]) {
+    /// Gives every site new values for `kinds`, and with `iPad` another iPad
+    /// for iPad mode, and reloads the page with them.
+    func newFingerprint(_ kinds: [FingerprintProtection.Kind], iPad: Bool = false) {
         isUpdatingPrivacy = true
         FingerprintProtection.newSeeds(kinds)
+        if iPad {
+            FingerprintProtection.newIPad()
+        }
         isUpdatingPrivacy = false
         applyPrivacySettings()
         selectedTab.reload()

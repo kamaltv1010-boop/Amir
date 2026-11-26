@@ -3,10 +3,18 @@ import WebKit
 
 /// Fingerprint protection, in the spirit of Brave's "farbling". Pages can
 /// recognize a device from what it draws (canvas, WebGL), how it renders
-/// audio, the exact sizes it lays out text and elements at (ClientRects), its
-/// screen size and its user agent, even without cookies. With a protection
-/// on, pages read invisibly changed pixels, samples and sizes, or a common
-/// screen size and user agent, so these no longer identify the device.
+/// audio and the exact sizes it lays out text at (ClientRects), even
+/// without cookies. With a protection on, pages read invisibly changed
+/// pixels, samples and sizes, so these no longer identify the device.
+///
+/// The screen size and the user agent stay as Safari shows them on this
+/// iPhone, which every iPhone of its model and system version shows too.
+/// Another device's would give the browser away: a page measures its own
+/// width and pixel density against the screen (in Safari on an iPhone the
+/// window is as wide as the screen), and tries what the engine can do
+/// against the system version the user agent claims (an iOS 16 user agent
+/// on an engine with iOS 18's features is a lie no real phone tells).
+/// iPad mode shows an iPad, with this system's version, everywhere.
 ///
 /// Every kind has its own switch and its own seed. A site sees stable values
 /// until the seed changes, which keeps sites that read twice and compare
@@ -14,7 +22,7 @@ import WebKit
 /// profile has its own seeds.
 enum FingerprintProtection {
     enum Kind: String, CaseIterable, Identifiable {
-        case canvas, webGL, audio, clientRects, screen, userAgent
+        case canvas, webGL, audio, clientRects
 
         var id: Self { self }
 
@@ -34,8 +42,6 @@ enum FingerprintProtection {
             case .webGL: return "WebGL"
             case .audio: return "Audio"
             case .clientRects: return "ClientRects"
-            case .screen: return "Screen Size"
-            case .userAgent: return "User Agent"
             }
         }
 
@@ -45,8 +51,6 @@ enum FingerprintProtection {
             case .webGL: return "New WebGL Fingerprint"
             case .audio: return "New Audio Fingerprint"
             case .clientRects: return "New ClientRects Fingerprint"
-            case .screen: return "New Screen Size"
-            case .userAgent: return "New User Agent"
             }
         }
 
@@ -56,8 +60,6 @@ enum FingerprintProtection {
             case .webGL: return "WebGL fingerprint changed"
             case .audio: return "Audio fingerprint changed"
             case .clientRects: return "ClientRects fingerprint changed"
-            case .screen: return "Screen size changed"
-            case .userAgent: return "User agent changed"
             }
         }
 
@@ -67,15 +69,13 @@ enum FingerprintProtection {
             case .webGL: return "cube"
             case .audio: return "waveform"
             case .clientRects: return "ruler"
-            case .screen: return "iphone"
-            case .userAgent: return "globe"
             }
         }
     }
 
-    /// The profile whose seeds are read while a page's script or user agent
-    /// is made for it: another profile than the one in use, collecting its
-    /// cookies in the background (see CookieCollector).
+    /// The profile whose seeds are read while a page's script is made for
+    /// it: another profile than the one in use, collecting its cookies in
+    /// the background (see CookieCollector).
     fileprivate static var boundProfile: Profile?
 
     /// Runs `body` with the seeds of `profile` (nil: the profile in use).
@@ -91,12 +91,6 @@ enum FingerprintProtection {
         UserDefaults.standard.object(forKey: kind.enabledKey) as? Bool ?? true
     }
 
-    /// Whether pages see a changed or common value for `kind`. iPad mode
-    /// always shows an iPad's user agent, even with that protection off.
-    static func isActive(_ kind: Kind) -> Bool {
-        isEnabled(kind) || (kind == .userAgent && isIPadMode)
-    }
-
     static func seed(_ kind: Kind) -> UInt32 {
         if let saved = UserDefaults.standard.object(forKey: kind.seedKey) as? Int {
             return UInt32(truncatingIfNeeded: saved)
@@ -107,33 +101,30 @@ enum FingerprintProtection {
     @discardableResult
     static func newSeed(_ kind: Kind) -> UInt32 {
         let old = UserDefaults.standard.object(forKey: kind.seedKey) as? Int
-        // A new screen size or user agent must actually differ, when there
-        // is another one to pick.
-        let canChange = choiceCount(for: kind) > 1
         var seed: UInt32
         repeat {
             seed = .random(in: .min ... .max)
-        } while canChange && old.map { visibleValue(UInt32(truncatingIfNeeded: $0), for: kind) == visibleValue(seed, for: kind) } ?? false
+        } while old.map { UInt32(truncatingIfNeeded: $0) == seed } ?? false
         UserDefaults.standard.set(Int(seed), forKey: kind.seedKey)
         return seed
     }
 
-    /// New seeds for `kinds`. Changing the screen size and the user agent
-    /// together picks one real device for both, so they match.
+    /// New seeds for `kinds`.
     static func newSeeds(_ kinds: [Kind]) {
         kinds.forEach { newSeed($0) }
-        if kinds.contains(.screen) && kinds.contains(.userAgent) {
-            matchScreenToUserAgent()
-        }
     }
 
-    private static func matchScreenToUserAgent() {
-        UserDefaults.standard.set(Int(seed(.userAgent)), forKey: Kind.screen.seedKey)
+    /// New seeds for every kind, and another iPad for iPad mode: a new
+    /// session, as another phone.
+    static func newAllSeeds() {
+        newSeeds(Kind.allCases)
+        newIPad()
     }
 
-    /// Changes whenever a switch, a seed or iPad mode changes.
+    /// Changes whenever a switch, a seed, iPad mode or its iPad changes.
     static var signature: String {
-        Kind.allCases.map { "\(isEnabled($0)):\(seed($0))" }.joined(separator: ",") + ",iPad:\(isIPadMode)"
+        Kind.allCases.map { "\(isEnabled($0)):\(seed($0))" }.joined(separator: ",")
+            + ",iPad:\(isIPadMode)" + (isIPadMode ? ":\(iPad.name)" : "")
     }
 
     // MARK: - iPad mode
@@ -146,138 +137,106 @@ enum FingerprintProtection {
         UserDefaults.standard.bool(forKey: iPadModeKey)
     }
 
-    /// Turns iPad mode on or off. The screen size then comes from the same
-    /// device as the user agent, so the two match.
     static func setIPadMode(_ isOn: Bool) {
         UserDefaults.standard.set(isOn, forKey: iPadModeKey)
-        matchScreenToUserAgent()
+    }
+
+    /// A real iPad: its screen in points, portrait, and the first iPadOS
+    /// version it came with (major, minor).
+    struct IPad {
+        let name: String
+        let width: Int
+        let height: Int
+        let since: (major: Int, minor: Int)
+
+        init(_ name: String, _ width: Int, _ height: Int, since: (Int, Int)) {
+            self.name = name
+            self.width = width
+            self.height = height
+            self.since = since
+        }
+    }
+
+    /// Real iPads for iPad mode, all with a 6-core A-series chip, as every
+    /// iPhone since the A11 has: pages read the phone's own core count
+    /// (navigator.hardwareConcurrency), which an iPad with an M chip, of 8
+    /// cores or more, never shows.
+    static let iPads: [IPad] = [
+        IPad("iPad Air (4th generation)", 820, 1180, since: (14, 1)),
+        IPad("iPad (9th generation)", 810, 1080, since: (15, 0)),
+        IPad("iPad mini (6th generation)", 744, 1133, since: (15, 0)),
+        IPad("iPad (10th generation)", 820, 1180, since: (16, 1)),
+        IPad("iPad mini (A17 Pro)", 744, 1133, since: (18, 0)),
+    ]
+
+    /// The iPads that can run this phone's system version, whose version
+    /// the user agent shows.
+    static var possibleIPads: [IPad] {
+        let version = ProcessInfo.processInfo.operatingSystemVersion
+        let running = iPads.filter { ($0.since.major, $0.since.minor) <= (version.majorVersion, version.minorVersion) }
+        return running.isEmpty ? iPads : running
+    }
+
+    /// The key of the seed that picks the iPad, kept where the screen size's
+    /// seed was, so the iPad a profile had stays.
+    fileprivate static var iPadSeedKey: String {
+        Profiles.key("seed.screen", for: boundProfile)
+    }
+
+    /// The iPad pages see in iPad mode.
+    static var iPad: IPad {
+        let list = possibleIPads
+        let seed: UInt32
+        if let saved = UserDefaults.standard.object(forKey: iPadSeedKey) as? Int {
+            seed = UInt32(truncatingIfNeeded: saved)
+        } else {
+            seed = .random(in: .min ... .max)
+            UserDefaults.standard.set(Int(seed), forKey: iPadSeedKey)
+        }
+        return list[Int(seed % UInt32(list.count))]
+    }
+
+    /// Picks another iPad for iPad mode, one with another name when there is one.
+    static func newIPad() {
+        let list = possibleIPads
+        let old = UserDefaults.standard.object(forKey: iPadSeedKey) as? Int
+        let oldName = old.map { list[Int(UInt32(truncatingIfNeeded: $0) % UInt32(list.count))].name }
+        var seed: UInt32
+        repeat {
+            seed = .random(in: .min ... .max)
+        } while list.count > 1 && list[Int(seed % UInt32(list.count))].name == oldName
+        UserDefaults.standard.set(Int(seed), forKey: iPadSeedKey)
     }
 
     // MARK: - Screen size and user agent
 
-    /// A real iPhone or iPad: its screen size in points, a system version it
-    /// can run, and the user agent Safari sends there.
-    struct Device {
-        let name: String
-        let width: Int
-        let height: Int
-        /// For example "iOS 17.4.1" or "iPadOS 17.4.1".
-        let system: String
-        let userAgent: String
-
-        init(_ name: String, _ width: Int, _ height: Int, iOS: String, uaOS: String, safari: String) {
-            self.name = name
-            self.width = width
-            self.height = height
-            system = "iOS \(iOS)"
-            userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
-                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
-        }
-
-        /// An iPad, with the user agent Safari sends there when "Request
-        /// Desktop Website" is off (with it on, Safari claims to be a Mac).
-        init(_ name: String, _ width: Int, _ height: Int, iPadOS: String, uaOS: String, safari: String) {
-            self.name = name
-            self.width = width
-            self.height = height
-            system = "iPadOS \(iPadOS)"
-            userAgent = "Mozilla/5.0 (iPad; CPU OS \(uaOS) like Mac OS X) AppleWebKit/605.1.15 "
-                + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
-        }
-    }
-
-    /// Real iPhones with an iOS version each one supports. Safari on iOS 26
-    /// reports a frozen "iPhone OS 18_6" (18_7 from 26.2) and the real
-    /// version only in "Version/".
-    static let iPhones: [Device] = [
-        Device("iPhone SE (2nd generation)", 375, 667, iOS: "16.6.1", uaOS: "16_6_1", safari: "16.6"),
-        Device("iPhone 11 Pro", 375, 812, iOS: "16.7.10", uaOS: "16_7_10", safari: "16.6"),
-        Device("iPhone XS", 375, 812, iOS: "17.0.3", uaOS: "17_0_3", safari: "17.0"),
-        Device("iPhone XR", 414, 896, iOS: "17.1.2", uaOS: "17_1_2", safari: "17.1"),
-        Device("iPhone 11 Pro Max", 414, 896, iOS: "17.2.1", uaOS: "17_2_1", safari: "17.2"),
-        Device("iPhone 12 mini", 375, 812, iOS: "17.3.1", uaOS: "17_3_1", safari: "17.3"),
-        Device("iPhone 12", 390, 844, iOS: "17.4.1", uaOS: "17_4_1", safari: "17.4"),
-        Device("iPhone SE (3rd generation)", 375, 667, iOS: "17.5.1", uaOS: "17_5_1", safari: "17.5"),
-        Device("iPhone 15", 393, 852, iOS: "17.6.1", uaOS: "17_6_1", safari: "17.6"),
-        Device("iPhone 11", 414, 896, iOS: "18.0.1", uaOS: "18_0_1", safari: "18.0"),
-        Device("iPhone 12 Pro Max", 428, 926, iOS: "18.1.1", uaOS: "18_1_1", safari: "18.1"),
-        Device("iPhone 13", 390, 844, iOS: "18.2.1", uaOS: "18_2_1", safari: "18.2"),
-        Device("iPhone 13 Pro Max", 428, 926, iOS: "18.3.2", uaOS: "18_3_2", safari: "18.3"),
-        Device("iPhone 14 Plus", 428, 926, iOS: "18.4.1", uaOS: "18_4_1", safari: "18.4"),
-        Device("iPhone 14 Pro", 393, 852, iOS: "18.5", uaOS: "18_5", safari: "18.5"),
-        Device("iPhone 16", 393, 852, iOS: "18.6", uaOS: "18_6", safari: "18.6"),
-        Device("iPhone 15 Pro Max", 430, 932, iOS: "18.6.2", uaOS: "18_6_2", safari: "18.6"),
-        Device("iPhone 14", 390, 844, iOS: "26.0", uaOS: "18_6", safari: "26.0"),
-        Device("iPhone 14 Pro Max", 430, 932, iOS: "26.1", uaOS: "18_6", safari: "26.1"),
-        Device("iPhone 16 Pro Max", 440, 956, iOS: "26.2", uaOS: "18_7", safari: "26.2"),
-    ]
-
-    /// Real iPads with an iPadOS version each one supports, for iPad mode.
-    /// Safari on iPadOS 26 freezes the version like on iPhone.
-    static let iPads: [Device] = [
-        Device("iPad (9th generation)", 810, 1080, iPadOS: "16.7.10", uaOS: "16_7_10", safari: "16.6"),
-        Device("iPad mini (6th generation)", 744, 1133, iPadOS: "17.1.2", uaOS: "17_1_2", safari: "17.1"),
-        Device("iPad Pro 12.9-inch (5th generation)", 1024, 1366, iPadOS: "17.3.1", uaOS: "17_3_1", safari: "17.3"),
-        Device("iPad Air (5th generation)", 820, 1180, iPadOS: "17.5.1", uaOS: "17_5_1", safari: "17.5"),
-        Device("iPad (10th generation)", 820, 1180, iPadOS: "17.6.1", uaOS: "17_6_1", safari: "17.6"),
-        Device("iPad Pro 11-inch (4th generation)", 834, 1194, iPadOS: "18.1.1", uaOS: "18_1_1", safari: "18.1"),
-        Device("iPad Air 13-inch (M2)", 1024, 1366, iPadOS: "18.3.2", uaOS: "18_3_2", safari: "18.3"),
-        Device("iPad Pro 11-inch (M4)", 834, 1210, iPadOS: "18.5", uaOS: "18_5", safari: "18.5"),
-        Device("iPad mini (A17 Pro)", 744, 1133, iPadOS: "26.0", uaOS: "18_6", safari: "26.0"),
-        Device("iPad Pro 13-inch (M4)", 1032, 1376, iPadOS: "26.1", uaOS: "18_6", safari: "26.1"),
-    ]
-
-    /// The devices pages can see: the iPads in iPad mode, the iPhones otherwise.
-    static var devices: [Device] {
-        isIPadMode ? iPads : iPhones
-    }
-
     /// This phone's screen in points, portrait, set at launch.
     static var realScreen = (width: 0, height: 0)
 
-    /// The devices whose screen size pages may see: those at least as big as
-    /// this phone's. A page wider than its screen happens on no real phone,
-    /// and sites that check the browser closely notice it.
-    static var screenDevices: [Device] {
-        let all = devices
-        let fitting = all.filter { $0.width >= realScreen.width && $0.height >= realScreen.height }
-        if !fitting.isEmpty {
-            return fitting
-        }
-        return all.max { $0.width * $0.height < $1.width * $1.height }.map { [$0] } ?? all
+    /// The screen pages see, in points, portrait: the iPad's in iPad mode,
+    /// this phone's otherwise.
+    static var pageScreen: (width: Int, height: Int) {
+        isIPadMode ? (width: iPad.width, height: iPad.height) : realScreen
     }
 
-    /// The device whose screen size pages see.
-    static var screenDevice: Device {
-        device(for: seed(.screen), in: screenDevices)
-    }
-
-    /// The device whose user agent pages see.
-    static var userAgentDevice: Device {
-        device(for: seed(.userAgent), in: devices)
-    }
-
-    static var screenSize: (width: Int, height: Int) {
-        (screenDevice.width, screenDevice.height)
-    }
-
-    static var userAgent: String {
-        userAgentDevice.userAgent
-    }
-
-    /// The user agent for a page: another device's with the user agent
-    /// protection on (unless `protections` is off for the site) and in iPad
-    /// mode, or this device's own. Desktop mode keeps WebKit's own. With
-    /// `profile`, that profile's device (the profile in use's otherwise).
+    /// The user agent for a page: Safari's on this iPhone, or in iPad mode
+    /// Safari's on an iPad with the same system version, on every site.
+    /// Desktop mode keeps WebKit's own (a Mac's), as Safari's "Request
+    /// Desktop Website" does.
     @MainActor
-    static func userAgent(protections: Bool, desktopMode: Bool, profile: Profile? = nil) -> String? {
+    static func userAgent(desktopMode: Bool) -> String? {
         if desktopMode {
             return nil
         }
-        if isIPadMode || (protections && isEnabled(.userAgent)) {
-            return reading(profile) { () -> String in userAgentDevice.userAgent }
-        }
-        return safariUserAgent
+        return isIPadMode ? iPadUserAgent : safariUserAgent
+    }
+
+    /// What Safari sends on an iPad with this phone's system version, when
+    /// "Request Desktop Website" is off (with it on, Safari claims to be a
+    /// Mac): the iPhone's with the iPad's device and system names.
+    @MainActor
+    static var iPadUserAgent: String {
+        safariUserAgent.replacingOccurrences(of: "(iPhone; CPU iPhone OS ", with: "(iPad; CPU OS ")
     }
 
     /// What Safari sends on this iPhone: WebKit's own user agent, which has
@@ -314,41 +273,13 @@ enum FingerprintProtection {
             + "(KHTML, like Gecko) Version/\(safari) Mobile/15E148 Safari/604.1"
     }()
 
-    private static func device(for seed: UInt32, in list: [Device]) -> Device {
-        list[Int(seed % UInt32(list.count))]
-    }
-
-    /// What a seed shows the user for a kind; a new seed must change it.
-    private static func visibleValue(_ seed: UInt32, for kind: Kind) -> String {
-        switch kind {
-        case .screen:
-            let device = device(for: seed, in: screenDevices)
-            return "\(device.width)x\(device.height)"
-        case .userAgent:
-            return device(for: seed, in: devices).userAgent
-        default:
-            return String(seed)
-        }
-    }
-
-    /// How many different values a new seed can pick from for a kind.
-    private static func choiceCount(for kind: Kind) -> Int {
-        switch kind {
-        case .screen: return Set(screenDevices.map { "\($0.width)x\($0.height)" }).count
-        case .userAgent: return Set(devices.map(\.userAgent)).count
-        default: return Int.max
-        }
-    }
-
     // MARK: - Page script
 
     /// The script for the protections that are on (the user agent is set on
-    /// the web view instead), or nil if none of them is. Without
-    /// `protections` (shields down for the site) only iPad mode is left. With
-    /// `realDevice` (a sign-in site) the screen size stays as it is, like
-    /// the user agent, since such sites check both against the device. In
-    /// desktop mode WebKit reports a Mac on its own, so iPad mode leaves it
-    /// alone there.
+    /// the web view instead). Without `protections` (shields down for the
+    /// site) only what makes the browser look like Safari, and iPad mode,
+    /// are left. In desktop mode WebKit reports a Mac on its own, so iPad
+    /// mode leaves it alone there.
     ///
     /// The script protects the page's window, and from there the empty
     /// frames (about:blank) the page makes, where WebKit runs no user
@@ -358,15 +289,15 @@ enum FingerprintProtection {
     /// no address, so it can't show the page the phone's own (see
     /// `webRTCScript`), whether shields are up or down.
     @MainActor
-    static func userScript(desktopMode: Bool, protections: Bool = true, realDevice: Bool = false, profile: Profile? = nil, proxied: Bool = false) -> WKUserScript? {
+    static func userScript(desktopMode: Bool, protections: Bool = true, profile: Profile? = nil, proxied: Bool = false) -> WKUserScript? {
         // With `profile`, its seeds: a profile collecting cookies in the
         // background shows its own fingerprints, not the profile in use's.
-        let source = reading(profile) { scriptSource(desktopMode: desktopMode, protections: protections, realDevice: realDevice, proxied: proxied) }
+        let source = reading(profile) { scriptSource(desktopMode: desktopMode, protections: protections, proxied: proxied) }
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }
 
     /// The source of `userScript`, with the seeds of the profile `reading` names.
-    private static func scriptSource(desktopMode: Bool, protections: Bool, realDevice: Bool, proxied: Bool) -> String {
+    private static func scriptSource(desktopMode: Bool, protections: Bool, proxied: Bool) -> String {
         var parts: [String] = [browserScript]
         if protections {
             let canvasSeed = isEnabled(.canvas) ? seed(.canvas) : nil
@@ -378,9 +309,14 @@ enum FingerprintProtection {
             }
             if isEnabled(.audio) { parts.append(audioScript(seed: seed(.audio))) }
             if isEnabled(.clientRects) { parts.append(clientRectsScript(seed: seed(.clientRects))) }
-            if isEnabled(.screen) && !realDevice { parts.append(screenScript(screenSize)) }
         }
-        if isIPadMode && !desktopMode { parts.append(iPadScript) }
+        // An iPad's user agent goes with an iPad's screen, platform and pixel
+        // density, on every site, shields up or down, as the user agent does.
+        if isIPadMode && !desktopMode {
+            let iPad = self.iPad
+            parts.append(screenScript((iPad.width, iPad.height)))
+            parts.append(iPadScript)
+        }
         if proxied { parts.append(webRTCScript) }
         // Each part runs on its own, so a part that fails in some WebKit
         // version leaves the others working.
@@ -1939,7 +1875,7 @@ enum FingerprintProtection {
 
     private static func screenScript(_ size: (width: Int, height: Int)) -> String {
         #"""
-        // Screen: pages see a real iPhone's or, in iPad mode, iPad's screen size.
+        // Screen, in iPad mode: pages see the iPad's screen size.
         {
           const width = \#(size.width);
           const height = \#(size.height);
@@ -1966,8 +1902,11 @@ enum FingerprintProtection {
             return NaN;
           };
           const dprIsChanged = () => {
-            const descriptor = getOwnPropertyDescriptor(window, "devicePixelRatio");
-            return Boolean(descriptor && descriptor.get && originals.has(descriptor.get));
+            for (const holder of [window, window.Window && window.Window.prototype]) {
+              const descriptor = holder && getOwnPropertyDescriptor(holder, "devicePixelRatio");
+              if (descriptor && descriptor.get) return originals.has(descriptor.get);
+            }
+            return false;
           };
           const answer = (range, feature, text) => {
             const name = feature.toLowerCase();
@@ -2016,12 +1955,20 @@ enum FingerprintProtection {
         """#
     }
 
-    /// WebKit takes navigator.platform from the real device, not from the
-    /// user agent, so an iPhone would still say "iPhone" next to an iPad's
-    /// user agent.
+    /// WebKit takes navigator.platform and the pixel density from the real
+    /// device, not from the user agent, so an iPhone would still say
+    /// "iPhone", and 3 pixels to a point, next to an iPad's user agent.
     private static let iPadScript = #"""
-    // iPad mode: pages see the platform Safari reports on an iPad.
-    defineGetter(window.Navigator.prototype, "platform", () => "iPad");
+    // iPad mode: pages see the platform and the pixel density Safari
+    // reports on an iPad (2 on every iPad).
+    if (window.Navigator) defineGetter(window.Navigator.prototype, "platform", () => "iPad");
+    for (const holder of [window, window.Window && window.Window.prototype]) {
+      const descriptor = holder && getOwnPropertyDescriptor(holder, "devicePixelRatio");
+      if (descriptor && descriptor.get) {
+        defineGetter(holder, "devicePixelRatio", () => 2);
+        break;
+      }
+    }
 
     """#
 

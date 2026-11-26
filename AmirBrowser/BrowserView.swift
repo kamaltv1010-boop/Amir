@@ -719,16 +719,24 @@ private struct BrowserScreen: View {
                 }
                 .disabled(!browser.enabledProtections.contains(kind))
             }
+            if browser.isIPadMode {
+                Button {
+                    browser.newFingerprint([], iPad: true)
+                    showToast("iPad changed")
+                } label: {
+                    Label("New iPad", systemImage: "ipad")
+                }
+            }
 
             Divider()
 
             Button {
-                browser.newFingerprint(Array(browser.enabledProtections))
+                browser.newFingerprint(Array(browser.enabledProtections), iPad: browser.isIPadMode)
                 showToast("All fingerprints changed")
             } label: {
                 Label("Change All", systemImage: "arrow.triangle.2.circlepath")
             }
-            .disabled(browser.enabledProtections.isEmpty)
+            .disabled(browser.enabledProtections.isEmpty && !browser.isIPadMode)
         } label: {
             Label("Fingerprint", systemImage: "hand.raised")
         }

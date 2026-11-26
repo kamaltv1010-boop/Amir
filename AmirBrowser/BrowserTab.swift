@@ -246,12 +246,12 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
 
     /// Installs what this tab's pages get: fingerprint protection and tracker
     /// blocking (unless shields are down for the site), night mode and the
-    /// user agent. Sites with shields down see this iPhone as it is. Sign-in
-    /// sites see its own user agent and screen size, which they check
-    /// against the device, but still get the canvas, WebGL, audio and
-    /// ClientRects noise, so each profile looks to them like another phone
-    /// of the same kind. Pages pick up a change when they next load. Returns
-    /// whether the user agent changed.
+    /// user agent. Sites with shields down see this iPhone as it is. Every
+    /// site sees Safari's user agent and this iPhone's screen size, which
+    /// sites check against the device, and with shields up the canvas,
+    /// WebGL, audio and ClientRects noise, so each profile looks like
+    /// another phone of the same kind. Pages pick up a change when they next
+    /// load. Returns whether the user agent changed.
     @discardableResult
     func applySettings(for url: URL?, force: Bool = false) -> Bool {
         guard let model else { return false }
@@ -259,8 +259,7 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
         if self.shieldsUp != shieldsUp {
             self.shieldsUp = shieldsUp
         }
-        let isSignInSite = Shields.isSignInSite(url)
-        let settings = "\(shieldsUp)|\(isSignInSite)|\(isDesktopMode)|\(model.settingsSignature)"
+        let settings = "\(shieldsUp)|\(isDesktopMode)|\(model.settingsSignature)"
         guard force || settings != appliedSettings else { return false }
         appliedSettings = settings
 
@@ -268,7 +267,7 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
         controller.removeAllUserScripts()
         controller.removeAllContentRuleLists()
         let proxied = ProxyManager.shared.isProxied(model.profile.id)
-        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode, protections: shieldsUp, realDevice: isSignInSite, proxied: proxied) {
+        if let script = FingerprintProtection.userScript(desktopMode: isDesktopMode, protections: shieldsUp, proxied: proxied) {
             controller.addUserScript(script)
         }
         if NightMode.isEnabled {
@@ -280,7 +279,7 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
                 controller.addUserScript(counter)
             }
         }
-        let agent = FingerprintProtection.userAgent(protections: shieldsUp && !isSignInSite, desktopMode: isDesktopMode)
+        let agent = FingerprintProtection.userAgent(desktopMode: isDesktopMode)
         webView.customUserAgent = agent
         defer { appliedUserAgent = agent ?? "" }
         return (agent ?? "") != appliedUserAgent
