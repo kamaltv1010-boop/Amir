@@ -1,0 +1,150 @@
+11-21 22:28:06.020 W/UnityMain( 5865): type=1400 audit(0.0:308): avc: denied { link } for name="poster6_thumbnail_v1" dev="dm-5" ino=49257 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:media_rw_data_file:s0:c154,c256,c512,c768 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:06.560 W/Adjust-pool-23-( 5865): type=1400 audit(0.0:311): avc: denied { read } for name="tcp" dev="proc" ino=4026532053 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_net_tcp_udp:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:06.588 W/Adjust-pool-23-( 5865): type=1400 audit(0.0:312): avc: denied { read } for name="drivers" dev="proc" ino=4026531852 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_tty_drivers:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:07.307 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 250934000 but found 201817023
+11-21 22:28:07.307 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 250934000 but found 201817023
+11-21 22:28:07.317 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:07.327 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:07.604 W/UnityMain( 5865): type=1400 audit(0.0:319): avc: denied { link } for name="poster7_thumbnail_v1" dev="dm-5" ino=49212 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:media_rw_data_file:s0:c154,c256,c512,c768 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:07.636 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.608 W/UnityMain( 5865): type=1400 audit(0.0:320): avc: denied { link } for name="poster8_thumbnail_v1" dev="dm-5" ino=49212 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:media_rw_data_file:s0:c154,c256,c512,c768 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:07.648 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.649 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.620 W/UnityMain( 5865): type=1400 audit(0.0:321): avc: denied { link } for name="poster9_thumbnail_v1" dev="dm-5" ino=49212 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:media_rw_data_file:s0:c154,c256,c512,c768 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:07.680 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.726 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.726 W/Finsky  ( 2007): [191] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.734 W/Finsky  ( 2007): [191] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.734 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.735 W/Finsky  ( 2007): [328] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.736 W/Finsky  ( 2007): [191] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.736 W/Finsky  ( 2007): [191] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:07.909 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:08.220 W/UnityMain( 5865): type=1400 audit(0.0:322): avc: denied { link } for name="poster10_thumbnail_v1" dev="dm-5" ino=49206 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:media_rw_data_file:s0:c154,c256,c512,c768 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:09.637 I/Unity   ( 5865): [GrandSDK] Batch sent: 8 events in 00:00:08.0686674
+11-21 22:28:09.637 I/Unity   ( 5865): GrandSDK.<>c:<InitializeSDK>b__22_15(BatchInfo)
+11-21 22:28:09.637 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsCallbacks:InvokeOnBatchSent(BatchInfo)
+11-21 22:28:09.637 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsWorker:SendLoop()
+11-21 22:28:09.637 I/Unity   ( 5865): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-21 22:28:09.637 I/Unity   ( 5865): 
+11-21 22:28:10.602 W/Finsky  ( 2007): [193] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:10.615 W/Finsky  ( 2007): [193] ges.d(21): com.grandgames.magicsort: No account found.
+11-21 22:28:11.513 I/Unity   ( 5865): [GrandSDK] Batch sent: 12 events in 00:00:00.8831147
+11-21 22:28:11.513 I/Unity   ( 5865): GrandSDK.<>c:<InitializeSDK>b__22_15(BatchInfo)
+11-21 22:28:11.513 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsCallbacks:InvokeOnBatchSent(BatchInfo)
+11-21 22:28:11.513 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsWorker:SendLoop()
+11-21 22:28:11.513 I/Unity   ( 5865): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-21 22:28:11.513 I/Unity   ( 5865): 
+11-21 22:28:14.152 W/pags_ssdk_handl( 5865): type=1400 audit(0.0:323): avc: denied { search } for name="net" dev="sysfs" ino=4954 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:sysfs_net:s0 tclass=dir permissive=0 app=com.grandgames.magicsort
+11-21 22:28:14.424 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:14.607 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:14.626 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:14.705 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:15.522 W/ActivityManager(  513): Slow operation: 76ms so far, now at startProcess: returned from zygote!
+11-21 22:28:15.523 W/ActivityManager(  513): Slow operation: 76ms so far, now at startProcess: done updating battery stats
+11-21 22:28:15.532 W/ActivityManager(  513): Slow operation: 86ms so far, now at startProcess: building log message
+11-21 22:28:15.532 I/ActivityManager(  513): Start proc 8043:com.google.android.gms.ui/u0a109 for service {com.google.android.gms/com.google.android.gms.chimera.UiIntentOperationService}
+11-21 22:28:15.532 W/ActivityManager(  513): Slow operation: 86ms so far, now at startProcess: starting to update pids map
+11-21 22:28:15.541 W/ActivityManager(  513): Slow operation: 95ms so far, now at startProcess: done updating pids map
+11-21 22:28:15.586 W/PhenotypeToGsaConfigs( 2068): Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-21 22:28:15.643 W/PhenotypeToGsaConfigs( 2068): Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-21 22:28:16.917 W/PhenotypeToGsaConfigs( 2068): Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-21 22:28:17.662 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:17.663 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:17.663 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:17.705 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:18.691 D/AndroidRuntime( 8105): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-21 22:28:18.708 I/AndroidRuntime( 8105): Using default boot image
+11-21 22:28:18.708 I/AndroidRuntime( 8105): Leaving lock profiling enabled
+11-21 22:28:19.080 W/sh      ( 8110): type=1400 audit(0.0:328): avc: granted { execute } for name="dic" dev="dm-5" ino=123532 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c154,c256,c512,c768 tclass=file app=com.grandgames.magicsort
+11-21 22:28:19.664 D/AndroidRuntime( 8105): Calling main entry com.android.commands.input.Input
+11-21 22:28:19.768 W/pags_ssdk_handl( 5865): type=1400 audit(0.0:335): avc: denied { read } for name="u:object_r:boottime_prop:s0" dev="tmpfs" ino=2108 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:boottime_prop:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:19.860 D/AndroidRuntime( 8105): Shutting down VM
+11-21 22:28:20.364 W/pags_ssdk_handl( 5865): type=1400 audit(0.0:336): avc: denied { search } for name="input" dev="tmpfs" ino=1108 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:input_device:s0 tclass=dir permissive=0 app=com.grandgames.magicsort
+11-21 22:28:20.376 W/pags_ssdk_handl( 5865): type=1400 audit(0.0:337): avc: denied { search } for name="input" dev="tmpfs" ino=1108 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:input_device:s0 tclass=dir permissive=0 app=com.grandgames.magicsort
+11-21 22:28:20.894 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:21.138 D/UnityAds( 5865): com.unity3d.services.core.misc.Utilities.writeFile() (line:130) :: Wrote file: /data/user/0/com.grandgames.magicsort/files/UnityAdsStorage-public-data.json
+11-21 22:28:21.151 D/UnityAds( 5865): com.unity3d.services.core.misc.Utilities.writeFile() (line:130) :: Wrote file: /data/user/0/com.grandgames.magicsort/files/UnityAdsStorage-public-data.json
+11-21 22:28:21.256 D/UnityAds( 5865): com.unity3d.services.core.device.Storage.sendEvent() (line:85) :: Couldn't send storage event to WebApp
+11-21 22:28:21.272 D/UnityAds( 5865): com.unity3d.services.core.device.Storage.sendEvent() (line:85) :: Couldn't send storage event to WebApp
+11-21 22:28:21.506 I/UnityAds( 5865): Token generation started
+11-21 22:28:21.507 I/UnityAds( 5865): Token generation started
+11-21 22:28:21.589 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:21.618 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:21.832 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:22.327 I/UnityAds( 5865): Generated a valid token.
+11-21 22:28:22.381 I/UnityAds( 5865): Generated a valid token.
+11-21 22:28:22.687 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:22.722 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:22.782 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:22.873 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:23.013 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:23.014 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 212800000 but found 201817023
+11-21 22:28:23.021 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:23.064 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:23.279 D/UnityAds( 5865): com.unity3d.services.core.misc.Utilities.writeFile() (line:130) :: Wrote file: /data/user/0/com.grandgames.magicsort/files/UnityAdsStorage-public-data.json
+11-21 22:28:23.280 D/UnityAds( 5865): com.unity3d.services.core.device.Storage.sendEvent() (line:85) :: Couldn't send storage event to WebApp
+11-21 22:28:23.285 I/UnityAds( 5865): Token generation started
+11-21 22:28:23.419 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:23.426 I/UnityAds( 5865): Generated a valid token.
+11-21 22:28:23.479 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 250934000 but found 201817023
+11-21 22:28:23.479 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 250934000 but found 201817023
+11-21 22:28:23.727 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:23.809 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:23.838 D/UnityAds( 5865): com.unity3d.services.core.misc.Utilities.writeFile() (line:130) :: Wrote file: /data/user/0/com.grandgames.magicsort/files/UnityAdsStorage-public-data.json
+11-21 22:28:23.838 D/UnityAds( 5865): com.unity3d.services.core.device.Storage.sendEvent() (line:85) :: Couldn't send storage event to WebApp
+11-21 22:28:23.839 I/UnityAds( 5865): Token generation started
+11-21 22:28:23.906 W/GooglePlayServicesUtil( 5865): Google Play services out of date for com.grandgames.magicsort.  Requires 203400000 but found 201817023
+11-21 22:28:24.037 I/UnityAds( 5865): Generated a valid token.
+11-21 22:28:25.348 W/Adjust-pool-83-( 5865): type=1400 audit(0.0:338): avc: denied { read } for name="tcp" dev="proc" ino=4026532053 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_net_tcp_udp:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:25.364 W/Adjust-pool-83-( 5865): type=1400 audit(0.0:339): avc: denied { read } for name="drivers" dev="proc" ino=4026531852 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_tty_drivers:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:25.372 W/Adjust-pool-83-( 5865): type=1400 audit(0.0:340): avc: denied { read } for name="version" dev="proc" ino=4026532035 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_version:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:25.431 W/PhenotypeToGsaConfigs( 2068): Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-21 22:28:25.372 W/Adjust-pool-83-( 5865): type=1400 audit(0.0:341): avc: denied { read } for name="u:object_r:serialno_prop:s0" dev="tmpfs" ino=2232 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:serialno_prop:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:25.376 W/Adjust-pool-83-( 5865): type=1400 audit(0.0:343): avc: denied { read } for name="u:object_r:qemu_cmdline:s0" dev="tmpfs" ino=2225 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:qemu_cmdline:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:28:26.597 W/PhenotypeToGsaConfigs( 2068): Can't format flag AndroidGsaVelourJars__velour_crashtest_jar__name to integer.
+11-21 22:28:26.858 W/ActivityManager(  513): Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+11-21 22:28:26.861 W/ActivityManager(  513): Unbind failed: could not find connection for android.os.BinderProxy@4a08912
+11-21 22:28:30.383 I/chatty  ( 5865): uid=10154(com.grandgames.magicsort) identical 1 line
+11-21 22:28:33.981 W/Unity   ( 5865): The character used for Underline is not available in font asset [Freight-SansBlackNumbersMasked].
+11-21 22:28:33.981 W/Unity   ( 5865): TMPro.TMP_Text:GetUnderlineSpecialCharacter(TMP_FontAsset)
+11-21 22:28:33.981 W/Unity   ( 5865): TMPro.TextMeshPro:LoadFontAsset()
+11-21 22:28:33.981 W/Unity   ( 5865): TMPro.TextMeshPro:Awake()
+11-21 22:28:33.981 W/Unity   ( 5865): 
+11-21 22:28:34.006 I/chatty  ( 5865): uid=10154(com.grandgames.magicsort) UnityMain identical 3 lines
+11-21 22:28:34.021 W/Unity   ( 5865): The character used for Underline is not available in font asset [Freight-SansBlackNumbersMasked].
+11-21 22:28:34.021 W/Unity   ( 5865): TMPro.TMP_Text:GetUnderlineSpecialCharacter(TMP_FontAsset)
+11-21 22:28:34.021 W/Unity   ( 5865): TMPro.TextMeshPro:LoadFontAsset()
+11-21 22:28:34.021 W/Unity   ( 5865): TMPro.TextMeshPro:Awake()
+11-21 22:28:34.021 W/Unity   ( 5865): 
+11-21 22:28:51.684 I/ActivityManager(  513): Killing 6273:com.google.android.apps.youtube.music/u0a115 (adj 985): empty #17
+11-21 22:28:52.234 W/ActivityManager(  513): Slow operation: 65ms so far, now at startProcess: returned from zygote!
+11-21 22:28:52.234 W/ActivityManager(  513): Slow operation: 66ms so far, now at startProcess: done updating battery stats
+11-21 22:28:52.234 W/ActivityManager(  513): Slow operation: 66ms so far, now at startProcess: building log message
+11-21 22:28:52.234 I/ActivityManager(  513): Start proc 8274:com.google.android.projection.gearhead:shared/u0a100 for service {com.google.android.projection.gearhead/com.google.android.apps.auto.components.app.fzero.LauncherIconStateVerificationService}
+11-21 22:28:52.234 W/ActivityManager(  513): Slow operation: 66ms so far, now at startProcess: starting to update pids map
+11-21 22:28:52.234 W/ActivityManager(  513): Slow operation: 66ms so far, now at startProcess: done updating pids map
+11-21 22:28:52.937 W/ActivityManager(  513): Slow operation: 68ms so far, now at attachApplicationLocked: after mServices.attachApplicationLocked
+11-21 22:28:54.944 I/ActivityManager(  513): Killing 6808:com.google.android.apps.wallpaper/u0a135 (adj 975): empty #17
+11-21 22:28:55.860 I/ActivityManager(  513): Killing 3217:com.android.providers.calendar/u0a63 (adj 985): empty #17
+11-21 22:28:59.124 I/ActivityManager(  513): Killing 6889:com.google.android.syncadapters.contacts/u0a131 (adj 985): empty #17
+11-21 22:29:00.673 D/UnityNotifications( 5865): Checking for invalid notification IDs still hanging around
+11-21 22:29:02.056 W/Adjust-pool-25-( 5865): type=1400 audit(0.0:346): avc: denied { read } for name="tcp" dev="proc" ino=4026532053 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_net_tcp_udp:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:29:02.072 W/Adjust-pool-25-( 5865): type=1400 audit(0.0:347): avc: denied { read } for name="drivers" dev="proc" ino=4026531852 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_tty_drivers:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:29:02.080 W/Adjust-pool-25-( 5865): type=1400 audit(0.0:348): avc: denied { read } for name="version" dev="proc" ino=4026532035 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:proc_version:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:29:02.084 W/Adjust-pool-25-( 5865): type=1400 audit(0.0:350): avc: denied { read } for name="u:object_r:serialno_prop:s0" dev="tmpfs" ino=2232 scontext=u:r:untrusted_app:s0:c154,c256,c512,c768 tcontext=u:object_r:serialno_prop:s0 tclass=file permissive=0 app=com.grandgames.magicsort
+11-21 22:29:02.534 I/Unity   ( 5865): [GrandSDK] Batch sent: 3 events in 00:00:03.5222146
+11-21 22:29:02.534 I/Unity   ( 5865): GrandSDK.<>c:<InitializeSDK>b__22_15(BatchInfo)
+11-21 22:29:02.534 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsCallbacks:InvokeOnBatchSent(BatchInfo)
+11-21 22:29:02.534 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsWorker:SendLoop()
+11-21 22:29:02.534 I/Unity   ( 5865): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-21 22:29:02.534 I/Unity   ( 5865): 
+11-21 22:29:03.115 I/Unity   ( 5865): [GrandSDK] Batch sent: 3 events in 00:00:00.5440868
+11-21 22:29:03.115 I/Unity   ( 5865): GrandSDK.<>c:<InitializeSDK>b__22_15(BatchInfo)
+11-21 22:29:03.115 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsCallbacks:InvokeOnBatchSent(BatchInfo)
+11-21 22:29:03.115 I/Unity   ( 5865): GrandSDK.Analytics.AnalyticsWorker:SendLoop()
+11-21 22:29:03.115 I/Unity   ( 5865): System.Threading.ExecutionContext:RunInternal(ExecutionContext, ContextCallback, Object, Boolean)
+11-21 22:29:03.115 I/Unity   ( 5865): 
+11-21 22:29:38.437 W/ActivityManager(  513): Background start not allowed: service Intent { cmp=com.google.android.apps.messaging/.shared.datamodel.action.execution.ActionExecutorImpl$EmptyService } to com.google.android.apps.messaging/.shared.datamodel.action.execution.ActionExecutorImpl$EmptyService from pid=7243 uid=10123 pkg=com.google.android.apps.messaging startFg?=false
+11-21 22:29:38.491 W/ActivityManager(  513): Background start not allowed: service Intent { cmp=com.google.android.apps.messaging/.shared.datamodel.action.execution.ActionExecutorImpl$EmptyService } to com.google.android.apps.messaging/.shared.datamodel.action.execution.ActionExecutorImpl$EmptyService from pid=7243 uid=10123 pkg=com.google.android.apps.messaging startFg?=false
+11-21 22:29:51.627 W/ActivityManager(  513): Background start not allowed: service Intent { cmp=com.google.android.apps.messaging/.shared.datamodel.action.execution.ActionExecutorImpl$EmptyService } to com.google.android.apps.messaging/.shared.datamodel.action.execution.ActionExecutorImpl$EmptyService from pid=7243 uid=10123 pkg=com.google.android.apps.messaging startFg?=false

@@ -1,0 +1,9 @@
+done 35
+الحالة: انتهى
+مراحل مكتملة: 29
+الوقت: 103 دقيقة من 102
+آخر شاشة: level
+الشاشات: {'unknown': 467, 'button': 48, 'level': 1096, 'close': 20}
+صور محفوظة: 108/900، شاشات جديدة: 89
+المرحلة الحالية: 89 (حركات 19، مخفي 0، إخفاقات 0، أدوات -، 1.7 دقيقة)
+الحالة المقروءة: [lavender,green,green]/4 [green,blue,blue]/4 [red,pink,pink,pink]/4 [red,purple]/4 [blue,plum,purple,purple]/4 [plum,plum,plum]/4 [orange,orange,orange,orange]/4 [brown,lavender,lavender]/4 [brown,brown]/4 [lavender,cyan,cyan,cyan]/4 [yellow,yellow,yellow,yellow]/4 [green,purple,darkgreen,darkgreen]/4 [darkgreen,red,cyan,pink]/4 [blue,red,brown,darkgreen]/4

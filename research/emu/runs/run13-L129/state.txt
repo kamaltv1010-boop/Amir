@@ -1,0 +1,10 @@
+done 43
+الحالة: انتهى
+مراحل مكتملة: 2
+الوقت: 301 دقيقة من 300
+آخر شاشة: button
+الشاشات: {'button': 291, 'unknown': 376, 'level': 337, 'close': 10, 'lives': 21}
+صور محفوظة: 59/900، شاشات جديدة: 26
+المرحلة الحالية: 129 صعبة جداً (حركات 2، مخفي 0، إخفاقات 0، أدوات -، 18.9 دقيقة)
+الحالة المقروءة: [red,blue,yellow]/4 [blue,darkgreen]/4 [mint,darkgreen,green,green]/4 [orange,darkgreen]/4 [pink,lavender,plum]/4 [cyan,blue,brown,brown]/4
+العملات: 210، «Give Up» لكل مرحلة: {127: 1, 129: 7}، انتظار الأرواح 5 دقيقة

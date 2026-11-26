@@ -1,0 +1,9 @@
+done 36
+الحالة: انتهى
+مراحل مكتملة: 69
+الوقت: 138 دقيقة من 138
+آخر شاشة: close
+الشاشات: {'level': 1070, 'unknown': 465, 'button': 408, 'close': 385}
+صور محفوظة: 122/900، شاشات جديدة: 55
+المرحلة الحالية: 70 (حركات 2، مخفي 4، إخفاقات 0، أدوات -، 6.5 دقيقة)
+الحالة المقروءة: [brown]/4 [darkgreen,darkgreen]/4 [plum,orange,purple,darkgreen]/4 [pink]/4 [pink,lavender,orange,yellow]/4 [lavender,blue,brown,darkgreen]/4 [?,c_16_7_6,red,green]/4 [brown,?,blue,brown]/4 [cyan,?,c_16_7_6,yellow]/4 [?,orange,yellow,red]/4

@@ -1,0 +1,168 @@
+[04:33:11] بدء البوت: 300 دقيقة، الفرع claude/quirky-ride-r4oor0
+[04:33:12] التحكم عن بعد: seq الحالي 4 (يُعتبر منفَّذاً)
+[04:33:12] انتظار الجهاز...
+[04:33:12] الشاشة: Physical size: 1080x2280، الكثافة: Physical density: 440، ABI: x86_64,x86,arm64-v8a,armeabi-v7a,armeabi
+[04:33:35] تثبيت (com.grandgames.magicsort.apk config.arm64_v8a.apk): Success
+[04:33:36] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
+[04:43:40] لم تظهر شاشة تفاعلية خلال 10 دقائق؛ يكمل المحرّك على أي حال
+[04:43:42] اللعبة ليست في الواجهة (mCurrentFocus=Window{bde163d u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[04:44:05] شاشة جديدة لم تُرَ من قبل: new_001_unknown.jpg
+[04:44:29] شاشة التحميل: انتظار بلا نقر
+[04:44:34] تنفيذ أوامر الدفعة 5: shot s1 ; top
+[04:45:37] بداية المرحلة 1: 2 قارورة، سعات [(4, 2)]، مخفي 0
+[04:45:37] حالة المرحلة 1: [{"x": 178, "y": 506, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 292, "y": 506, "cap": 4, "layers": ["red"]}]
+[04:45:37] خطة المرحلة 1: 1 حركة (astar، 0.1 ms)
+[04:45:49] فوز بالمرحلة 1 (لغز جديد على الشاشة): 0 حركة في 11 ث، أدوات -
+[04:45:49] بداية المرحلة 2: 3 قارورة، سعات [(4, 3)]، مخفي 0
+[04:45:49] حالة المرحلة 2: [{"x": 145, "y": 506, "cap": 4, "layers": ["red", "red"]}, {"x": 236, "y": 506, "cap": 4, "layers": ["red", "red", "yellow", "yellow"]}, {"x": 326, "y": 506, "cap": 4, "layers": ["yellow", "yellow"]}]
+[04:45:49] خطة المرحلة 2: 2 حركة (astar، 0.1 ms)
+[04:46:02] فوز بالمرحلة 2 (لغز جديد على الشاشة): 2 حركة في 13 ث، أدوات -
+[04:46:02] بداية المرحلة 3: 4 قارورة، سعات [(4, 4)]، مخفي 0
+[04:46:02] حالة المرحلة 3: [{"x": 112, "y": 506, "cap": 4, "layers": ["red", "red", "yellow", "yellow"]}, {"x": 194, "y": 506, "cap": 4, "layers": ["blue", "blue", "red", "red"]}, {"x": 277, "y": 506, "cap": 4, "layers": ["yellow", "yellow", "blue", "blue"]}, {"x": 359, "y": 506, "cap": 4, "layers": []}]
+[04:46:02] خطة المرحلة 3: 4 حركة (astar، 0.2 ms)
+[04:46:21] خطة المرحلة 3: 9 حركة (astar، 0.3 ms)
+[04:47:00] شاشة جديدة لم تُرَ من قبل: new_002_unknown.jpg
+[04:47:00] فوز بالمرحلة 3 (unknown): 13 حركة في 58 ث، أدوات -
+[04:47:00] انتهى التحميل بعد 150 ثانية
+[04:47:15] بداية المرحلة 5: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[04:47:15] حالة المرحلة 5: [{"x": 44, "y": 506, "cap": 4, "layers": ["red", "yellow", "blue", "red"]}, {"x": 121, "y": 506, "cap": 4, "layers": ["red", "blue", "red", "blue"]}, {"x": 197, "y": 506, "cap": 4, "layers": ["green", "blue", "green", "yellow"]}, {"x": 274, "y": 506, "cap": 4, "layers": ["green", "green", "yellow", "yellow"]}, {"x": 350, "y": 506, "cap": 4, "layers": []}, {"x": 426, "y": 506, "cap": 4, "layers": []}]
+[04:47:15] خطة المرحلة 5: 12 حركة (astar، 0.4 ms)
+[04:48:07] شاشة جديدة لم تُرَ من قبل: new_003_unknown.jpg
+[04:48:07] فوز بالمرحلة 5 (unknown): 12 حركة في 52 ث، أدوات -
+[04:48:23] بداية المرحلة 6: 7 قارورة، سعات [(4, 7)]، مخفي 0
+[04:48:23] حالة المرحلة 6: [{"x": 112, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "yellow"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["red", "blue", "red", "red"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["blue", "yellow", "green", "blue"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["purple", "yellow", "green", "green"]}, {"x": 145, "y": 636, "cap": 4, "layers": ["green", "purple", "purple", "purple"]}, {"x": 236, "y": 636, "cap": 4, "layers": []}, {"x": 326, "y": 636, "cap": 4, "layers": []}]
+[04:48:23] خطة المرحلة 6: 14 حركة (astar، 0.8 ms)
+[04:49:22] شاشة جديدة لم تُرَ من قبل: new_004_unknown.jpg
+[04:49:22] فوز بالمرحلة 6 (unknown): 14 حركة في 59 ث، أدوات -
+[04:49:35] بداية المرحلة 7: 8 قارورة، سعات [(4, 8)]، مخفي 6
+[04:49:35] حالة المرحلة 7: [{"x": 112, "y": 375, "cap": 4, "layers": ["red", "yellow", "yellow", "blue"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["green", "purple", "yellow", "blue"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["green", "green", "orange", "red"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["orange", "purple", "blue", "yellow"]}, {"x": 112, "y": 636, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 194, "y": 636, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 276, "y": 636, "cap": 4, "layers": []}, {"x": 359, "y": 636, "cap": 4, "layers": []}]
+[04:49:35] خطة المرحلة 7: 1 حركة (pimc، 62.1 ms)
+[04:50:14] خطة المرحلة 7: 11 حركة (astar، 0.5 ms)
+[04:50:59] شاشة جديدة لم تُرَ من قبل: new_005_unknown.jpg
+[04:50:59] فوز بالمرحلة 7 (unknown): 20 حركة في 84 ث، أدوات -
+[04:51:04] شاشة جديدة لم تُرَ من قبل: new_006_close.jpg
+[04:51:15] بداية المرحلة 8: 8 قارورة، سعات [(4, 8)]، مخفي 12
+[04:51:15] حالة المرحلة 8: [{"x": 112, "y": 375, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 112, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "green", "green"]}, {"x": 194, "y": 636, "cap": 4, "layers": ["orange", "orange", "orange", "blue"]}, {"x": 276, "y": 636, "cap": 4, "layers": []}, {"x": 359, "y": 636, "cap": 4, "layers": []}]
+[04:51:15] خطة المرحلة 8: 1 حركة (pimc، 51.6 ms)
+[04:52:14] خطة المرحلة 8: 3 حركة (astar، 0.2 ms)
+[04:52:27] شاشة جديدة لم تُرَ من قبل: new_007_unknown.jpg
+[04:52:27] فوز بالمرحلة 8 (unknown): 16 حركة في 72 ث، أدوات -
+[04:52:40] بداية المرحلة 9: 8 قارورة، سعات [(4, 8)]، مخفي 12
+[04:52:40] حالة المرحلة 9: [{"x": 112, "y": 375, "cap": 4, "layers": ["red", "?", "?", "yellow"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["green", "?", "?", "green"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["yellow", "?", "?", "orange"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["blue", "?", "?", "red"]}, {"x": 112, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "orange"]}, {"x": 194, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "green"]}, {"x": 276, "y": 636, "cap": 4, "layers": []}, {"x": 359, "y": 636, "cap": 4, "layers": []}]
+[04:52:40] خطة المرحلة 9: 1 حركة (pimc، 73.3 ms)
+[04:53:35] خطة المرحلة 9: 7 حركة (astar، 0.4 ms)
+[04:54:04] فوز بالمرحلة 9 (unknown): 20 حركة في 84 ث، أدوات -
+[04:54:08] شاشة جديدة لم تُرَ من قبل: new_008_unknown.jpg
+[04:54:22] شاشة جديدة لم تُرَ من قبل: new_009_unknown.jpg
+[04:55:01] نافذة قبل المرحلة 10 (ميزة جديدة؟): feat_L010.jpg
+[04:55:01] بداية المرحلة 10: 9 قارورة، سعات [(4, 8), (11, 1)]، مخفي 0
+[04:55:01] حالة المرحلة 10: [{"x": 79, "y": 380, "cap": 4, "layers": ["red", "yellow", "red", "yellow"]}, {"x": 157, "y": 380, "cap": 4, "layers": ["blue", "green", "red", "purple"]}, {"x": 236, "y": 493, "cap": 11, "layers": ["purple", "purple", "purple"]}, {"x": 314, "y": 380, "cap": 4, "layers": ["orange", "orange", "purple", "orange"]}, {"x": 392, "y": 380, "cap": 4, "layers": ["green", "purple", "blue", "pink"]}, {"x": 79, "y": 640, "cap": 4, "layers": ["blue", "red", "yellow", "purple"]}, {"x": 157, "y": 640, "cap": 4, "layers": ["blue", "purple", "green", "pink"]}, {"x": 314, "y": 640, "cap": 4, "layers": ["purple", "pink", "orange", "purple"]}, {"x": 392, "y": 640, "cap": 4, "layers": ["pink", "purple", "yellow", "green"]}]
+[04:55:01] خطة المرحلة 10: 26 حركة (astar، 1.4 ms)
+[04:56:50] شاشة جديدة لم تُرَ من قبل: new_010_unknown.jpg
+[04:56:50] فوز بالمرحلة 10 (unknown): 26 حركة في 109 ث، أدوات -
+[04:56:54] شاشة جديدة لم تُرَ من قبل: new_011_unknown.jpg
+[04:57:07] بداية المرحلة 11: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 0
+[04:57:07] حالة المرحلة 11: [{"x": 40, "y": 502, "cap": 10, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["yellow", "purple", "yellow", "orange"]}, {"x": 274, "y": 375, "cap": 4, "layers": ["yellow", "blue", "orange", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["pink", "red", "red", "purple"]}, {"x": 431, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "green", "blue", "orange"]}, {"x": 196, "y": 636, "cap": 4, "layers": ["purple", "pink", "pink", "green"]}, {"x": 274, "y": 636, "cap": 4, "layers": ["orange", "yellow", "yellow", "orange"]}, {"x": 352, "y": 636, "cap": 4, "layers": ["orange", "purple", "blue", "red"]}]
+[04:57:07] خطة المرحلة 11: 24 حركة (astar، 1.4 ms)
+[04:58:57] شاشة جديدة لم تُرَ من قبل: new_012_unknown.jpg
+[04:58:57] فوز بالمرحلة 11 (unknown): 23 حركة في 110 ث، أدوات -
+[04:59:01] شاشة جديدة لم تُرَ من قبل: new_013_unknown.jpg
+[04:59:14] بداية المرحلة 12: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 10
+[04:59:14] حالة المرحلة 12: [{"x": 40, "y": 502, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["purple", "yellow", "red", "orange"]}, {"x": 274, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "lavender", "purple"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 196, "y": 636, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 274, "y": 636, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 431, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}]
+[04:59:14] خطة المرحلة 12: 1 حركة (pimc، 258.7 ms)
+[05:00:37] خطة المرحلة 12: 8 حركة (astar، 0.8 ms)
+[05:01:12] شاشة جديدة لم تُرَ من قبل: new_014_unknown.jpg
+[05:01:12] فوز بالمرحلة 12 (unknown): 26 حركة في 118 ث، أدوات -
+[05:01:16] شاشة جديدة لم تُرَ من قبل: new_015_unknown.jpg
+[05:01:28] بداية المرحلة 13: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 8
+[05:01:28] حالة المرحلة 13: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["yellow", "?", "?", "blue"]}, {"x": 196, "y": 500, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "?", "?", "green"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["lavender", "orange", "pink", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["lavender", "purple", "yellow", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "pink", "lavender", "green"]}, {"x": 431, "y": 636, "cap": 4, "layers": ["orange", "pink", "purple", "red"]}]
+[05:01:28] خطة المرحلة 13: 1 حركة (pimc، 91.2 ms)
+[05:02:27] خطة المرحلة 13: 15 حركة (astar، 0.9 ms)
+[05:04:21] شاشة جديدة لم تُرَ من قبل: new_016_unknown.jpg
+[05:04:21] فوز بالمرحلة 13 (unknown): 25 حركة في 173 ث، أدوات -
+[05:04:39] بداية المرحلة 14: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 15
+[05:04:39] حالة المرحلة 14: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 196, "y": 380, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 274, "y": 380, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 431, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "blue", "orange"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 196, "y": 640, "cap": 4, "layers": ["green", "orange", "lavender"]}, {"x": 274, "y": 640, "cap": 4, "layers": ["orange", "green", "pink"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["green", "lavender", "red"]}]
+[05:04:39] خطة المرحلة 14: 1 حركة (pimc، 182.3 ms)
+[05:05:59] خطة المرحلة 14: 11 حركة (astar، 0.8 ms)
+[05:07:20] شاشة جديدة لم تُرَ من قبل: new_017_unknown.jpg
+[05:07:20] فوز بالمرحلة 14 (unknown): 29 حركة في 162 ث، أدوات -
+[05:07:25] شاشة جديدة لم تُرَ من قبل: new_018_unknown.jpg
+[05:07:36] شاشة جديدة لم تُرَ من قبل: new_019_close.jpg
+[05:07:44] بداية المرحلة 15: 11 قارورة، سعات [(4, 11)]، مخفي 10
+[05:07:44] حالة المرحلة 15: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "purple", "purple"]}, {"x": 196, "y": 375, "cap": 4, "layers": []}, {"x": 274, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 375, "cap": 4, "layers": ["orange", "pink", "blue", "green"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["lavender", "orange", "green", "lavender"]}, {"x": 79, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "red"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["yellow", "?", "?", "blue"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["brown", "?", "?", "orange"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["pink", "?", "?", "blue"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["brown", "?", "?", "pink"]}]
+[05:07:45] خطة المرحلة 15: 1 حركة (pimc، 269.9 ms)
+[05:09:06] خطة المرحلة 15: 10 حركة (astar، 0.9 ms)
+[05:09:48] شاشة جديدة لم تُرَ من قبل: new_020_unknown.jpg
+[05:09:48] فوز بالمرحلة 15 (unknown): 29 حركة في 124 ث، أدوات -
+[05:10:02] بداية المرحلة 16: 11 قارورة، سعات [(4, 10), (17, 1)]، مخفي 0
+[05:10:02] حالة المرحلة 16: [{"x": 99, "y": 335, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["purple", "orange", "orange", "purple"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple", "pink", "red", "orange"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["purple", "blue", "yellow", "lavender"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["green", "purple", "green", "yellow"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["green", "purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["lavender", "lavender", "lavender", "purple"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["blue", "purple", "pink", "pink"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["pink", "red", "purple", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["purple", "orange", "red", "blue"]}]
+[05:10:02] خطة المرحلة 16: 29 حركة (astar، 1.7 ms)
+[05:10:07] خطة المرحلة 16: 28 حركة (astar، 1.6 ms)
+[05:12:02] شاشة جديدة لم تُرَ من قبل: new_021_unknown.jpg
+[05:12:02] فوز بالمرحلة 16 (unknown): 28 حركة في 119 ث، أدوات -
+[05:12:06] شاشة جديدة لم تُرَ من قبل: new_022_unknown.jpg
+[05:12:21] بداية المرحلة 17: 14 قارورة، سعات [(4, 12), (16, 2)]، مخفي 16
+[05:12:21] حالة المرحلة 17: [{"x": 65, "y": 524, "cap": 16, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "red"]}, {"x": 202, "y": 335, "cap": 4, "layers": ["?", "purple", "?", "yellow"]}, {"x": 270, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "purple"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "brown"]}, {"x": 406, "y": 524, "cap": 16, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["green", "lavender", "pink", "orange"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["brown", "lavender", "orange", "lavender"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["c_19_7_6", "lavender", "yellow", "purple"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "lavender", "brown", "red"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["?", "pink", "?", "blue"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["?", "blue", "?", "yellow"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["?", "pink", "?", "lavender"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["?", "brown", "?", "lavender"]}]
+[05:12:21] خطة المرحلة 17: 1 حركة (pimc، 408.6 ms)
+[05:13:27] الحالة بعد (7, 5) تختلف عن المتوقَّع؛ إعادة التخطيط
+[05:13:35] الحالة بعد (10, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[05:17:26] المرحلة 17 أُعيدت من البداية (ذاكرة 13 طبقة مكشوفة)
+[05:17:26] بداية المرحلة 17: 13 قارورة، سعات [(4, 11), (17, 2)]، مخفي 3
+[05:17:26] حالة المرحلة 17: [{"x": 65, "y": 524, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["?", "yellow", "blue", "blue"]}, {"x": 202, "y": 335, "cap": 4, "layers": []}, {"x": 270, "y": 335, "cap": 4, "layers": []}, {"x": 338, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 406, "y": 524, "cap": 17, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["brown", "brown"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "lavender", "brown", "red"]}, {"x": 134, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["?", "blue"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["?", "brown", "red", "red"]}]
+[05:17:26] خطة المرحلة 17: 1 حركة (pimc، 62.3 ms)
+[05:18:35] خطة المرحلة 17: 1 حركة (astar، 0.3 ms)
+[05:18:54] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:18:54] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:18:54] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:18:54] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:18:54] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:18:54] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:18:54] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[05:19:12] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:19:12] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[05:19:29] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:19:29] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[05:19:46] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4
+[05:19:46] أداة: قارورة إضافية
+[05:20:05] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:20:05] أداة: خلط ثم اختيار القارورة 11
+[05:20:15] القارورة 11 مرفوعة؛ نقرة لإنزالها
+[05:20:32] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:20:32] أداة: تراجع (1)
+[05:20:39] خطة المرحلة 17: 1 حركة (dfs-noavoid، 0.5 ms)
+[05:20:59] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:20:59] أداة: تراجع (2)
+[05:21:05] خطة المرحلة 17: 1 حركة (dfs-noavoid، 0.5 ms)
+[05:21:24] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:21:24] أداة: تراجع (3)
+[05:21:31] خطة المرحلة 17: 1 حركة (dfs-noavoid، 0.4 ms)
+[05:21:50] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:21:50] أداة: تراجع (4)
+[05:21:57] خطة المرحلة 17: 1 حركة (dfs-noavoid، 0.5 ms)
+[05:22:16] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:22:16] أداة: تراجع (5)
+[05:22:23] خطة المرحلة 17: 1 حركة (dfs-noavoid، 0.4 ms)
+[05:22:42] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:22:42] أداة: تراجع (6)
+[05:22:48] خطة المرحلة 17: 1 حركة (dfs-noavoid، 0.5 ms)
+[05:23:07] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:23:07] حركة عشوائية (0, 3) (1)
+[05:23:20] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[05:23:31] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:23:31] حركة عشوائية (0, 3) (2)
+[05:23:49] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[05:24:01] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:24:01] حركة عشوائية (0, 2) (3)
+[05:24:14] لا تقدّم بعد الحركة (0, 2) (إخفاق 1)
+[05:24:25] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:24:25] حركة عشوائية (5, 13) (4)
+[05:24:38] لا تقدّم بعد الحركة (5, 13) (إخفاق 1)
+[05:24:50] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:24:50] حركة عشوائية (0, 13) (5)
+[05:25:03] لا تقدّم بعد الحركة (0, 13) (إخفاق 1)
+[05:25:15] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:25:15] حركة عشوائية (5, 6) (6)
+[05:25:27] لا تقدّم بعد الحركة (5, 6) (إخفاق 1)
+[05:25:39] المرحلة 17 عالقة (محلولة بنظر الحلّال فقط): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [red,red,red,red]/4 []/4 []/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 []/4 [brown,brown,brown,brown]/4 [pink,pink,pink,pink]/4 [green,green,green,green]/4 [purple,purple,purple,purple]/4 [c_19_7_6]/4 [blue,blue,blue,blue]/4 []/4
+[05:25:39] حركة عشوائية (0, 2) (7)
+[05:25:51] لا تقدّم بعد الحركة (0, 2) (إخفاق 1)

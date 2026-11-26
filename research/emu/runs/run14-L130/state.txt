@@ -1,0 +1,10 @@
+done 43
+الحالة: انتهى
+مراحل مكتملة: 1
+الوقت: 300 دقيقة من 300
+آخر شاشة: level
+الشاشات: {'button': 298, 'level': 199, 'unknown': 169, 'close': 5, 'lives': 20}
+صور محفوظة: 38/900، شاشات جديدة: 15
+المرحلة الحالية: 130 (حركات 0، مخفي 0، إخفاقات 0، أدوات ['shuffle']، 0.1 دقيقة)
+الحالة المقروءة: [purple,orange,pink,orange]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [red,pink,lavender,red]/4 [yellow,green,blue,purple]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [yellow,red,orange,green]/4 [blue,orange,pink,green]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [blue,purple,blue,yellow]/4 [lavender,red,yellow,lavender]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_7_1]/4 [purple,green,pink,lavender]/4
+العملات: 310، «Give Up» لكل مرحلة: {129: 4}

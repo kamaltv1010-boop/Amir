@@ -1,0 +1,21 @@
+{
+ "format": 1,
+ "name": "game_backup.ab",
+ "size": 82399498,
+ "sha256": "d1b9dfabea00a3b36adfd7713544b3cadab40fb87fd99fe425ccf2d9794cac96",
+ "part_bytes": 41943040,
+ "parts": [
+  {
+   "name": "game_backup.ab.part00",
+   "size": 41943040,
+   "sha256": "e425c86d410e3a0dd6c4a0addf83f7989786b5ed214e5e3f9f153453da53075d"
+  },
+  {
+   "name": "game_backup.ab.part01",
+   "size": 40456458,
+   "sha256": "326e403a28810c6ce3a7a8209486a9191869e742f16f5ccd63856643a31e22a5"
+  }
+ ],
+ "levels_done": 3,
+ "time": "2026-11-25 23:51:00"
+}

@@ -1,0 +1,1185 @@
+[05:29:53] بدء البوت: 310 دقيقة، الفرع claude/quirky-ride-r4oor0
+[05:29:53] التحكم عن بعد: seq الحالي 5 (يُعتبر منفَّذاً)
+[05:29:53] انتظار الجهاز...
+[05:29:54] الشاشة: Physical size: 1080x2280، الكثافة: Physical density: 440، ABI: x86_64,x86,arm64-v8a,armeabi-v7a,armeabi
+[05:30:21] تثبيت (com.grandgames.magicsort.apk config.arm64_v8a.apk): Success
+[05:30:22] شُغّلت اللعبة؛ انتظار أول شاشة تفاعلية
+[05:40:24] لم تظهر شاشة تفاعلية خلال 10 دقائق؛ يكمل المحرّك على أي حال
+[05:40:28] شاشة جديدة لم تُرَ من قبل: new_001_unknown.jpg
+[05:41:03] شاشة التحميل: انتظار بلا نقر
+[05:41:54] تنفيذ أوامر الدفعة 6: shot s6 ; top
+[05:42:49] بداية المرحلة 1: 2 قارورة، سعات [(4, 2)]، مخفي 0
+[05:42:49] حالة المرحلة 1: [{"x": 178, "y": 506, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 292, "y": 506, "cap": 4, "layers": ["red"]}]
+[05:42:49] خطة المرحلة 1: 1 حركة (astar، 0.2 ms)
+[05:42:56] فوز بالمرحلة 1 (لغز جديد على الشاشة): 0 حركة في 8 ث، أدوات -
+[05:42:56] بداية المرحلة 2: 3 قارورة، سعات [(4, 3)]، مخفي 0
+[05:42:56] حالة المرحلة 2: [{"x": 145, "y": 506, "cap": 4, "layers": ["red", "red"]}, {"x": 236, "y": 506, "cap": 4, "layers": ["red", "red", "yellow", "yellow"]}, {"x": 326, "y": 506, "cap": 4, "layers": ["yellow", "yellow"]}]
+[05:42:56] خطة المرحلة 2: 2 حركة (astar، 0.1 ms)
+[05:43:09] فوز بالمرحلة 2 (لغز جديد على الشاشة): 2 حركة في 12 ث، أدوات -
+[05:43:09] بداية المرحلة 3: 4 قارورة، سعات [(4, 4)]، مخفي 0
+[05:43:09] حالة المرحلة 3: [{"x": 112, "y": 506, "cap": 4, "layers": ["red", "red", "yellow", "yellow"]}, {"x": 194, "y": 506, "cap": 4, "layers": ["blue", "blue", "red", "red"]}, {"x": 277, "y": 506, "cap": 4, "layers": ["yellow", "yellow", "blue", "blue"]}, {"x": 359, "y": 506, "cap": 4, "layers": []}]
+[05:43:09] خطة المرحلة 3: 4 حركة (astar، 0.2 ms)
+[05:43:31] خطة المرحلة 3: 9 حركة (astar، 0.4 ms)
+[05:44:17] شاشة جديدة لم تُرَ من قبل: new_002_unknown.jpg
+[05:44:17] فوز بالمرحلة 3 (unknown): 13 حركة في 68 ث، أدوات -
+[05:44:17] انتهى التحميل بعد 195 ثانية
+[05:44:39] بداية المرحلة 5: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[05:44:39] حالة المرحلة 5: [{"x": 44, "y": 506, "cap": 4, "layers": ["red", "yellow", "blue", "red"]}, {"x": 121, "y": 506, "cap": 4, "layers": ["red", "blue", "red", "blue"]}, {"x": 197, "y": 506, "cap": 4, "layers": ["green", "blue", "green", "yellow"]}, {"x": 274, "y": 506, "cap": 4, "layers": ["green", "green", "yellow", "yellow"]}, {"x": 350, "y": 506, "cap": 4, "layers": []}, {"x": 426, "y": 506, "cap": 4, "layers": []}]
+[05:44:39] خطة المرحلة 5: 12 حركة (astar، 0.7 ms)
+[05:45:35] شاشة جديدة لم تُرَ من قبل: new_003_unknown.jpg
+[05:45:35] فوز بالمرحلة 5 (unknown): 12 حركة في 56 ث، أدوات -
+[05:45:39] شاشة جديدة لم تُرَ من قبل: new_004_unknown.jpg
+[05:45:51] بداية المرحلة 6: 7 قارورة، سعات [(4, 7)]، مخفي 0
+[05:45:51] حالة المرحلة 6: [{"x": 112, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "yellow"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["red", "blue", "red", "red"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["blue", "yellow", "green", "blue"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["purple", "yellow", "green", "green"]}, {"x": 145, "y": 636, "cap": 4, "layers": ["green", "purple", "purple", "purple"]}, {"x": 236, "y": 636, "cap": 4, "layers": []}, {"x": 326, "y": 636, "cap": 4, "layers": []}]
+[05:45:51] خطة المرحلة 6: 14 حركة (astar، 0.8 ms)
+[05:46:23] اللعبة ليست في الواجهة (mCurrentFocus=Window{4529024 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunche)؛ تشغيلها
+[05:47:11] شاشة التحميل: انتظار بلا نقر
+[05:48:21] الحالة بعد (0, 1) تختلف عن المتوقَّع؛ إعادة التخطيط
+[05:48:21] خطة المرحلة 6: 18 حركة (astar، 1.2 ms)
+[05:49:46] شاشة جديدة لم تُرَ من قبل: new_005_unknown.jpg
+[05:49:46] فوز بالمرحلة 6 (unknown): 25 حركة في 235 ث، أدوات -
+[05:49:46] انتهى التحميل بعد 155 ثانية
+[05:49:58] بداية المرحلة 7: 8 قارورة، سعات [(4, 8)]، مخفي 6
+[05:49:58] حالة المرحلة 7: [{"x": 112, "y": 375, "cap": 4, "layers": ["red", "yellow", "yellow", "blue"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["green", "purple", "yellow", "blue"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["green", "green", "orange", "red"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["orange", "purple", "blue", "yellow"]}, {"x": 112, "y": 636, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 194, "y": 636, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 276, "y": 636, "cap": 4, "layers": []}, {"x": 359, "y": 636, "cap": 4, "layers": []}]
+[05:49:58] خطة المرحلة 7: 1 حركة (pimc، 96.1 ms)
+[05:50:40] خطة المرحلة 7: 11 حركة (astar، 0.7 ms)
+[05:51:31] شاشة جديدة لم تُرَ من قبل: new_006_unknown.jpg
+[05:51:31] فوز بالمرحلة 7 (unknown): 20 حركة في 93 ث، أدوات -
+[05:51:44] بداية المرحلة 8: 8 قارورة، سعات [(4, 8)]، مخفي 12
+[05:51:44] حالة المرحلة 8: [{"x": 112, "y": 375, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 112, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "green", "green"]}, {"x": 194, "y": 636, "cap": 4, "layers": ["orange", "orange", "orange", "blue"]}, {"x": 276, "y": 636, "cap": 4, "layers": []}, {"x": 359, "y": 636, "cap": 4, "layers": []}]
+[05:51:44] خطة المرحلة 8: 1 حركة (pimc، 109.3 ms)
+[05:52:52] خطة المرحلة 8: 3 حركة (astar، 0.4 ms)
+[05:53:04] شاشة جديدة لم تُرَ من قبل: new_007_unknown.jpg
+[05:53:04] فوز بالمرحلة 8 (unknown): 16 حركة في 80 ث، أدوات -
+[05:53:09] شاشة جديدة لم تُرَ من قبل: new_008_unknown.jpg
+[05:53:24] بداية المرحلة 9: 8 قارورة، سعات [(4, 8)]، مخفي 12
+[05:53:24] حالة المرحلة 9: [{"x": 112, "y": 375, "cap": 4, "layers": ["red", "?", "?", "yellow"]}, {"x": 194, "y": 375, "cap": 4, "layers": ["green", "?", "?", "green"]}, {"x": 277, "y": 375, "cap": 4, "layers": ["yellow", "?", "?", "orange"]}, {"x": 359, "y": 375, "cap": 4, "layers": ["blue", "?", "?", "red"]}, {"x": 112, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "orange"]}, {"x": 194, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "green"]}, {"x": 276, "y": 636, "cap": 4, "layers": []}, {"x": 359, "y": 636, "cap": 4, "layers": []}]
+[05:53:24] خطة المرحلة 9: 1 حركة (pimc، 119.5 ms)
+[05:54:22] خطة المرحلة 9: 7 حركة (astar، 0.6 ms)
+[05:54:53] شاشة جديدة لم تُرَ من قبل: new_009_unknown.jpg
+[05:54:53] فوز بالمرحلة 9 (unknown): 20 حركة في 89 ث، أدوات -
+[05:55:08] شاشة جديدة لم تُرَ من قبل: new_010_unknown.jpg
+[05:55:51] نافذة قبل المرحلة 10 (ميزة جديدة؟): feat_L010.jpg
+[05:55:51] بداية المرحلة 10: 9 قارورة، سعات [(4, 8), (11, 1)]، مخفي 0
+[05:55:51] حالة المرحلة 10: [{"x": 80, "y": 380, "cap": 4, "layers": ["red", "yellow", "red", "yellow"]}, {"x": 157, "y": 380, "cap": 4, "layers": ["blue", "green", "red", "purple"]}, {"x": 236, "y": 493, "cap": 11, "layers": ["purple", "purple", "purple"]}, {"x": 314, "y": 380, "cap": 4, "layers": ["orange", "orange", "purple", "orange"]}, {"x": 392, "y": 380, "cap": 4, "layers": ["green", "purple", "blue", "pink"]}, {"x": 79, "y": 640, "cap": 4, "layers": ["blue", "red", "yellow", "purple"]}, {"x": 157, "y": 640, "cap": 4, "layers": ["blue", "purple", "green", "pink"]}, {"x": 314, "y": 640, "cap": 4, "layers": ["purple", "pink", "orange", "purple"]}, {"x": 392, "y": 640, "cap": 4, "layers": ["pink", "purple", "yellow", "green"]}]
+[05:55:51] خطة المرحلة 10: 26 حركة (astar، 1.2 ms)
+[05:57:49] شاشة جديدة لم تُرَ من قبل: new_011_unknown.jpg
+[05:57:49] فوز بالمرحلة 10 (unknown): 26 حركة في 118 ث، أدوات -
+[05:57:54] شاشة جديدة لم تُرَ من قبل: new_012_unknown.jpg
+[05:58:07] بداية المرحلة 11: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 0
+[05:58:07] حالة المرحلة 11: [{"x": 40, "y": 502, "cap": 10, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["yellow", "purple", "yellow", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["yellow", "blue", "orange", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["pink", "red", "red", "purple"]}, {"x": 432, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "green", "blue", "orange"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["purple", "pink", "pink", "green"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["orange", "yellow", "yellow", "orange"]}, {"x": 352, "y": 636, "cap": 4, "layers": ["orange", "purple", "blue", "red"]}]
+[05:58:07] خطة المرحلة 11: 24 حركة (astar، 1.8 ms)
+[05:59:43] الحالة بعد (9, 1) تختلف عن المتوقَّع؛ إعادة التخطيط
+[05:59:43] خطة المرحلة 11: 3 حركة (astar، 0.5 ms)
+[06:00:04] شاشة جديدة لم تُرَ من قبل: new_013_unknown.jpg
+[06:00:04] فوز بالمرحلة 11 (unknown): 23 حركة في 117 ث، أدوات -
+[06:00:08] شاشة جديدة لم تُرَ من قبل: new_014_unknown.jpg
+[06:00:21] بداية المرحلة 12: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 10
+[06:00:21] حالة المرحلة 12: [{"x": 40, "y": 502, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["purple", "yellow", "red", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "lavender", "purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["blue", "orange", "pink", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 275, "y": 636, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}]
+[06:00:21] خطة المرحلة 12: 1 حركة (pimc، 363.1 ms)
+[06:01:46] خطة المرحلة 12: 8 حركة (astar، 1.0 ms)
+[06:02:22] شاشة جديدة لم تُرَ من قبل: new_015_unknown.jpg
+[06:02:22] فوز بالمرحلة 12 (unknown): 26 حركة في 121 ث، أدوات -
+[06:02:26] شاشة جديدة لم تُرَ من قبل: new_016_unknown.jpg
+[06:02:39] بداية المرحلة 13: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 8
+[06:02:39] حالة المرحلة 13: [{"x": 40, "y": 374, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 118, "y": 374, "cap": 4, "layers": ["yellow", "?", "?", "blue"]}, {"x": 197, "y": 500, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 353, "y": 374, "cap": 4, "layers": ["purple", "?", "?", "green"]}, {"x": 432, "y": 374, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 40, "y": 635, "cap": 4, "layers": ["lavender", "orange", "pink", "yellow"]}, {"x": 118, "y": 635, "cap": 4, "layers": ["lavender", "purple", "yellow", "purple"]}, {"x": 353, "y": 635, "cap": 4, "layers": ["red", "pink", "lavender", "green"]}, {"x": 432, "y": 635, "cap": 4, "layers": ["orange", "pink", "purple", "red"]}]
+[06:02:39] خطة المرحلة 13: 1 حركة (pimc، 106.2 ms)
+[06:03:42] خطة المرحلة 13: 15 حركة (astar، 1.3 ms)
+[06:05:45] شاشة جديدة لم تُرَ من قبل: new_017_unknown.jpg
+[06:05:45] فوز بالمرحلة 13 (unknown): 25 حركة في 186 ث، أدوات -
+[06:05:49] شاشة جديدة لم تُرَ من قبل: new_018_unknown.jpg
+[06:06:02] بداية المرحلة 14: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 15
+[06:06:02] حالة المرحلة 14: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["blue", "blue", "orange"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["green", "orange", "lavender"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["orange", "green", "pink"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["green", "lavender", "red"]}]
+[06:06:02] خطة المرحلة 14: 1 حركة (pimc، 266.3 ms)
+[06:07:31] خطة المرحلة 14: 11 حركة (astar، 4.3 ms)
+[06:08:57] شاشة جديدة لم تُرَ من قبل: new_019_unknown.jpg
+[06:08:57] فوز بالمرحلة 14 (unknown): 29 حركة في 176 ث، أدوات -
+[06:09:02] شاشة جديدة لم تُرَ من قبل: new_020_unknown.jpg
+[06:09:14] شاشة جديدة لم تُرَ من قبل: new_021_unknown.jpg
+[06:09:52] بداية المرحلة 15: 11 قارورة، سعات [(4, 11)]، مخفي 10
+[06:09:52] حالة المرحلة 15: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "purple", "purple"]}, {"x": 197, "y": 375, "cap": 4, "layers": []}, {"x": 275, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 375, "cap": 4, "layers": ["orange", "pink", "blue", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender", "orange", "green", "lavender"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["purple", "?", "?", "red"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["yellow", "?", "?", "blue"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["brown", "?", "?", "orange"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["pink", "?", "?", "blue"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["brown", "?", "?", "pink"]}]
+[06:09:52] خطة المرحلة 15: 1 حركة (pimc، 376.1 ms)
+[06:11:21] خطة المرحلة 15: 10 حركة (astar، 0.9 ms)
+[06:12:03] شاشة جديدة لم تُرَ من قبل: new_022_unknown.jpg
+[06:12:03] فوز بالمرحلة 15 (unknown): 29 حركة في 131 ث، أدوات -
+[06:12:07] شاشة جديدة لم تُرَ من قبل: new_023_unknown.jpg
+[06:12:19] بداية المرحلة 16: 11 قارورة، سعات [(4, 10), (17, 1)]، مخفي 0
+[06:12:19] حالة المرحلة 16: [{"x": 99, "y": 335, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["purple", "orange", "orange", "purple"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["purple", "pink", "red", "orange"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["purple", "blue", "yellow", "lavender"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["green", "purple", "green", "yellow"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["green", "purple", "purple", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["lavender", "lavender", "lavender", "purple"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["blue", "purple", "pink", "pink"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["pink", "red", "purple", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["purple", "orange", "red", "blue"]}]
+[06:12:19] خطة المرحلة 16: 29 حركة (astar، 2.4 ms)
+[06:12:24] خطة المرحلة 16: 28 حركة (astar، 2.5 ms)
+[06:14:28] شاشة جديدة لم تُرَ من قبل: new_024_unknown.jpg
+[06:14:28] فوز بالمرحلة 16 (unknown): 28 حركة في 129 ث، أدوات -
+[06:14:33] شاشة جديدة لم تُرَ من قبل: new_025_unknown.jpg
+[06:14:48] بداية المرحلة 17: 13 قارورة، سعات [(4, 10), (11, 1), (16, 2)]، مخفي 16
+[06:14:48] حالة المرحلة 17: [{"x": 65, "y": 524, "cap": 16, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 437, "cap": 11, "layers": ["green", "lavender", "pink", "orange", "c_21_6_1", "c_23_7_1", "?", "yellow", "?", "red", "red"]}, {"x": 202, "y": 335, "cap": 4, "layers": ["?", "purple", "?", "yellow"]}, {"x": 270, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "purple"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "brown"]}, {"x": 406, "y": 524, "cap": 16, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["brown", "lavender", "orange", "lavender"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["cyan", "lavender", "yellow", "purple"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "lavender", "brown", "red"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["?", "pink", "?", "blue"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["?", "blue", "?", "yellow"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["?", "pink", "?", "lavender"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["?", "brown", "?", "lavender"]}]
+[06:14:49] خطة المرحلة 17: 1 حركة (pimc، 1288.8 ms)
+[06:14:59] خطة المرحلة 17: 1 حركة (reveal، 660.6 ms)
+[06:15:18] خطة المرحلة 17: 1 حركة (reveal، 655.6 ms)
+[06:15:37] الحالة بعد (6, 5) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:15:45] المرحلة 17 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[06:15:45] بداية المرحلة 17: 14 قارورة، سعات [(4, 12), (16, 1), (17, 1)]، مخفي 12
+[06:15:45] حالة المرحلة 17: [{"x": 65, "y": 524, "cap": 16, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "red"]}, {"x": 202, "y": 335, "cap": 4, "layers": ["?", "purple", "orange", "orange"]}, {"x": 270, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "purple"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["?", "yellow", "?", "brown"]}, {"x": 406, "y": 524, "cap": 17, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 133, "y": 540, "cap": 4, "layers": ["green", "lavender", "pink", "orange"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["brown", "lavender"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["cyan", "lavender", "yellow", "purple"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "lavender", "brown", "red"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["?", "pink", "?", "blue"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["?", "blue", "cyan"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["?", "pink", "green"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["?", "brown", "red"]}]
+[06:15:45] خطة المرحلة 17: 1 حركة (pimc، 250.8 ms)
+[06:15:49] الحالة بعد (1, 13) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:17:15] المرحلة 17 أُعيدت من البداية (ذاكرة 6 طبقة مكشوفة)
+[06:17:15] بداية المرحلة 17: 14 قارورة، سعات [(4, 12), (17, 2)]، مخفي 5
+[06:17:15] حالة المرحلة 17: [{"x": 65, "y": 524, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 335, "cap": 4, "layers": ["?", "yellow", "blue", "blue"]}, {"x": 202, "y": 335, "cap": 4, "layers": []}, {"x": 270, "y": 336, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 406, "y": 524, "cap": 17, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 133, "y": 540, "cap": 4, "layers": ["green", "lavender", "pink", "pink"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["brown", "brown"]}, {"x": 270, "y": 540, "cap": 4, "layers": []}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "lavender", "brown", "red"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["?", "pink"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["?", "blue", "cyan", "cyan"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["?", "pink", "green", "green"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["?", "brown", "red", "red"]}]
+[06:17:16] خطة المرحلة 17: 1 حركة (pimc، 314.4 ms)
+[06:18:28] المرحلة 17 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[06:18:28] بداية المرحلة 17: 13 قارورة، سعات [(4, 10), (11, 1), (17, 2)]، مخفي 1
+[06:18:28] حالة المرحلة 17: [{"x": 65, "y": 542, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 133, "y": 437, "cap": 11, "layers": ["green", "green", "green", "c_23_7_1", "c_22_6_1", "c_23_7_1", "red", "red"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 406, "y": 524, "cap": 17, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["green", "lavender"]}, {"x": 134, "y": 744, "cap": 4, "layers": []}, {"x": 202, "y": 744, "cap": 4, "layers": ["cyan"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["?", "brown", "red", "red"]}]
+[06:18:28] خطة المرحلة 17: 1 حركة (pimc، 119.1 ms)
+[06:19:00] خطة المرحلة 17: 6 حركة (astar، 0.7 ms)
+[06:19:14] لا تقدّم بعد الحركة (1, 9) (إخفاق 1)
+[06:19:14] خطة المرحلة 17: 6 حركة (astar، 0.7 ms)
+[06:19:36] لا تقدّم بعد الحركة (1, 7) (إخفاق 1)
+[06:19:36] خطة المرحلة 17: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[06:19:36] المرحلة 17 عالقة (لا خطة): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [green,green,green,c_23_7_1,c_22_6_1,c_23_7_1,red,red,red,red]/10 [pink,pink,pink,pink]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 [brown,brown,brown,brown]/4 []/4 [green]/4 []/4 []/4 [cyan,cyan,cyan,cyan]/4 [blue,blue,blue,blue]/4
+[06:19:36] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[06:19:42] خطة المرحلة 17: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[06:19:42] المرحلة 17 عالقة (لا خطة): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [green,green,green,c_23_7_1,c_22_6_1,c_23_7_1,red,red,red,red]/10 [pink,pink,pink,pink]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 [brown,brown,brown,brown]/4 []/4 [green]/4 []/4 []/4 [cyan,cyan,cyan,cyan]/4 [blue,blue,blue,blue]/4
+[06:19:42] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[06:19:48] خطة المرحلة 17: 0 حركة (progress-none، 0.3 ms) — لا حركة مفيدة
+[06:19:48] المرحلة 17 عالقة (لا خطة): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [green,green,green,c_23_7_1,c_22_6_1,c_23_7_1,red,red,red,red]/10 [pink,pink,pink,pink]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 [brown,brown,brown,brown]/4 []/4 [green]/4 []/4 []/4 [cyan,cyan,cyan,cyan]/4 [blue,blue,blue,blue]/4
+[06:19:48] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[06:19:54] خطة المرحلة 17: 0 حركة (progress-none، 0.4 ms) — لا حركة مفيدة
+[06:19:54] المرحلة 17 عالقة (لا خطة): [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/17 [green,green,green,c_23_7_1,c_22_6_1,c_23_7_1,red,red,red,red]/10 [pink,pink,pink,pink]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4 [lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender,lavender]/17 [brown,brown,brown,brown]/4 []/4 [green]/4 []/4 []/4 [cyan,cyan,cyan,cyan]/4 [blue,blue,blue,blue]/4
+[06:19:54] أداة: قارورة إضافية
+[06:20:07] المرحلة 17 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[06:20:07] بداية المرحلة 17: 15 قارورة، سعات [(4, 13), (17, 2)]، مخفي 0
+[06:20:07] حالة المرحلة 17: [{"x": 41, "y": 540, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 106, "y": 343, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 170, "y": 343, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 236, "y": 343, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 300, "y": 343, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 365, "y": 540, "cap": 17, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 106, "y": 538, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 170, "y": 538, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 300, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 106, "y": 732, "cap": 4, "layers": []}, {"x": 170, "y": 732, "cap": 4, "layers": []}, {"x": 234, "y": 733, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 300, "y": 733, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 430, "y": 732, "cap": 4, "layers": []}]
+[06:20:07] خطة المرحلة 17: 1 حركة (astar، 0.2 ms)
+[06:20:12] شاشة جديدة لم تُرَ من قبل: new_026_unknown.jpg
+[06:20:12] فوز بالمرحلة 17 (unknown): 0 حركة في 5 ث، أدوات -
+[06:20:16] شاشة جديدة لم تُرَ من قبل: new_027_unknown.jpg
+[06:20:30] بداية المرحلة 18: 11 قارورة، سعات [(4, 8), (10, 3)]، مخفي 12
+[06:20:30] حالة المرحلة 18: [{"x": 65, "y": 423, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 134, "y": 418, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["red", "?", "?", "green"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "?", "?", "red"]}, {"x": 406, "y": 336, "cap": 4, "layers": ["orange", "?", "?", "orange"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["red", "?", "?", "lavender"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["yellow", "?", "?", "red"]}, {"x": 406, "y": 540, "cap": 4, "layers": ["yellow", "?", "?", "yellow"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["pink", "orange", "pink", "lavender"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["pink", "green", "lavender", "blue"]}]
+[06:20:30] خطة المرحلة 18: 1 حركة (pimc، 152.5 ms)
+[06:21:48] خطة المرحلة 18: 10 حركة (astar، 1.3 ms)
+[06:22:19] المرحلة 18 أُعيدت من البداية (ذاكرة 12 طبقة مكشوفة)
+[06:22:19] بداية المرحلة 18: 11 قارورة، سعات [(4, 8), (10, 1), (11, 2)]، مخفي 0
+[06:22:19] حالة المرحلة 18: [{"x": 65, "y": 440, "cap": 11, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "c_22_5_6"]}, {"x": 134, "y": 440, "cap": 11, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 202, "y": 418, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 270, "y": 336, "cap": 4, "layers": []}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 270, "y": 542, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 338, "y": 540, "cap": 4, "layers": []}, {"x": 406, "y": 540, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["pink", "orange", "pink", "pink"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["pink", "green", "lavender"]}]
+[06:22:19] خطة المرحلة 18: 6 حركة (astar، 0.7 ms)
+[06:22:34] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[06:22:34] خطة المرحلة 18: 6 حركة (astar، 0.7 ms)
+[06:22:42] الحالة بعد (10, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[06:22:42] خطة المرحلة 18: 5 حركة (astar، 0.4 ms)
+[06:22:56] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[06:22:56] خطة المرحلة 18: 5 حركة (astar، 0.5 ms)
+[06:23:18] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[06:23:18] خطة المرحلة 18: 4 حركة (astar، 0.4 ms)
+[06:23:40] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[06:23:40] خطة المرحلة 18: 3 حركة (astar، 0.3 ms)
+[06:24:02] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[06:24:02] خطة المرحلة 18: 2 حركة (astar، 0.3 ms)
+[06:24:06] شاشة جديدة لم تُرَ من قبل: new_028_unknown.jpg
+[06:24:11] شاشة جديدة لم تُرَ من قبل: new_029_unknown.jpg
+[06:24:52] شاشة جديدة لم تُرَ من قبل: new_030_close.jpg
+[06:28:33] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[06:32:04] تنفيذ أوامر الدفعة 7: shot s7 ; wait 3 ; shot s7b
+[06:32:19] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[06:34:08] تنفيذ أوامر الدفعة 8: update
+[06:34:08] تحديث كود البوت وإعادة تشغيله (246 دقيقة باقية، 16 مرحلة مكتملة)
+[06:34:10] بدء البوت: 246 دقيقة، الفرع claude/quirky-ride-r4oor0
+[06:34:11] التحكم عن بعد: seq الحالي 8 (يُعتبر منفَّذاً)
+[06:34:19] بداية المرحلة 17: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 12
+[06:34:19] حالة المرحلة 17: [{"x": 133, "y": 332, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["red", "purple", "orange", "pink"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["lavender", "green", "pink", "blue"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["pink", "pink", "blue", "blue"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "?", "brown"]}, {"x": 236, "y": 624, "cap": 10, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "?", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["purple", "?", "?", "orange"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["blue", "?", "?", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["green", "?", "?", "brown"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["brown", "?", "?", "orange"]}]
+[06:34:19] خطة المرحلة 17: 1 حركة (pimc، 323.4 ms)
+[06:36:39] خطة المرحلة 17: 5 حركة (astar، 0.8 ms)
+[06:37:15] شاشة جديدة لم تُرَ من قبل: new_031_unknown.jpg
+[06:37:15] فوز بالمرحلة 17 (unknown): 28 حركة في 176 ث، أدوات -
+[06:37:19] شاشة جديدة لم تُرَ من قبل: new_032_unknown.jpg
+[06:37:23] شاشة جديدة لم تُرَ من قبل: new_033_button.jpg
+[06:37:32] شاشة جديدة لم تُرَ من قبل: new_034_unknown.jpg
+[06:37:37] شاشة جديدة لم تُرَ من قبل: new_035_unknown.jpg
+[06:38:06] شاشة جديدة لم تُرَ من قبل: new_036_button.jpg
+[06:38:11] شاشة جديدة لم تُرَ من قبل: new_037_close.jpg
+[06:38:14] نافذة قبل المرحلة 20 (ميزة جديدة؟): feat_L020.jpg
+[06:38:14] بداية المرحلة 20: 3 قارورة، سعات [(4, 3)]، مخفي 0
+[06:38:14] حالة المرحلة 20: [{"x": 40, "y": 506, "cap": 4, "layers": ["red", "red", "yellow", "yellow"]}, {"x": 118, "y": 506, "cap": 4, "layers": ["blue", "blue", "yellow", "yellow"]}, {"x": 197, "y": 506, "cap": 4, "layers": []}]
+[06:38:14] خطة المرحلة 20: 2 حركة (astar، 0.1 ms)
+[06:38:27] المرحلة 20 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:38:27] بداية المرحلة 20: 4 قارورة، سعات [(4, 4)]، مخفي 0
+[06:38:27] حالة المرحلة 20: [{"x": 40, "y": 506, "cap": 4, "layers": ["red", "red"]}, {"x": 118, "y": 506, "cap": 4, "layers": ["blue", "blue"]}, {"x": 196, "y": 506, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 275, "y": 506, "cap": 4, "layers": ["red", "blue", "blue", "red"]}]
+[06:38:27] خطة المرحلة 20: 3 حركة (astar، 0.2 ms)
+[06:38:42] المرحلة 20 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:38:42] بداية المرحلة 20: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[06:38:42] حالة المرحلة 20: [{"x": 40, "y": 506, "cap": 4, "layers": []}, {"x": 118, "y": 506, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 196, "y": 506, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 275, "y": 506, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 353, "y": 506, "cap": 4, "layers": ["green", "purple", "purple", "green"]}, {"x": 432, "y": 506, "cap": 4, "layers": ["purple", "green", "green", "purple"]}]
+[06:38:42] خطة المرحلة 20: 5 حركة (astar، 0.3 ms)
+[06:39:03] فوز بالمرحلة 20 (unknown): 5 حركة في 21 ث، أدوات -
+[06:39:08] شاشة جديدة لم تُرَ من قبل: new_038_unknown.jpg
+[06:39:20] بداية المرحلة 21: 4 قارورة، سعات [(4, 4)]، مخفي 0
+[06:39:20] حالة المرحلة 21: [{"x": 118, "y": 636, "cap": 4, "layers": ["orange", "orange", "red", "purple"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["orange", "red", "purple", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": []}, {"x": 352, "y": 636, "cap": 4, "layers": []}]
+[06:39:20] خطة المرحلة 21: 6 حركة (astar، 0.2 ms)
+[06:39:52] المرحلة 21 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:39:52] بداية المرحلة 21: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[06:39:52] حالة المرحلة 21: [{"x": 275, "y": 375, "cap": 4, "layers": ["blue", "red", "green", "purple"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "purple", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": []}, {"x": 197, "y": 638, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["purple", "purple"]}, {"x": 352, "y": 636, "cap": 4, "layers": ["red", "red"]}]
+[06:39:52] خطة المرحلة 21: 5 حركة (progress، 1.0 ms)
+[06:40:14] خطة المرحلة 21: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[06:40:14] المرحلة 21 عالقة (لا خطة): [blue,red,red,red]/4 [blue]/4 [green]/4 [orange,orange,orange,orange]/4 [purple,purple,purple,purple]/4 [yellow,yellow]/4
+[06:40:14] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[06:40:18] المرحلة 21 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:40:18] بداية المرحلة 21: 8 قارورة، سعات [(4, 8)]، مخفي 0
+[06:40:18] حالة المرحلة 21: [{"x": 118, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["green", "green", "blue", "yellow"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["blue", "red", "red", "red"]}, {"x": 352, "y": 375, "cap": 4, "layers": ["blue"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green"]}, {"x": 197, "y": 638, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 275, "y": 638, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["yellow", "yellow"]}]
+[06:40:18] خطة المرحلة 21: 8 حركة (astar، 0.5 ms)
+[06:40:58] فوز بالمرحلة 21 (unknown): 7 حركة في 40 ث، أدوات -
+[06:41:02] شاشة جديدة لم تُرَ من قبل: new_039_unknown.jpg
+[06:41:15] بداية المرحلة 22: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[06:41:15] حالة المرحلة 22: [{"x": 157, "y": 375, "cap": 4, "layers": ["green", "purple", "green", "orange"]}, {"x": 236, "y": 375, "cap": 4, "layers": ["green", "pink", "orange", "orange"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["blue", "purple", "orange", "red"]}, {"x": 392, "y": 502, "cap": 10, "layers": ["orange", "orange"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["pink", "orange", "orange", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["purple", "yellow", "yellow", "blue"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["purple", "red", "orange", "orange"]}]
+[06:41:15] خطة المرحلة 22: 8 حركة (progress، 17.2 ms)
+[06:41:51] خطة المرحلة 22: 6 حركة (progress، 1.3 ms)
+[06:42:10] المرحلة 22 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:42:10] بداية المرحلة 22: 9 قارورة، سعات [(4, 8), (11, 1)]، مخفي 0
+[06:42:10] حالة المرحلة 22: [{"x": 80, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 157, "y": 375, "cap": 4, "layers": ["green"]}, {"x": 236, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["blue", "purple", "purple"]}, {"x": 392, "y": 521, "cap": 11, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "c_03_6_7"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["yellow", "blue", "pink", "red"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["purple", "yellow", "yellow", "blue"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["purple", "red", "red"]}]
+[06:42:10] خطة المرحلة 22: 13 حركة (astar، 1.0 ms)
+[06:42:42] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:42:42] خطة المرحلة 22: 11 حركة (astar، 0.8 ms)
+[06:43:05] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:43:05] خطة المرحلة 22: 10 حركة (astar، 0.8 ms)
+[06:43:37] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:43:37] خطة المرحلة 22: 8 حركة (astar، 0.7 ms)
+[06:44:08] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:44:08] خطة المرحلة 22: 6 حركة (astar، 0.6 ms)
+[06:44:39] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:44:39] خطة المرحلة 22: 4 حركة (astar، 0.4 ms)
+[06:45:01] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:45:01] خطة المرحلة 22: 3 حركة (astar، 0.5 ms)
+[06:45:23] لا تقدّم بعد الحركة (4, 1) (إخفاق 1)
+[06:45:23] خطة المرحلة 22: 2 حركة (astar، 0.3 ms)
+[06:45:28] شاشة جديدة لم تُرَ من قبل: new_040_unknown.jpg
+[06:45:33] شاشة جديدة لم تُرَ من قبل: new_041_unknown.jpg
+[06:45:41] فوز بالمرحلة 22 (الواجهة تعرض المرحلة 23): 11 حركة في 211 ث، أدوات -
+[06:45:46] بداية المرحلة 23: 6 قارورة، سعات [(4, 4), (10, 2)]، مخفي 0
+[06:45:46] حالة المرحلة 23: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "blue", "red", "red"]}, {"x": 197, "y": 500, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "orange", "blue", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "lavender", "blue", "green"]}]
+[06:45:46] خطة المرحلة 23: 6 حركة (progress، 3.0 ms)
+[06:46:18] المرحلة 23 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:46:18] بداية المرحلة 23: 9 قارورة، سعات [(4, 7), (10, 2)]، مخفي 6
+[06:46:18] حالة المرحلة 23: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "blue", "red", "red"]}, {"x": 197, "y": 521, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "orange"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "lavender", "blue"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "yellow", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "?", "purple"]}]
+[06:46:18] خطة المرحلة 23: 1 حركة (pimc، 13.7 ms)
+[06:47:38] المرحلة 23 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[06:47:38] بداية المرحلة 23: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 2
+[06:47:38] حالة المرحلة 23: [{"x": 40, "y": 375, "cap": 4, "layers": []}, {"x": 118, "y": 375, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 197, "y": 521, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green", "green", "green", "green", "green"]}, {"x": 274, "y": 501, "cap": 10, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "orange", "orange"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "lavender", "lavender", "lavender"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["?", "?", "pink"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["lavender", "blue", "pink", "pink"]}]
+[06:47:39] خطة المرحلة 23: 1 حركة (pimc، 47.1 ms)
+[06:47:47] خطة المرحلة 23: 6 حركة (astar، 0.6 ms)
+[06:48:32] شاشة جديدة لم تُرَ من قبل: new_042_unknown.jpg
+[06:48:32] فوز بالمرحلة 23 (unknown): 6 حركة في 54 ث، أدوات -
+[06:48:37] شاشة جديدة لم تُرَ من قبل: new_043_unknown.jpg
+[06:48:50] بداية المرحلة 24: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[06:48:50] حالة المرحلة 24: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red", "yellow", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "blue", "purple"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "lavender", "lavender", "blue"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender", "purple", "green", "lavender"]}, {"x": 157, "y": 636, "cap": 4, "layers": []}, {"x": 314, "y": 636, "cap": 4, "layers": []}]
+[06:48:50] خطة المرحلة 24: 10 حركة (astar، 0.5 ms)
+[06:49:32] المرحلة 24 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[06:49:32] بداية المرحلة 24: 11 قارورة، سعات [(4, 11)]، مخفي 8
+[06:49:32] حالة المرحلة 24: [{"x": 40, "y": 375, "cap": 4, "layers": ["red", "red", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["?", "green", "?", "yellow"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "orange", "?", "orange"]}, {"x": 352, "y": 375, "cap": 4, "layers": []}, {"x": 432, "y": 376, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["?", "orange", "?", "yellow"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["purple", "purple"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["brown", "brown", "pink", "purple"]}, {"x": 314, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["?", "brown", "?", "pink"]}]
+[06:49:32] خطة المرحلة 24: 1 حركة (pimc، 213.3 ms)
+[06:50:50] خطة المرحلة 24: 1 حركة (astar، 0.4 ms)
+[06:50:58] شاشة جديدة لم تُرَ من قبل: new_044_unknown.jpg
+[06:50:58] فوز بالمرحلة 24 (unknown): 19 حركة في 87 ث، أدوات -
+[06:51:16] شاشة جديدة لم تُرَ من قبل: new_045_unknown.jpg
+[06:51:48] بداية المرحلة 25: 11 قارورة، سعات [(4, 11)]، مخفي 9
+[06:51:48] حالة المرحلة 25: [{"x": 167, "y": 332, "cap": 4, "layers": ["red", "yellow", "blue"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "green", "purple"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["orange", "pink", "blue"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "?", "orange"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "?", "blue"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "?", "green"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "orange", "pink"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["lavender", "purple", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "pink", "green"]}]
+[06:51:49] خطة المرحلة 25: 1 حركة (pimc، 560.8 ms)
+[06:52:34] خطة المرحلة 25: 16 حركة (astar، 1.9 ms)
+[06:53:44] فوز بالمرحلة 25 (unknown): 26 حركة في 116 ث، أدوات -
+[06:53:48] شاشة جديدة لم تُرَ من قبل: new_046_unknown.jpg
+[06:53:57] شاشة جديدة لم تُرَ من قبل: new_047_unknown.jpg
+[06:54:29] شاشة جديدة لم تُرَ من قبل: new_048_close.jpg
+[06:54:32] شاشة جديدة لم تُرَ من قبل: new_049_button.jpg
+[06:54:36] شاشة جديدة لم تُرَ من قبل: new_050_button.jpg
+[06:54:45] بداية المرحلة 26: 7 قارورة، سعات [(4, 7)]، مخفي 4
+[06:54:45] حالة المرحلة 26: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "?", "blue"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["red", "?", "purple"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "red", "purple", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "?", "green"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["blue", "?", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": []}, {"x": 270, "y": 538, "cap": 4, "layers": []}]
+[06:54:45] خطة المرحلة 26: 1 حركة (pimc، 84.0 ms)
+[06:55:20] المرحلة 26 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[06:55:20] بداية المرحلة 26: 9 قارورة، سعات [(4, 9)]، مخفي 5
+[06:55:20] حالة المرحلة 26: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "yellow"]}, {"x": 167, "y": 332, "cap": 4, "layers": []}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "red", "red", "red"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["blue", "?", "orange"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["purple", "purple"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["blue"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "?", "?", "yellow"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["pink", "?", "?", "brown"]}]
+[06:55:20] خطة المرحلة 26: 1 حركة (pimc، 217.7 ms)
+[06:56:08] المرحلة 26 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[06:56:08] بداية المرحلة 26: 12 قارورة، سعات [(4, 12)]، مخفي 7
+[06:56:08] حالة المرحلة 26: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 332, "cap": 4, "layers": []}, {"x": 372, "y": 332, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["pink", "?", "?", "yellow"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "brown", "brown"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["pink", "?", "lavender", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "?", "?", "yellow"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["orange", "?", "?", "brown"]}]
+[06:56:08] خطة المرحلة 26: 1 حركة (pimc، 211.2 ms)
+[06:56:40] خطة المرحلة 26: 8 حركة (astar، 1.0 ms)
+[06:57:18] شاشة جديدة لم تُرَ من قبل: new_051_unknown.jpg
+[06:57:18] فوز بالمرحلة 26 (unknown): 15 حركة في 70 ث، أدوات -
+[06:57:21] تنفيذ أوامر الدفعة 9: update
+[06:57:21] تحديث كود البوت وإعادة تشغيله (223 دقيقة باقية، 24 مرحلة مكتملة)
+[06:57:24] بدء البوت: 222 دقيقة، الفرع claude/quirky-ride-r4oor0
+[06:57:24] التحكم عن بعد: seq الحالي 9 (يُعتبر منفَّذاً)
+[06:57:27] شاشة جديدة لم تُرَ من قبل: new_052_button.jpg
+[06:57:40] شاشة جديدة لم تُرَ من قبل: new_053_unknown.jpg
+[06:58:09] تنفيذ أوامر الدفعة 10: pause_home
+[06:58:09] سيتوقف البوت عند الواجهة الرئيسية التالية (للاستكشاف بالأوامر)
+[06:58:11] شاشة جديدة لم تُرَ من قبل: new_054_button.jpg
+[07:09:35] تنفيذ أوامر الدفعة 11: pause ; wait 2 ; shot c1 ; wait 3 ; shot c2
+[07:10:18] تنفيذ أوامر الدفعة 12: tap 119 600 ; wait 3 ; shot p1 ; wait 2 ; shot p2
+[07:10:58] تنفيذ أوامر الدفعة 13: tap 539 1929 ; wait 3 ; shot q1 ; tap 916 196 ; wait 3 ; shot q2 ; tap 941 174 ; wait 3 ; shot q3
+[07:11:59] تنفيذ أوامر الدفعة 14: tap 538 347 ; wait 3 ; shot m1 ; tap 139 169 ; wait 3 ; shot m2 ; back ; wait 2 ; shot m3 ; back ; wait 2 ; shot m4 ; tap 123 605 ; wait 3 ; shot s1 ; tap 146 174 ; wait 3 ; shot s2 ; back ; wait 2 ; shot s3 ; back ; wait 2 ; shot s4
+[07:13:21] تنفيذ أوامر الدفعة 15: tap 540 1500 ; wait 2 ; tap 939 169 ; wait 2 ; shot n1 ; tap 123 605 ; wait 3 ; shot n2 ; tap 146 174 ; wait 3 ; shot n3 ; tap 540 1500 ; wait 2 ; shot n4 ; tap 941 174 ; wait 2 ; shot n5 ; resume
+[07:13:49] توقف عند الواجهة الرئيسية (pause_home): الأوامر التالية تستكشف، ثم resume
+[07:14:23] تنفيذ أوامر الدفعة 16: resume
+[07:14:30] بداية المرحلة 27: 7 قارورة، سعات [(4, 6), (17, 1)]، مخفي 6
+[07:14:30] حالة المرحلة 27: [{"x": 168, "y": 335, "cap": 4, "layers": ["green", "purple", "green", "orange"]}, {"x": 236, "y": 524, "cap": 17, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["orange", "red", "pink", "blue"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["brown", "purple", "blue", "orange"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["pink", "pink", "blue", "blue"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["?", "?", "?", "pink"]}]
+[07:14:30] خطة المرحلة 27: 1 حركة (pimc، 58.8 ms)
+[07:14:52] المرحلة 27 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[07:14:52] بداية المرحلة 27: 13 قارورة، سعات [(4, 12), (16, 1)]، مخفي 14
+[07:14:52] حالة المرحلة 27: [{"x": 99, "y": 335, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["green", "purple", "green", "orange"]}, {"x": 236, "y": 524, "cap": 16, "layers": ["blue", "blue", "blue", "blue", "blue", "blue", "blue"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["orange", "red", "red"]}, {"x": 372, "y": 335, "cap": 4, "layers": ["lavender", "blue", "brown", "brown"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["brown", "purple", "blue", "orange"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["yellow", "?", "?", "purple"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["brown", "?", "?", "cyan"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 99, "y": 744, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["?", "?", "green"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["?", "?", "?", "red"]}]
+[07:14:52] خطة المرحلة 27: 1 حركة (pimc، 161.3 ms)
+[07:16:28] خطة المرحلة 27: 7 حركة (astar، 1.1 ms)
+[07:16:39] الحالة بعد (9, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:16:39] خطة المرحلة 27: 6 حركة (astar، 1.1 ms)
+[07:17:08] لا تقدّم بعد الحركة (2, 1) (إخفاق 1)
+[07:17:08] خطة المرحلة 27: 4 حركة (astar، 1.1 ms)
+[07:17:29] لا تقدّم بعد الحركة (2, 1) (إخفاق 1)
+[07:17:29] خطة المرحلة 27: 3 حركة (astar، 1.1 ms)
+[07:17:49] لا تقدّم بعد الحركة (2, 1) (إخفاق 1)
+[07:17:49] خطة المرحلة 27: 2 حركة (astar، 0.9 ms)
+[07:17:54] شاشة جديدة لم تُرَ من قبل: new_055_unknown.jpg
+[07:17:58] شاشة جديدة لم تُرَ من قبل: new_056_unknown.jpg
+[07:18:17] فوز بالمرحلة 27 (لغز جديد على الشاشة): 28 حركة في 205 ث، أدوات -
+[07:18:17] بداية المرحلة 28: 11 قارورة، سعات [(4, 9), (16, 2)]، مخفي 9
+[07:18:17] حالة المرحلة 28: [{"x": 99, "y": 524, "cap": 16, "layers": ["red", "red", "red", "red", "red", "red", "red", "red"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["green", "purple", "orange", "purple"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["pink", "blue", "green", "orange"]}, {"x": 372, "y": 524, "cap": 16, "layers": ["purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["purple", "pink", "blue", "purple"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["red", "pink", "red", "green"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["yellow", "blue", "purple", "green"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["red", "orange", "orange", "yellow"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["?", "?", "?", "pink"]}]
+[07:18:17] خطة المرحلة 28: 1 حركة (pimc، 148.7 ms)
+[07:18:35] الحالة بعد (6, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:18:49] الحالة بعد (5, 4) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:19:22] خطة المرحلة 28: 20 حركة (astar، 2.6 ms)
+[07:20:57] فوز بالمرحلة 28 (unknown): 33 حركة في 160 ث، أدوات -
+[07:21:01] شاشة جديدة لم تُرَ من قبل: new_057_unknown.jpg
+[07:21:13] بداية المرحلة 29: 8 قارورة، سعات [(4, 6), (10, 2)]، مخفي 3
+[07:21:13] حالة المرحلة 29: [{"x": 98, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "orange", "cyan", "pink"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "?", "?", "cyan"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["green", "lavender", "orange", "lavender"]}, {"x": 372, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["pink", "cyan", "orange", "lavender"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["yellow", "green", "cyan", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["brown", "red", "pink", "pink"]}]
+[07:21:14] خطة المرحلة 29: 1 حركة (pimc، 580.9 ms)
+[07:22:13] المرحلة 29 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[07:22:13] بداية المرحلة 29: 13 قارورة، سعات [(4, 11), (10, 2)]، مخفي 6
+[07:22:13] حالة المرحلة 29: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "yellow", "blue", "blue"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["green", "blue", "pink", "lavender"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "?", "?", "purple"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["purple", "yellow", "red", "lavender"]}, {"x": 98, "y": 624, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "orange", "orange", "orange"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["?", "?", "brown"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["green"]}, {"x": 372, "y": 624, "cap": 10, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 166, "y": 743, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["yellow", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["brown", "red"]}]
+[07:22:13] خطة المرحلة 29: 1 حركة (pimc، 164.4 ms)
+[07:24:22] خطة المرحلة 29: 8 حركة (astar، 1.1 ms)
+[07:25:08] الحالة بعد (2, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:25:08] خطة المرحلة 29: 2 حركة (astar، 0.6 ms)
+[07:25:16] الحالة بعد (12, 6) تختلف عن المتوقَّع؛ إعادة التخطيط
+[07:25:16] خطة المرحلة 29: 1 حركة (astar، 0.6 ms)
+[07:25:22] فوز بالمرحلة 29 (unknown): 23 حركة في 189 ث، أدوات -
+[07:25:26] شاشة جديدة لم تُرَ من قبل: new_058_unknown.jpg
+[07:25:30] شاشة جديدة لم تُرَ من قبل: new_059_button.jpg
+[07:25:38] شاشة جديدة لم تُرَ من قبل: new_060_close.jpg
+[07:26:17] شاشة جديدة لم تُرَ من قبل: new_061_button.jpg
+[07:26:21] شاشة جديدة لم تُرَ من قبل: new_062_unknown.jpg
+[07:26:40] شاشة جديدة لم تُرَ من قبل: new_063_unknown.jpg
+[07:27:18] شاشة جديدة لم تُرَ من قبل: new_064_unknown.jpg
+[07:27:42] شاشة جديدة لم تُرَ من قبل: new_065_unknown.jpg
+[07:28:43] شاشة جديدة لم تُرَ من قبل: new_066_unknown.jpg
+[07:29:26] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[07:30:06] شاشة التحميل: انتظار بلا نقر
+[07:31:19] بداية المرحلة 30: 10 قارورة، سعات [(4, 10)]، مخفي 11
+[07:31:19] حالة المرحلة 30: [{"x": 79, "y": 375, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 157, "y": 375, "cap": 4, "layers": ["?", "?", "blue"]}, {"x": 236, "y": 375, "cap": 4, "layers": ["?", "?", "?", "orange"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 392, "y": 375, "cap": 4, "layers": ["?", "?", "pink"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["blue", "lavender", "green", "orange"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["blue", "red", "pink", "red"]}, {"x": 236, "y": 636, "cap": 4, "layers": []}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "lavender", "green", "purple"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["pink", "lavender", "purple", "yellow"]}]
+[07:31:19] خطة المرحلة 30: 1 حركة (pimc، 437.0 ms)
+[07:32:20] تنفيذ أوامر الدفعة 17: update
+[07:32:21] تحديث كود البوت وإعادة تشغيله (188 دقيقة باقية، 27 مرحلة مكتملة)
+[07:32:23] بدء البوت: 188 دقيقة، الفرع claude/quirky-ride-r4oor0
+[07:32:23] التحكم عن بعد: seq الحالي 17 (يُعتبر منفَّذاً)
+[07:32:27] بداية المرحلة 30: 10 قارورة، سعات [(4, 10)]، مخفي 2
+[07:32:27] حالة المرحلة 30: [{"x": 80, "y": 375, "cap": 4, "layers": []}, {"x": 157, "y": 376, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 236, "y": 376, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 314, "y": 375, "cap": 4, "layers": ["?", "?", "purple", "purple"]}, {"x": 392, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["blue", "blue"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["blue", "red", "pink", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["pink", "lavender", "purple", "purple"]}]
+[07:32:27] خطة المرحلة 30: 1 حركة (pimc، 24.1 ms)
+[07:32:48] خطة المرحلة 30: 4 حركة (astar، 0.4 ms)
+[07:33:08] شاشة جديدة لم تُرَ من قبل: new_067_unknown.jpg
+[07:33:08] فوز بالمرحلة 30 (unknown): 9 حركة في 41 ث، أدوات -
+[07:33:21] بداية المرحلة 31: 10 قارورة، سعات [(4, 8), (10, 2)]، مخفي 12
+[07:33:21] حالة المرحلة 31: [{"x": 40, "y": 375, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["purple", "lavender", "purple", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["orange", "yellow", "yellow", "purple"]}, {"x": 354, "y": 502, "cap": 10, "layers": ["green", "green", "green", "green", "green", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["green", "pink", "pink", "blue"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["red", "lavender", "yellow", "pink"]}]
+[07:33:21] خطة المرحلة 31: 1 حركة (pimc، 101.2 ms)
+[07:34:52] خطة المرحلة 31: 5 حركة (astar، 0.6 ms)
+[07:35:29] فوز بالمرحلة 31 (unknown): 24 حركة في 129 ث، أدوات -
+[07:35:34] شاشة جديدة لم تُرَ من قبل: new_068_unknown.jpg
+[07:36:21] بداية المرحلة 32: 8 قارورة، سعات [(4, 8)]، مخفي 6
+[07:36:21] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "?", "lavender"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "?", "pink"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "?", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "?", "lavender"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "?", "blue"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "?", "purple"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "orange"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["orange", "orange"]}]
+[07:36:23] خطة المرحلة 32: 1 حركة (pimc، 1281.8 ms)
+[07:36:41] خطة المرحلة 32: 3 حركة (reveal، 26.6 ms)
+[07:36:52] المرحلة 32 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[07:36:52] بداية المرحلة 32: 10 قارورة، سعات [(4, 10)]، مخفي 5
+[07:36:52] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "?", "lavender", "lavender"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "pink", "pink"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "?", "purple"]}, {"x": 40, "y": 636, "cap": 4, "layers": []}, {"x": 118, "y": 636, "cap": 4, "layers": ["yellow", "?", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "purple", "?", "green"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}]
+[07:36:52] خطة المرحلة 32: 1 حركة (pimc، 123.5 ms)
+[07:37:46] المرحلة 32 أُعيدت من البداية (ذاكرة 4 طبقة مكشوفة)
+[07:37:46] بداية المرحلة 32: 12 قارورة، سعات [(4, 12)]، مخفي 4
+[07:37:46] حالة المرحلة 32: [{"x": 40, "y": 375, "cap": 4, "layers": ["brown", "brown"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "red", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 352, "y": 375, "cap": 4, "layers": ["purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 40, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 118, "y": 637, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "purple", "purple"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "green", "?", "red"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "?", "brown"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}]
+[07:37:46] خطة المرحلة 32: 1 حركة (pimc، 63.6 ms)
+[07:38:18] خطة المرحلة 32: 3 حركة (astar، 0.4 ms)
+[07:38:34] شاشة جديدة لم تُرَ من قبل: new_069_unknown.jpg
+[07:38:34] فوز بالمرحلة 32 (unknown): 10 حركة في 48 ث، أدوات -
+[07:38:38] شاشة جديدة لم تُرَ من قبل: new_070_unknown.jpg
+[07:38:51] بداية المرحلة 33: 7 قارورة، سعات [(4, 6), (11, 1)]، مخفي 6
+[07:38:51] حالة المرحلة 33: [{"x": 197, "y": 380, "cap": 4, "layers": ["brown", "orange", "pink", "yellow"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["green", "green", "yellow", "yellow"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["orange", "red", "orange"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["lavender", "yellow", "green"]}]
+[07:38:51] خطة المرحلة 33: 1 حركة (pimc، 184.9 ms)
+[07:39:00] خطة المرحلة 33: 2 حركة (reveal، 13.0 ms)
+[07:39:08] خطة المرحلة 33: 1 حركة (reveal، 13.3 ms)
+[07:39:17] خطة المرحلة 33: 1 حركة (reveal، 14.7 ms)
+[07:39:21] خطة المرحلة 33: 3 حركة (progress، 0.5 ms)
+[07:39:33] خطة المرحلة 33: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[07:39:33] المرحلة 33 عالقة (لا خطة): [brown,orange,pink,pink]/4 [red]/4 [green,green,green,green]/4 [yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow,yellow]/11 [orange,red,orange,orange]/4 [brown,brown]/4 [lavender]/4
+[07:39:33] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[07:39:46] المرحلة 33 أُعيدت من البداية (ذاكرة 6 طبقة مكشوفة)
+[07:39:46] بداية المرحلة 33: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 6
+[07:39:46] حالة المرحلة 33: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 118, "y": 374, "cap": 4, "layers": ["purple", "pink", "blue", "pink"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["brown", "orange", "pink", "pink"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["red"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 432, "y": 512, "cap": 11, "layers": ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["blue", "lavender", "red", "brown"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["orange", "red", "orange", "orange"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["brown", "brown"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["lavender"]}]
+[07:39:46] خطة المرحلة 33: 1 حركة (pimc، 19.3 ms)
+[07:42:11] خطة المرحلة 33: 3 حركة (astar، 0.6 ms)
+[07:42:31] فوز بالمرحلة 33 (unknown): 19 حركة في 165 ث، أدوات -
+[07:42:35] شاشة جديدة لم تُرَ من قبل: new_071_unknown.jpg
+[07:42:51] بداية المرحلة 34: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[07:42:51] حالة المرحلة 34: [{"x": 40, "y": 636, "cap": 4, "layers": ["blue", "red", "cyan", "orange"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "green", "red", "red"]}, {"x": 197, "y": 636, "cap": 4, "layers": []}, {"x": 275, "y": 636, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["orange", "green", "blue", "red"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["blue", "green", "blue", "cyan"]}]
+[07:42:51] خطة المرحلة 34: 12 حركة (astar، 0.5 ms)
+[07:43:32] المرحلة 34 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[07:43:32] بداية المرحلة 34: 9 قارورة، سعات [(4, 9)]، مخفي 4
+[07:43:32] حالة المرحلة 34: [{"x": 40, "y": 375, "cap": 4, "layers": ["?", "pink", "?", "lavender"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["green", "brown", "purple", "lavender"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["?", "orange", "?", "cyan"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "green", "green"]}, {"x": 197, "y": 637, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["orange", "orange"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["blue", "green"]}]
+[07:43:32] خطة المرحلة 34: 1 حركة (reveal، 33.8 ms)
+[07:43:36] خطة المرحلة 34: 3 حركة (reveal، 17.2 ms)
+[07:43:50] المرحلة 34 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[07:43:50] بداية المرحلة 34: 10 قارورة، سعات [(4, 10)]، مخفي 2
+[07:43:50] حالة المرحلة 34: [{"x": 40, "y": 375, "cap": 4, "layers": ["?", "pink", "yellow"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["lavender", "cyan", "orange", "brown"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["green", "brown", "purple", "lavender"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["?", "orange", "yellow"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "green", "green", "green"]}, {"x": 197, "y": 637, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["orange", "orange"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}]
+[07:43:50] خطة المرحلة 34: 1 حركة (pimc، 68.2 ms)
+[07:44:23] المرحلة 34 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[07:44:23] بداية المرحلة 34: 12 قارورة، سعات [(4, 12)]، مخفي 1
+[07:44:23] حالة المرحلة 34: [{"x": 40, "y": 375, "cap": 4, "layers": ["?", "pink", "yellow", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "brown", "pink"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["lavender"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["green", "brown", "brown"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "pink", "lavender", "pink"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["purple", "purple"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "green", "green", "green"]}, {"x": 197, "y": 637, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 275, "y": 637, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 353, "y": 637, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 432, "y": 637, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}]
+[07:44:23] خطة المرحلة 34: 1 حركة (pimc، 18.0 ms)
+[07:44:43] خطة المرحلة 34: 8 حركة (astar، 0.8 ms)
+[07:45:22] شاشة جديدة لم تُرَ من قبل: new_072_unknown.jpg
+[07:45:22] فوز بالمرحلة 34 (unknown): 13 حركة في 59 ث، أدوات -
+[07:45:26] شاشة جديدة لم تُرَ من قبل: new_073_unknown.jpg
+[07:45:43] شاشة جديدة لم تُرَ من قبل: new_074_close.jpg
+[07:45:51] شاشة جديدة لم تُرَ من قبل: new_075_close.jpg
+[07:45:58] بداية المرحلة 35: 11 قارورة، سعات [(4, 11)]، مخفي 12
+[07:45:58] حالة المرحلة 35: [{"x": 98, "y": 332, "cap": 4, "layers": ["pink", "brown", "pink", "red"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["red", "purple", "yellow", "green"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["orange", "pink", "green", "pink"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "blue", "brown"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "?", "?", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "?", "?", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["red", "?", "?", "brown"]}, {"x": 167, "y": 743, "cap": 4, "layers": []}, {"x": 236, "y": 743, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 304, "y": 743, "cap": 4, "layers": []}]
+[07:45:59] خطة المرحلة 35: 1 حركة (pimc، 331.1 ms)
+[07:47:33] خطة المرحلة 35: 6 حركة (astar، 0.8 ms)
+[07:48:02] شاشة جديدة لم تُرَ من قبل: new_076_unknown.jpg
+[07:48:02] فوز بالمرحلة 35 (unknown): 28 حركة في 124 ث، أدوات -
+[07:48:06] شاشة جديدة لم تُرَ من قبل: new_077_unknown.jpg
+[07:48:19] شاشة جديدة لم تُرَ من قبل: new_078_unknown.jpg
+[07:51:21] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[07:52:02] شاشة التحميل: انتظار بلا نقر
+[07:53:05] انتهى التحميل بعد 63 ثانية
+[07:56:05] تنفيذ أوامر الدفعة 18: update
+[07:56:05] تحديث كود البوت وإعادة تشغيله (164 دقيقة باقية، 33 مرحلة مكتملة)
+[07:56:08] بدء البوت: 164 دقيقة، الفرع claude/quirky-ride-r4oor0
+[07:56:08] التحكم عن بعد: seq الحالي 18 (يُعتبر منفَّذاً)
+[07:56:16] سهم تعليم: لمس الهدف (57, 93)
+[07:56:21] شاشة جديدة لم تُرَ من قبل: new_079_close.jpg
+[07:56:29] شاشة جديدة لم تُرَ من قبل: new_080_close.jpg
+[07:56:41] بداية المرحلة 36: 5 قارورة، سعات [(4, 5)]، مخفي 0
+[07:56:41] حالة المرحلة 36: [{"x": 167, "y": 332, "cap": 4, "layers": []}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": []}, {"x": 236, "y": 538, "cap": 4, "layers": ["green", "red", "red", "green"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["red", "red", "green", "green"]}]
+[07:56:41] خطة المرحلة 36: 4 حركة (astar، 1.1 ms)
+[07:57:01] المرحلة 36 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[07:57:01] بداية المرحلة 36: 13 قارورة، سعات [(4, 13)]، مخفي 16
+[07:57:01] حالة المرحلة 36: [{"x": 167, "y": 332, "cap": 4, "layers": []}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": []}, {"x": 98, "y": 538, "cap": 4, "layers": ["lavender", "?", "?", "brown"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["yellow", "?", "?", "yellow"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "?", "?", "blue"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["yellow", "?", "?", "cyan"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["pink", "?", "?", "orange"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "?", "?", "brown"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["pink", "?", "?", "orange"]}, {"x": 373, "y": 743, "cap": 4, "layers": ["purple", "?", "?", "yellow"]}]
+[07:57:01] خطة المرحلة 36: 1 حركة (pimc، 400.8 ms)
+[07:58:14] خطة المرحلة 36: 11 حركة (astar، 1.6 ms)
+[07:59:03] فوز بالمرحلة 36 (unknown): 28 حركة في 123 ث، أدوات -
+[07:59:07] شاشة جديدة لم تُرَ من قبل: new_081_unknown.jpg
+[07:59:07] سهم تعليم: لمس الهدف (85, 476)
+[07:59:19] بداية المرحلة 37: 7 قارورة، سعات [(4, 7)]، مخفي 4
+[07:59:19] حالة المرحلة 37: [{"x": 236, "y": 332, "cap": 4, "layers": ["lavender", "blue", "pink", "yellow"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "purple", "brown", "yellow"]}, {"x": 201, "y": 538, "cap": 4, "layers": []}, {"x": 270, "y": 538, "cap": 4, "layers": []}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "brown", "brown"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["pink", "?", "?", "pink"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender", "?", "?", "brown"]}]
+[07:59:20] خطة المرحلة 37: 1 حركة (pimc، 670.2 ms)
+[07:59:24] خطة المرحلة 37: 1 حركة (reveal، 123.5 ms)
+[07:59:29] خطة المرحلة 37: 4 حركة (reveal، 19.7 ms)
+[07:59:46] خطة المرحلة 37: 5 حركة (reveal، 5.3 ms)
+[07:59:56] المرحلة 37 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[07:59:56] بداية المرحلة 37: 11 قارورة، سعات [(4, 11)]، مخفي 5
+[07:59:56] حالة المرحلة 37: [{"x": 98, "y": 332, "cap": 4, "layers": ["green", "?", "?", "purple"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["green", "green", "red", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["lavender", "blue", "pink", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["purple", "red", "orange", "red"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["blue", "?", "?", "red"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["orange", "purple"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["orange"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["pink", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["lavender", "?", "lavender"]}]
+[07:59:56] خطة المرحلة 37: 1 حركة (pimc، 72.0 ms)
+[08:00:54] خطة المرحلة 37: 6 حركة (astar، 0.8 ms)
+[08:01:20] شاشة جديدة لم تُرَ من قبل: new_082_unknown.jpg
+[08:01:20] فوز بالمرحلة 37 (unknown): 20 حركة في 84 ث، أدوات -
+[08:01:24] شاشة جديدة لم تُرَ من قبل: new_083_unknown.jpg
+[08:01:24] سهم تعليم: لمس الهدف (85, 476)
+[08:01:41] شاشة جديدة لم تُرَ من قبل: new_084_button.jpg
+[08:01:45] شاشة جديدة لم تُرَ من قبل: new_085_unknown.jpg
+[08:02:26] بداية المرحلة 38: 16 قارورة، سعات [(4, 15), (17, 1)]، مخفي 15
+[08:02:26] حالة المرحلة 38: [{"x": 65, "y": 524, "cap": 17, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 134, "y": 335, "cap": 4, "layers": ["?", "?", "?", "cyan"]}, {"x": 202, "y": 335, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 270, "y": 335, "cap": 4, "layers": ["?", "?", "?", "orange"]}, {"x": 338, "y": 335, "cap": 4, "layers": ["?", "?", "?", "c_31_7_3"]}, {"x": 406, "y": 335, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["c_10_7_1", "blue", "lavender"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["lavender", "cyan", "purple"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "lavender", "green"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["blue", "yellow", "lavender"]}, {"x": 406, "y": 540, "cap": 4, "layers": ["red", "pink", "red"]}, {"x": 134, "y": 744, "cap": 4, "layers": ["lavender", "lavender", "red", "yellow"]}, {"x": 202, "y": 744, "cap": 4, "layers": ["brown", "c_10_7_1", "purple", "lavender"]}, {"x": 270, "y": 744, "cap": 4, "layers": ["lavender", "c_10_7_1", "brown", "cyan"]}, {"x": 338, "y": 744, "cap": 4, "layers": ["purple", "blue", "pink", "green"]}, {"x": 406, "y": 744, "cap": 4, "layers": ["purple", "yellow", "brown", "orange"]}]
+[08:02:27] خطة المرحلة 38: 1 حركة (pimc، 1134.8 ms)
+[08:04:58] الحالة بعد (4, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[08:06:39] خطة المرحلة 38: 22 حركة (astar، 10.5 ms)
+[08:09:30] شاشة جديدة لم تُرَ من قبل: new_086_unknown.jpg
+[08:09:30] فوز بالمرحلة 38 (unknown): 49 حركة في 424 ث، أدوات -
+[08:09:34] شاشة جديدة لم تُرَ من قبل: new_087_unknown.jpg
+[08:09:34] سهم تعليم: لمس الهدف (85, 476)
+[08:09:50] شاشة جديدة لم تُرَ من قبل: new_088_button.jpg
+[08:09:54] شاشة جديدة لم تُرَ من قبل: new_089_button.jpg
+[08:09:58] شاشة جديدة لم تُرَ من قبل: new_090_unknown.jpg
+[08:10:03] سهم تعليم: لمس الهدف (472, 493)
+[08:10:07] سهم تعليم: لمس الهدف (472, 493)
+[08:10:12] سهم تعليم: لمس الهدف (472, 493)
+[08:10:16] سهم تعليم: لمس الهدف (472, 493)
+[08:10:21] سهم تعليم: لمس الهدف (472, 493)
+[08:10:25] سهم تعليم: لمس الهدف (472, 493)
+[08:10:30] سهم تعليم: لمس الهدف (472, 493)
+[08:10:34] سهم تعليم: لمس الهدف (472, 493)
+[08:10:39] سهم تعليم: لمس الهدف (472, 493)
+[08:10:43] سهم تعليم: لمس الهدف (472, 493)
+[08:10:47] سهم تعليم: لمس الهدف (472, 493)
+[08:10:52] سهم تعليم: لمس الهدف (472, 493)
+[08:10:56] سهم تعليم: لمس الهدف (472, 493)
+[08:11:01] سهم تعليم: لمس الهدف (472, 493)
+[08:11:05] سهم تعليم: لمس الهدف (472, 493)
+[08:11:09] سهم تعليم: لمس الهدف (472, 493)
+[08:11:14] سهم تعليم: لمس الهدف (472, 493)
+[08:11:18] سهم تعليم: لمس الهدف (472, 493)
+[08:11:23] سهم تعليم: لمس الهدف (472, 493)
+[08:11:27] سهم تعليم: لمس الهدف (472, 493)
+[08:11:32] سهم تعليم: لمس الهدف (472, 493)
+[08:11:36] سهم تعليم: لمس الهدف (472, 493)
+[08:11:41] سهم تعليم: لمس الهدف (472, 493)
+[08:11:45] سهم تعليم: لمس الهدف (472, 493)
+[08:11:50] سهم تعليم: لمس الهدف (472, 493)
+[08:11:55] سهم تعليم: لمس الهدف (472, 493)
+[08:11:59] سهم تعليم: لمس الهدف (472, 493)
+[08:12:03] سهم تعليم: لمس الهدف (472, 493)
+[08:12:08] سهم تعليم: لمس الهدف (472, 493)
+[08:12:12] سهم تعليم: لمس الهدف (472, 493)
+[08:12:17] سهم تعليم: لمس الهدف (472, 493)
+[08:12:21] سهم تعليم: لمس الهدف (472, 493)
+[08:12:25] سهم تعليم: لمس الهدف (472, 493)
+[08:12:30] سهم تعليم: لمس الهدف (472, 493)
+[08:12:34] سهم تعليم: لمس الهدف (472, 493)
+[08:12:39] سهم تعليم: لمس الهدف (472, 493)
+[08:12:43] سهم تعليم: لمس الهدف (472, 493)
+[08:12:47] سهم تعليم: لمس الهدف (472, 493)
+[08:12:52] سهم تعليم: لمس الهدف (472, 493)
+[08:12:57] سهم تعليم: لمس الهدف (472, 493)
+[08:13:01] سهم تعليم: لمس الهدف (472, 493)
+[08:13:06] سهم تعليم: لمس الهدف (472, 493)
+[08:13:10] سهم تعليم: لمس الهدف (472, 493)
+[08:13:15] سهم تعليم: لمس الهدف (472, 493)
+[08:13:19] سهم تعليم: لمس الهدف (472, 493)
+[08:13:24] سهم تعليم: لمس الهدف (472, 493)
+[08:13:29] سهم تعليم: لمس الهدف (472, 493)
+[08:13:31] تنفيذ أوامر الدفعة 19: shot t1 ; update
+[08:13:33] تحديث كود البوت وإعادة تشغيله (146 دقيقة باقية، 36 مرحلة مكتملة)
+[08:13:36] بدء البوت: 146 دقيقة، الفرع claude/quirky-ride-r4oor0
+[08:13:36] التحكم عن بعد: seq الحالي 19 (يُعتبر منفَّذاً)
+[08:13:44] سهم تعليم: لمس الهدف (472, 493)
+[08:13:49] سهم تعليم: لمس الهدف (472, 493)
+[08:13:57] سهم تعليم: لمس الهدف (472, 493)
+[08:16:40] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[08:17:20] شاشة التحميل: انتظار بلا نقر
+[08:18:29] بداية المرحلة 39: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[08:18:29] حالة المرحلة 39: [{"x": 168, "y": 336, "cap": 4, "layers": ["purple", "orange", "pink"]}, {"x": 236, "y": 418, "cap": 10, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 304, "y": 336, "cap": 4, "layers": ["red", "blue", "c_10_7_1"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["orange", "pink", "cyan", "orange"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["yellow", "brown", "red", "orange"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["purple", "purple", "cyan", "pink"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["pink", "pink", "purple", "c_10_7_1"]}]
+[08:18:29] خطة المرحلة 39: 8 حركة (progress، 11.3 ms)
+[08:19:33] المرحلة 39 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[08:19:33] بداية المرحلة 39: 8 قارورة، سعات [(4, 7), (10, 1)]، مخفي 2
+[08:19:33] حالة المرحلة 39: [{"x": 168, "y": 336, "cap": 4, "layers": ["purple"]}, {"x": 236, "y": 418, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 336, "cap": 4, "layers": ["red", "blue", "c_10_7_1"]}, {"x": 100, "y": 540, "cap": 4, "layers": ["?", "blue", "?", "cyan"]}, {"x": 168, "y": 542, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["yellow", "brown", "red"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["purple", "purple", "cyan", "cyan"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["pink", "pink", "purple", "c_10_7_1"]}]
+[08:19:33] خطة المرحلة 39: 3 حركة (reveal، 20.6 ms)
+[08:19:57] خطة المرحلة 39: 4 حركة (progress، 3.9 ms)
+[08:20:19] المرحلة 39 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[08:20:19] بداية المرحلة 39: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 1
+[08:20:19] حالة المرحلة 39: [{"x": 100, "y": 336, "cap": 4, "layers": ["red", "green", "pink", "yellow"]}, {"x": 168, "y": 336, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 236, "y": 418, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 336, "cap": 4, "layers": ["red", "blue", "c_10_7_1", "c_10_7_1"]}, {"x": 100, "y": 540, "cap": 4, "layers": ["?", "blue", "green"]}, {"x": 168, "y": 542, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["yellow", "brown", "red"]}, {"x": 134, "y": 745, "cap": 4, "layers": ["lavender", "brown", "lavender", "yellow"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["pink", "pink"]}, {"x": 338, "y": 745, "cap": 4, "layers": ["yellow", "blue", "c_10_7_1", "red"]}]
+[08:20:19] خطة المرحلة 39: 9 حركة (reveal، 70.6 ms)
+[08:21:33] المرحلة 39 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[08:21:33] بداية المرحلة 39: 12 قارورة، سعات [(4, 11), (10, 1)]، مخفي 3
+[08:21:33] حالة المرحلة 39: [{"x": 100, "y": 336, "cap": 4, "layers": ["red", "green"]}, {"x": 168, "y": 336, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 236, "y": 440, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 336, "cap": 4, "layers": ["red", "blue", "blue"]}, {"x": 100, "y": 540, "cap": 4, "layers": ["?", "blue", "green"]}, {"x": 168, "y": 542, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["yellow", "brown", "red", "red"]}, {"x": 372, "y": 540, "cap": 4, "layers": ["?", "green", "?", "lavender"]}, {"x": 134, "y": 745, "cap": 4, "layers": ["lavender", "brown", "lavender", "yellow"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 338, "y": 745, "cap": 4, "layers": ["yellow", "yellow"]}]
+[08:21:33] خطة المرحلة 39: 1 حركة (pimc، 63.8 ms)
+[08:22:34] المرحلة 39 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[08:22:34] بداية المرحلة 39: 13 قارورة، سعات [(4, 12), (10, 1)]، مخفي 1
+[08:22:34] حالة المرحلة 39: [{"x": 100, "y": 336, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 168, "y": 336, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 236, "y": 440, "cap": 10, "layers": ["pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink", "pink"]}, {"x": 304, "y": 336, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 372, "y": 336, "cap": 4, "layers": ["cyan", "brown", "lavender", "blue"]}, {"x": 100, "y": 540, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 168, "y": 542, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["yellow", "brown"]}, {"x": 372, "y": 540, "cap": 4, "layers": ["?", "green"]}, {"x": 134, "y": 745, "cap": 4, "layers": ["lavender", "brown", "lavender", "lavender"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 746, "cap": 4, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 338, "y": 745, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}]
+[08:22:34] خطة المرحلة 39: 1 حركة (pimc، 17.0 ms)
+[08:22:42] خطة المرحلة 39: 11 حركة (astar، 1.3 ms)
+[08:23:21] الحالة بعد (4, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
+[08:23:21] خطة المرحلة 39: 7 حركة (astar، 1.6 ms)
+[08:23:29] الحالة بعد (4, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[08:23:29] خطة المرحلة 39: 5 حركة (astar، 0.8 ms)
+[08:24:09] شاشة جديدة لم تُرَ من قبل: new_091_unknown.jpg
+[08:24:09] فوز بالمرحلة 39 (unknown): 12 حركة في 95 ث، أدوات -
+[08:24:09] انتهى التحميل بعد 409 ثانية
+[08:24:13] شاشة جديدة لم تُرَ من قبل: new_092_button.jpg
+[08:24:17] شاشة جديدة لم تُرَ من قبل: new_093_unknown.jpg
+[08:24:22] شاشة جديدة لم تُرَ من قبل: new_094_close.jpg
+[08:24:26] شاشة جديدة لم تُرَ من قبل: new_095_unknown.jpg
+[08:24:30] شاشة جديدة لم تُرَ من قبل: new_096_unknown.jpg
+[08:24:59] شاشة جديدة لم تُرَ من قبل: new_097_unknown.jpg
+[08:24:59] سهم تعليم: لمس الهدف (197, 567)
+[08:25:03] شاشة جديدة لم تُرَ من قبل: new_098_unknown.jpg
+[08:25:03] سهم تعليم: لمس الهدف (282, 684)
+[08:25:07] شاشة جديدة لم تُرَ من قبل: new_099_unknown.jpg
+[08:25:07] سهم تعليم: لمس الهدف (236, 580)
+[08:25:19] سهم تعليم: لمس الهدف (236, 580)
+[08:25:32] سهم تعليم: لمس الهدف (236, 580)
+[08:25:44] سهم تعليم: لمس الهدف (236, 580)
+[08:25:56] سهم تعليم: لمس الهدف (236, 580)
+[08:26:08] سهم تعليم: لمس الهدف (236, 580)
+[08:26:21] سهم تعليم: لمس الهدف (236, 580)
+[08:26:25] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[08:26:37] سهم تعليم: لمس الهدف (236, 580)
+[08:26:49] سهم تعليم: لمس الهدف (236, 580)
+[08:27:01] سهم تعليم: لمس الهدف (236, 580)
+[08:27:13] سهم تعليم: لمس الهدف (236, 580)
+[08:27:26] سهم تعليم: لمس الهدف (236, 580)
+[08:27:38] سهم تعليم: لمس الهدف (236, 580)
+[08:27:50] سهم تعليم: لمس الهدف (236, 580)
+[08:28:02] سهم تعليم: لمس الهدف (236, 580)
+[08:28:15] سهم تعليم: لمس الهدف (236, 580)
+[08:28:27] سهم تعليم: لمس الهدف (236, 580)
+[08:28:39] سهم تعليم: لمس الهدف (236, 580)
+[08:28:51] سهم تعليم: لمس الهدف (236, 580)
+[08:28:55] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[08:29:07] سهم تعليم: لمس الهدف (236, 580)
+[08:29:19] سهم تعليم: لمس الهدف (236, 580)
+[08:29:31] سهم تعليم: لمس الهدف (236, 580)
+[08:29:43] سهم تعليم: لمس الهدف (236, 580)
+[08:29:55] سهم تعليم: لمس الهدف (236, 580)
+[08:30:08] سهم تعليم: لمس الهدف (236, 580)
+[08:30:20] سهم تعليم: لمس الهدف (236, 580)
+[08:30:32] سهم تعليم: لمس الهدف (236, 580)
+[08:30:44] سهم تعليم: لمس الهدف (236, 580)
+[08:30:56] سهم تعليم: لمس الهدف (236, 580)
+[08:31:09] سهم تعليم: لمس الهدف (236, 580)
+[08:31:13] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[08:31:25] سهم تعليم: لمس الهدف (236, 580)
+[08:31:27] تنفيذ أوامر الدفعة 20: update
+[08:31:28] تحديث كود البوت وإعادة تشغيله (129 دقيقة باقية، 37 مرحلة مكتملة)
+[08:31:30] بدء البوت: 128 دقيقة، الفرع claude/quirky-ride-r4oor0
+[08:31:31] التحكم عن بعد: seq الحالي 20 (يُعتبر منفَّذاً)
+[08:31:42] صفحة تبويب: العودة إلى الرئيسية
+[08:31:51] صفحة تبويب: العودة إلى الرئيسية
+[08:31:59] صفحة تبويب: العودة إلى الرئيسية
+[08:32:08] شاشة جديدة لم تُرَ من قبل: new_100_close.jpg
+[08:32:15] صفحة تبويب: العودة إلى الرئيسية
+[08:32:24] صفحة تبويب: العودة إلى الرئيسية
+[08:32:33] صفحة تبويب: العودة إلى الرئيسية
+[08:32:49] صفحة تبويب: العودة إلى الرئيسية
+[08:32:57] صفحة تبويب: العودة إلى الرئيسية
+[08:33:06] صفحة تبويب: العودة إلى الرئيسية
+[08:33:23] صفحة تبويب: العودة إلى الرئيسية
+[08:33:32] صفحة تبويب: العودة إلى الرئيسية
+[08:33:41] صفحة تبويب: العودة إلى الرئيسية
+[08:33:57] صفحة تبويب: العودة إلى الرئيسية
+[08:34:05] صفحة تبويب: العودة إلى الرئيسية
+[08:34:14] صفحة تبويب: العودة إلى الرئيسية
+[08:34:30] صفحة تبويب: العودة إلى الرئيسية
+[08:34:39] صفحة تبويب: العودة إلى الرئيسية
+[08:34:48] صفحة تبويب: العودة إلى الرئيسية
+[08:35:05] صفحة تبويب: العودة إلى الرئيسية
+[08:35:13] صفحة تبويب: العودة إلى الرئيسية
+[08:35:22] صفحة تبويب: العودة إلى الرئيسية
+[08:35:30] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[08:35:42] صفحة تبويب: العودة إلى الرئيسية
+[08:35:51] صفحة تبويب: العودة إلى الرئيسية
+[08:36:00] صفحة تبويب: العودة إلى الرئيسية
+[08:36:16] صفحة تبويب: العودة إلى الرئيسية
+[08:36:25] صفحة تبويب: العودة إلى الرئيسية
+[08:36:34] صفحة تبويب: العودة إلى الرئيسية
+[08:36:50] صفحة تبويب: العودة إلى الرئيسية
+[08:36:58] صفحة تبويب: العودة إلى الرئيسية
+[08:37:07] صفحة تبويب: العودة إلى الرئيسية
+[08:37:23] صفحة تبويب: العودة إلى الرئيسية
+[08:37:32] صفحة تبويب: العودة إلى الرئيسية
+[08:37:40] صفحة تبويب: العودة إلى الرئيسية
+[08:37:57] صفحة تبويب: العودة إلى الرئيسية
+[08:38:05] صفحة تبويب: العودة إلى الرئيسية
+[08:38:14] صفحة تبويب: العودة إلى الرئيسية
+[08:38:30] صفحة تبويب: العودة إلى الرئيسية
+[08:38:39] صفحة تبويب: العودة إلى الرئيسية
+[08:38:47] صفحة تبويب: العودة إلى الرئيسية
+[08:38:55] الشاشة نفسها (close) تتكرّر رغم النقر؛ تصعيد
+[08:39:07] صفحة تبويب: العودة إلى الرئيسية
+[08:39:16] صفحة تبويب: العودة إلى الرئيسية
+[08:39:25] صفحة تبويب: العودة إلى الرئيسية
+[08:39:41] صفحة تبويب: العودة إلى الرئيسية
+[08:39:50] صفحة تبويب: العودة إلى الرئيسية
+[08:39:58] صفحة تبويب: العودة إلى الرئيسية
+[08:40:15] صفحة تبويب: العودة إلى الرئيسية
+[08:40:17] تنفيذ أوامر الدفعة 21: update
+[08:40:17] تحديث كود البوت وإعادة تشغيله (120 دقيقة باقية، 37 مرحلة مكتملة)
+[08:40:20] بدء البوت: 120 دقيقة، الفرع claude/quirky-ride-r4oor0
+[08:40:21] التحكم عن بعد: seq الحالي 21 (يُعتبر منفَّذاً)
+[08:40:29] شاشة جديدة لم تُرَ من قبل: new_101_close.jpg
+[08:40:36] نافذة قبل المرحلة 40 (ميزة جديدة؟): feat_L040.jpg
+[08:40:36] بداية المرحلة 40: 12 قارورة، سعات [(4, 12)]، مخفي 0
+[08:40:36] حالة المرحلة 40: [{"x": 197, "y": 199, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_23_6_2"]}, {"x": 274, "y": 199, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_23_6_2"]}, {"x": 40, "y": 375, "cap": 4, "layers": ["pink", "blue", "lavender", "blue"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["orange", "green", "green", "red"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["orange", "pink", "purple", "red"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["lavender", "yellow", "blue", "orange"]}, {"x": 197, "y": 460, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1"]}, {"x": 274, "y": 460, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "pink", "lavender", "purple"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["yellow", "lavender", "purple", "green"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "purple", "pink", "red"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["green", "yellow", "orange", "yellow"]}]
+[08:40:36] خطة المرحلة 40: 8 حركة (progress، 12.5 ms)
+[08:40:52] لا تقدّم بعد الحركة (0, 1) (إخفاق 1)
+[08:40:52] خطة المرحلة 40: 8 حركة (progress، 17.2 ms)
+[08:41:07] لا تقدّم بعد الحركة (1, 0) (إخفاق 2)
+[08:41:07] خطة المرحلة 40: 8 حركة (progress، 14.6 ms)
+[08:41:22] لا تقدّم بعد الحركة (6, 7) (إخفاق 3)
+[08:41:22] المرحلة 40 عالقة (3 إخفاقات متتالية): [c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,red]/4 [orange,pink,purple,red]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1]/4 [blue,pink,lavender,purple]/4 [yellow,lavender,purple,green]/4 [red,purple,pink,red]/4 [green,yellow,orange,yellow]/4
+[08:41:22] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:41:29] خطة المرحلة 40: 8 حركة (progress، 14.6 ms)
+[08:41:44] لا تقدّم بعد الحركة (7, 6) (إخفاق 1)
+[08:41:44] خطة المرحلة 40: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[08:41:44] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,red]/4 [orange,pink,purple,red]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1]/4 [blue,pink,lavender,purple]/4 [yellow,lavender,purple,green]/4 [red,purple,pink,red]/4 [green,yellow,orange,yellow]/4
+[08:41:44] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:41:50] خطة المرحلة 40: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[08:41:50] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,red]/4 [orange,pink,purple,red]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1]/4 [blue,pink,lavender,purple]/4 [yellow,lavender,purple,green]/4 [red,purple,pink,red]/4 [green,yellow,orange,yellow]/4
+[08:41:50] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:41:57] خطة المرحلة 40: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[08:41:57] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,red]/4 [orange,pink,purple,red]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1]/4 [blue,pink,lavender,purple]/4 [yellow,lavender,purple,green]/4 [red,purple,pink,red]/4 [green,yellow,orange,yellow]/4
+[08:41:57] أداة: قارورة إضافية
+[08:42:11] المرحلة 40 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[08:42:11] بداية المرحلة 40: 13 قارورة، سعات [(4, 13)]، مخفي 0
+[08:42:11] حالة المرحلة 40: [{"x": 202, "y": 240, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_23_7_1", "c_23_6_2"]}, {"x": 270, "y": 240, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_23_7_1", "c_23_6_2"]}, {"x": 66, "y": 392, "cap": 4, "layers": ["pink", "blue", "lavender", "blue"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["orange", "green", "green", "red"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["orange", "pink", "purple", "red"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["lavender", "yellow", "blue", "orange"]}, {"x": 168, "y": 467, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "lavender"]}, {"x": 236, "y": 467, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_29_1_4"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["blue", "pink", "lavender", "purple"]}, {"x": 100, "y": 618, "cap": 4, "layers": ["yellow", "lavender", "purple", "green"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["red", "purple", "pink", "red"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["green", "yellow", "orange", "yellow"]}, {"x": 440, "y": 618, "cap": 4, "layers": []}]
+[08:42:11] خطة المرحلة 40: 8 حركة (progress، 71.3 ms)
+[08:42:50] لا تقدّم بعد الحركة (8, 6) (إخفاق 1)
+[08:42:50] القارورة 8 مرفوعة؛ نقرة لإنزالها
+[08:42:57] خطة المرحلة 40: 8 حركة (progress، 52.7 ms)
+[08:43:19] لا تقدّم بعد الحركة (8, 6) (إخفاق 1)
+[08:43:19] القارورة 8 مرفوعة؛ نقرة لإنزالها
+[08:43:26] خطة المرحلة 40: 8 حركة (progress، 56.5 ms)
+[08:43:48] لا تقدّم بعد الحركة (8, 6) (إخفاق 1)
+[08:43:48] القارورة 8 مرفوعة؛ نقرة لإنزالها
+[08:43:55] خطة المرحلة 40: 8 حركة (progress، 58.8 ms)
+[08:44:17] لا تقدّم بعد الحركة (8, 6) (إخفاق 1)
+[08:44:17] القارورة 8 مرفوعة؛ نقرة لإنزالها
+[08:44:24] خطة المرحلة 40: 1 حركة (progress، 21.9 ms)
+[08:44:39] لا تقدّم بعد الحركة (6, 8) (إخفاق 2)
+[08:44:39] القارورة 8 مرفوعة؛ نقرة لإنزالها
+[08:44:45] خطة المرحلة 40: 0 حركة (progress-none، 17.1 ms) — لا حركة مفيدة
+[08:44:45] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,green]/4 [orange,pink,purple]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1,lavender]/4 [c_23_7_1,c_23_7_1,c_29_1_4]/4 [blue,pink,lavender]/4 [yellow,lavender,purple,purple]/4 [red,purple,pink]/4 [green,yellow,orange,yellow]/4 [red,red,red]/4
+[08:44:45] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:44:51] خطة المرحلة 40: 0 حركة (progress-none، 15.2 ms) — لا حركة مفيدة
+[08:44:51] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,green]/4 [orange,pink,purple]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1,lavender]/4 [c_23_7_1,c_23_7_1,c_29_1_4]/4 [blue,pink,lavender]/4 [yellow,lavender,purple,purple]/4 [red,purple,pink]/4 [green,yellow,orange,yellow]/4 [red,red,red]/4
+[08:44:51] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:44:58] خطة المرحلة 40: 0 حركة (progress-none، 14.3 ms) — لا حركة مفيدة
+[08:44:58] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,green]/4 [orange,pink,purple]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1,lavender]/4 [c_23_7_1,c_23_7_1,c_29_1_4]/4 [blue,pink,lavender]/4 [yellow,lavender,purple,purple]/4 [red,purple,pink]/4 [green,yellow,orange,yellow]/4 [red,red,red]/4
+[08:44:58] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:45:04] خطة المرحلة 40: 0 حركة (progress-none، 13.5 ms) — لا حركة مفيدة
+[08:45:04] المرحلة 40 عالقة (لا خطة): [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,green]/4 [orange,pink,purple]/4 [lavender,yellow,blue,orange]/4 [c_23_7_1,c_23_7_1,lavender]/4 [c_23_7_1,c_23_7_1,c_29_1_4]/4 [blue,pink,lavender]/4 [yellow,lavender,purple,purple]/4 [red,purple,pink]/4 [green,yellow,orange,yellow]/4 [red,red,red]/4
+[08:45:04] أداة: قارورة إضافية
+[08:45:18] المرحلة 40 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[08:45:18] بداية المرحلة 40: 14 قارورة، سعات [(4, 14)]، مخفي 0
+[08:45:18] حالة المرحلة 40: [{"x": 168, "y": 239, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_23_7_1"]}, {"x": 236, "y": 239, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1", "c_23_7_1", "c_23_6_2"]}, {"x": 32, "y": 392, "cap": 4, "layers": ["pink", "blue", "lavender", "blue"]}, {"x": 100, "y": 392, "cap": 4, "layers": ["orange", "green", "green", "green"]}, {"x": 304, "y": 392, "cap": 4, "layers": ["orange", "pink", "purple"]}, {"x": 372, "y": 392, "cap": 4, "layers": ["lavender", "yellow", "blue", "orange"]}, {"x": 440, "y": 392, "cap": 4, "layers": []}, {"x": 168, "y": 466, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1"]}, {"x": 236, "y": 466, "cap": 4, "layers": ["c_23_7_1", "c_23_7_1"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["blue", "pink", "lavender"]}, {"x": 100, "y": 618, "cap": 4, "layers": ["yellow", "lavender", "purple", "purple"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["red", "purple", "pink"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["green", "yellow", "orange", "yellow"]}, {"x": 440, "y": 618, "cap": 4, "layers": ["red", "red", "red"]}]
+[08:45:19] خطة المرحلة 40: 8 حركة (progress، 1610.4 ms)
+[08:45:34] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:45:36] خطة المرحلة 40: 8 حركة (progress، 1613.2 ms)
+[08:45:49] لا تقدّم بعد الحركة (8, 7) (إخفاق 2)
+[08:45:51] خطة المرحلة 40: 8 حركة (progress، 1618.3 ms)
+[08:46:13] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:46:15] خطة المرحلة 40: 8 حركة (progress، 1629.3 ms)
+[08:46:28] لا تقدّم بعد الحركة (8, 7) (إخفاق 2)
+[08:46:30] خطة المرحلة 40: 8 حركة (progress، 1621.2 ms)
+[08:46:44] لا تقدّم بعد الحركة (1, 6) (إخفاق 3)
+[08:46:44] المرحلة 40 عالقة (3 إخفاقات متتالية): [c_23_7_1,c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1,c_23_7_1,c_23_6_2]/4 [pink,blue,lavender,blue]/4 [orange,green,green,green]/4 [orange,pink,purple,purple]/4 [lavender,yellow,blue,orange]/4 []/4 [c_23_7_1,c_23_7_1]/4 [c_23_7_1,c_23_7_1]/4 [blue,pink,lavender]/4 [yellow,lavender,purple]/4 [red,purple,pink]/4 [green,yellow,orange,yellow]/4 [red,red,red]/4
+[08:46:44] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[08:46:52] خطة المرحلة 40: 8 حركة (progress، 1622.6 ms)
+[08:47:13] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:47:15] خطة المرحلة 40: 8 حركة (progress، 1660.7 ms)
+[08:48:09] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:48:10] خطة المرحلة 40: 8 حركة (progress، 1614.2 ms)
+[08:48:32] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:48:34] خطة المرحلة 40: 8 حركة (progress، 1633.3 ms)
+[08:48:56] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:48:57] خطة المرحلة 40: 8 حركة (progress، 1625.6 ms)
+[08:49:19] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:49:20] خطة المرحلة 40: 8 حركة (progress، 1157.1 ms)
+[08:49:41] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:49:42] خطة المرحلة 40: 8 حركة (progress، 1008.6 ms)
+[08:50:04] لا تقدّم بعد الحركة (1, 11) (إخفاق 1)
+[08:50:05] خطة المرحلة 40: 8 حركة (progress، 711.1 ms)
+[08:50:27] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:50:28] خطة المرحلة 40: 8 حركة (progress، 652.1 ms)
+[08:50:57] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:50:57] خطة المرحلة 40: 8 حركة (progress، 93.0 ms)
+[08:51:18] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:51:18] خطة المرحلة 40: 8 حركة (progress، 49.8 ms)
+[08:51:55] لا تقدّم بعد الحركة (1, 3) (إخفاق 1)
+[08:51:55] خطة المرحلة 40: 5 حركة (progress، 8.7 ms)
+[08:52:16] لا تقدّم بعد الحركة (7, 8) (إخفاق 1)
+[08:52:16] خطة المرحلة 40: 4 حركة (progress، 4.3 ms)
+[08:52:23] تنفيذ أوامر الدفعة 22: update
+[08:52:24] تحديث كود البوت وإعادة تشغيله (108 دقيقة باقية، 37 مرحلة مكتملة)
+[08:52:26] بدء البوت: 108 دقيقة، الفرع claude/quirky-ride-r4oor0
+[08:52:26] التحكم عن بعد: seq الحالي 22 (يُعتبر منفَّذاً)
+[08:52:30] بداية المرحلة 40: 14 قارورة، سعات [(4, 14)]، مخفي 0
+[08:52:30] حالة المرحلة 40: [{"x": 32, "y": 392, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 100, "y": 392, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 168, "y": 390, "cap": 4, "layers": []}, {"x": 236, "y": 390, "cap": 4, "layers": []}, {"x": 304, "y": 392, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 372, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 440, "y": 392, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["blue"]}, {"x": 100, "y": 620, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 168, "y": 618, "cap": 4, "layers": []}, {"x": 236, "y": 618, "cap": 4, "layers": []}, {"x": 304, "y": 618, "cap": 4, "layers": []}, {"x": 372, "y": 620, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 440, "y": 620, "cap": 4, "layers": ["red", "red", "red", "red"]}]
+[08:52:30] خطة المرحلة 40: 1 حركة (astar، 0.2 ms)
+[08:52:39] شاشة جديدة لم تُرَ من قبل: new_102_unknown.jpg
+[08:52:39] فوز بالمرحلة 40 (unknown): 1 حركة في 9 ث، أدوات -
+[08:52:59] شاشة جديدة لم تُرَ من قبل: new_103_button.jpg
+[09:07:01] تنفيذ أوامر الدفعة 23: pause ; shot loop_a ; wait 1 ; shot loop_b ; wait 1 ; shot loop_c ; tap 236 786 ; wait 2 ; shot loop_d ; resume
+[09:08:04] تنفيذ أوامر الدفعة 24: pause ; tap 918 192 ; wait 2 ; shot p1 ; tap 941 174 ; wait 2 ; shot p2 ; wait 3 ; shot p3 ; resume
+[09:08:28] بداية المرحلة 41: 12 قارورة، سعات [(4, 12)]، مخفي 8
+[09:08:28] حالة المرحلة 41: [{"x": 40, "y": 375, "cap": 4, "layers": ["purple", "purple"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["?", "?", "pink"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "?", "yellow"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "orange", "pink", "red"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "brown", "lavender", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "blue"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["brown", "orange", "brown", "orange"]}]
+[09:08:28] خطة المرحلة 41: 1 حركة (pimc، 233.9 ms)
+[09:08:54] تنفيذ أوامر الدفعة 25: pause ; back ; wait 2 ; shot q0 ; tap 539 1815 ; wait 1 ; shot q1 ; wait 2 ; shot q2 ; wait 3 ; shot q3 ; swipe 540 1900 540 900 400 ; wait 2 ; shot q4
+[09:12:09] تنفيذ أوامر الدفعة 26: resume ; update
+[09:12:09] تحديث كود البوت وإعادة تشغيله (88 دقيقة باقية، 38 مرحلة مكتملة)
+[09:12:12] بدء البوت: 88 دقيقة، الفرع claude/quirky-ride-r4oor0
+[09:12:12] التحكم عن بعد: seq الحالي 26 (يُعتبر منفَّذاً)
+[09:12:16] بداية المرحلة 41: 12 قارورة، سعات [(4, 12)]، مخفي 3
+[09:12:16] حالة المرحلة 41: [{"x": 40, "y": 375, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["blue", "blue"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["green", "green"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["blue", "orange", "pink"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["green", "brown", "lavender", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "red", "red", "red"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "yellow", "blue", "green"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["brown", "orange", "brown", "orange"]}]
+[09:12:16] خطة المرحلة 41: 1 حركة (pimc، 136.5 ms)
+[09:12:42] لا تقدّم بعد الحركة (5, 7) (إخفاق 1)
+[09:12:42] القارورة 7 مرفوعة؛ نقرة لإنزالها
+[09:12:59] لا تقدّم بعد الحركة (0, 3) (إخفاق 1)
+[09:12:59] القارورة 3 مرفوعة؛ نقرة لإنزالها
+[09:13:11] خطة المرحلة 41: 11 حركة (astar، 1.1 ms)
+[09:14:01] فوز بالمرحلة 41 (unknown): 19 حركة في 105 ث، أدوات -
+[09:14:17] بداية المرحلة 42: 7 قارورة، سعات [(4, 7)]، مخفي 2
+[09:14:17] حالة المرحلة 42: [{"x": 118, "y": 375, "cap": 4, "layers": ["red", "?", "lavender"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["brown", "?", "yellow"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["orange", "green", "purple"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["pink", "blue", "blue", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["red", "red"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["blue", "pink", "orange"]}]
+[09:14:17] خطة المرحلة 42: 1 حركة (reveal، 6.5 ms)
+[09:14:21] خطة المرحلة 42: 1 حركة (reveal، 4.6 ms)
+[09:14:26] خطة المرحلة 42: 3 حركة (progress، 1.2 ms)
+[09:14:36] المرحلة 42 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[09:14:36] بداية المرحلة 42: 9 قارورة، سعات [(4, 9)]، مخفي 3
+[09:14:36] حالة المرحلة 42: [{"x": 118, "y": 375, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["blue", "brown", "purple", "purple"]}, {"x": 352, "y": 375, "cap": 4, "layers": ["brown"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["orange", "green", "purple"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["pink", "blue", "blue", "yellow"]}, {"x": 314, "y": 637, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["blue", "pink", "orange"]}]
+[09:14:36] خطة المرحلة 42: 1 حركة (progress، 10.2 ms)
+[09:14:40] خطة المرحلة 42: 0 حركة (progress-none، 1.8 ms) — لا حركة مفيدة
+[09:14:40] المرحلة 42 عالقة (لا خطة): [lavender,lavender]/4 [blue,brown,purple,purple]/4 [brown]/4 [?,?,?,pink]/4 [orange,green,purple]/4 [yellow,yellow,yellow,yellow]/4 [pink,blue,blue]/4 [red,red,red,red]/4 [blue,pink,orange]/4
+[09:14:40] أداة: قارورة إضافية
+[09:14:46] المرحلة 42 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[09:14:46] بداية المرحلة 42: 12 قارورة، سعات [(4, 12)]، مخفي 6
+[09:14:46] حالة المرحلة 42: [{"x": 40, "y": 375, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 196, "y": 375, "cap": 4, "layers": ["green", "green", "lavender", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["blue", "brown", "purple", "purple"]}, {"x": 352, "y": 375, "cap": 4, "layers": ["brown"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["orange", "green", "purple"]}, {"x": 118, "y": 637, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["pink", "blue", "blue"]}, {"x": 275, "y": 637, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["blue", "pink", "orange"]}, {"x": 432, "y": 636, "cap": 4, "layers": []}]
+[09:14:47] خطة المرحلة 42: 1 حركة (pimc، 281.7 ms)
+[09:15:34] خطة المرحلة 42: 8 حركة (astar، 1.1 ms)
+[09:16:07] فوز بالمرحلة 42 (unknown): 19 حركة في 80 ث، أدوات -
+[09:16:11] شاشة جديدة لم تُرَ من قبل: new_104_unknown.jpg
+[09:16:11] سهم تعليم: لمس الهدف (85, 476)
+[09:16:23] بداية المرحلة 43: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 12
+[09:16:23] حالة المرحلة 43: [{"x": 40, "y": 502, "cap": 10, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["purple", "yellow", "yellow", "lavender"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "?", "?", "blue"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["pink", "red", "orange", "pink"]}, {"x": 431, "y": 375, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "brown", "green", "orange"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["pink", "pink", "purple", "yellow"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["green", "green", "green"]}]
+[09:16:23] خطة المرحلة 43: 1 حركة (pimc، 59.9 ms)
+[09:17:47] خطة المرحلة 43: 6 حركة (astar، 0.8 ms)
+[09:18:32] فوز بالمرحلة 43 (unknown): 23 حركة في 129 ث، أدوات -
+[09:18:36] شاشة جديدة لم تُرَ من قبل: new_105_unknown.jpg
+[09:18:36] سهم تعليم: لمس الهدف (85, 476)
+[09:18:48] بداية المرحلة 44: 8 قارورة، سعات [(4, 8)]، مخفي 2
+[09:18:48] حالة المرحلة 44: [{"x": 40, "y": 375, "cap": 4, "layers": ["lavender", "lavender", "yellow", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["cyan", "pink", "yellow", "brown"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["orange", "blue", "blue", "purple"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["cyan", "lavender", "purple", "red"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": []}, {"x": 353, "y": 636, "cap": 4, "layers": ["red", "?", "pink"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["green", "?", "brown"]}]
+[09:18:48] خطة المرحلة 44: 1 حركة (reveal، 105.6 ms)
+[09:18:53] خطة المرحلة 44: 5 حركة (progress، 11.1 ms)
+[09:19:13] خطة المرحلة 44: 0 حركة (progress-none، 1.9 ms) — لا حركة مفيدة
+[09:19:13] المرحلة 44 عالقة (لا خطة): [lavender,lavender,yellow,yellow]/4 [cyan,pink,yellow]/4 [orange,blue,blue,blue]/4 [cyan,lavender]/4 [purple,purple,purple,purple]/4 [pink]/4 [red,red]/4 [green,?,brown,brown]/4
+[09:19:13] أداة: قارورة إضافية
+[09:19:20] المرحلة 44 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[09:19:20] بداية المرحلة 44: 12 قارورة، سعات [(4, 12)]، مخفي 5
+[09:19:20] حالة المرحلة 44: [{"x": 66, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "yellow", "yellow"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["cyan", "pink", "yellow"]}, {"x": 202, "y": 392, "cap": 4, "layers": ["orange", "blue", "blue", "blue"]}, {"x": 270, "y": 392, "cap": 4, "layers": ["cyan", "lavender"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["pink"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["?", "red", "?", "red"]}, {"x": 168, "y": 618, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 236, "y": 618, "cap": 4, "layers": ["?", "green", "?", "brown"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["red", "red"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["green", "?", "brown", "brown"]}, {"x": 440, "y": 618, "cap": 4, "layers": []}]
+[09:19:20] خطة المرحلة 44: 1 حركة (pimc، 315.2 ms)
+[09:19:29] تنفيذ أوامر الدفعة 27: update
+[09:19:29] تحديث كود البوت وإعادة تشغيله (81 دقيقة باقية، 41 مرحلة مكتملة)
+[09:19:31] بدء البوت: 81 دقيقة، الفرع claude/quirky-ride-r4oor0
+[09:19:32] التحكم عن بعد: seq الحالي 27 (يُعتبر منفَّذاً)
+[09:19:36] بداية المرحلة 44: 12 قارورة، سعات [(4, 12)]، مخفي 3
+[09:19:36] حالة المرحلة 44: [{"x": 66, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "yellow", "yellow"]}, {"x": 134, "y": 392, "cap": 4, "layers": ["cyan", "pink", "yellow"]}, {"x": 202, "y": 392, "cap": 4, "layers": ["orange", "blue", "blue", "blue"]}, {"x": 270, "y": 392, "cap": 4, "layers": ["cyan", "lavender"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["pink"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["?", "red", "brown", "brown"]}, {"x": 168, "y": 618, "cap": 4, "layers": ["blue", "orange", "pink", "pink"]}, {"x": 236, "y": 618, "cap": 4, "layers": ["?", "green", "orange"]}, {"x": 304, "y": 618, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["green", "?", "brown", "brown"]}, {"x": 440, "y": 618, "cap": 4, "layers": []}]
+[09:19:36] خطة المرحلة 44: 1 حركة (pimc، 234.2 ms)
+[09:20:06] خطة المرحلة 44: 11 حركة (astar، 1.2 ms)
+[09:20:38] المرحلة 44 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[09:20:38] بداية المرحلة 44: 13 قارورة، سعات [(4, 13)]، مخفي 0
+[09:20:38] حالة المرحلة 44: [{"x": 66, "y": 392, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 134, "y": 392, "cap": 4, "layers": []}, {"x": 202, "y": 392, "cap": 4, "layers": ["orange", "blue", "blue", "blue"]}, {"x": 270, "y": 392, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 338, "y": 392, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 406, "y": 392, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 32, "y": 618, "cap": 4, "layers": ["green"]}, {"x": 100, "y": 618, "cap": 4, "layers": ["green", "yellow", "green", "lavender"]}, {"x": 168, "y": 618, "cap": 4, "layers": ["blue", "orange", "orange", "orange"]}, {"x": 236, "y": 618, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 304, "y": 620, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 372, "y": 618, "cap": 4, "layers": ["green"]}, {"x": 440, "y": 620, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}]
+[09:20:38] خطة المرحلة 44: 8 حركة (astar، 0.8 ms)
+[09:21:14] شاشة جديدة لم تُرَ من قبل: new_106_unknown.jpg
+[09:21:14] فوز بالمرحلة 44 (unknown): 8 حركة في 36 ث، أدوات -
+[09:21:18] شاشة جديدة لم تُرَ من قبل: new_107_unknown.jpg
+[09:21:18] سهم تعليم: لمس الهدف (85, 476)
+[09:21:34] شاشة جديدة لم تُرَ من قبل: new_108_unknown.jpg
+[09:21:38] سهم تعليم: لمس الهدف (302, 234)
+[09:21:47] بداية المرحلة 45: 11 قارورة، سعات [(4, 11)]، مخفي 10
+[09:21:47] حالة المرحلة 45: [{"x": 98, "y": 332, "cap": 4, "layers": ["lavender", "?", "red"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["brown", "?", "blue"]}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": ["pink", "?", "lavender"]}, {"x": 373, "y": 332, "cap": 4, "layers": ["purple", "?", "yellow"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["purple", "lavender", "yellow", "red"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["green", "red", "purple", "yellow"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["blue", "orange", "pink", "red"]}, {"x": 338, "y": 538, "cap": 4, "layers": ["green", "blue", "green", "blue"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["?", "?", "?", "orange"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["?", "?", "?", "yellow"]}]
+[09:21:47] خطة المرحلة 45: 1 حركة (pimc، 480.4 ms)
+[09:23:51] خطة المرحلة 45: 4 حركة (astar، 0.7 ms)
+[09:24:09] فوز بالمرحلة 45 (unknown): 31 حركة في 143 ث، أدوات -
+[09:24:13] شاشة جديدة لم تُرَ من قبل: new_109_unknown.jpg
+[09:24:13] سهم تعليم: لمس الهدف (85, 476)
+[09:24:34] صفحة تبويب: العودة إلى الرئيسية
+[09:24:42] بداية المرحلة 46: 7 قارورة، سعات [(4, 7)]، مخفي 0
+[09:24:42] حالة المرحلة 46: [{"x": 201, "y": 538, "cap": 4, "layers": []}, {"x": 270, "y": 538, "cap": 4, "layers": []}, {"x": 98, "y": 743, "cap": 4, "layers": ["blue", "purple", "red", "purple"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple", "yellow", "brown", "lavender"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["green", "yellow", "lavender", "lavender"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "purple", "lavender", "brown"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "yellow", "blue", "red"]}]
+[09:24:42] خطة المرحلة 46: 15 حركة (astar، 0.7 ms)
+[09:25:20] فوز بالمرحلة 46 (لغز جديد على الشاشة): 7 حركة في 38 ث، أدوات -
+[09:25:20] بداية المرحلة 45: 11 قارورة، سعات [(4, 11)]، مخفي 8
+[09:25:20] حالة المرحلة 45: [{"x": 133, "y": 332, "cap": 4, "layers": ["green", "?", "?", "pink"]}, {"x": 201, "y": 332, "cap": 4, "layers": ["brown", "?", "?", "green"]}, {"x": 270, "y": 332, "cap": 4, "layers": ["pink", "?", "?", "red"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["orange", "?", "?", "blue"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 270, "y": 538, "cap": 4, "layers": ["brown", "brown"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["blue", "purple", "red"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["green", "yellow", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["blue", "yellow", "blue", "red"]}]
+[09:25:20] خطة المرحلة 45: 1 حركة (pimc، 152.3 ms)
+[09:26:04] خطة المرحلة 45: 11 حركة (astar، 1.1 ms)
+[09:26:54] شاشة جديدة لم تُرَ من قبل: new_110_unknown.jpg
+[09:26:54] فوز بالمرحلة 45 (unknown): 21 حركة في 94 ث، أدوات -
+[09:27:11] بداية المرحلة 47: 13 قارورة، سعات [(4, 12), (17, 1)]، مخفي 12
+[09:27:11] حالة المرحلة 47: [{"x": 99, "y": 335, "cap": 4, "layers": ["pink", "purple", "yellow", "yellow"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["pink", "green", "brown", "cyan"]}, {"x": 236, "y": 523, "cap": 17, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["lavender", "orange", "yellow", "red"]}, {"x": 372, "y": 334, "cap": 4, "layers": ["purple", "orange", "green", "yellow"]}, {"x": 99, "y": 539, "cap": 4, "layers": ["cyan", "brown", "blue", "pink"]}, {"x": 168, "y": 539, "cap": 4, "layers": ["green", "red", "blue", "brown"]}, {"x": 304, "y": 539, "cap": 4, "layers": ["blue", "orange", "pink", "cyan"]}, {"x": 372, "y": 539, "cap": 4, "layers": ["lavender", "blue", "lavender", "brown"]}, {"x": 99, "y": 744, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["?", "?", "?", "cyan"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 372, "y": 744, "cap": 4, "layers": ["?", "?", "?", "purple"]}]
+[09:27:11] خطة المرحلة 47: 1 حركة (pimc، 108.3 ms)
+[09:28:15] خطة المرحلة 47: 24 حركة (astar، 2.5 ms)
+[09:29:15] الحالة بعد (7, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[09:29:15] خطة المرحلة 47: 11 حركة (astar، 1.8 ms)
+[09:29:19] الحالة بعد (6, 7) تختلف عن المتوقَّع؛ إعادة التخطيط
+[09:29:19] خطة المرحلة 47: 10 حركة (astar، 1.2 ms)
+[09:29:40] الحالة بعد (5, 9) تختلف عن المتوقَّع؛ إعادة التخطيط
+[09:29:40] خطة المرحلة 47: 5 حركة (astar، 0.9 ms)
+[09:30:07] شاشة جديدة لم تُرَ من قبل: new_111_unknown.jpg
+[09:30:07] فوز بالمرحلة 47 (unknown): 38 حركة في 176 ث، أدوات -
+[09:30:21] بداية المرحلة 48: 6 قارورة، سعات [(4, 6)]، مخفي 2
+[09:30:21] حالة المرحلة 48: [{"x": 167, "y": 537, "cap": 4, "layers": ["red", "red"]}, {"x": 236, "y": 537, "cap": 4, "layers": ["blue", "blue"]}, {"x": 304, "y": 537, "cap": 4, "layers": ["pink", "pink"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["blue", "?", "red"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "brown"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "?", "lavender"]}]
+[09:30:21] خطة المرحلة 48: 1 حركة (pimc، 3.1 ms)
+[09:30:36] المرحلة 48 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[09:30:36] بداية المرحلة 48: 9 قارورة، سعات [(4, 9)]، مخفي 9
+[09:30:36] حالة المرحلة 48: [{"x": 236, "y": 332, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 167, "y": 537, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 304, "y": 537, "cap": 4, "layers": ["pink", "pink"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "?", "?", "lavender"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "brown"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["red", "pink"]}]
+[09:30:36] خطة المرحلة 48: 1 حركة (pimc، 21.6 ms)
+[09:31:00] المرحلة 48 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[09:31:00] بداية المرحلة 48: 11 قارورة، سعات [(4, 11)]، مخفي 6
+[09:31:00] حالة المرحلة 48: [{"x": 167, "y": 332, "cap": 4, "layers": ["yellow", "orange", "lavender", "purple"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["orange", "green", "green", "yellow"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "orange"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["?", "?", "green"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["lavender", "lavender", "lavender"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "brown"]}, {"x": 304, "y": 743, "cap": 4, "layers": []}]
+[09:31:00] خطة المرحلة 48: 1 حركة (pimc، 94.2 ms)
+[09:31:37] خطة المرحلة 48: 6 حركة (astar، 0.8 ms)
+[09:32:05] فوز بالمرحلة 48 (unknown): 15 حركة في 65 ث، أدوات -
+[09:32:10] شاشة جديدة لم تُرَ من قبل: new_112_unknown.jpg
+[09:32:10] سهم تعليم: لمس الهدف (85, 476)
+[09:32:26] بداية المرحلة 48: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[09:32:26] حالة المرحلة 48: [{"x": 202, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1", "green"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "brown", "cyan", "green"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["red", "orange", "lavender", "pink"]}, {"x": 406, "y": 431, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "brown"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "brown", "yellow", "red"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "cyan", "green"]}]
+[09:32:26] خطة المرحلة 48: 8 حركة (progress، 2.9 ms)
+[09:33:27] فوز بالمرحلة 48 (لغز جديد على الشاشة): 6 حركة في 62 ث، أدوات -
+[09:33:27] بداية المرحلة 49: 9 قارورة، سعات [(4, 8), (10, 1)]، مخفي 2
+[09:33:27] حالة المرحلة 49: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "?", "?", "lavender"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "brown", "brown"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["red", "orange", "lavender", "pink"]}, {"x": 405, "y": 440, "cap": 10, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "brown", "yellow", "red"]}, {"x": 338, "y": 540, "cap": 4, "layers": []}, {"x": 270, "y": 745, "cap": 4, "layers": ["orange", "lavender", "purple", "green"]}]
+[09:33:27] خطة المرحلة 49: 1 حركة (reveal، 26.5 ms)
+[09:33:35] خطة المرحلة 49: 1 حركة (progress، 1.7 ms)
+[09:33:50] فوز بالمرحلة 49 (لغز جديد على الشاشة): 1 حركة في 22 ث، أدوات -
+[09:33:50] بداية المرحلة 50: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 3
+[09:33:50] حالة المرحلة 50: [{"x": 66, "y": 336, "cap": 4, "layers": ["yellow", "?", "blue"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["purple", "c_10_7_1"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["orange", "brown", "brown"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["red", "orange", "lavender", "pink"]}, {"x": 405, "y": 440, "cap": 11, "layers": ["cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan", "cyan"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["yellow", "?", "?", "yellow"]}, {"x": 202, "y": 542, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["lavender", "brown", "yellow", "red"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["lavender"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["c_10_7_1", "brown", "purple", "c_10_7_1"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["orange", "lavender", "purple"]}]
+[09:33:50] خطة المرحلة 50: 4 حركة (reveal، 148.4 ms)
+[09:34:20] شاشة جديدة لم تُرَ من قبل: new_113_unknown.jpg
+[09:34:25] سهم تعليم: لمس الهدف (0, 98)
+[09:34:29] سهم تعليم: لمس الهدف (0, 98)
+[09:34:33] سهم تعليم: لمس الهدف (0, 98)
+[09:37:20] شاشة مجهولة منذ 3 دقائق؛ إعادة تشغيل اللعبة
+[09:38:00] شاشة التحميل: انتظار بلا نقر
+[09:39:05] انتهى التحميل بعد 65 ثانية
+[09:39:09] صفحة تبويب: العودة إلى الرئيسية
+[09:39:18] صفحة تبويب: العودة إلى الرئيسية
+[09:39:27] واجهة رئيسية لم يُعرف زرّها: لمس موضع «Level N»
+[09:39:39] فوز بالمرحلة 50 (لغز جديد على الشاشة): 3 حركة في 349 ث، أدوات -
+[09:39:39] بداية المرحلة 51: 7 قارورة، سعات [(4, 6), (10, 1)]، مخفي 0
+[09:39:39] حالة المرحلة 51: [{"x": 202, "y": 336, "cap": 4, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["cyan", "brown", "green", "c_10_7_1"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "purple", "cyan", "orange"]}, {"x": 406, "y": 423, "cap": 10, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 202, "y": 540, "cap": 4, "layers": ["c_10_7_1", "c_10_7_1", "blue"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "red", "blue", "yellow"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["lavender", "green", "orange", "yellow"]}]
+[09:39:39] خطة المرحلة 51: 8 حركة (progress، 8.8 ms)
+[09:40:17] فوز بالمرحلة 51 (لغز جديد على الشاشة): 3 حركة في 38 ث، أدوات -
+[09:40:17] بداية المرحلة 52: 10 قارورة، سعات [(4, 9), (10, 1)]، مخفي 2
+[09:40:17] حالة المرحلة 52: [{"x": 66, "y": 336, "cap": 4, "layers": ["orange", "?", "?", "yellow"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["blue"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["cyan", "brown", "green"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "purple", "cyan", "orange"]}, {"x": 406, "y": 440, "cap": 10, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 202, "y": 540, "cap": 4, "layers": []}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "red", "blue", "yellow"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["lavender", "green", "orange", "yellow"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["red", "brown", "green", "red"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["blue", "lavender", "cyan", "orange"]}]
+[09:40:18] خطة المرحلة 52: 3 حركة (reveal، 619.7 ms)
+[09:40:43] خطة المرحلة 52: 1 حركة (reveal، 446.7 ms)
+[09:40:52] خطة المرحلة 52: 8 حركة (progress، 60.3 ms)
+[09:41:56] خطة المرحلة 52: 8 حركة (progress، 11.1 ms)
+[09:42:18] فوز بالمرحلة 52 (لغز جديد على الشاشة): 13 حركة في 120 ث، أدوات -
+[09:42:18] بداية المرحلة 53: 11 قارورة، سعات [(4, 10), (10, 1)]، مخفي 2
+[09:42:18] حالة المرحلة 53: [{"x": 66, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "?", "?", "green"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["cyan", "brown", "brown"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "purple", "cyan"]}, {"x": 406, "y": 440, "cap": 10, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 202, "y": 542, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink", "red", "red"]}, {"x": 338, "y": 540, "cap": 4, "layers": ["lavender", "green", "green", "green"]}, {"x": 202, "y": 745, "cap": 4, "layers": ["red"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["blue", "lavender", "cyan"]}]
+[09:42:18] خطة المرحلة 53: 1 حركة (pimc، 201.3 ms)
+[09:42:41] خطة المرحلة 53: 3 حركة (reveal، 41.3 ms)
+[09:43:05] خطة المرحلة 53: 5 حركة (progress، 2.8 ms)
+[09:43:18] فوز بالمرحلة 53 (لغز جديد على الشاشة): 6 حركة في 60 ث، أدوات -
+[09:43:18] بداية المرحلة 54: 12 قارورة، سعات [(4, 11), (10, 1)]، مخفي 2
+[09:43:18] حالة المرحلة 54: [{"x": 66, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "lavender"]}, {"x": 202, "y": 336, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 270, "y": 336, "cap": 4, "layers": ["cyan", "brown", "brown"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "purple", "cyan", "cyan"]}, {"x": 406, "y": 440, "cap": 10, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["pink", "?", "?", "brown"]}, {"x": 202, "y": 542, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink"]}, {"x": 338, "y": 542, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 270, "y": 745, "cap": 4, "layers": ["blue", "lavender", "lavender"]}]
+[09:43:18] خطة المرحلة 54: 1 حركة (pimc، 40.8 ms)
+[09:43:46] فوز بالمرحلة 54 (لغز جديد على الشاشة): 2 حركة في 28 ث، أدوات -
+[09:43:46] بداية المرحلة 55: 13 قارورة، سعات [(4, 12), (10, 1)]، مخفي 3
+[09:43:46] حالة المرحلة 55: [{"x": 66, "y": 336, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 134, "y": 336, "cap": 4, "layers": ["cyan", "lavender", "lavender", "lavender"]}, {"x": 202, "y": 336, "cap": 4, "layers": []}, {"x": 270, "y": 336, "cap": 4, "layers": ["cyan", "brown", "brown", "brown"]}, {"x": 338, "y": 336, "cap": 4, "layers": ["purple", "purple", "cyan", "cyan"]}, {"x": 406, "y": 440, "cap": 10, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1", "c_10_7_1"]}, {"x": 66, "y": 540, "cap": 4, "layers": ["pink", "?", "lavender"]}, {"x": 134, "y": 540, "cap": 4, "layers": ["brown", "?", "?", "purple"]}, {"x": 202, "y": 542, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 270, "y": 540, "cap": 4, "layers": ["pink"]}, {"x": 338, "y": 542, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 202, "y": 746, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 270, "y": 746, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}]
+[09:43:46] خطة المرحلة 55: 1 حركة (pimc، 93.8 ms)
+[09:44:24] خطة المرحلة 55: 4 حركة (astar، 0.6 ms)
+[09:44:57] شاشة جديدة لم تُرَ من قبل: new_114_unknown.jpg
+[09:44:57] فوز بالمرحلة 55 (unknown): 8 حركة في 71 ث، أدوات -
+[09:45:02] شاشة جديدة لم تُرَ من قبل: new_115_close.jpg
+[09:45:12] شاشة جديدة لم تُرَ من قبل: new_116_close.jpg
+[09:45:20] سهم تعليم: لمس الهدف (302, 234)
+[09:45:28] شاشة جديدة لم تُرَ من قبل: new_117_close.jpg
+[09:45:31] شاشة جديدة لم تُرَ من قبل: new_118_unknown.jpg
+[09:45:35] شاشة جديدة لم تُرَ من قبل: new_119_unknown.jpg
+[09:45:35] سهم تعليم: لمس الهدف (276, 604)
+[09:45:39] شاشة جديدة لم تُرَ من قبل: new_120_close.jpg
+[09:45:46] بداية المرحلة 50: 12 قارورة، سعات [(4, 12)]، مخفي 10
+[09:45:46] حالة المرحلة 50: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "?", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "?", "red"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["green", "?", "pink"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "?", "yellow"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["blue", "?", "yellow"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["orange", "?", "red"]}, {"x": 40, "y": 636, "cap": 4, "layers": ["green", "brown", "lavender"]}, {"x": 118, "y": 636, "cap": 4, "layers": ["brown", "pink", "lavender"]}, {"x": 197, "y": 636, "cap": 4, "layers": ["?", "?", "orange"]}, {"x": 275, "y": 636, "cap": 4, "layers": ["?", "?", "brown"]}, {"x": 353, "y": 636, "cap": 4, "layers": ["purple", "blue", "orange"]}, {"x": 432, "y": 636, "cap": 4, "layers": ["pink", "yellow", "blue"]}]
+[09:45:47] خطة المرحلة 50: 1 حركة (pimc، 626.8 ms)
+[09:46:59] خطة المرحلة 50: 13 حركة (astar، 2.1 ms)
+[09:47:57] شاشة جديدة لم تُرَ من قبل: new_121_unknown.jpg
+[09:47:57] فوز بالمرحلة 50 (unknown): 28 حركة في 131 ث، أدوات -
+[09:48:02] شاشة جديدة لم تُرَ من قبل: new_122_unknown.jpg
+[09:48:02] سهم تعليم: لمس الهدف (85, 476)
+[09:48:06] شاشة جديدة لم تُرَ من قبل: new_123_button.jpg
+[09:48:13] بداية المرحلة 51: 11 قارورة، سعات [(4, 11)]، مخفي 10
+[09:48:13] حالة المرحلة 51: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "blue", "pink", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["pink", "lavender", "pink", "purple"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["?", "?", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["?", "?", "brown"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["red", "orange", "orange", "yellow"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["purple", "blue", "lavender", "purple"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["red", "red"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["brown"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["?", "?", "?", "lavender"]}]
+[09:48:13] خطة المرحلة 51: 1 حركة (pimc، 61.0 ms)
+[09:49:20] خطة المرحلة 51: 11 حركة (astar، 1.1 ms)
+[09:50:10] شاشة جديدة لم تُرَ من قبل: new_124_unknown.jpg
+[09:50:10] فوز بالمرحلة 51 (unknown): 26 حركة في 116 ث، أدوات -
+[09:50:26] شاشة جديدة لم تُرَ من قبل: new_125_close.jpg
+[09:50:33] بداية المرحلة 52: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 8
+[09:50:33] حالة المرحلة 52: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "blue", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "red", "?", "orange"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["orange", "lavender", "blue"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["lavender", "lavender", "purple", "green"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["orange", "orange", "lavender", "green"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["lavender"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["?", "red", "?", "purple"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["?", "lavender", "?", "blue"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["red", "blue", "pink"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["purple", "pink", "pink", "lavender"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["red", "yellow", "purple", "lavender"]}]
+[09:50:34] خطة المرحلة 52: 1 حركة (pimc، 934.4 ms)
+[09:51:10] لا تقدّم بعد الحركة (5, 2) (إخفاق 1)
+[09:51:10] القارورة 2 مرفوعة؛ نقرة لإنزالها
+[09:51:49] تنفيذ أوامر الدفعة 28: update
+[09:51:49] تحديث كود البوت وإعادة تشغيله (48 دقيقة باقية، 57 مرحلة مكتملة)
+[09:51:52] بدء البوت: 48 دقيقة، الفرع claude/quirky-ride-r4oor0
+[09:51:52] التحكم عن بعد: seq الحالي 28 (يُعتبر منفَّذاً)
+[09:51:59] بداية المرحلة 52: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 4
+[09:51:59] حالة المرحلة 52: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "blue", "?", "green"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "red", "green", "green"]}, {"x": 197, "y": 380, "cap": 4, "layers": ["orange", "orange"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["orange", "orange", "lavender", "green"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["lavender", "lavender", "lavender", "lavender", "lavender", "lavender", "lavender"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["?", "red"]}, {"x": 118, "y": 641, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 197, "y": 640, "cap": 4, "layers": ["red", "blue", "blue", "blue"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["purple", "purple"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["red", "yellow", "purple", "purple"]}]
+[09:51:59] خطة المرحلة 52: 1 حركة (pimc، 66.0 ms)
+[09:52:46] خطة المرحلة 52: 6 حركة (astar، 0.8 ms)
+[09:53:26] فوز بالمرحلة 52 (unknown): 16 حركة في 87 ث، أدوات -
+[09:53:30] شاشة جديدة لم تُرَ من قبل: new_126_unknown.jpg
+[09:53:30] سهم تعليم: لمس الهدف (85, 476)
+[09:53:34] شاشة جديدة لم تُرَ من قبل: new_127_button.jpg
+[09:53:45] بداية المرحلة 53: 7 قارورة، سعات [(4, 6), (11, 1)]، مخفي 0
+[09:53:45] حالة المرحلة 53: [{"x": 196, "y": 493, "cap": 11, "layers": ["orange", "orange", "orange"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["green", "green", "pink", "orange"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "lavender", "lavender", "orange"]}, {"x": 432, "y": 380, "cap": 4, "layers": ["green", "purple", "blue", "yellow"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["orange", "orange", "orange", "yellow"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["orange", "orange", "orange", "pink"]}, {"x": 432, "y": 640, "cap": 4, "layers": ["yellow", "brown", "brown", "brown"]}]
+[09:53:45] خطة المرحلة 53: 8 حركة (progress، 4.6 ms)
+[09:54:29] المرحلة 53 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[09:54:29] بداية المرحلة 53: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 12
+[09:54:29] حالة المرحلة 53: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 196, "y": 512, "cap": 11, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["green", "green", "pink", "pink"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "lavender", "lavender"]}, {"x": 432, "y": 380, "cap": 4, "layers": ["green", "purple", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 275, "y": 640, "cap": 4, "layers": []}, {"x": 353, "y": 640, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 432, "y": 640, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}]
+[09:54:29] خطة المرحلة 53: 1 حركة (pimc، 145.0 ms)
+[09:55:10] تنفيذ أوامر الدفعة 29: update
+[09:55:10] تحديث كود البوت وإعادة تشغيله (45 دقيقة باقية، 58 مرحلة مكتملة)
+[09:55:13] بدء البوت: 45 دقيقة، الفرع claude/quirky-ride-r4oor0
+[09:55:14] التحكم عن بعد: seq الحالي 29 (يُعتبر منفَّذاً)
+[09:55:27] بداية المرحلة 53: 11 قارورة، سعات [(4, 10), (11, 1)]، مخفي 7
+[09:55:27] حالة المرحلة 53: [{"x": 40, "y": 380, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 118, "y": 380, "cap": 4, "layers": ["?", "?", "green"]}, {"x": 196, "y": 512, "cap": 11, "layers": ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]}, {"x": 275, "y": 380, "cap": 4, "layers": ["green", "green", "pink", "pink"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "lavender", "lavender", "lavender"]}, {"x": 432, "y": 380, "cap": 4, "layers": ["green", "purple", "blue"]}, {"x": 40, "y": 640, "cap": 4, "layers": ["purple"]}, {"x": 118, "y": 640, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["pink", "pink"]}, {"x": 353, "y": 641, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 432, "y": 641, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}]
+[09:55:27] خطة المرحلة 53: 1 حركة (pimc، 66.0 ms)
+[09:56:39] خطة المرحلة 53: 5 حركة (astar، 0.6 ms)
+[09:57:15] فوز بالمرحلة 53 (unknown): 13 حركة في 108 ث، أدوات -
+[09:57:19] شاشة جديدة لم تُرَ من قبل: new_128_unknown.jpg
+[09:57:19] سهم تعليم: لمس الهدف (85, 476)
+[09:57:39] بداية المرحلة 54: 7 قارورة، سعات [(4, 7)]، مخفي 0
+[09:57:39] حالة المرحلة 54: [{"x": 168, "y": 332, "cap": 4, "layers": ["lavender", "red", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": ["c_10_7_1", "lavender", "pink"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["orange", "cyan", "cyan", "orange"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["orange", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "lavender", "c_10_7_1"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["red", "yellow", "red", "pink"]}]
+[09:57:39] خطة المرحلة 54: 8 حركة (progress، 16.9 ms)
+[09:58:51] المرحلة 54 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[09:58:51] بداية المرحلة 54: 12 قارورة، سعات [(4, 12)]، مخفي 2
+[09:58:51] حالة المرحلة 54: [{"x": 168, "y": 332, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["pink", "pink", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["c_10_7_1", "lavender", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["?", "lavender", "?", "purple"]}, {"x": 167, "y": 538, "cap": 4, "layers": []}, {"x": 236, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "lavender", "c_10_7_1"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["blue", "brown", "cyan", "green"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["red", "cyan", "brown", "brown"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["red", "yellow", "red", "red"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "green", "purple", "green"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["green", "c_10_7_1", "blue", "brown"]}]
+[09:58:52] خطة المرحلة 54: 1 حركة (pimc، 658.1 ms)
+[09:59:43] شاشة جديدة لم تُرَ من قبل: new_129_unknown.jpg
+[09:59:48] شاشة جديدة لم تُرَ من قبل: new_130_unknown.jpg
+[09:59:48] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[09:59:52] شاشة جديدة لم تُرَ من قبل: new_131_button.jpg
+[10:00:16] الحالة بعد (3, 10) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:01:18] خطة المرحلة 54: 8 حركة (astar، 1.3 ms)
+[10:01:39] المرحلة 54 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[10:01:39] بداية المرحلة 54: 14 قارورة، سعات [(4, 14)]، مخفي 2
+[10:01:39] حالة المرحلة 54: [{"x": 132, "y": 332, "cap": 4, "layers": ["cyan", "cyan", "cyan", "cyan"]}, {"x": 201, "y": 332, "cap": 4, "layers": []}, {"x": 270, "y": 332, "cap": 4, "layers": ["c_10_7_1", "c_10_7_1"]}, {"x": 338, "y": 332, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["green", "green"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["?", "purple", "?", "c_10_7_1"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["blue", "blue"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["purple", "green", "purple", "purple"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["green", "c_10_7_1", "blue"]}]
+[10:01:39] خطة المرحلة 54: 1 حركة (pimc، 77.4 ms)
+[10:02:02] خطة المرحلة 54: 7 حركة (astar، 0.9 ms)
+[10:02:54] شاشة جديدة لم تُرَ من قبل: new_132_unknown.jpg
+[10:02:54] فوز بالمرحلة 54 (unknown): 10 حركة في 75 ث، أدوات -
+[10:02:59] شاشة جديدة لم تُرَ من قبل: new_133_button.jpg
+[10:03:14] سهم تعليم: لمس الهدف (302, 234)
+[10:03:22] شاشة جديدة لم تُرَ من قبل: new_134_close.jpg
+[10:03:32] بداية المرحلة 55: 12 قارورة، سعات [(4, 12)]، مخفي 18
+[10:03:32] حالة المرحلة 55: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "?", "?", "orange"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 201, "y": 538, "cap": 4, "layers": []}, {"x": 270, "y": 538, "cap": 4, "layers": []}, {"x": 338, "y": 538, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "brown", "blue", "green"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["orange", "blue", "pink", "purple"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["lavender", "red", "blue", "lavender"]}]
+[10:03:33] خطة المرحلة 55: 1 حركة (pimc، 625.2 ms)
+[10:03:51] تنفيذ أوامر الدفعة 30: update
+[10:03:51] تحديث كود البوت وإعادة تشغيله (36 دقيقة باقية، 60 مرحلة مكتملة)
+[10:03:54] بدء البوت: 36 دقيقة، الفرع claude/quirky-ride-r4oor0
+[10:03:54] التحكم عن بعد: seq الحالي 30 (يُعتبر منفَّذاً)
+[10:04:00] بداية المرحلة 55: 12 قارورة، سعات [(4, 12)]، مخفي 14
+[10:04:00] حالة المرحلة 55: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "lavender"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "brown"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "?", "?", "orange"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "pink"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 201, "y": 538, "cap": 4, "layers": ["green", "green"]}, {"x": 270, "y": 538, "cap": 4, "layers": []}, {"x": 338, "y": 538, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["yellow", "brown", "blue", "green"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["orange", "blue", "pink", "purple"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["lavender", "red", "blue", "lavender"]}]
+[10:04:01] خطة المرحلة 55: 1 حركة (pimc، 584.0 ms)
+[10:04:19] تنفيذ أوامر الدفعة 31: backup
+[10:04:29] نسخة احتياطية لبيانات اللعبة: 12002 ك.ب (60 مرحلة مكتملة)
+[10:05:10] شاشة التحميل: انتظار بلا نقر
+[10:06:22] المرحلة 55 أُعيدت من البداية (ذاكرة 3 طبقة مكشوفة)
+[10:06:22] بداية المرحلة 55: 12 قارورة، سعات [(4, 12)]، مخفي 18
+[10:06:22] حالة المرحلة 55: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 373, "y": 332, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 133, "y": 538, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 201, "y": 538, "cap": 4, "layers": []}, {"x": 270, "y": 538, "cap": 4, "layers": []}, {"x": 338, "y": 538, "cap": 4, "layers": ["?", "?", "?", "red"]}, {"x": 168, "y": 743, "cap": 4, "layers": ["green", "blue", "purple", "orange"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["blue", "red", "blue", "yellow"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["lavender", "pink", "lavender", "yellow"]}]
+[10:06:23] خطة المرحلة 55: 1 حركة (pimc، 502.1 ms)
+[10:08:17] خطة المرحلة 55: 8 حركة (astar، 1.4 ms)
+[10:08:53] فوز بالمرحلة 55 (unknown): 33 حركة في 151 ث، أدوات -
+[10:08:53] انتهى التحميل بعد 223 ثانية
+[10:08:57] شاشة جديدة لم تُرَ من قبل: new_135_unknown.jpg
+[10:08:57] سهم تعليم: لمس الهدف (85, 476)
+[10:09:11] بداية المرحلة 56: 8 قارورة، سعات [(4, 7), (16, 1)]، مخفي 0
+[10:09:11] حالة المرحلة 56: [{"x": 168, "y": 335, "cap": 4, "layers": ["green", "brown", "yellow", "purple"]}, {"x": 236, "y": 335, "cap": 4, "layers": ["lavender", "lavender", "purple", "red"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["orange", "lavender", "red", "purple"]}, {"x": 372, "y": 524, "cap": 16, "layers": ["purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 304, "y": 540, "cap": 4, "layers": []}, {"x": 168, "y": 744, "cap": 4, "layers": ["yellow", "cyan", "orange", "brown"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["purple", "purple", "yellow", "red"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["pink", "purple", "pink", "lavender"]}]
+[10:09:11] خطة المرحلة 56: 8 حركة (progress، 110.5 ms)
+[10:09:30] الحالة بعد (1, 3) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:09:30] خطة المرحلة 56: 8 حركة (progress، 53.3 ms)
+[10:09:47] المرحلة 56 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:09:47] بداية المرحلة 56: 11 قارورة، سعات [(4, 10), (17, 1)]، مخفي 6
+[10:09:47] حالة المرحلة 56: [{"x": 99, "y": 335, "cap": 4, "layers": ["blue", "pink", "red", "cyan"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["green", "brown", "yellow"]}, {"x": 236, "y": 336, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["orange"]}, {"x": 372, "y": 524, "cap": 17, "layers": ["purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["?", "?", "?", "green"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["red", "red"]}, {"x": 168, "y": 744, "cap": 4, "layers": ["yellow", "cyan", "orange", "brown"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["purple", "purple", "yellow", "red"]}, {"x": 304, "y": 744, "cap": 4, "layers": ["pink", "purple", "pink"]}]
+[10:09:47] خطة المرحلة 56: 1 حركة (pimc، 43.7 ms)
+[10:11:06] خطة المرحلة 56: 3 حركة (astar، 0.7 ms)
+[10:11:23] المرحلة 56 أُعيدت من البداية (ذاكرة 6 طبقة مكشوفة)
+[10:11:23] بداية المرحلة 56: 12 قارورة، سعات [(4, 11), (17, 1)]، مخفي 0
+[10:11:23] حالة المرحلة 56: [{"x": 99, "y": 335, "cap": 4, "layers": ["blue", "blue"]}, {"x": 168, "y": 335, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 236, "y": 336, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 372, "y": 524, "cap": 17, "layers": ["purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["cyan", "cyan"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 99, "y": 744, "cap": 4, "layers": ["blue", "blue", "brown", "cyan"]}, {"x": 168, "y": 744, "cap": 4, "layers": []}, {"x": 236, "y": 746, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 304, "y": 746, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}]
+[10:11:23] خطة المرحلة 56: 3 حركة (astar، 0.4 ms)
+[10:11:38] المرحلة 56 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:11:38] بداية المرحلة 56: 13 قارورة، سعات [(4, 12), (17, 1)]، مخفي 3
+[10:11:38] حالة المرحلة 56: [{"x": 99, "y": 335, "cap": 4, "layers": []}, {"x": 168, "y": 335, "cap": 4, "layers": ["green", "green", "green"]}, {"x": 236, "y": 336, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 304, "y": 335, "cap": 4, "layers": ["orange", "orange", "orange"]}, {"x": 372, "y": 524, "cap": 17, "layers": ["purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple", "purple"]}, {"x": 99, "y": 540, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 168, "y": 540, "cap": 4, "layers": ["cyan", "cyan", "cyan"]}, {"x": 236, "y": 540, "cap": 4, "layers": ["brown", "brown", "brown", "brown"]}, {"x": 304, "y": 540, "cap": 4, "layers": ["red", "red", "red", "red"]}, {"x": 99, "y": 746, "cap": 4, "layers": ["blue", "blue", "blue", "blue"]}, {"x": 168, "y": 744, "cap": 4, "layers": []}, {"x": 236, "y": 746, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 304, "y": 746, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}]
+[10:11:38] خطة المرحلة 56: 1 حركة (pimc، 11.6 ms)
+[10:11:57] خطة المرحلة 56: 1 حركة (astar، 0.3 ms)
+[10:12:05] شاشة جديدة لم تُرَ من قبل: new_136_unknown.jpg
+[10:12:05] فوز بالمرحلة 56 (unknown): 4 حركة في 27 ث، أدوات -
+[10:12:10] شاشة جديدة لم تُرَ من قبل: new_137_button.jpg
+[10:12:20] بداية المرحلة 57: 3 قارورة، سعات [(4, 3)]، مخفي 0
+[10:12:20] حالة المرحلة 57: [{"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "red"]}, {"x": 236, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "purple", "lavender", "red"]}]
+[10:12:20] خطة المرحلة 57: 3 حركة (progress، 0.3 ms)
+[10:12:36] المرحلة 57 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:12:36] بداية المرحلة 57: 13 قارورة، سعات [(4, 13)]، مخفي 12
+[10:12:36] حالة المرحلة 57: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "?", "?", "purple"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["orange", "yellow", "brown", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": []}, {"x": 304, "y": 332, "cap": 4, "layers": ["brown", "yellow", "green", "orange"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "?", "?", "brown"]}, {"x": 168, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "lavender", "lavender"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["red", "red"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["cyan", "purple"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["?", "?", "?", "pink"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["orange", "purple", "green", "pink"]}, {"x": 236, "y": 743, "cap": 4, "layers": []}, {"x": 304, "y": 743, "cap": 4, "layers": ["pink", "orange", "blue", "brown"]}, {"x": 374, "y": 743, "cap": 4, "layers": ["?", "?", "?", "yellow"]}]
+[10:12:37] خطة المرحلة 57: 1 حركة (pimc، 574.6 ms)
+[10:13:58] خطة المرحلة 57: 12 حركة (astar، 2.0 ms)
+[10:14:47] شاشة جديدة لم تُرَ من قبل: new_138_unknown.jpg
+[10:14:47] فوز بالمرحلة 57 (unknown): 30 حركة في 131 ث، أدوات -
+[10:14:51] شاشة جديدة لم تُرَ من قبل: new_139_unknown.jpg
+[10:14:51] سهم تعليم: لمس الهدف (85, 476)
+[10:15:06] شاشة جديدة لم تُرَ من قبل: new_140_close.jpg
+[10:15:16] بداية المرحلة 58: 13 قارورة، سعات [(4, 13)]، مخفي 12
+[10:15:16] حالة المرحلة 58: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "?", "red"]}, {"x": 167, "y": 332, "cap": 4, "layers": ["?", "?", "yellow"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["purple", "purple"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["?", "?", "orange"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "?", "orange"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["lavender", "lavender", "yellow", "pink"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["?", "?", "purple"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["blue", "blue"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["?", "?", "cyan"]}, {"x": 373, "y": 538, "cap": 4, "layers": ["orange", "lavender", "yellow", "green"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["red", "pink", "yellow", "cyan"]}, {"x": 236, "y": 744, "cap": 4, "layers": ["green", "green"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["blue", "brown", "brown", "cyan"]}]
+[10:15:16] خطة المرحلة 58: 1 حركة (pimc، 261.9 ms)
+[10:16:37] خطة المرحلة 58: 10 حركة (astar، 2.0 ms)
+[10:17:26] شاشة جديدة لم تُرَ من قبل: new_141_unknown.jpg
+[10:17:26] فوز بالمرحلة 58 (unknown): 28 حركة في 130 ث، أدوات -
+[10:17:52] بداية المرحلة 59: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[10:17:52] حالة المرحلة 59: [{"x": 167, "y": 538, "cap": 4, "layers": []}, {"x": 304, "y": 537, "cap": 4, "layers": []}, {"x": 133, "y": 743, "cap": 4, "layers": ["c_31_7_3", "orange", "cyan", "red"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "yellow", "yellow", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["pink", "red", "cyan", "purple"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["pink", "orange", "c_31_7_3", "purple"]}]
+[10:17:52] خطة المرحلة 59: 8 حركة (progress، 14.2 ms)
+[10:18:39] المرحلة 59 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:18:39] بداية المرحلة 59: 9 قارورة، سعات [(4, 9)]، مخفي 2
+[10:18:39] حالة المرحلة 59: [{"x": 98, "y": 332, "cap": 4, "layers": ["?", "brown", "?", "c_10_7_1"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "blue", "c_10_7_1", "brown"]}, {"x": 167, "y": 538, "cap": 4, "layers": []}, {"x": 236, "y": 538, "cap": 4, "layers": ["c_31_7_3", "yellow", "green", "yellow"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 133, "y": 743, "cap": 4, "layers": ["c_31_7_3", "orange", "cyan", "red"]}, {"x": 201, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 270, "y": 743, "cap": 4, "layers": ["pink", "red", "cyan"]}, {"x": 338, "y": 743, "cap": 4, "layers": ["pink", "orange", "c_31_7_3"]}]
+[10:18:39] خطة المرحلة 59: 1 حركة (reveal، 61.4 ms)
+[10:18:47] خطة المرحلة 59: 4 حركة (reveal، 35.4 ms)
+[10:19:19] خطة المرحلة 59: 2 حركة (progress، 0.8 ms)
+[10:19:32] شاشة جديدة لم تُرَ من قبل: new_142_unknown.jpg
+[10:19:32] نافذة «No Available Moves»: «Give Up» (لا تُصرف العملات)
+[10:20:00] الحالة بعد (5, 0) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:20:00] خطة المرحلة 59: 8 حركة (progress، 10.0 ms)
+[10:20:22] المرحلة 59 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[10:20:22] بداية المرحلة 59: 14 قارورة، سعات [(4, 14)]، مخفي 2
+[10:20:22] حالة المرحلة 59: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "red"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["cyan", "lavender", "pink", "orange"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "blue", "c_10_7_1", "c_10_7_1"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "lavender", "?", "red"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["green", "blue", "green", "c_31_7_3"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["brown", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["c_31_7_3"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender", "green", "c_10_7_1", "orange"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["c_31_7_3", "orange", "cyan"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["pink", "red", "cyan", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["pink", "orange", "c_31_7_3"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["green"]}]
+[10:20:23] خطة المرحلة 59: 1 حركة (pimc، 429.8 ms)
+[10:22:34] المرحلة 59 أُعيدت من البداية (ذاكرة 1 طبقة مكشوفة)
+[10:22:34] بداية المرحلة 59: 15 قارورة، سعات [(4, 15)]، مخفي 1
+[10:22:34] حالة المرحلة 59: [{"x": 98, "y": 332, "cap": 4, "layers": ["red", "red", "red"]}, {"x": 168, "y": 332, "cap": 4, "layers": ["cyan", "lavender", "pink"]}, {"x": 236, "y": 332, "cap": 4, "layers": ["brown", "c_10_7_1", "lavender", "pink"]}, {"x": 304, "y": 332, "cap": 4, "layers": ["blue", "blue", "blue"]}, {"x": 372, "y": 332, "cap": 4, "layers": ["?", "lavender"]}, {"x": 98, "y": 538, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 167, "y": 538, "cap": 4, "layers": ["brown", "brown", "brown"]}, {"x": 236, "y": 538, "cap": 4, "layers": ["c_31_7_3", "c_31_7_3", "c_31_7_3"]}, {"x": 304, "y": 538, "cap": 4, "layers": ["yellow", "yellow", "yellow", "yellow"]}, {"x": 372, "y": 538, "cap": 4, "layers": ["lavender"]}, {"x": 98, "y": 743, "cap": 4, "layers": ["c_31_7_3", "orange", "cyan", "cyan"]}, {"x": 167, "y": 743, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 236, "y": 743, "cap": 4, "layers": ["pink", "red", "cyan"]}, {"x": 304, "y": 743, "cap": 4, "layers": ["pink", "orange", "orange", "orange"]}, {"x": 372, "y": 743, "cap": 4, "layers": ["c_10_7_1", "c_10_7_1", "c_10_7_1"]}]
+[10:22:34] خطة المرحلة 59: 1 حركة (pimc، 150.1 ms)
+[10:22:42] خطة المرحلة 59: 14 حركة (astar، 2.4 ms)
+[10:24:32] شاشة جديدة لم تُرَ من قبل: new_143_unknown.jpg
+[10:24:32] فوز بالمرحلة 59 (unknown): 15 حركة في 118 ث، أدوات -
+[10:24:36] شاشة جديدة لم تُرَ من قبل: new_144_button.jpg
+[10:24:52] شاشة جديدة لم تُرَ من قبل: new_145_unknown.jpg
+[10:24:57] شاشة جديدة لم تُرَ من قبل: new_146_unknown.jpg
+[10:25:24] شاشة جديدة لم تُرَ من قبل: new_147_button.jpg
+[10:25:28] شاشة جديدة لم تُرَ من قبل: new_148_close.jpg
+[10:25:43] نافذة قبل المرحلة 60 (ميزة جديدة؟): feat_L060.jpg
+[10:25:43] بداية المرحلة 60: 5 قارورة، سعات [(4, 5)]، مخفي 0
+[10:25:43] حالة المرحلة 60: [{"x": 80, "y": 636, "cap": 4, "layers": ["c_03_7_7", "yellow", "lavender"]}, {"x": 157, "y": 636, "cap": 4, "layers": []}, {"x": 236, "y": 636, "cap": 4, "layers": ["green", "orange", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": []}, {"x": 392, "y": 636, "cap": 4, "layers": ["orange", "yellow", "lavender"]}]
+[10:25:43] خطة المرحلة 60: 6 حركة (astar، 0.4 ms)
+[10:26:07] المرحلة 60 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:26:07] بداية المرحلة 60: 8 قارورة، سعات [(4, 8)]، مخفي 0
+[10:26:07] حالة المرحلة 60: [{"x": 40, "y": 375, "cap": 4, "layers": ["blue", "green", "lavender", "yellow"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["blue", "pink", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["blue", "lavender", "orange", "red"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["purple"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["lavender"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["green", "orange", "yellow", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": []}, {"x": 392, "y": 636, "cap": 4, "layers": ["orange", "yellow", "lavender"]}]
+[10:26:07] خطة المرحلة 60: 8 حركة (progress، 31.0 ms)
+[10:26:26] المرحلة 60 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:26:26] بداية المرحلة 60: 11 قارورة، سعات [(4, 11)]، مخفي 0
+[10:26:26] حالة المرحلة 60: [{"x": 40, "y": 375, "cap": 4, "layers": ["blue", "green", "purple"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["blue", "pink", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["blue", "lavender", "orange", "red"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["red", "red", "pink", "pink"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["green", "pink", "red", "purple"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["orange", "blue", "lavender", "purple"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["purple"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["green", "orange", "yellow", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": []}, {"x": 392, "y": 636, "cap": 4, "layers": ["orange", "yellow", "yellow"]}]
+[10:26:26] خطة المرحلة 60: 21 حركة (astar، 2.4 ms)
+[10:27:57] فوز بالمرحلة 60 (unknown): 21 حركة في 91 ث، أدوات -
+[10:28:05] شاشة جديدة لم تُرَ من قبل: new_149_unknown.jpg
+[10:28:16] شاشة جديدة لم تُرَ من قبل: new_150_unknown.jpg
+[10:28:27] شاشة جديدة لم تُرَ من قبل: new_151_unknown.jpg
+[10:29:06] اللعبة ليست في الواجهة (mCurrentFocus=Window{d485c9c u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:29:51] اللعبة ليست في الواجهة (mCurrentFocus=Window{d485c9c u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:31:19] اللعبة ليست في الواجهة (mCurrentFocus=Window{aa286b6 u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:32:04] اللعبة ليست في الواجهة (mCurrentFocus=Window{aa286b6 u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:32:49] اللعبة ليست في الواجهة (mCurrentFocus=Window{aa286b6 u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:34:17] اللعبة ليست في الواجهة (mCurrentFocus=Window{7eacd0a u0 com.android.vending/com.google.android.finsky.unauthenticated.activity.UnauthenticatedMa)؛ تشغيلها
+[10:34:41] نسخة احتياطية لبيانات اللعبة: 34396 ك.ب (66 مرحلة مكتملة)
+[10:34:44] شاشة جديدة لم تُرَ من قبل: new_152_unknown.jpg
+[10:35:18] شاشة التحميل: انتظار بلا نقر
+[10:36:36] شاشة جديدة لم تُرَ من قبل: new_153_close.jpg
+[10:36:48] بداية المرحلة 61: 6 قارورة، سعات [(4, 6)]، مخفي 0
+[10:36:48] حالة المرحلة 61: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "green", "orange"]}, {"x": 118, "y": 375, "cap": 4, "layers": ["green", "orange"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["pink", "purple", "orange"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "red", "orange"]}, {"x": 353, "y": 375, "cap": 4, "layers": ["purple", "green"]}, {"x": 432, "y": 375, "cap": 4, "layers": ["purple", "purple", "green"]}]
+[10:36:48] خطة المرحلة 61: 8 حركة (progress، 107.9 ms)
+[10:37:23] خطة المرحلة 61: 1 حركة (progress، 0.3 ms)
+[10:37:27] خطة المرحلة 61: 0 حركة (progress-none، 0.2 ms) — لا حركة مفيدة
+[10:37:27] المرحلة 61 عالقة (لا خطة): [yellow]/4 [green,green,green,green]/4 [pink]/4 [lavender,red]/4 [purple,purple,purple,purple]/4 [orange,orange,orange,orange]/4
+[10:37:27] أعداد الألوان غير منطقية (قراءة خاطئة؟): إعادة التصوير
+[10:37:32] المرحلة 61 أُعيدت من البداية (ذاكرة 0 طبقة مكشوفة)
+[10:37:32] بداية المرحلة 61: 9 قارورة، سعات [(4, 9)]، مخفي 2
+[10:37:32] حالة المرحلة 61: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": ["pink"]}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "red"]}, {"x": 352, "y": 376, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["red", "?", "pink"]}, {"x": 236, "y": 636, "cap": 4, "layers": ["pink", "yellow"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "?", "red"]}]
+[10:37:32] خطة المرحلة 61: 1 حركة (pimc، 73.0 ms)
+[10:37:40] خطة المرحلة 61: 6 حركة (astar، 0.7 ms)
+[10:37:58] المرحلة 61 أُعيدت من البداية (ذاكرة 2 طبقة مكشوفة)
+[10:37:58] بداية المرحلة 61: 11 قارورة، سعات [(4, 11)]، مخفي 6
+[10:37:58] حالة المرحلة 61: [{"x": 40, "y": 375, "cap": 4, "layers": ["yellow", "yellow"]}, {"x": 118, "y": 376, "cap": 4, "layers": ["green", "green", "green", "green"]}, {"x": 197, "y": 375, "cap": 4, "layers": []}, {"x": 275, "y": 375, "cap": 4, "layers": ["lavender", "red", "red"]}, {"x": 352, "y": 376, "cap": 4, "layers": ["purple", "purple", "purple", "purple"]}, {"x": 432, "y": 376, "cap": 4, "layers": ["orange", "orange", "orange", "orange"]}, {"x": 80, "y": 636, "cap": 4, "layers": ["?", "?", "?", "yellow"]}, {"x": 157, "y": 636, "cap": 4, "layers": ["red"]}, {"x": 236, "y": 637, "cap": 4, "layers": ["pink", "pink", "pink", "pink"]}, {"x": 314, "y": 636, "cap": 4, "layers": ["lavender", "lavender"]}, {"x": 392, "y": 636, "cap": 4, "layers": ["?", "?", "?", "blue"]}]
+[10:37:59] خطة المرحلة 61: 1 حركة (pimc، 53.5 ms)
+[10:38:24] خطة المرحلة 61: 3 حركة (astar، 0.4 ms)
+[10:38:42] شاشة جديدة لم تُرَ من قبل: new_154_unknown.jpg
+[10:38:42] فوز بالمرحلة 61 (unknown): 9 حركة في 43 ث، أدوات -
+[10:38:42] انتهى التحميل بعد 204 ثانية
+[10:38:54] شاشة جديدة لم تُرَ من قبل: new_155_unknown.jpg
+[10:39:53] بداية المرحلة 62: 5 قارورة، سعات [(4, 4), (11, 1)]، مخفي 0
+[10:39:53] حالة المرحلة 62: [{"x": 275, "y": 380, "cap": 4, "layers": ["green", "yellow", "purple"]}, {"x": 353, "y": 380, "cap": 4, "layers": ["red", "yellow", "yellow", "green"]}, {"x": 432, "y": 493, "cap": 11, "layers": ["blue", "blue", "blue"]}, {"x": 275, "y": 640, "cap": 4, "layers": ["blue", "pink", "blue"]}, {"x": 353, "y": 640, "cap": 4, "layers": ["c_25_3_6", "blue", "blue", "purple"]}]
+[10:39:53] خطة المرحلة 62: 3 حركة (progress، 0.5 ms)
+[10:40:15] الحالة بعد (4, 2) تختلف عن المتوقَّع؛ إعادة التخطيط
+[10:40:15] خطة المرحلة 62: 3 حركة (progress، 0.7 ms)
+[10:40:19] انتهى البوت: 67 مرحلة مكتملة في 36 دقيقة

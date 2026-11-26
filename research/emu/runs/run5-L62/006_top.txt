@@ -1,0 +1,2 @@
+mCurrentFocus=Window{4650fb7 u0 com.grandgames.magicsort/com.unity3d.player.UnityPlayerActivity}
+  mFocusedApp=ActivityRecord{7b75729 u0 com.grandgames.magicsort/com.unity3d.player.UnityPlayerActivity t9}
